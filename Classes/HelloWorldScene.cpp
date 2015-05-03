@@ -1,6 +1,13 @@
 #include "HelloWorldScene.h"
+#include "SimpleAudioEngine.h"
+
+using namespace CocosDenshion;
 
 USING_NS_CC;
+
+// audio
+#define BACKGROUND_MUSIC_SFX  "background-music-aac.mp3"
+#define PEW_PEW_SFX           "pew-pew-lei.mp3"
 
 // Enum for collision detection
 enum class PhysicsCategory {
@@ -64,6 +71,9 @@ bool HelloWorld::init()
     auto contactListener = EventListenerPhysicsContact::create();
     contactListener->onContactBegin = CC_CALLBACK_1(HelloWorld::onContactBegan, this);
     this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, this);
+    
+    // background audio
+    SimpleAudioEngine::getInstance()->playBackgroundMusic(BACKGROUND_MUSIC_SFX, true);
     
     return true;
 }
@@ -147,13 +157,16 @@ bool HelloWorld::onTouchBegan(Touch *touch, Event *unused_event)
     offset.normalize();
     auto shootAmount = offset * 1000;
     
-    // 6
+    // 6. calculate end destination
     auto realDest = shootAmount + projectile->getPosition();
     
-    // 7
+    // 7. projectile move action
     auto actionMove = MoveTo::create(2.0f, realDest);
     auto actionRemove = RemoveSelf::create();
     projectile->runAction(Sequence::create(actionMove,actionRemove, nullptr));
+    
+    // audio
+    SimpleAudioEngine::getInstance()->playEffect(PEW_PEW_SFX);
     
     return true;
 }
