@@ -2,10 +2,21 @@
 
 USING_NS_CC;
 
+// Enum for collision detection
+enum class PhysicsCategory {
+    None = 0,
+    Monster = (1 << 0),    // 1
+    Projectile = (1 << 1), // 2
+    All = PhysicsCategory::Monster | PhysicsCategory::Projectile // 3
+};
+
 Scene* HelloWorld::createScene()
 {
     // 'scene' is an autorelease object
-    auto scene = Scene::create();
+//    auto scene = Scene::create();
+    auto scene = Scene::createWithPhysics();
+    scene->getPhysicsWorld()->setGravity(Vec2(0,0));
+    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);    // enable debug drawing
     
     // 'layer' is an autorelease object
     auto layer = HelloWorld::create();
@@ -49,32 +60,52 @@ bool HelloWorld::init()
     eventListener->onTouchBegan = CC_CALLBACK_2(HelloWorld::onTouchBegan, this);
     this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(eventListener, _player);
     
+    // collision listner
+    auto contactListener = EventListenerPhysicsContact::create();
+    contactListener->onContactBegin = CC_CALLBACK_1(HelloWorld::onContactBegan, this);
+    this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, this);
+    
     return true;
 }
 
 void HelloWorld::addMonster(float dt)
 {
     auto monster = Sprite::create("monster.png");
+
+    auto monsterSize = monster->getContentSize();
     
-    // 1
-    auto monsterContentSize = monster->getContentSize();
+    {
+        // draw physics body around monster sprite
+        auto physicsBody = PhysicsBody::createBox(Size(monsterSize.width , monsterSize.height), PhysicsMaterial(0.1f, 1.0f, 0.0f));
+
+        // physics engine will not apply forces to the monster. Instead, it will be controled through the MoveTo actions
+        physicsBody->setDynamic(true);
+        
+        physicsBody->setCategoryBitmask((int)PhysicsCategory::Monster);         // set object’s type
+        physicsBody->setCollisionBitmask((int)PhysicsCategory::None);           //
+        physicsBody->setContactTestBitmask((int)PhysicsCategory::Projectile);   // obj type with which collisions should generate notifications
+        
+        monster->setPhysicsBody(physicsBody);
+    }
+    
+    // 1. determine starting position of a monster
     auto selfContentSize = this->getContentSize();
-    int minY = monsterContentSize.height/2;
-    int maxY = selfContentSize.height - monsterContentSize.height/2;
+    int minY = monsterSize.height/2;
+    int maxY = selfContentSize.height - monsterSize.height/2;
     int rangeY = maxY - minY;
     int randomY = (rand() % rangeY) + minY;
     
-    monster->setPosition(Vec2(selfContentSize.width + monsterContentSize.width/2, randomY));
+    monster->setPosition(Vec2(selfContentSize.width + monsterSize.width/2, randomY));
     this->addChild(monster);
     
-    // 2
+    // 2. set random speed of monster
     int minDuration = 2.0;
     int maxDuration = 4.0;
     int rangeDuration = maxDuration - minDuration;
     int randDuration = (rand() % rangeDuration) + minDuration;
     
-    //3
-    auto actionMove = MoveTo::create(randDuration, Vec2(-monsterContentSize.width/2, randomY));
+    //3. monster action (move left to right)
+    auto actionMove = MoveTo::create(randDuration, Vec2(-monsterSize.width/2, randomY));
     auto actionRemove = RemoveSelf::create();
     monster->runAction(Sequence::create(actionMove, actionRemove, nullptr));
 }
@@ -96,6 +127,18 @@ bool HelloWorld::onTouchBegan(Touch *touch, Event *unused_event)
     // 4. create bullet sprite
     auto projectile = Sprite::create("projectile.png");
     projectile->setPosition(_player->getPosition());
+    
+    {
+        // draw physics body around projectile sprite (same as monster)
+        auto projectileSize = projectile->getContentSize();
+        auto physicsBody = PhysicsBody::createCircle(projectileSize.width/2 );
+        physicsBody->setDynamic(true);
+        physicsBody->setCategoryBitmask((int)PhysicsCategory::Projectile);
+        physicsBody->setCollisionBitmask((int)PhysicsCategory::None);
+        physicsBody->setContactTestBitmask((int)PhysicsCategory::Monster);
+        projectile->setPhysicsBody(physicsBody);
+    }
+    
     this->addChild(projectile);
     
     // 5. call normalize() to convert the offset into a unit vector, which is a vector of length 1.
@@ -112,6 +155,16 @@ bool HelloWorld::onTouchBegan(Touch *touch, Event *unused_event)
     auto actionRemove = RemoveSelf::create();
     projectile->runAction(Sequence::create(actionMove,actionRemove, nullptr));
     
+    return true;
+}
+
+bool HelloWorld::onContactBegan(PhysicsContact &contact)
+{
+    auto nodeA = contact.getShapeA()->getBody()->getNode();
+    auto nodeB = contact.getShapeB()->getBody()->getNode();
+    
+    nodeA->removeFromParent();
+    nodeB->removeFromParent();
     return true;
 }
 

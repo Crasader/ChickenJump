@@ -22,6 +22,9 @@ public:
     // touch began callback
     bool onTouchBegan(Touch *touch, Event *unused_event);
     
+    // callback for collision between projectile and monster
+    bool onContactBegan(PhysicsContact &contact);
+    
     // implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);
     
