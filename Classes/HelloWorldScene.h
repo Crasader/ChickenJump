@@ -8,6 +8,8 @@ using namespace cocos2d;
 class HelloWorld : public cocos2d::Layer
 {
 public:
+    void addMonster(float dt);
+    
     // there's no 'id' in cpp, so we recommend returning the class instance pointer
     static cocos2d::Scene* createScene();
 
