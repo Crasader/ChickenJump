@@ -23,7 +23,7 @@ Scene* HelloWorld::createScene()
 //    auto scene = Scene::create();
     auto scene = Scene::createWithPhysics();
     scene->getPhysicsWorld()->setGravity(Vec2(0,0));
-    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);    // enable debug drawing
+//    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);    // enable debug drawing
     
     // 'layer' is an autorelease object
     auto layer = HelloWorld::create();
