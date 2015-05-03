@@ -34,9 +34,17 @@ bool AppDelegate::applicationDidFinishLaunching() {
     auto director = Director::getInstance();
     auto glview = director->getOpenGLView();
     if(!glview) {
-        glview = GLViewImpl::create("My Game");
+//        glview = GLViewImpl::create("My Game");
+        glview = GLViewImpl::createWithRect("SimpleGame", Rect(0,0, 480, 320), 1.0);
         director->setOpenGLView(glview);
     }
+    
+    // 1
+    Size designSize = Size(480,320);
+    Size resourceSize = Size(960,640);
+    // 2
+    director->setContentScaleFactor(resourceSize.height / designSize.height);
+    director->getOpenGLView()->setDesignResolutionSize(designSize.width, designSize.height, ResolutionPolicy::FIXED_HEIGHT);
 
     // turn on display FPS
     director->setDisplayStats(true);
