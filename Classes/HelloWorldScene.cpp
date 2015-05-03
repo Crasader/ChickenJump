@@ -41,8 +41,6 @@ bool HelloWorld::init()
     this->addChild(_player);
     
     return true;
-    
-    return true;
 }
 
 
