@@ -1,5 +1,5 @@
 #include "AppDelegate.h"
-#include "HelloWorldScene.h"
+#include "MainMenuScene.h"
 
 USING_NS_CC;
 
@@ -34,20 +34,12 @@ bool AppDelegate::applicationDidFinishLaunching() {
     auto director = Director::getInstance();
     auto glview = director->getOpenGLView();
     if(!glview) {
-//        glview = GLViewImpl::create("My Game");
-        glview = GLViewImpl::createWithRect("SimpleGame", Rect(0,0, 480, 320), 1.0);
+        glview = GLViewImpl::create("My Game");
         director->setOpenGLView(glview);
     }
     
-    // 1
-    Size designSize = Size(480,320);
-    Size resourceSize = Size(960,640);
-    // 2
-    director->setContentScaleFactor(resourceSize.height / designSize.height);
-    director->getOpenGLView()->setDesignResolutionSize(designSize.width, designSize.height, ResolutionPolicy::FIXED_HEIGHT);
-
     // turn on display FPS
-//    director->setDisplayStats(true);
+    director->setDisplayStats(true);
 
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0 / 60);
@@ -55,7 +47,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     register_all_packages();
 
     // create a scene. it's an autorelease object
-    auto scene = HelloWorld::createScene();
+    auto scene = MainMenu::createScene();
 
     // run
     director->runWithScene(scene);
