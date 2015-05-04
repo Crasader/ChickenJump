@@ -34,7 +34,14 @@ cocos2d/cocos/platform/android/java/bin
 proj.android/bin
 proj.android/libs
 proj.android/obj
+proj.android/gen
+proj.android/assets
 
 cocos2d/build/cocos2d_libs.xcodeproj/xcuserdata
 proj.ios_mac/ChickenJump.xcodeproj/xcuserdata
 proj.ios_mac/ChickenJump.xcodeproj/project.xcworkspace/xcuserdata
+
+local.properties
+
+cocos2d/cocos/platform/android/java/gen
+
