@@ -43,7 +43,24 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0 / 60);
-
+    
+    // Handling different screen size
+    auto screenSize = glview->getFrameSize();
+    auto designSize = Size(768, 1024);
+    glview->setDesignResolutionSize(designSize.width, designSize.height, ResolutionPolicy::EXACT_FIT);
+    
+    std::vector<std::string> searchPaths;
+    if (screenSize.width > 768) {
+//        searchPaths.push_back("hd");
+        director->setContentScaleFactor(2);
+    } else  {
+//        searchPaths.push_back("sd");
+        director->setContentScaleFactor(1);
+    }
+//    auto fileUtils = FileUtils::getInstance();
+//    fileUtils->setSearchPaths(searchPaths);
+    // Handling different screen size [end]
+    
     register_all_packages();
 
     // create a scene. it's an autorelease object

@@ -1,5 +1,5 @@
 #include "MainMenuScene.h"
-#include "SimpleAudioEngine.h"
+#include "Sprite_Player.h"
 
 USING_NS_CC;
 
@@ -32,6 +32,10 @@ bool MainMenu::init()
     // 2. origin & window size
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
     Size winSize = Director::getInstance()->getVisibleSize();
+    
+    Player *myPlayer = Player::playerWithFile("spaceship.png");
+    myPlayer->setPosition(Point(winSize.width/2, winSize.height/2));
+    this->addChild(myPlayer);
     
     return true;
 }
