@@ -1,5 +1,5 @@
 #include "AppDelegate.h"
-#include "MainMenuScene.h"
+#include "Scene_GameLayer.h"
 
 USING_NS_CC;
 
@@ -44,27 +44,40 @@ bool AppDelegate::applicationDidFinishLaunching() {
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0 / 60);
     
-    // Handling different screen size
-    auto screenSize = glview->getFrameSize();
-    auto designSize = Size(768, 1024);
-    glview->setDesignResolutionSize(designSize.width, designSize.height, ResolutionPolicy::EXACT_FIT);
+    // ********* Handling different screen size *********
+    Size screenSize = glview->getFrameSize();
+    Size designSize = Size(2048, 1536);
+
+//    glview->setDesignResolutionSize(designSize.width, designSize.height, ResolutionPolicy::EXACT_FIT);
     
-    std::vector<std::string> searchPaths;
-    if (screenSize.width > 768) {
-//        searchPaths.push_back("hd");
-        director->setContentScaleFactor(2);
-    } else  {
-//        searchPaths.push_back("sd");
-        director->setContentScaleFactor(1);
-    }
+//    std::vector<std::string> searchPaths;
+//    if (screenSize.width > 768) {
+////        searchPaths.push_back("hd");
+//        director->setContentScaleFactor(2);
+//    } else  {
+////        searchPaths.push_back("sd");
+//        director->setContentScaleFactor(1);
+//    }
 //    auto fileUtils = FileUtils::getInstance();
 //    fileUtils->setSearchPaths(searchPaths);
-    // Handling different screen size [end]
+    // ********* Handling different screen size ********* [END]
+    
+    // ********* Handling different screen size (another way) *********
+    glview->setDesignResolutionSize(designSize.width, designSize.height, ResolutionPolicy::EXACT_FIT);
+    
+    if (screenSize.height > 768) {
+        director->setContentScaleFactor(1536/designSize.height);
+    } else if (screenSize.height > 320) {
+        director->setContentScaleFactor(768/designSize.height);
+    } else {
+        director->setContentScaleFactor(380/designSize.height);
+    }
+    // ********* Handling different screen size (another way) ********* [END]
     
     register_all_packages();
 
     // create a scene. it's an autorelease object
-    auto scene = MainMenu::createScene();
+    auto scene = GameLayer::createScene();
 
     // run
     director->runWithScene(scene);
