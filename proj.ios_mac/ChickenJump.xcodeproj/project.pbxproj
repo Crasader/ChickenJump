@@ -72,6 +72,12 @@
 		D5253AC91B13DF7300AFC291 /* Sprite_Terrain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5253AC61B13DF7300AFC291 /* Sprite_Terrain.cpp */; };
 		D5253AD51B14F78000AFC291 /* MyPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5253AD31B14F78000AFC291 /* MyPlayer.cpp */; };
 		D5253AD61B14F78000AFC291 /* MyPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5253AD31B14F78000AFC291 /* MyPlayer.cpp */; };
+		D5253AD81B17ADC400AFC291 /* cp_jumping.png in Resources */ = {isa = PBXBuildFile; fileRef = D5253AD71B17ADC400AFC291 /* cp_jumping.png */; };
+		D5253AD91B17ADC400AFC291 /* cp_jumping.png in Resources */ = {isa = PBXBuildFile; fileRef = D5253AD71B17ADC400AFC291 /* cp_jumping.png */; };
+		D5253ADB1B17B0BC00AFC291 /* cp_jumping90.png in Resources */ = {isa = PBXBuildFile; fileRef = D5253ADA1B17B0BC00AFC291 /* cp_jumping90.png */; };
+		D5253ADC1B17B0BC00AFC291 /* cp_jumping90.png in Resources */ = {isa = PBXBuildFile; fileRef = D5253ADA1B17B0BC00AFC291 /* cp_jumping90.png */; };
+		D5253ADE1B17B51F00AFC291 /* cp_landing90.png in Resources */ = {isa = PBXBuildFile; fileRef = D5253ADD1B17B51F00AFC291 /* cp_landing90.png */; };
+		D5253ADF1B17B51F00AFC291 /* cp_landing90.png in Resources */ = {isa = PBXBuildFile; fileRef = D5253ADD1B17B51F00AFC291 /* cp_landing90.png */; };
 		D6B0611B1803AB670077942B /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6B0611A1803AB670077942B /* CoreMotion.framework */; };
 /* End PBXBuildFile section */
 
@@ -171,6 +177,9 @@
 		D5253AC71B13DF7300AFC291 /* Sprite_Terrain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sprite_Terrain.h; sourceTree = "<group>"; };
 		D5253AD31B14F78000AFC291 /* MyPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MyPlayer.cpp; sourceTree = "<group>"; };
 		D5253AD41B14F78000AFC291 /* MyPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyPlayer.h; sourceTree = "<group>"; };
+		D5253AD71B17ADC400AFC291 /* cp_jumping.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cp_jumping.png; sourceTree = "<group>"; };
+		D5253ADA1B17B0BC00AFC291 /* cp_jumping90.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cp_jumping90.png; sourceTree = "<group>"; };
+		D5253ADD1B17B51F00AFC291 /* cp_landing90.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cp_landing90.png; sourceTree = "<group>"; };
 		D6B0611A1803AB670077942B /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.0.sdk/System/Library/Frameworks/CoreMotion.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
@@ -289,8 +298,11 @@
 		46880B7519C43A67006E1F66 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				D5253ADD1B17B51F00AFC291 /* cp_landing90.png */,
 				D5253AB71B0782A300AFC291 /* spaceship.png */,
 				D5253ABA1B088B0500AFC291 /* blank.png */,
+				D5253ADA1B17B0BC00AFC291 /* cp_jumping90.png */,
+				D5253AD71B17ADC400AFC291 /* cp_jumping.png */,
 				521A8EA819F11F5000D177D7 /* fonts */,
 				3EACC98E19EE6D4300EB3C5E /* res */,
 			);
@@ -472,6 +484,8 @@
 				5087E78317EB970100C73F5D /* Icon-152.png in Resources */,
 				5087E77D17EB970100C73F5D /* Default-568h@2x.png in Resources */,
 				5087E78517EB970100C73F5D /* Icon-72.png in Resources */,
+				D5253ADE1B17B51F00AFC291 /* cp_landing90.png in Resources */,
+				D5253AD81B17ADC400AFC291 /* cp_jumping.png in Resources */,
 				521A8E6519F0C34300D177D7 /* Default-736h@3x.png in Resources */,
 				D5253ABB1B088B0500AFC291 /* blank.png in Resources */,
 				521A8EA919F11F5000D177D7 /* fonts in Resources */,
@@ -480,6 +494,7 @@
 				50EF62A217ECD613001EB2F8 /* Icon-29.png in Resources */,
 				50EF629617ECD46A001EB2F8 /* Icon-40.png in Resources */,
 				5087E78217EB970100C73F5D /* Icon-144.png in Resources */,
+				D5253ADB1B17B0BC00AFC291 /* cp_jumping90.png in Resources */,
 				3EACC98F19EE6D4300EB3C5E /* res in Resources */,
 				D5253AB81B0782A300AFC291 /* spaceship.png in Resources */,
 				50EF629817ECD46A001EB2F8 /* Icon-80.png in Resources */,
@@ -497,8 +512,11 @@
 				D5253AB91B0782A300AFC291 /* spaceship.png in Resources */,
 				503AE0F817EB97AB00D1A890 /* Icon.icns in Resources */,
 				3EACC99019EE6D4300EB3C5E /* res in Resources */,
+				D5253ADF1B17B51F00AFC291 /* cp_landing90.png in Resources */,
 				521A8EAA19F11F5000D177D7 /* fonts in Resources */,
 				D5253ABC1B088B0500AFC291 /* blank.png in Resources */,
+				D5253ADC1B17B0BC00AFC291 /* cp_jumping90.png in Resources */,
+				D5253AD91B17ADC400AFC291 /* cp_jumping.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
