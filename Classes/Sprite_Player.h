@@ -11,6 +11,7 @@
 
 #include <cocos2d.h>
 
+#define P_ACCELERATION 0.5
 #define PLAYER_INITIAL_SPEED 8
 #define PLAYER_JUMP 42
 #define FORCE_GRAVITY 1.5
@@ -45,35 +46,34 @@ public:
     CC_SYNTHESIZE(float, _maxSpeed, MaxSpeed);
     
     
-    Player(void);
-    ~Player(void);
+    Player();
+    virtual ~Player();
     
     // Create our Player sprite
-    static Player * create(void);
-    void reset(void);
+    static Player * create();
+    void reset();
     void setFloating(bool value);
+    virtual void update(float dt);
     
     // Set Player position
-    inline virtual void setPosition(const Point& pos) override {
-        Sprite::setPosition(pos);
+//    inline virtual void setPosition(const Point& pos) override {
+//        Sprite::setPosition(pos);
+//    }
+    
+    inline void place() {
+        this->setPositionY( _nextPosition.y );
+        if (_vector.x > 0 && this->getPositionX() < _screenSize.width * 0.2f) {
+            this->setPositionX(this->getPositionX() + _vector.x);
+            if (this->getPositionX() > _screenSize.width * 0.2f) {
+                this->setPositionX(_screenSize.width * 0.2f);
+            }
+        }
     }
     
-//    inline void place() {
-//        this->setPositionY( _nextPosition.y );
-//        if (_vector.x > 0 && this->getPositionX() < _screenSize.width * 0.2f) {
-//            this->setPositionX(this->getPositionX() + _vector.x);
-//            if (this->getPositionX() > _screenSize.width * 0.2f) {
-//                this->setPositionX(_screenSize.width * 0.2f);
-//            }
-//        }
-//    }
-    
-//    inline void setSize() {
-//        _width = this->getBoundingBox().size.width;
-//        _height = this->getBoundingBox().size.height;
-//    }
-    
-//    virtual void update(float dt);
+    inline void setSize() {
+        _width = this->getBoundingBox().size.width;
+        _height = this->getBoundingBox().size.height;
+    }
     
     // get coordinates
     inline int left() {
@@ -118,10 +118,10 @@ private:
     int _floatingInterval;
     bool _hasFloated;
     
-//    Size _screenSize;
+    Size _screenSize;
     
     // Private functions
-    void initPlayer (void);
+    void initPlayer();
 };
 
 

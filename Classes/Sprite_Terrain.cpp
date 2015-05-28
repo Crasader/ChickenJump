@@ -6,7 +6,7 @@
 //
 //
 
-#include "Sprite_GameTerrain.h"
+#include "Sprite_Terrain.h"
 
 int patterns[] = {1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,3,3,3};
 int widths[] = {2,2,2,2,2,3,3,3,3,3,3,4,4,4,4,4,4};
@@ -145,7 +145,6 @@ void GameTerrain::initBlock(Block * block) {
             }
             
             if (_blockHeights[_currentHeightIndex] != 0) {
-                
                 //change height of next block
                 blockHeight = _blockHeights[_currentHeightIndex];
                 //if difference too high, decrease it
@@ -192,10 +191,9 @@ void GameTerrain::initBlock(Block * block) {
 
 void GameTerrain::move(float xMove) {
     CCLOG("GameTerrain::move");
-    if (xMove < 0) return;
+    if(xMove < 0) return;
     
-    if (_startTerrain) {
-        
+    if(_startTerrain) {
         if (xMove > 0 && _gapSize < 5) _increaseGapTimer += xMove;
         
         if (_increaseGapTimer > _increaseGapInterval) {
@@ -248,64 +246,63 @@ void GameTerrain::reset() {
     _gapSize = 2;
 }
     
-//void GameTerrain::checkCollision(Player * player) {
-//    CCLOG("GameTerrain::checkCollision");
-//    if (player->getState() == kPlayerDying) return;
-//    
-//    bool inAir = true;
-//    
-//    for (auto block : _blocks) {
-//        
-//        if (block->getType() == kBlockGap) continue;
-//        
-//        //if within x, check y (bottom collision)
-//        if (player->right() >= this->getPositionX() + block->left()
-//            && player->left() <= this->getPositionX() + block->right()) {
-//            
-//            if (player->bottom() >= block->top() && player->next_bottom() <= block->top()
-//                && player->top() > block->top()) {
-//                player->setNextPosition(Vec2(player->getNextPosition().x, block->top() + player->getHeight()));
-//                player->setVector ( Vec2(player->getVector().x, 0) );
-//                player->setRotation(0.0);
-//                inAir = false;
-//                break;
-//            }
-//            
-//        }
-//    }
-//    
-//    for (auto block : _blocks) {
-//        if (block->getType() == kBlockGap) continue;
-//        
-//        //now if within y, check x (side collision)
-//        if ((player->bottom() < block->top() && player->top() > block->bottom())
-//            || (player->next_bottom() < block->top() && player->next_top() > block->bottom())) {
-//            
-//            if (player->right() >= this->getPositionX() + block->getPositionX()
-//                && player->left() < this->getPositionX() + block->getPositionX()) {
-//                
-//                player->setPositionX( this->getPositionX() + block->getPositionX() - player->getWidth() * 0.5f );
-//                player->setNextPosition(Vec2(this->getPositionX() + block->getPositionX() - player->getWidth() * 0.5f, player->getNextPosition().y));
-//                player->setVector ( Vec2(player->getVector().x * -0.5f, player->getVector().y) );
-//                if (player->bottom() + player->getHeight() * 0.2f < block->top()) {
-//                    player->setState(kPlayerDying);
-//                    return;
-//                    
-//                }
-//                
-//                break;
-//            }
-//        }
-//    }
-//    
-//    
-//    if (inAir) {
-//        player->setState(kPlayerFalling);
-//    } else {
-//        player->setState(kPlayerMoving);
-//        player->setFloating (false);
-//    }
-//}
+void GameTerrain::checkCollision(Player * player) {
+    CCLOG("GameTerrain::checkCollision");
+    if (player->getState() == kPlayerDying) return;
+    
+    bool inAir = true;
+    
+    for (auto block : _blocks) {        
+        if (block->getType() == kBlockGap) continue;
+        
+        //if within x, check y (bottom collision)
+        if (player->right() >= this->getPositionX() + block->left()
+            && player->left() <= this->getPositionX() + block->right()) {
+            
+            if (player->bottom() >= block->top() && player->next_bottom() <= block->top()
+                && player->top() > block->top()) {
+                player->setNextPosition(Vec2(player->getNextPosition().x, block->top() + player->getHeight()));
+                player->setVector ( Vec2(player->getVector().x, 0) );
+                player->setRotation(0.0);
+                inAir = false;
+                break;
+            }
+            
+        }
+    }
+    
+    for (auto block : _blocks) {
+        if (block->getType() == kBlockGap) continue;
+        
+        //now if within y, check x (side collision)
+        if ((player->bottom() < block->top() && player->top() > block->bottom())
+            || (player->next_bottom() < block->top() && player->next_top() > block->bottom())) {
+            
+            if (player->right() >= this->getPositionX() + block->getPositionX()
+                && player->left() < this->getPositionX() + block->getPositionX()) {
+                
+                player->setPositionX( this->getPositionX() + block->getPositionX() - player->getWidth() * 0.5f );
+                player->setNextPosition(Vec2(this->getPositionX() + block->getPositionX() - player->getWidth() * 0.5f, player->getNextPosition().y));
+                player->setVector ( Vec2(player->getVector().x * -0.5f, player->getVector().y) );
+                if (player->bottom() + player->getHeight() * 0.2f < block->top()) {
+                    player->setState(kPlayerDying);
+                    return;
+                    
+                }
+                
+                break;
+            }
+        }
+    }
+    
+    
+    if (inAir) {
+        player->setState(kPlayerFalling);
+    } else {
+        player->setState(kPlayerMoving);
+        player->setFloating (false);
+    }
+}
 
 
 

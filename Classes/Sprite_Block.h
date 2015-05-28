@@ -33,7 +33,7 @@ public:
     CC_SYNTHESIZE(int, _type, Type);
     
     Block(void);
-    ~Block(void);
+    virtual ~Block(void);
     
     static Block * create();
     void setupBlock(int width, int height, int type);

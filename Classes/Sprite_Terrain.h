@@ -33,7 +33,7 @@ public:
     
     static GameTerrain * create();
     
-//    void checkCollision (Player * player);
+    void checkCollision (Player * player);
     
     void move (float xMove);
     void reset (void);
@@ -61,7 +61,7 @@ private:
     int _gapSize;
     
     // Private functions
-    void initTerrain(void);
+    void initTerrain();
     void addBlocks(int currentWidth);
     void distributeBlocks();
     void initBlock(Block * block);

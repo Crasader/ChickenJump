@@ -8,11 +8,13 @@
 
 #include "Sprite_Block.h"
 
+#define TILE_H_SIZE 6
+#define TILE_W_SIZE 8
+
 Block::Block(void) {
-    //get screen size
     _screenSize = CCDirector::getInstance()->getWinSize();
-//    _tileWidth = _screenSize.width / TILE_W_SIZE;
-//    _tileHeight = _screenSize.height / TILE_H_SIZE;
+    _tileWidth = _screenSize.width / TILE_W_SIZE;
+    _tileHeight = _screenSize.height / TILE_H_SIZE;
     
     this->setVisible(false);
 }
