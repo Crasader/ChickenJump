@@ -6,7 +6,7 @@
 //
 //
 
-#include "Sprite_Terrain.h"
+#include "Sprite_GameTerrain.h"
 
 int patterns[] = {1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,3,3,3};
 int widths[] = {2,2,2,2,2,3,3,3,3,3,3,4,4,4,4,4,4};
@@ -53,6 +53,7 @@ GameTerrain * GameTerrain::create() {
     return nullptr;
 }
 
+// Private function
 void GameTerrain::initTerrain() {
     CCLOG("GameTerrain::initTerrain");
     _increaseGapInterval = 5000;
@@ -76,6 +77,7 @@ void GameTerrain::initTerrain() {
     this->addBlocks(0);
 }
 
+// Private function
 void GameTerrain::addBlocks(int currentWidth) {
     CCLOG("GameTerrain::addBlocks");
     while (currentWidth < _minTerrainWidth)
@@ -88,12 +90,12 @@ void GameTerrain::addBlocks(int currentWidth) {
         this->initBlock(block);
         currentWidth +=  block->getWidth();
         _blocks.pushBack(block);
-        
     }
     
     this->distributeBlocks();
 }
 
+// Private function
 void GameTerrain::distributeBlocks() {
     CCLOG("GameTerrain::distributeBlocks");
     int count = (int) _blocks.size();
@@ -103,7 +105,7 @@ void GameTerrain::distributeBlocks() {
         auto block =  _blocks.at(i);
         if (i != 0) {
             auto prev_block = _blocks.at(i - 1);
-            block->setPositionX( prev_block->getPositionX() + prev_block->getWidth());
+            block->setPositionX( prev_block->getPositionX() + prev_block->getWidth() );
         }
         else
         {
@@ -112,6 +114,7 @@ void GameTerrain::distributeBlocks() {
     }
 }
 
+// Private function
 void GameTerrain::initBlock(Block * block) {
     int blockWidth;
     int blockHeight;
@@ -180,7 +183,7 @@ void GameTerrain::initBlock(Block * block) {
             }
         }
         
-        //terrain is not being changed yet
+    //terrain is not being changed yet
     } else {
         _lastBlockHeight = 2;
         _lastBlockWidth = rand() % 2 + 2;

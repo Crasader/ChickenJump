@@ -48,6 +48,7 @@ void Player::initPlayer() {
     _width = 180;
     this->setTextureRect(Rect(0, 0, _width, _height));
     this->setColor(Color3B(255,255,255));
+
     CCLOG("Player::initPlayer::position %f, %f", this->getPositionX(), this->getPositionY());
     CCLOG("Player::initPlayer::size %f, %f", this->getHeight(), this->getWidth());
 }

@@ -3,7 +3,7 @@
 
 #include "cocos2d.h"
 #include "Sprite_Player.h"
-#include "Sprite_Terrain.h"
+#include "Sprite_GameTerrain.h"
 
 using namespace cocos2d;
 

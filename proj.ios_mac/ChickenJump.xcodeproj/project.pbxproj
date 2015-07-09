@@ -68,8 +68,8 @@
 		D5253ABC1B088B0500AFC291 /* blank.png in Resources */ = {isa = PBXBuildFile; fileRef = D5253ABA1B088B0500AFC291 /* blank.png */; };
 		D5253ABF1B13D11300AFC291 /* Sprite_Block.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5253ABD1B13D11300AFC291 /* Sprite_Block.cpp */; };
 		D5253AC01B13D11300AFC291 /* Sprite_Block.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5253ABD1B13D11300AFC291 /* Sprite_Block.cpp */; };
-		D5253AC81B13DF7300AFC291 /* Sprite_Terrain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5253AC61B13DF7300AFC291 /* Sprite_Terrain.cpp */; };
-		D5253AC91B13DF7300AFC291 /* Sprite_Terrain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5253AC61B13DF7300AFC291 /* Sprite_Terrain.cpp */; };
+		D5253AC81B13DF7300AFC291 /* Sprite_GameTerrain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5253AC61B13DF7300AFC291 /* Sprite_GameTerrain.cpp */; };
+		D5253AC91B13DF7300AFC291 /* Sprite_GameTerrain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5253AC61B13DF7300AFC291 /* Sprite_GameTerrain.cpp */; };
 		D5253AD51B14F78000AFC291 /* MyPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5253AD31B14F78000AFC291 /* MyPlayer.cpp */; };
 		D5253AD61B14F78000AFC291 /* MyPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5253AD31B14F78000AFC291 /* MyPlayer.cpp */; };
 		D5253AD81B17ADC400AFC291 /* cp_jumping.png in Resources */ = {isa = PBXBuildFile; fileRef = D5253AD71B17ADC400AFC291 /* cp_jumping.png */; };
@@ -78,6 +78,7 @@
 		D5253ADC1B17B0BC00AFC291 /* cp_jumping90.png in Resources */ = {isa = PBXBuildFile; fileRef = D5253ADA1B17B0BC00AFC291 /* cp_jumping90.png */; };
 		D5253ADE1B17B51F00AFC291 /* cp_landing90.png in Resources */ = {isa = PBXBuildFile; fileRef = D5253ADD1B17B51F00AFC291 /* cp_landing90.png */; };
 		D5253ADF1B17B51F00AFC291 /* cp_landing90.png in Resources */ = {isa = PBXBuildFile; fileRef = D5253ADD1B17B51F00AFC291 /* cp_landing90.png */; };
+		D5253AE21B18F67500AFC291 /* building.png in Resources */ = {isa = PBXBuildFile; fileRef = D5253AE11B18F67500AFC291 /* building.png */; };
 		D6B0611B1803AB670077942B /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6B0611A1803AB670077942B /* CoreMotion.framework */; };
 /* End PBXBuildFile section */
 
@@ -173,13 +174,14 @@
 		D5253ABA1B088B0500AFC291 /* blank.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blank.png; sourceTree = "<group>"; };
 		D5253ABD1B13D11300AFC291 /* Sprite_Block.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sprite_Block.cpp; sourceTree = "<group>"; };
 		D5253ABE1B13D11300AFC291 /* Sprite_Block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sprite_Block.h; sourceTree = "<group>"; };
-		D5253AC61B13DF7300AFC291 /* Sprite_Terrain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sprite_Terrain.cpp; sourceTree = "<group>"; };
-		D5253AC71B13DF7300AFC291 /* Sprite_Terrain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sprite_Terrain.h; sourceTree = "<group>"; };
+		D5253AC61B13DF7300AFC291 /* Sprite_GameTerrain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sprite_GameTerrain.cpp; sourceTree = "<group>"; };
+		D5253AC71B13DF7300AFC291 /* Sprite_GameTerrain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sprite_GameTerrain.h; sourceTree = "<group>"; };
 		D5253AD31B14F78000AFC291 /* MyPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MyPlayer.cpp; sourceTree = "<group>"; };
 		D5253AD41B14F78000AFC291 /* MyPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyPlayer.h; sourceTree = "<group>"; };
 		D5253AD71B17ADC400AFC291 /* cp_jumping.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cp_jumping.png; sourceTree = "<group>"; };
 		D5253ADA1B17B0BC00AFC291 /* cp_jumping90.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cp_jumping90.png; sourceTree = "<group>"; };
 		D5253ADD1B17B51F00AFC291 /* cp_landing90.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cp_landing90.png; sourceTree = "<group>"; };
+		D5253AE11B18F67500AFC291 /* building.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = building.png; sourceTree = "<group>"; };
 		D6B0611A1803AB670077942B /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.0.sdk/System/Library/Frameworks/CoreMotion.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
@@ -298,6 +300,7 @@
 		46880B7519C43A67006E1F66 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				D5253AE11B18F67500AFC291 /* building.png */,
 				D5253ADD1B17B51F00AFC291 /* cp_landing90.png */,
 				D5253AB71B0782A300AFC291 /* spaceship.png */,
 				D5253ABA1B088B0500AFC291 /* blank.png */,
@@ -321,8 +324,8 @@
 				D5253AA71B077B9100AFC291 /* Sprite_Player.h */,
 				D5253ABD1B13D11300AFC291 /* Sprite_Block.cpp */,
 				D5253ABE1B13D11300AFC291 /* Sprite_Block.h */,
-				D5253AC61B13DF7300AFC291 /* Sprite_Terrain.cpp */,
-				D5253AC71B13DF7300AFC291 /* Sprite_Terrain.h */,
+				D5253AC61B13DF7300AFC291 /* Sprite_GameTerrain.cpp */,
+				D5253AC71B13DF7300AFC291 /* Sprite_GameTerrain.h */,
 				D5253AD31B14F78000AFC291 /* MyPlayer.cpp */,
 				D5253AD41B14F78000AFC291 /* MyPlayer.h */,
 			);
@@ -490,6 +493,7 @@
 				D5253ABB1B088B0500AFC291 /* blank.png in Resources */,
 				521A8EA919F11F5000D177D7 /* fonts in Resources */,
 				50EF62A317ECD613001EB2F8 /* Icon-50.png in Resources */,
+				D5253AE21B18F67500AFC291 /* building.png in Resources */,
 				5087E78017EB970100C73F5D /* Icon-114.png in Resources */,
 				50EF62A217ECD613001EB2F8 /* Icon-29.png in Resources */,
 				50EF629617ECD46A001EB2F8 /* Icon-40.png in Resources */,
@@ -534,7 +538,7 @@
 				D5253AA81B077B9100AFC291 /* Sprite_Player.cpp in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
 				D5253ABF1B13D11300AFC291 /* Sprite_Block.cpp in Sources */,
-				D5253AC81B13DF7300AFC291 /* Sprite_Terrain.cpp in Sources */,
+				D5253AC81B13DF7300AFC291 /* Sprite_GameTerrain.cpp in Sources */,
 				503AE10117EB989F00D1A890 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -546,7 +550,7 @@
 				D5253AD61B14F78000AFC291 /* MyPlayer.cpp in Sources */,
 				D5253AC01B13D11300AFC291 /* Sprite_Block.cpp in Sources */,
 				46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */,
-				D5253AC91B13DF7300AFC291 /* Sprite_Terrain.cpp in Sources */,
+				D5253AC91B13DF7300AFC291 /* Sprite_GameTerrain.cpp in Sources */,
 				D5253AA91B077B9100AFC291 /* Sprite_Player.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
 				46880B8B19C43A87006E1F66 /* Scene_GameLayer.cpp in Sources */,
