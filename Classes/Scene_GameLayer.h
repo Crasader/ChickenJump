@@ -7,12 +7,16 @@
 
 using namespace cocos2d;
 
-enum {
+typedef enum {
+    kGameIntro,
+    kGamePlay,
+    kGameOver,
+    kGameTutorial,
+    kGameTutorialJump,
+    kGameTutorialFloat,
+    kGameTutorialDrop
     
-    kBackground,
-    kMiddleground,
-    kForeground
-};
+} GameState;
 
 class GameLayer : public cocos2d::Layer
 {
@@ -38,11 +42,28 @@ private:
     GameTerrain * _terrain;
     Player * _player;
     
+    Sprite * _intro;
+    Sprite * _tryAgain;
+    Sprite * _background;
+    Sprite * _foreground;
+    Sprite * _hat;
+    Sprite * _jam;
+    
+    Action * _jamAnimate;
+    Action * _jamMove;
+    
+    Vector<Sprite *> _clouds;
+    
     SpriteBatchNode * _gameBatchNode;
+    Label * _tutorialLabel;
+    Menu* _mainMenu;
     
     Size _screenSize;
     
+    GameState _state;
+    
     bool _running;
+    float _score;
     int _speedIncreaseInterval;
     float _speedIncreaseTimer;
     

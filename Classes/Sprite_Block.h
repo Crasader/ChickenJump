@@ -3,6 +3,10 @@
 //  ChickenJump
 //
 //  Created by Asish Biswas on 25/05/15.
+
+//  When we instantiate a block in initBlock, we create a 5 x 4 building made out of wall tiles and roof tiles, each a sprite. And when we need to turn this building into a 3 x 2 building, or a 4 x 4 building, or whatever, we simply turn the excess tiles invisible at the end of setupBlock.
+
+//  The texture used for the roof is picked randomly, but the one picked for the walls is based on building type (from our patterns array). It is also inside this for loop that all the tiles positioned at a point greater than the new building's width and height are turned invisible.
 //
 //
 
@@ -13,13 +17,34 @@
 
 using namespace cocos2d;
 
-enum  {
+// GLOBAL ENUM {
+enum {
+    
+    kBackground,
+    kMiddleground,
+    kForeground
+};
+enum {
+    kSpritePlayer,
+    kSpriteTerrain,
+    kSpriteBlock,
+    kSpriteChimney,
+    kSpritePuff
+};
+// GLOBAL ENUM }
+
+enum {
+    kWallTile,
+    kRoofTile,
+    kChimney
+};
+
+enum {
     kBlockGap,
     kBlock1,
     kBlock2,
     kBlock3,
     kBlock4
-    
 };
 
 class Block : public Sprite {
@@ -31,12 +56,17 @@ public:
     CC_SYNTHESIZE(Point, _vector, Vector);
 
     CC_SYNTHESIZE(int, _type, Type);
+    CC_SYNTHESIZE(Vector<Sprite*>, _chimneys, Chimneys);
+//    CC_SYNTHESIZE_READONLY(bool, _puffing, Puffing);
+    
     
     Block(void);
     virtual ~Block(void);
     
     static Block * create();
     void setupBlock(int width, int height, int type);
+//    void setPuffing (bool value);
+//    void hidePuffs();
     
     inline virtual int left() {
         return this->getPositionX();
@@ -59,6 +89,27 @@ private:
     
     int _tileWidth;
     int _tileHeight;
+    int _puffIndex;
+    
+    Vector<Sprite*> _wallTiles;
+    Vector<Sprite*> _roofTiles;
+    
+    SpriteFrame * _tile1;
+    SpriteFrame * _tile2;
+    SpriteFrame * _tile3;
+    SpriteFrame * _tile4;
+    
+    SpriteFrame * _roof1;
+    SpriteFrame * _roof2;
+    
+//    Action * _puffAnimation;
+//    Action * _puffSpawn;
+//    Action * _puffMove;
+//    Action * _puffFade;
+//    Action * _puffScale;
+    
+    void initBlock();
+//    void createPuff(void);
 
 };
 

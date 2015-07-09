@@ -10,7 +10,8 @@
 
 int patterns[] = {1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,3,3,3};
 int widths[] = {2,2,2,2,2,3,3,3,3,3,3,4,4,4,4,4,4};
-int heights[] = {0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,2,2,2,3,3,3,3,3,3,4};
+//int heights[] = {0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,2,2,2,3,3,3,3,3,3,4};
+int heights[] = {0,0,0,0,0,1,1,1,0,0,0,2,2,2,1,1,1,1,2,2,2,1,1,1,1,0,0,0};
 int types[] = {1,2,3,4,1,3,2,4,3,2,1,4,2,3,1,4,2,3,1,2,3,2,3,4,1,2,4,3,1,3,1,4,2,4,2,1,2,3};
 
 std::vector<int> _blockPattern (patterns, patterns + sizeof(patterns) / sizeof(int));
@@ -43,8 +44,7 @@ GameTerrain::GameTerrain() :
 GameTerrain * GameTerrain::create() {
     CCLOG("GameTerrain::create");
     auto terrain = new GameTerrain();
-    if (terrain && terrain->initWithFile("blank.png")) {
-        terrain->setAnchorPoint(Vec2(0,0));
+    if (terrain && terrain->initWithSpriteFrameName("blank.png")) {
         terrain->initTerrain();
         terrain->autorelease();
         return terrain;
@@ -193,7 +193,7 @@ void GameTerrain::initBlock(Block * block) {
 }
 
 void GameTerrain::move(float xMove) {
-    CCLOG("GameTerrain::move");
+//    CCLOG("GameTerrain::move");
     if(xMove < 0) return;
     
     if(_startTerrain) {
@@ -250,7 +250,7 @@ void GameTerrain::reset() {
 }
     
 void GameTerrain::checkCollision(Player * player) {
-    CCLOG("GameTerrain::checkCollision");
+//    CCLOG("GameTerrain::checkCollision");
     if (player->getState() == kPlayerDying) return;
     
     bool inAir = true;

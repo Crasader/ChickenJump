@@ -118,6 +118,9 @@ private:
     int _floatingInterval;
     bool _hasFloated;
     
+    Action * _rideAnimation;
+    Action * _floatAnimation;
+    
     Size _screenSize;
     
     // Private functions

@@ -26,31 +26,53 @@ Player::~Player(void){
 }
 
 Player * Player::create() {
-    Player * player = new Player();
-    if (player && player->initWithFile("blank.png")) {
-        CCLOG("Player::create");
+    auto player = new Player();
+    
+    if (player && player->initWithSpriteFrameName("player_1.png")) {
         player->autorelease();
         player->setSize();
         player->initPlayer();
         return player;
     }
+    
     CC_SAFE_DELETE(player);
-    return NULL;
+    return nullptr;
 }
 
 // Private function
 void Player::initPlayer() {
     CCLOG("Player::initPlayer");
-    this->setAnchorPoint(Point(0.5f, 1.0f));
-    this->setPosition(Vec2( _screenSize.width * 0.2f, _nextPosition.y ));
+    this->setAnchorPoint(Vec2(0.5f, 1.0f));
+    this->setPosition(Vec2(_screenSize.width * 0.2f, _nextPosition.y));
+    _height = 252 * 0.95f;
+    _width = 184;
     
-    _height = 228;
-    _width = 180;
-    this->setTextureRect(Rect(0, 0, _width, _height));
-    this->setColor(Color3B(255,255,255));
+    Animation* animation;
+    animation = Animation::create();
+    SpriteFrame * frame;
+    int i;
+    for(i = 3; i >= 1; i--) {
+        frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(String::createWithFormat("player_%i.png", i)->getCString());
+        animation->addSpriteFrame(frame);
+    }
+    
+    animation->setDelayPerUnit(0.2f / 1.0f);
+    animation->setRestoreOriginalFrame(false);
+    animation->setLoops(-1);
+    _rideAnimation = Animate::create(animation);
+    _rideAnimation->retain();
+    
+    
+    auto easeSwing = Sequence::create(EaseInOut::create(RotateTo::create(0.8f, -10), 2),
+                                      EaseInOut::create(RotateTo::create(0.8f, 10), 2),
+                                      nullptr);
+    _floatAnimation = RepeatForever::create( (ActionInterval*) easeSwing );
+    _floatAnimation->retain();
+    
+    this->runAction(_rideAnimation);
 
-    CCLOG("Player::initPlayer::position %f, %f", this->getPositionX(), this->getPositionY());
-    CCLOG("Player::initPlayer::size %f, %f", this->getHeight(), this->getWidth());
+//    CCLOG("Player::initPlayer::position %f, %f", this->getPositionX(), this->getPositionY());
+//    CCLOG("Player::initPlayer::size %f, %f", this->getHeight(), this->getWidth());
 }
 
 void Player::reset() {
@@ -73,9 +95,15 @@ void Player::setFloating (bool value) {
     
     _floating = value;
     
+    this->stopAllActions();
+    
     if (value) {
         _hasFloated = true;
+        this->setDisplayFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName("player_float.png"));
+        this->runAction(_floatAnimation);
         _vector.y += PLAYER_JUMP * 0.5f;
+    } else {        
+        this->runAction(_rideAnimation);
     }
 }
 
@@ -121,6 +149,9 @@ void Player::update(float dt) {
     if(_vector.y < -TERMINAL_VELOCITY) _vector.y = -TERMINAL_VELOCITY;
     
     _nextPosition.y = this->getPositionY() + _vector.y;
+    
+    if (_vector.x * _vector.x < 0.01) _vector.x = 0;
+    if (_vector.y * _vector.y < 0.01) _vector.y = 0;
     
     if(_floating) {
         _floatingTimer += dt;

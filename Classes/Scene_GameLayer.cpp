@@ -1,7 +1,6 @@
 #include "Scene_GameLayer.h"
 #include "Sprite_Player.h"
 
-using namespace cocos2d;
 
 GameLayer::~GameLayer() {
     
@@ -38,7 +37,7 @@ bool GameLayer::init()
 //    Vec2 origin = Director::getInstance()->getVisibleOrigin();
 //    Size winSize = Director::getInstance()->getVisibleSize();
     
-    //get screen size
+    //set screen size
     _screenSize = Director::getInstance()->getWinSize();
     
     createGameScreen();
@@ -89,11 +88,35 @@ void GameLayer::update(float dt) {
         _gameBatchNode->setPositionY( 0 );
     }
     
-    if(_terrain->getStartTerrain() && _player->getVector().x > 0) {
-        _speedIncreaseTimer += dt;
-        if(_speedIncreaseTimer > _speedIncreaseInterval) {
-            _speedIncreaseTimer = 0;
-            _player->setMaxSpeed (_player->getMaxSpeed() + 4);
+    // update paralax
+    if (_player->getVector().x > 0) {
+        // First, we move the _background sprite, which contains the cityscape texture repeated three times along the x axis,
+        // and we move it at one-fourth of the speed of the _player sprite.
+        _background->setPositionX(_background->getPosition().x - _player->getVector().x * 0.25f);
+        
+        // Second, the _background sprite scrolls to the left, and as soon as the first cityscape texture is off the screen,
+        // we shift the entire _background container to the right at precisely the spot where the second cityscape texture would appear if allowed to continue.
+        // We get this value by subtracting where the sprite would be from the total width of the sprite
+        float diffx;
+        
+        if (_background->getPositionX() < -_background->getContentSize().width) {
+            diffx = fabs(_background->getPositionX()) - _background->getContentSize().width;
+            _background->setPositionX(-diffx);
+        }
+        
+        // A similar process(like background) is repeated for the _foreground sprite. only the speed is of foreground is four times of the player
+        _foreground->setPositionX(_foreground->getPosition().x - _player->getVector().x * 4);
+        
+        if (_foreground->getPositionX() < -_foreground->getContentSize().width * 4) {
+            diffx = fabs(_foreground->getPositionX()) - _foreground->getContentSize().width * 4;
+            _foreground->setPositionX(-diffx);
+        }
+        
+        // our cloud appears behind the citiscape (farther away from the player), so moves at an even lower rate
+        for (auto cloud : _clouds) {
+            cloud->setPositionX(cloud->getPositionX() - _player->getVector().x * 0.15f);
+            if (cloud->getPositionX() + cloud->boundingBox().size.width * 0.5f < 0 )
+                cloud->setPositionX(_screenSize.width + cloud->boundingBox().size.width * 0.5f);
         }
     }
     
@@ -134,14 +157,60 @@ void GameLayer::onTouchEnded(Touch* touch, Event* event) {
 
 void GameLayer::createGameScreen() {
     CCLOG("GameLayer::createGameScreen");
-    _gameBatchNode = SpriteBatchNode::create("blank.png", 200);
+    auto bg = Sprite::create("bg.png");
+    bg->setPosition(Vec2(_screenSize.width * 0.5f, _screenSize.height * 0.5f));
+    this->addChild(bg, kBackground);
+    
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("sprite_sheet.plist");
+    _gameBatchNode = SpriteBatchNode::create("sprite_sheet.png", 200);
     this->addChild(_gameBatchNode, kMiddleground);
+    
+    _background = Sprite::createWithSpriteFrameName("background.png");
+    _background->setAnchorPoint(Vec2(0,0));
+    _gameBatchNode->addChild(_background, kBackground);
+    
+    auto repeat = Sprite::createWithSpriteFrameName("background.png");
+    repeat->setAnchorPoint(Vec2(0,0));
+    repeat->setPosition(Vec2(repeat->getContentSize().width - 1, 0));
+    _background->addChild(repeat, kBackground);
+    
+    repeat = Sprite::createWithSpriteFrameName("background.png");
+    repeat->setAnchorPoint(Vec2(0,0));
+    repeat->setPosition(Vec2(2 * (repeat->getContentSize().width - 1), 0));
+    _background->addChild(repeat, kBackground);
+    
+    _foreground = Sprite::createWithSpriteFrameName("lamp.png");
+    _foreground->setAnchorPoint(Vec2(0,0));
+    _gameBatchNode->addChild(_foreground, kForeground);
+    
+    repeat = Sprite::createWithSpriteFrameName("lamp.png");
+    repeat->setAnchorPoint(Vec2(0,0));
+    repeat->setPosition(Vec2(repeat->getContentSize().width * 4, 0));
+    _foreground->addChild(repeat, kBackground);
+    
+    repeat = Sprite::createWithSpriteFrameName("lamp.png");
+    repeat->setAnchorPoint(Vec2(0,0));
+    repeat->setPosition(Vec2(repeat->getContentSize().width * 8, 0));
+    _foreground->addChild(repeat, kBackground);
+    
+    
+    //add clouds
+    _clouds = Vector<Sprite*>(4);
+    float cloud_y;
+    for (int i = 0; i < 4; i++) {
+        cloud_y = i % 2 == 0 ? _screenSize.height * 0.7f : _screenSize.height * 0.8f;
+        auto cloud = Sprite::createWithSpriteFrameName("cloud.png");
+        cloud->setPosition(Vec2 (_screenSize.width * 0.15f + i * _screenSize.width * 0.25f,  cloud_y));
+        _gameBatchNode->addChild(cloud, kBackground);
+        _clouds.pushBack(cloud);
+    }
+    
     
     _terrain = GameTerrain::create();
     _gameBatchNode->addChild(_terrain, kMiddleground);
     
     _player = Player::create();
-    _gameBatchNode->addChild(_player, kMiddleground);
+    _gameBatchNode->addChild(_player, kBackground);
     
 }
 
