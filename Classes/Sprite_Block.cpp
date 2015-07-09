@@ -37,7 +37,7 @@ void Block::setupBlock(int width, int height, int type) {
     _type = type;
     _width = width * _tileWidth;
     _height = height * _tileHeight;
-    this->setAnchorPoint(Vec2(0,0));
+    this->setAnchorPoint(Vec2(0, 0));
     this->setTextureRect(Rect(0, 0, _width, _height));
     
     switch (type) {
