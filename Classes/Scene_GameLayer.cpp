@@ -8,26 +8,20 @@ GameLayer::~GameLayer() {
 
 Scene* GameLayer::scene()
 {
-    CCLOG("GameLayer::createScene");
-    // 'scene' is an autorelease object
     auto scene = Scene::create();
-    
+//    auto scene = Scene::createWithPhysics();
 //    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL); // enable debug drawing; works when Scene is created with physics
-    
-    // 'layer' is an autorelease object
+
     GameLayer *layer = GameLayer::create();
 
-    // add layer as a child to scene
     scene->addChild(layer);
 
-    // return the scene
     return scene;
 }
 
 // on "init" you need to initialize your instance
 bool GameLayer::init()
 {
-    CCLOG("GameLayer::init");
     // 1. super init first
     if ( !Layer::init() ) {
         return false;
@@ -49,6 +43,7 @@ bool GameLayer::init()
     listener->setSwallowTouches(true);
     listener->onTouchBegan = CC_CALLBACK_2(GameLayer::onTouchBegan, this);
     listener->onTouchEnded = CC_CALLBACK_2(GameLayer::onTouchEnded, this);
+    listener->onTouchMoved = CC_CALLBACK_2(GameLayer::onTouchMoved, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
     
     //create main loop
@@ -68,10 +63,11 @@ void GameLayer::resetGame() {
 void GameLayer::update(float dt) {
     if(!_running) return;
     
-    if(_player->getPositionY() < -_player->getHeight() ||
+    if(_player->getPositionY() < -_player->getHeight() || /* when whole player sprite goes out of screen */
         _player->getPositionX() < -_player->getWidth() * 0.5f) {
         
         _running = false;
+        _player->setState(kPlayerDying);
     }
     
     _player->update(dt);
@@ -83,6 +79,7 @@ void GameLayer::update(float dt) {
     _player->place();
     
     if(_player->getNextPosition().y > _screenSize.height * 0.6f) {
+        // keep camera on the Player
         _gameBatchNode->setPositionY( (_screenSize.height * 0.6f - _player->getNextPosition().y) * 0.8f);
     } else {
         _gameBatchNode->setPositionY( 0 );
@@ -98,7 +95,6 @@ void GameLayer::update(float dt) {
         // we shift the entire _background container to the right at precisely the spot where the second cityscape texture would appear if allowed to continue.
         // We get this value by subtracting where the sprite would be from the total width of the sprite
         float diffx;
-        
         if (_background->getPositionX() < -_background->getContentSize().width) {
             diffx = fabs(_background->getPositionX()) - _background->getContentSize().width;
             _background->setPositionX(-diffx);
@@ -124,6 +120,9 @@ void GameLayer::update(float dt) {
 
 bool GameLayer::onTouchBegan(Touch* touch, Event* event) {
     CCLOG("GameLayer::onTouchBegan");
+    _lineStartPoint = touch->getLocation();
+    _lineEndPoint = _lineStartPoint;
+    
     if(!_running) {
         if(_player->getState() == kPlayerDying) {
             _terrain->reset();
@@ -151,7 +150,20 @@ bool GameLayer::onTouchBegan(Touch* touch, Event* event) {
     return false;
 }
 
+void GameLayer::onTouchMoved(Touch* touch, Event* event) {
+    CCLOG("GameLayer::onTouchMove");
+    _lineEndPoint = touch->getLocation();
+}
+
 void GameLayer::onTouchEnded(Touch* touch, Event* event) {
+    CCLOG("GameLayer::onTouchEnded");
+    
+    _lineEndPoint = touch->getLocation();
+    auto drawNode = DrawNode::create();
+    drawNode->drawSegment(_lineStartPoint, _lineEndPoint, 10, Color4F::YELLOW);
+    this->addChild(drawNode, 1);
+//    _terrain->addChild(drawNode, kMiddleground);
+    
     _player->setJumping(false);
 }
 
@@ -172,11 +184,13 @@ void GameLayer::createGameScreen() {
     auto repeat = Sprite::createWithSpriteFrameName("background.png");
     repeat->setAnchorPoint(Vec2(0,0));
     repeat->setPosition(Vec2(repeat->getContentSize().width - 1, 0));
+    repeat->setColor(Color3B(255, 0, 0));
     _background->addChild(repeat, kBackground);
     
     repeat = Sprite::createWithSpriteFrameName("background.png");
     repeat->setAnchorPoint(Vec2(0,0));
     repeat->setPosition(Vec2(2 * (repeat->getContentSize().width - 1), 0));
+    repeat->setColor(Color3B(0, 255, 0));
     _background->addChild(repeat, kBackground);
     
     _foreground = Sprite::createWithSpriteFrameName("lamp.png");

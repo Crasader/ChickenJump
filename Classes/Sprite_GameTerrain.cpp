@@ -127,6 +127,7 @@ void GameTerrain::initBlock(Block * block) {
     }
     
     //check if min distance reached;
+    // _startTerrain becomes true only when user taps on the screen for the first time
     if (_startTerrain) {
         
         if (_showGap) {
@@ -139,37 +140,42 @@ void GameTerrain::initBlock(Block * block) {
             
         } else {
             
-            blockWidth = _blockWidths[_currentWidthIndex];
-            
-            _currentWidthIndex++;
-            if (_currentWidthIndex == _blockWidths.size()) {
-                random_shuffle(_blockWidths.begin(), _blockWidths.end());
-                _currentWidthIndex = 0;
-            }
-            
-            if (_blockHeights[_currentHeightIndex] != 0) {
-                //change height of next block
-                blockHeight = _blockHeights[_currentHeightIndex];
-                //if difference too high, decrease it
-                if (blockHeight - _lastBlockHeight > 2 && _gapSize == 2) {
-                    blockHeight = 1;
+            {
+                // set up next block's width
+                blockWidth = _blockWidths[_currentWidthIndex];
+                
+                _currentWidthIndex++;
+                if (_currentWidthIndex == _blockWidths.size()) {
+                    random_shuffle(_blockWidths.begin(), _blockWidths.end());
+                    _currentWidthIndex = 0;
                 }
                 
-            } else {
-                blockHeight = _lastBlockHeight;
-            }
-            _currentHeightIndex++;
-            if (_currentHeightIndex == _blockHeights.size()) {
-                _currentHeightIndex = 0;
-                random_shuffle(_blockHeights.begin(), _blockHeights.end());
+                // set up next block's height
+                if (_blockHeights[_currentHeightIndex] != 0) {
+                    //change height of next block
+                    blockHeight = _blockHeights[_currentHeightIndex];
+                    //if difference too high, adjust that
+                    if (blockHeight - _lastBlockHeight > 2 && _gapSize == 2) {
+                        blockHeight = 1;
+                    }
+                    
+                } else {
+                    blockHeight = _lastBlockHeight;
+                }
+                _currentHeightIndex++;
+                if (_currentHeightIndex == _blockHeights.size()) {
+                    _currentHeightIndex = 0;
+                    random_shuffle(_blockHeights.begin(), _blockHeights.end());
+                    
+                }
                 
+                block->setupBlock (blockWidth, blockHeight, type);
+                _lastBlockWidth = blockWidth;
+                _lastBlockHeight = blockHeight;
             }
             
-            block->setupBlock (blockWidth, blockHeight, type);
-            _lastBlockWidth = blockWidth;
-            _lastBlockHeight = blockHeight;
-            
-            //select next block series pattern
+            // select next block series pattern
+            // determine when to show gap between buildings. as low the pattern_array value as frequent the gap will appear
             _currentPatternCnt++;
             if (_currentPatternCnt > _blockPattern[_currentPatternIndex]) {
                 _showGap = true;
@@ -183,7 +189,7 @@ void GameTerrain::initBlock(Block * block) {
             }
         }
         
-    //terrain is not being changed yet
+    //terrain is not being changed untill user taps on the screen for the first time
     } else {
         _lastBlockHeight = 2;
         _lastBlockWidth = rand() % 2 + 2;
@@ -196,6 +202,7 @@ void GameTerrain::move(float xMove) {
 //    CCLOG("GameTerrain::move");
     if(xMove < 0) return;
     
+    // _startTerrain becomes true only when user taps on the screen for the first time
     if(_startTerrain) {
         if (xMove > 0 && _gapSize < 5) _increaseGapTimer += xMove;
         
@@ -269,8 +276,7 @@ void GameTerrain::checkCollision(Player * player) {
                 player->setRotation(0.0);
                 inAir = false;
                 break;
-            }
-            
+            }   
         }
     }
     
@@ -290,7 +296,6 @@ void GameTerrain::checkCollision(Player * player) {
                 if (player->bottom() + player->getHeight() * 0.2f < block->top()) {
                     player->setState(kPlayerDying);
                     return;
-                    
                 }
                 
                 break;

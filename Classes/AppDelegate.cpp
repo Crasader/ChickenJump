@@ -52,14 +52,18 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     glview->setDesignResolutionSize(designSize.width, designSize.height, ResolutionPolicy::EXACT_FIT);
     
+    CCLOG("_screenSize.height, _screenSize.width %f, %f", screenSize.height, screenSize.width);
     std::vector<std::string> searchPaths;
     if (screenSize.height > 768) {
+        CCLOG("USING resource -> ipadhd");
         searchPaths.push_back("ipadhd");
         director->setContentScaleFactor(1536/designSize.height);
     } else if (screenSize.height > 320) {
+        CCLOG("USING resource -> ipad");
         searchPaths.push_back("ipad");
         director->setContentScaleFactor(768/designSize.height);
     } else {
+        CCLOG("USING resource -> iphone");
         searchPaths.push_back("iphone");
         director->setContentScaleFactor(380/designSize.height);
     }

@@ -37,6 +37,7 @@ public:
     
     virtual bool onTouchBegan(Touch* touch, Event* event);
     virtual void onTouchEnded(Touch* touch, Event* event);
+    virtual void onTouchMoved(Touch* touch, Event* event);
     
 private:
     GameTerrain * _terrain;
@@ -61,6 +62,9 @@ private:
     Size _screenSize;
     
     GameState _state;
+    
+    Vec2 _lineStartPoint;
+    Vec2 _lineEndPoint;
     
     bool _running;
     float _score;
