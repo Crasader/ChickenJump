@@ -37,7 +37,7 @@ Block * Block::create () {
     
 }
 
-
+// Private function
 void Block::initBlock() {
     // store references to four different types of texture, representing the four types of buildings used in the game
     _tile1 = SpriteFrameCache::getInstance()->getSpriteFrameByName ("building_1.png");
@@ -49,6 +49,7 @@ void Block::initBlock() {
     _roof2 = SpriteFrameCache::getInstance()->getSpriteFrameByName ("roof_2.png");
     
     // create and distribute the various sprite tiles that form our building
+    // (each building has 5 columns and 4 rows)
     for (int i = 0; i < 5; i++) {
         auto tile = Sprite::createWithSpriteFrameName("roof_1.png");
         tile->setAnchorPoint(Vec2(0, 1));
@@ -80,19 +81,19 @@ void Block::initBlock() {
 //        }
         
     }
-    
-    Animation* animation;
-    animation = Animation::create();
-    SpriteFrame * frame;
-    
-    for(int i = 1; i <= 4; i++) {
-        frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(String::createWithFormat("puff_%i.png", i)->getCString());
-        animation->addSpriteFrame(frame);
-    }
-    
-    animation->setDelayPerUnit(0.75f / 4.0f);
-    animation->setRestoreOriginalFrame(false);
-    animation->setLoops(-1);
+//    
+//    Animation* animation;
+//    animation = Animation::create();
+//    SpriteFrame * frame;
+//    
+//    for(int i = 1; i <= 4; i++) {
+//        frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(String::createWithFormat("puff_%i.png", i)->getCString());
+//        animation->addSpriteFrame(frame);
+//    }
+//    
+//    animation->setDelayPerUnit(0.75f / 4.0f);
+//    animation->setRestoreOriginalFrame(false);
+//    animation->setLoops(-1);
 //    _puffAnimation = Animate::create(animation);
 //    _puffAnimation->retain();
 //    
@@ -180,7 +181,7 @@ void Block::setupBlock (int width, int height, int type) {
     
     this->setVisible(true);
     
-    // change texture the roof by changing the texture
+    // change texture of the roof
     for (auto tile : _roofTiles) {
         if (tile->getPositionX() < _width) {
             tile->setVisible(true);
@@ -190,7 +191,7 @@ void Block::setupBlock (int width, int height, int type) {
         }
     }
     
-    // change texture the walls by changing the texture
+    // change texture of the walls
     for (auto tile : _wallTiles) {
         if (tile->getPositionX() < _width && tile->getPositionY() > -_height) {
             tile->setVisible(true);
