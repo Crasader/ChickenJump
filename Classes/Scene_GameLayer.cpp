@@ -80,9 +80,9 @@ void GameLayer::update(float dt) {
     
     if(_player->getNextPosition().y > _screenSize.height * 0.6f) {
         // keep camera on the Player
-        _gameBatchNode->setPositionY( (_screenSize.height * 0.6f - _player->getNextPosition().y) * 0.8f);
+//        _gameBatchNode->setPositionY( (_screenSize.height * 0.6f - _player->getNextPosition().y) * 0.8f);
     } else {
-        _gameBatchNode->setPositionY( 0 );
+//        _gameBatchNode->setPositionY( 0 );
     }
     
     // update paralax
@@ -101,12 +101,12 @@ void GameLayer::update(float dt) {
         }
         
         // A similar process(like background) is repeated for the _foreground sprite. only the speed is of foreground is four times of the player
-        _foreground->setPositionX(_foreground->getPosition().x - _player->getVector().x * 4);
-        
-        if (_foreground->getPositionX() < -_foreground->getContentSize().width * 4) {
-            diffx = fabs(_foreground->getPositionX()) - _foreground->getContentSize().width * 4;
-            _foreground->setPositionX(-diffx);
-        }
+//        _foreground->setPositionX(_foreground->getPosition().x - _player->getVector().x * 4);
+//        
+//        if (_foreground->getPositionX() < -_foreground->getContentSize().width * 4) {
+//            diffx = fabs(_foreground->getPositionX()) - _foreground->getContentSize().width * 4;
+//            _foreground->setPositionX(-diffx);
+//        }
         
         // our cloud appears behind the citiscape (farther away from the player), so moves at an even lower rate
         for (auto cloud : _clouds) {
@@ -173,58 +173,58 @@ void GameLayer::createGameScreen() {
     bg->setPosition(Vec2(_screenSize.width * 0.5f, _screenSize.height * 0.5f));
     this->addChild(bg, kBackground);
     
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("sprite_sheet.plist");
-    _gameBatchNode = SpriteBatchNode::create("sprite_sheet.png", 200);
-    this->addChild(_gameBatchNode, kMiddleground);
+//    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("sprite_sheet.plist");
+//    _gameBatchNode = SpriteBatchNode::create("sprite_sheet.png", 200);
+//    this->addChild(_gameBatchNode, kMiddleground);
     
-    _background = Sprite::createWithSpriteFrameName("background.png");
+    _background = Sprite::create("background.png");
     _background->setAnchorPoint(Vec2(0,0));
-    _gameBatchNode->addChild(_background, kBackground);
+    this->addChild(_background, kBackground);
     
-    auto repeat = Sprite::createWithSpriteFrameName("background.png");
+    auto repeat = Sprite::create("background.png");
     repeat->setAnchorPoint(Vec2(0,0));
     repeat->setPosition(Vec2(repeat->getContentSize().width - 1, 0));
     repeat->setColor(Color3B(255, 0, 0));
     _background->addChild(repeat, kBackground);
     
-    repeat = Sprite::createWithSpriteFrameName("background.png");
+    repeat = Sprite::create("background.png");
     repeat->setAnchorPoint(Vec2(0,0));
     repeat->setPosition(Vec2(2 * (repeat->getContentSize().width - 1), 0));
     repeat->setColor(Color3B(0, 255, 0));
     _background->addChild(repeat, kBackground);
     
-    _foreground = Sprite::createWithSpriteFrameName("lamp.png");
-    _foreground->setAnchorPoint(Vec2(0,0));
-    _gameBatchNode->addChild(_foreground, kForeground);
-    
-    repeat = Sprite::createWithSpriteFrameName("lamp.png");
-    repeat->setAnchorPoint(Vec2(0,0));
-    repeat->setPosition(Vec2(repeat->getContentSize().width * 4, 0));
-    _foreground->addChild(repeat, kBackground);
-    
-    repeat = Sprite::createWithSpriteFrameName("lamp.png");
-    repeat->setAnchorPoint(Vec2(0,0));
-    repeat->setPosition(Vec2(repeat->getContentSize().width * 8, 0));
-    _foreground->addChild(repeat, kBackground);
+//    _foreground = Sprite::createWithSpriteFrameName("lamp.png");
+//    _foreground->setAnchorPoint(Vec2(0,0));
+//    _gameBatchNode->addChild(_foreground, kForeground);
+//    
+//    repeat = Sprite::createWithSpriteFrameName("lamp.png");
+//    repeat->setAnchorPoint(Vec2(0,0));
+//    repeat->setPosition(Vec2(repeat->getContentSize().width * 4, 0));
+//    _foreground->addChild(repeat, kBackground);
+//    
+//    repeat = Sprite::createWithSpriteFrameName("lamp.png");
+//    repeat->setAnchorPoint(Vec2(0,0));
+//    repeat->setPosition(Vec2(repeat->getContentSize().width * 8, 0));
+//    _foreground->addChild(repeat, kBackground);
     
     
     //add clouds
-    _clouds = Vector<Sprite*>(4);
-    float cloud_y;
-    for (int i = 0; i < 4; i++) {
-        cloud_y = i % 2 == 0 ? _screenSize.height * 0.7f : _screenSize.height * 0.8f;
-        auto cloud = Sprite::createWithSpriteFrameName("cloud.png");
-        cloud->setPosition(Vec2 (_screenSize.width * 0.15f + i * _screenSize.width * 0.25f,  cloud_y));
-        _gameBatchNode->addChild(cloud, kBackground);
-        _clouds.pushBack(cloud);
-    }
+//    _clouds = Vector<Sprite*>(4);
+//    float cloud_y;
+//    for (int i = 0; i < 4; i++) {
+//        cloud_y = i % 2 == 0 ? _screenSize.height * 0.7f : _screenSize.height * 0.8f;
+//        auto cloud = Sprite::createWithSpriteFrameName("cloud.png");
+//        cloud->setPosition(Vec2 (_screenSize.width * 0.15f + i * _screenSize.width * 0.25f,  cloud_y));
+//        _gameBatchNode->addChild(cloud, kBackground);
+//        _clouds.pushBack(cloud);
+//    }
     
     
     _terrain = GameTerrain::create();
-    _gameBatchNode->addChild(_terrain, kMiddleground);
+    this->addChild(_terrain, kMiddleground);
     
     _player = Player::create();
-    _gameBatchNode->addChild(_player, kBackground);
+    this->addChild(_player, kBackground);
     
 }
 

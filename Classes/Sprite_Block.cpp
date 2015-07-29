@@ -40,25 +40,25 @@ Block * Block::create () {
 // Private function
 void Block::initBlock() {
     // store references to four different types of texture, representing the four types of buildings used in the game
-    _tile1 = SpriteFrameCache::getInstance()->getSpriteFrameByName ("building_1.png");
-    _tile2 = SpriteFrameCache::getInstance()->getSpriteFrameByName ("building_2.png");
-    _tile3 = SpriteFrameCache::getInstance()->getSpriteFrameByName ("building_3.png");
-    _tile4 = SpriteFrameCache::getInstance()->getSpriteFrameByName ("building_4.png");
+    _tile1 = Sprite::create("building_1.png");
+    _tile2 = Sprite::create("building_2.png");
+    _tile3 = Sprite::create("building_3.png");
+    _tile4 = Sprite::create("building_4.png");
     
-    _roof1 = SpriteFrameCache::getInstance()-> getSpriteFrameByName ("roof_1.png");
-    _roof2 = SpriteFrameCache::getInstance()->getSpriteFrameByName ("roof_2.png");
+    _roof1 = Sprite::create("roof_1.png");
+    _roof2 = Sprite::create("roof_2.png");
     
     // create and distribute the various sprite tiles that form our building
     // (each building has 5 columns and 4 rows)
     for (int i = 0; i < 5; i++) {
-        auto tile = Sprite::createWithSpriteFrameName("roof_1.png");
+        auto tile = Sprite::create("roof_1.png");
         tile->setAnchorPoint(Vec2(0, 1));
         tile->setPosition(Vec2(i * _tileWidth, 0));
         tile->setVisible(false);
         this->addChild(tile, kMiddleground, kRoofTile);
         _roofTiles.pushBack(tile);
         for (int j = 0; j < 4; j++) {
-            tile = Sprite::createWithSpriteFrameName("building_1.png");
+            tile = Sprite::create("building_1.png");
             tile->setAnchorPoint(Vec2(0, 1));
             tile->setPosition(Vec2(i * _tileWidth, -1 * (_tileHeight * 0.47f + j * _tileHeight)));
             tile->setVisible(false);
@@ -67,11 +67,11 @@ void Block::initBlock() {
         }
     }
     
-    for (int i = 0; i < 5; i++) {
-        auto chimney = Sprite::createWithSpriteFrameName("chimney.png");
-        chimney->setVisible(false);
-        this->addChild(chimney, kForeground, kChimney);
-        _chimneys.pushBack(chimney);
+//    for (int i = 0; i < 5; i++) {
+//        auto chimney = Sprite::createWithSpriteFrameName("chimney.png");
+//        chimney->setVisible(false);
+//        this->addChild(chimney, kForeground, kChimney);
+//        _chimneys.pushBack(chimney);
         
 //        for (int j = 0; j < TOTAL_PUFFS; j++) {
 //            auto puff = Sprite::createWithSpriteFrameName("puff_1.png");
@@ -80,8 +80,9 @@ void Block::initBlock() {
 //            chimney->addChild(puff, -1, j);
 //        }
         
-    }
-//    
+//    }
+
+
 //    Animation* animation;
 //    animation = Animation::create();
 //    SpriteFrame * frame;
@@ -110,7 +111,7 @@ void Block::initBlock() {
 //    _puffScale->retain();
     
     
-    _puffIndex = 0;
+//    _puffIndex = 0;
 }
 
 // the unnecessary tiles and chimneys are turned invisible and where we spread out the visible chimneys.
@@ -124,8 +125,8 @@ void Block::setupBlock (int width, int height, int type) {
     _height = height * _tileHeight + _tileHeight * 0.49f;
     this->setPositionY(_height);
     
-    SpriteFrame * wallFrame;
-    SpriteFrame * roofFrame = rand() % 10 > 6 ? _roof1 : _roof2;
+    Sprite * wallFrame;
+    Sprite * roofFrame = rand() % 10 > 6 ? _roof1 : _roof2;
     
     
     int num_chimneys;
@@ -185,7 +186,7 @@ void Block::setupBlock (int width, int height, int type) {
     for (auto tile : _roofTiles) {
         if (tile->getPositionX() < _width) {
             tile->setVisible(true);
-            tile->setDisplayFrame(roofFrame);
+            tile = roofFrame;
         } else {
             tile->setVisible(false);
         }
@@ -195,7 +196,7 @@ void Block::setupBlock (int width, int height, int type) {
     for (auto tile : _wallTiles) {
         if (tile->getPositionX() < _width && tile->getPositionY() > -_height) {
             tile->setVisible(true);
-            tile->setDisplayFrame(wallFrame);
+            tile = wallFrame;
         } else {
             tile->setVisible(false);
         }

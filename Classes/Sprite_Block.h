@@ -89,18 +89,18 @@ private:
     
     int _tileWidth;
     int _tileHeight;
-    int _puffIndex;
+//    int _puffIndex;
     
     Vector<Sprite*> _wallTiles;
     Vector<Sprite*> _roofTiles;
     
-    SpriteFrame * _tile1;
-    SpriteFrame * _tile2;
-    SpriteFrame * _tile3;
-    SpriteFrame * _tile4;
+    Sprite * _tile1;
+    Sprite * _tile2;
+    Sprite * _tile3;
+    Sprite * _tile4;
     
-    SpriteFrame * _roof1;
-    SpriteFrame * _roof2;
+    Sprite * _roof1;
+    Sprite * _roof2;
     
 //    Action * _puffAnimation;
 //    Action * _puffSpawn;

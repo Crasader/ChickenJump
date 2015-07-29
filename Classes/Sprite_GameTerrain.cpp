@@ -43,8 +43,9 @@ GameTerrain::GameTerrain() :
 
 GameTerrain * GameTerrain::create() {
     CCLOG("GameTerrain::create");
-    auto terrain = new GameTerrain();
-    if (terrain && terrain->initWithSpriteFrameName("blank.png")) {
+    GameTerrain *terrain = new GameTerrain();
+    if (terrain && terrain->initWithFile("building_1.png")) {
+        CCLOG("GameTerrain::create initWithFile");
         terrain->initTerrain();
         terrain->autorelease();
         return terrain;

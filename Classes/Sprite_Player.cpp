@@ -26,9 +26,9 @@ Player::~Player(void){
 }
 
 Player * Player::create() {
-    auto player = new Player();
+    Player *player = new Player();
     
-    if (player && player->initWithSpriteFrameName("player_1.png")) {
+    if (player and player->initWithFile("player.png")) {
         player->autorelease();
         player->setSize();
         player->initPlayer();
@@ -47,29 +47,29 @@ void Player::initPlayer() {
     _height = 252 * 0.95f;
     _width = 184;
     
-    Animation* animation;
-    animation = Animation::create();
-    SpriteFrame * frame;
-    int i;
-    for(i = 3; i >= 1; i--) {
-        frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(String::createWithFormat("player_%i.png", i)->getCString());
-        animation->addSpriteFrame(frame);
-    }
-    
-    animation->setDelayPerUnit(0.2f / 1.0f);
-    animation->setRestoreOriginalFrame(false);
-    animation->setLoops(-1);
-    _rideAnimation = Animate::create(animation);
-    _rideAnimation->retain();
-    
-    
-    auto easeSwing = Sequence::create(EaseInOut::create(RotateTo::create(0.8f, -10), 2),
-                                      EaseInOut::create(RotateTo::create(0.8f, 10), 2),
-                                      nullptr);
-    _floatAnimation = RepeatForever::create( (ActionInterval*) easeSwing );
-    _floatAnimation->retain();
-    
-    this->runAction(_rideAnimation);
+//    Animation* animation;
+//    animation = Animation::create();
+//    SpriteFrame * frame;
+//    int i;
+//    for(i = 3; i >= 1; i--) {
+//        frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(String::createWithFormat("player_%i.png", i)->getCString());
+//        animation->addSpriteFrame(frame);
+//    }
+//    
+//    animation->setDelayPerUnit(0.2f / 1.0f);
+//    animation->setRestoreOriginalFrame(false);
+//    animation->setLoops(-1);
+//    _rideAnimation = Animate::create(animation);
+//    _rideAnimation->retain();
+//    
+//    
+//    auto easeSwing = Sequence::create(EaseInOut::create(RotateTo::create(0.8f, -10), 2),
+//                                      EaseInOut::create(RotateTo::create(0.8f, 10), 2),
+//                                      nullptr);
+//    _floatAnimation = RepeatForever::create( (ActionInterval*) easeSwing );
+//    _floatAnimation->retain();
+//    
+//    this->runAction(_rideAnimation);
 
 //    CCLOG("Player::initPlayer::position %f, %f", this->getPositionX(), this->getPositionY());
 //    CCLOG("Player::initPlayer::size %f, %f", this->getHeight(), this->getWidth());
@@ -79,7 +79,7 @@ void Player::reset() {
     _speed = PLAYER_INITIAL_SPEED;
     _maxSpeed = PLAYER_INITIAL_SPEED;
     _vector = Vec2(0,0);
-    this->setFloating(false);
+//    this->setFloating(false);
     this->setRotation(0);
     _nextPosition.y = _screenSize.height * 0.6f;
     this->setPosition(Vec2( _screenSize.width * 0.2f, _nextPosition.y ));
@@ -99,11 +99,11 @@ void Player::setFloating (bool value) {
     
     if (value) {
         _hasFloated = true;
-        this->setDisplayFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName("player_float.png"));
-        this->runAction(_floatAnimation);
+//        this->setDisplayFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName("player_float.png"));
+//        this->runAction(_floatAnimation);
         _vector.y += PLAYER_JUMP * 0.5f;
     } else {        
-        this->runAction(_rideAnimation);
+//        this->runAction(_rideAnimation);
     }
 }
 
@@ -157,7 +157,7 @@ void Player::update(float dt) {
         _floatingTimer += dt;
         if (_floatingTimer > _floatingTimerMax) {
             _floatingTimer = 0;
-            this->setFloating(false);
+//            this->setFloating(false);
         }
     }
 }
