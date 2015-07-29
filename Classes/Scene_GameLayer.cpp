@@ -84,9 +84,11 @@ void GameLayer::update(float dt) {
     _player->place();
     
     if(_player->getNextPosition().y > _screenSize.height * 0.6f) {
-        _gameBatchNode->setPositionY( (_screenSize.height * 0.6f - _player->getNextPosition().y) * 0.8f);
+//        _gameBatchNode->setPositionY( (_screenSize.height * 0.6f - _player->getNextPosition().y) * 0.8f);
+        this->setPositionY( (_screenSize.height * 0.6f - _player->getNextPosition().y) * 0.8f);
     } else {
-        _gameBatchNode->setPositionY( 0 );
+//        _gameBatchNode->setPositionY( 0 );
+        this->setPositionY(0);
     }
     
     if(_terrain->getStartTerrain() && _player->getVector().x > 0) {
@@ -134,14 +136,16 @@ void GameLayer::onTouchEnded(Touch* touch, Event* event) {
 
 void GameLayer::createGameScreen() {
     CCLOG("GameLayer::createGameScreen");
-    _gameBatchNode = SpriteBatchNode::create("blank.png", 200);
-    this->addChild(_gameBatchNode, kMiddleground);
+//    _gameBatchNode = SpriteBatchNode::create("blank.png", 200);
+//    this->addChild(_gameBatchNode, kMiddleground);
     
     _terrain = GameTerrain::create();
-    _gameBatchNode->addChild(_terrain, kMiddleground);
+//    _gameBatchNode->addChild(_terrain, kMiddleground);
+    this->addChild(_terrain, kMiddleground);
     
     _player = Player::create();
-    _gameBatchNode->addChild(_player, kMiddleground);
+//    _gameBatchNode->addChild(_player, kMiddleground);
+    this->addChild(_player, kMiddleground);
     
 }
 

@@ -27,7 +27,7 @@ Player::~Player(void){
 
 Player * Player::create() {
     Player * player = new Player();
-    if (player && player->initWithFile("blank.png")) {
+    if (player && player->initWithFile("player.png")) {
         CCLOG("Player::create");
         player->autorelease();
         player->setSize();
@@ -44,8 +44,8 @@ void Player::initPlayer() {
     this->setAnchorPoint(Point(0.5f, 1.0f));
     this->setPosition(Vec2( _screenSize.width * 0.2f, _nextPosition.y ));
     
-    _height = 228;
-    _width = 180;
+    _height = 130*2;//228;
+    _width = 184*2;//180;
     this->setTextureRect(Rect(0, 0, _width, _height));
     this->setColor(Color3B(255,255,255));
 

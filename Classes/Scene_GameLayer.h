@@ -38,7 +38,7 @@ private:
     GameTerrain * _terrain;
     Player * _player;
     
-    SpriteBatchNode * _gameBatchNode;
+//    SpriteBatchNode * _gameBatchNode;
     
     Size _screenSize;
     
