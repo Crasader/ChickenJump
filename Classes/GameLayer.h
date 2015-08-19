@@ -2,8 +2,8 @@
 #define __GameLayer_SCENE_H__
 
 #include "cocos2d.h"
-#include "Sprite_Player.h"
-#include "Sprite_GameTerrain.h"
+#include "Player.h"
+#include "GameTerrain.h"
 
 using namespace cocos2d;
 

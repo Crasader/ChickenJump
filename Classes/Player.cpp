@@ -6,7 +6,7 @@
 //
 //
 
-#include "Sprite_Player.h"
+#include "Player.h"
 
 Player::Player(void){
     _screenSize = Director::getInstance()->getWinSize();

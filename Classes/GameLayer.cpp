@@ -1,5 +1,5 @@
-#include "Scene_GameLayer.h"
-#include "Sprite_Player.h"
+#include "GameLayer.h"
+#include "Player.h"
 
 using namespace cocos2d;
 

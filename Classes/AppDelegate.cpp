@@ -1,5 +1,5 @@
 #include "AppDelegate.h"
-#include "Scene_GameLayer.h"
+#include "GameLayer.h"
 
 USING_NS_CC;
 

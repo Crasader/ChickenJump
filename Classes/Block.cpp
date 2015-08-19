@@ -6,7 +6,7 @@
 //
 //
 
-#include "Sprite_Block.h"
+#include "Block.h"
 
 #define TILE_H_SIZE 6
 #define TILE_W_SIZE 8
