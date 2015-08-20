@@ -1,14 +1,14 @@
-#include "GameLayer.h"
+#include "SplashScreenLayer.h"
 
 using namespace cocos2d;
 
-Scene* GameLayer::createScene()
+Scene* SplashScreenLayer::createScene()
 {
     // 'scene' is an autorelease object
     auto scene = Scene::create();
     
     // 'layer' is an autorelease object
-    GameLayer *layer = GameLayer::create();
+    SplashScreenLayer *layer = SplashScreenLayer::create();
 
     // add layer as a child to scene
     scene->addChild(layer);
@@ -18,7 +18,7 @@ Scene* GameLayer::createScene()
 }
 
 // on "init" you need to initialize your instance
-bool GameLayer::init()
+bool SplashScreenLayer::init()
 {
     // 1. super init first
     if ( !Layer::init() ) {

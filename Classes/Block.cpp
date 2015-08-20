@@ -45,16 +45,20 @@ void Block::setupBlock(int width, int height, int type) {
             this->setVisible(false);
             return;
         case kBlock1:
-            this->setColor(Color3B(200,200,200));
+//            this->setColor(Color3B(200,200,200));
+            this->setTexture("building.png");
             break;
         case kBlock2:
-            this->setColor(Color3B(150,150,150));
+//            this->setColor(Color3B(150,150,150));
+            this->setTexture("building.png");
             break;
         case kBlock3:
-            this->setColor(Color3B(100,100,100));
+//            this->setColor(Color3B(100,100,100));
+            this->setTexture("building.png");
             break;
         case kBlock4:
-            this->setColor(Color3B(50,50,50));
+//            this->setColor(Color3B(50,50,50));
+            this->setTexture("building.png");
     }
     this->setVisible(true);
 }

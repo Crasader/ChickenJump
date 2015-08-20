@@ -1,5 +1,5 @@
 #include "AppDelegate.h"
-#include "GameLayer.h"
+#include "SplashScreenLayer.h"
 
 USING_NS_CC;
 
@@ -77,7 +77,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     register_all_packages();
 
     // create a scene. it's an autorelease object
-    auto scene = GameLayer::scene();
+    auto scene = SplashScreenLayer::createScene();
 
     // run
     director->runWithScene(scene);

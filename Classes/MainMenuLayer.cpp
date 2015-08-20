@@ -1,14 +1,14 @@
-#include "GameLayer.h"
+#include "MainMenuLayer.h"
 
 using namespace cocos2d;
 
-Scene* GameLayer::createScene()
+Scene* MainMenuLayer::createScene()
 {
     // 'scene' is an autorelease object
     auto scene = Scene::create();
     
     // 'layer' is an autorelease object
-    GameLayer *layer = GameLayer::create();
+    MainMenuLayer *layer = MainMenuLayer::create();
 
     // add layer as a child to scene
     scene->addChild(layer);
@@ -18,7 +18,7 @@ Scene* GameLayer::createScene()
 }
 
 // on "init" you need to initialize your instance
-bool GameLayer::init()
+bool MainMenuLayer::init()
 {
     // 1. super init first
     if ( !Layer::init() ) {

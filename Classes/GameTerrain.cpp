@@ -19,7 +19,6 @@ std::vector<int> _blockHeights (heights, heights + sizeof(heights) / sizeof(int)
 std::vector<int> _blockTypes (types, types + sizeof(types) / sizeof(int));
 
 GameTerrain::~GameTerrain() {
-    CCLOG("GameTerrain::Destructor");
     _blockPool.clear();
     _blocks.clear();
 }
@@ -40,8 +39,7 @@ GameTerrain::GameTerrain() :
     CCLOG("GameTerrain::Constructor");
 }
 
-GameTerrain * GameTerrain::create() {
-    CCLOG("GameTerrain::create");
+GameTerrain* GameTerrain::create() {
     auto terrain = new GameTerrain();
     if (terrain && terrain->initWithFile("blank.png")) {
         terrain->setAnchorPoint(Vec2(0,0));
@@ -53,14 +51,16 @@ GameTerrain * GameTerrain::create() {
     return nullptr;
 }
 
-// Private function
+/**
+ *  [Private function]
+ *  add empty blocks into blockPool
+ */
 void GameTerrain::initTerrain() {
-    CCLOG("GameTerrain::initTerrain");
     _increaseGapInterval = 5000;
     _increaseGapTimer = 0;
     _gapSize = 2;
     
-    //init object pools
+    //init block pools
     for (int i = 0; i < 20; i++) {
         auto block = Block::create();
         this->addChild(block);
@@ -77,9 +77,11 @@ void GameTerrain::initTerrain() {
     this->addBlocks(0);
 }
 
-// Private function
+/** 
+    [Private function]
+    Each block of the pool will get
+ */
 void GameTerrain::addBlocks(int currentWidth) {
-    CCLOG("GameTerrain::addBlocks");
     while (currentWidth < _minTerrainWidth)
     {
         auto block = _blockPool.at(_blockPoolIndex);
@@ -95,9 +97,11 @@ void GameTerrain::addBlocks(int currentWidth) {
     this->distributeBlocks();
 }
 
-// Private function
+/**
+    [Private function]
+    Set each block's position one after another
+ */
 void GameTerrain::distributeBlocks() {
-    CCLOG("GameTerrain::distributeBlocks");
     int count = (int) _blocks.size();
     int i;
     
@@ -115,7 +119,7 @@ void GameTerrain::distributeBlocks() {
 }
 
 // Private function
-void GameTerrain::initBlock(Block * block) {
+void GameTerrain::initBlock(Block* block) {
     int blockWidth;
     int blockHeight;
     
@@ -162,7 +166,6 @@ void GameTerrain::initBlock(Block * block) {
             if (_currentHeightIndex == _blockHeights.size()) {
                 _currentHeightIndex = 0;
                 random_shuffle(_blockHeights.begin(), _blockHeights.end());
-                
             }
             
             block->setupBlock (blockWidth, blockHeight, type);

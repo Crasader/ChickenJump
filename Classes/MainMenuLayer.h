@@ -1,9 +1,9 @@
-#ifndef __GameLayer_H__
-#define __GameLayer_H__
+#ifndef __MainMenuLayer_H__
+#define __MainMenuLayer_H__
 
 using namespace cocos2d;
 
-class GameLayer : public cocos2d::Layer
+class MainMenuLayer : public cocos2d::Layer
 {
 public:
     // there's no 'id' in cpp, so we recommend returning the class instance pointer
@@ -13,10 +13,10 @@ public:
     virtual bool init();
     
     // implement the "static create()" method manually
-    CREATE_FUNC(GameLayer);
+    CREATE_FUNC(MainMenuLayer);
     
     // Added Functions
 //    void update (float dt);
 };
 
-#endif // __GameLayer_H__
+#endif // __MainMenuLayer_H__

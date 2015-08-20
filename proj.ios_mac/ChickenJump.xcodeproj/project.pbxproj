@@ -16,8 +16,6 @@
 		3EACC99019EE6D4300EB3C5E /* res in Resources */ = {isa = PBXBuildFile; fileRef = 3EACC98E19EE6D4300EB3C5E /* res */; };
 		46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46880B8419C43A87006E1F66 /* AppDelegate.cpp */; };
 		46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46880B8419C43A87006E1F66 /* AppDelegate.cpp */; };
-		46880B8A19C43A87006E1F66 /* GameLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46880B8619C43A87006E1F66 /* GameLayer.cpp */; };
-		46880B8B19C43A87006E1F66 /* GameLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46880B8619C43A87006E1F66 /* GameLayer.cpp */; };
 		503AE0F817EB97AB00D1A890 /* Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 503AE0F617EB97AB00D1A890 /* Icon.icns */; };
 		503AE10017EB989F00D1A890 /* AppController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 503AE0FB17EB989F00D1A890 /* AppController.mm */; };
 		503AE10117EB989F00D1A890 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 503AE0FC17EB989F00D1A890 /* main.m */; };
@@ -75,8 +73,14 @@
 		D5253ADE1B17B51F00AFC291 /* cp_landing90.png in Resources */ = {isa = PBXBuildFile; fileRef = D5253ADD1B17B51F00AFC291 /* cp_landing90.png */; };
 		D5253ADF1B17B51F00AFC291 /* cp_landing90.png in Resources */ = {isa = PBXBuildFile; fileRef = D5253ADD1B17B51F00AFC291 /* cp_landing90.png */; };
 		D5253AE21B18F67500AFC291 /* building.png in Resources */ = {isa = PBXBuildFile; fileRef = D5253AE11B18F67500AFC291 /* building.png */; };
+		D52BDA041B864CBE0049A538 /* SplashScreenLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D52BDA021B864CBE0049A538 /* SplashScreenLayer.cpp */; };
+		D52BDA051B864CBE0049A538 /* SplashScreenLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D52BDA021B864CBE0049A538 /* SplashScreenLayer.cpp */; };
+		D52BDA081B864E8E0049A538 /* GameLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D52BDA061B864E8E0049A538 /* GameLayer.cpp */; };
+		D52BDA091B864E8E0049A538 /* GameLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D52BDA061B864E8E0049A538 /* GameLayer.cpp */; };
 		D5BDF2E31B697D2F002A11C2 /* player.png in Resources */ = {isa = PBXBuildFile; fileRef = D5BDF2E21B697D2F002A11C2 /* player.png */; };
 		D5BDF2E41B697D2F002A11C2 /* player.png in Resources */ = {isa = PBXBuildFile; fileRef = D5BDF2E21B697D2F002A11C2 /* player.png */; };
+		D5BDF2E91B8647EF002A11C2 /* MainMenuLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5BDF2E81B8647EF002A11C2 /* MainMenuLayer.cpp */; };
+		D5BDF2EA1B8647EF002A11C2 /* MainMenuLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5BDF2E81B8647EF002A11C2 /* MainMenuLayer.cpp */; };
 		D6B0611B1803AB670077942B /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6B0611A1803AB670077942B /* CoreMotion.framework */; };
 /* End PBXBuildFile section */
 
@@ -121,8 +125,6 @@
 		3EACC98E19EE6D4300EB3C5E /* res */ = {isa = PBXFileReference; lastKnownFileType = folder; path = res; sourceTree = "<group>"; };
 		46880B8419C43A87006E1F66 /* AppDelegate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AppDelegate.cpp; sourceTree = "<group>"; };
 		46880B8519C43A87006E1F66 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		46880B8619C43A87006E1F66 /* GameLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameLayer.cpp; sourceTree = "<group>"; };
-		46880B8719C43A87006E1F66 /* GameLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameLayer.h; sourceTree = "<group>"; };
 		503AE0F617EB97AB00D1A890 /* Icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Icon.icns; sourceTree = "<group>"; };
 		503AE0F717EB97AB00D1A890 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		503AE0FA17EB989F00D1A890 /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppController.h; path = ios/AppController.h; sourceTree = SOURCE_ROOT; };
@@ -177,7 +179,13 @@
 		D5253ADA1B17B0BC00AFC291 /* cp_jumping90.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cp_jumping90.png; sourceTree = "<group>"; };
 		D5253ADD1B17B51F00AFC291 /* cp_landing90.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cp_landing90.png; sourceTree = "<group>"; };
 		D5253AE11B18F67500AFC291 /* building.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = building.png; sourceTree = "<group>"; };
+		D52BDA021B864CBE0049A538 /* SplashScreenLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SplashScreenLayer.cpp; sourceTree = "<group>"; };
+		D52BDA031B864CBE0049A538 /* SplashScreenLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplashScreenLayer.h; sourceTree = "<group>"; };
+		D52BDA061B864E8E0049A538 /* GameLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameLayer.cpp; sourceTree = "<group>"; };
+		D52BDA071B864E8E0049A538 /* GameLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameLayer.h; sourceTree = "<group>"; };
 		D5BDF2E21B697D2F002A11C2 /* player.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = player.png; sourceTree = "<group>"; };
+		D5BDF2E71B8647EF002A11C2 /* MainMenuLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuLayer.h; sourceTree = "<group>"; };
+		D5BDF2E81B8647EF002A11C2 /* MainMenuLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MainMenuLayer.cpp; sourceTree = "<group>"; };
 		D6B0611A1803AB670077942B /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.0.sdk/System/Library/Frameworks/CoreMotion.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
@@ -371,8 +379,12 @@
 		D5BDF2E51B850DD6002A11C2 /* Scene */ = {
 			isa = PBXGroup;
 			children = (
-				46880B8619C43A87006E1F66 /* GameLayer.cpp */,
-				46880B8719C43A87006E1F66 /* GameLayer.h */,
+				D52BDA021B864CBE0049A538 /* SplashScreenLayer.cpp */,
+				D52BDA031B864CBE0049A538 /* SplashScreenLayer.h */,
+				D5BDF2E71B8647EF002A11C2 /* MainMenuLayer.h */,
+				D5BDF2E81B8647EF002A11C2 /* MainMenuLayer.cpp */,
+				D52BDA061B864E8E0049A538 /* GameLayer.cpp */,
+				D52BDA071B864E8E0049A538 /* GameLayer.h */,
 			);
 			name = Scene;
 			sourceTree = "<group>";
@@ -542,12 +554,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */,
-				46880B8A19C43A87006E1F66 /* GameLayer.cpp in Sources */,
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
 				D5253AA81B077B9100AFC291 /* Player.cpp in Sources */,
+				D52BDA041B864CBE0049A538 /* SplashScreenLayer.cpp in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
+				D52BDA081B864E8E0049A538 /* GameLayer.cpp in Sources */,
 				D5253ABF1B13D11300AFC291 /* Block.cpp in Sources */,
 				D5253AC81B13DF7300AFC291 /* GameTerrain.cpp in Sources */,
+				D5BDF2E91B8647EF002A11C2 /* MainMenuLayer.cpp in Sources */,
 				503AE10117EB989F00D1A890 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -561,7 +575,9 @@
 				D5253AC91B13DF7300AFC291 /* GameTerrain.cpp in Sources */,
 				D5253AA91B077B9100AFC291 /* Player.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
-				46880B8B19C43A87006E1F66 /* GameLayer.cpp in Sources */,
+				D52BDA091B864E8E0049A538 /* GameLayer.cpp in Sources */,
+				D5BDF2EA1B8647EF002A11C2 /* MainMenuLayer.cpp in Sources */,
+				D52BDA051B864CBE0049A538 /* SplashScreenLayer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
