@@ -10,8 +10,8 @@
 #define SPRITE_GAMETERRAIN
 
 #include <cocos2d.h>
-#include "Sprite_Block.h"
-#include "Sprite_Player.h"
+#include "Block.h"
+#include "Player.h"
 
 #define TILE_H_SIZE 6
 #define TILE_W_SIZE 8
