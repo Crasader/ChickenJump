@@ -1,5 +1,7 @@
-#ifndef __SplashScreenLayer_H__
-#define __SplashScreenLayer_H__
+#ifndef __SPLASHSCREEN_LAYER_H__
+#define __SPLASHSCREEN_LAYER_H__
+
+#include <cocos2d.h>
 
 using namespace cocos2d;
 
@@ -15,8 +17,11 @@ public:
     // implement the "static create()" method manually
     CREATE_FUNC(SplashScreenLayer);
     
-    // Added Functions
+// Added Functions
 //    void update (float dt);
+private:
+    void GoToMainMenuLayer(float dt);
+    
 };
 
-#endif // __SplashScreenLayer_H__
+#endif // __SPLASHSCREEN_LAYER_H__

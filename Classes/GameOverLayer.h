@@ -1,11 +1,11 @@
-#ifndef __MAINMENU_LAYER_H__
-#define __MAINMENU_LAYER_H__
+#ifndef __GAMEOVER_LAYER_H__
+#define __GAMEOVER_LAYER_H__
 
 #include <cocos2d.h>
 
 using namespace cocos2d;
 
-class MainMenuLayer : public cocos2d::Layer
+class GameOverLayer : public cocos2d::Layer
 {
 public:
     // there's no 'id' in cpp, so we recommend returning the class instance pointer
@@ -15,13 +15,10 @@ public:
     virtual bool init();
     
     // implement the "static create()" method manually
-    CREATE_FUNC(MainMenuLayer);
+    CREATE_FUNC(GameOverLayer);
     
     // Added Functions
 //    void update (float dt);
-    
-private:
-    void GoToGamePlayLayer(cocos2d::Ref* sender);
 };
 
-#endif // __MAINMENU_LAYER_H__
+#endif // __GAMEOVER_LAYER_H__

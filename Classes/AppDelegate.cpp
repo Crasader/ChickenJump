@@ -34,7 +34,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     auto director = Director::getInstance();
     auto glview = director->getOpenGLView();
     if(!glview) {
-        glview = GLViewImpl::create("My Game");
+        glview = GLViewImpl::create("ChickenJump");
         director->setOpenGLView(glview);
     }
     
@@ -48,31 +48,23 @@ bool AppDelegate::applicationDidFinishLaunching() {
     Size screenSize = glview->getFrameSize();
     Size designSize = Size(2048, 1536);
 
-//    glview->setDesignResolutionSize(designSize.width, designSize.height, ResolutionPolicy::EXACT_FIT);
+    glview->setDesignResolutionSize(designSize.width, designSize.height, ResolutionPolicy::FIXED_WIDTH);
     
-//    std::vector<std::string> searchPaths;
-//    if (screenSize.width > 768) {
-////        searchPaths.push_back("hd");
-//        director->setContentScaleFactor(2);
-//    } else  {
-////        searchPaths.push_back("sd");
-//        director->setContentScaleFactor(1);
-//    }
-//    auto fileUtils = FileUtils::getInstance();
-//    fileUtils->setSearchPaths(searchPaths);
-    // ********* Handling different screen size ********* [END]
-    
-    // ********* Handling different screen size (another way) *********
-    glview->setDesignResolutionSize(designSize.width, designSize.height, ResolutionPolicy::EXACT_FIT);
-    
+    std::vector<std::string> searchPaths;
     if (screenSize.height > 768) {
+        searchPaths.push_back("ipadhd");
         director->setContentScaleFactor(1536/designSize.height);
     } else if (screenSize.height > 320) {
+        searchPaths.push_back("ipad");
         director->setContentScaleFactor(768/designSize.height);
     } else {
+        searchPaths.push_back("iphone");
         director->setContentScaleFactor(380/designSize.height);
     }
-    // ********* Handling different screen size (another way) ********* [END]
+    auto fileUtils = FileUtils::getInstance();
+    fileUtils->setSearchPaths(searchPaths);
+    // ********* Handling different screen size ********* [END]
+    
     
     register_all_packages();
 

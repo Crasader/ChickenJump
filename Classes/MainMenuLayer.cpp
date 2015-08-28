@@ -1,4 +1,6 @@
 #include "MainMenuLayer.h"
+#include "GameLayer.h"
+#include "Constants.h"
 
 using namespace cocos2d;
 
@@ -27,12 +29,29 @@ bool MainMenuLayer::init()
     
     // 2. origin & window size
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
-    Size winSize = Director::getInstance()->getVisibleSize();
+    Size visibleSize = Director::getInstance()->getVisibleSize();
+    
+    // add background
+    auto background = Sprite::create("blank.png");
+    background->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+    this->addChild(background);
+    
+    // transition to GameLayer
+    auto playItem = MenuItemImage::create("play.png", "playclicked.png",
+                                          CC_CALLBACK_1(MainMenuLayer::GoToGamePlayLayer, this));
+    playItem->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+    auto menu = Menu::create(playItem, NULL);
+    menu->setPosition(Point::ZERO);
+    this->addChild(menu);
     
     return true;
 }
 
-
+void MainMenuLayer::GoToGamePlayLayer(cocos2d::Ref* sender)
+{
+    auto scene = GameLayer::createScene();
+    Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
+}
 
 
 
