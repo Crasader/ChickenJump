@@ -2,7 +2,6 @@
 #include "SplashScreenLayer.h"
 
 using namespace cocos2d;
-using namespace CocosDenshion;
 
 AppDelegate::AppDelegate() {
 

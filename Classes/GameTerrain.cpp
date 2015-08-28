@@ -143,18 +143,15 @@ void GameTerrain::initBlock(Block* block) {
             block->setupBlock (gap, 0, kBlockGap);
             _showGap = false;
 
-        } else {
+        }
+        else {
+            // set up next block's width
+            blockWidth = _blockWidths[_currentWidthIndex];
 
-            {
-                // set up next block's width
-                blockWidth = _blockWidths[_currentWidthIndex];
-
-                _currentWidthIndex++;
-                if (_currentWidthIndex == _blockWidths.size()) {
-                    random_shuffle(_blockWidths.begin(), _blockWidths.end());
-                    _currentWidthIndex = 0;
-                }
-
+            _currentWidthIndex++;
+            if (_currentWidthIndex == _blockWidths.size()) {
+                random_shuffle(_blockWidths.begin(), _blockWidths.end());
+                _currentWidthIndex = 0;
             } else {
                 blockHeight = _lastBlockHeight;
             }
