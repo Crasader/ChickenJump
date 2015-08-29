@@ -118,7 +118,7 @@ void GameLayer::onTouchEnded(Touch* touch, Event* event) {
     
     float xDist = (_lineEndPoint.x - _lineStartPoint.x);
     float yDist = (_lineEndPoint.y - _lineStartPoint.y);
-    float distance = sqrt((xDist * xDist) + (yDist * yDist));
+    float distance = sqrt((xDist * xDist) + (yDist * yDist)); // distance = √(x^2 + y^2)
     
     // create a static PhysicsBody
     auto physicsBody = PhysicsBody::createBox(Size(distance, 10.0f ), PhysicsMaterial(0.1f, 1.0f, 0.0f));
@@ -142,7 +142,7 @@ void GameLayer::onTouchEnded(Touch* touch, Event* event) {
         sprite->setAnchorPoint(Vec2(0, 0));
         
         // sprite will use physicsBody
-        physicsBody->setPositionOffset(Vec2(std::abs(_lineEndPoint.x - _lineStartPoint.x) / 2, 0));
+        physicsBody->setPositionOffset(Vec2((_lineEndPoint.x - _lineStartPoint.x) / 2, 0));
         sprite->setPhysicsBody(physicsBody);
         this->addChild(sprite, BackgroundLayer::layerChicken);
     }
