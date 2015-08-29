@@ -31,5 +31,5 @@ void Chicken::createChicken(cocos2d::Layer *layer) {
     _sprite->setPhysicsBody(chickenBody);
     
     
-    layer->addChild(_sprite, BackgroundLayer::layerFive);
+    layer->addChild(_sprite, BackgroundLayer::layerChicken);
 }

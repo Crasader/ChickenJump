@@ -10,7 +10,7 @@ Scene* GameLayer::createScene()
     // 'scene' is an autorelease object
 //    auto scene = Scene::create();
     auto scene = Scene::createWithPhysics();
-//    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
     
     // 'layer' is an autorelease object
     GameLayer *layer = GameLayer::create();
@@ -115,6 +115,37 @@ void GameLayer::onTouchMoved(Touch* touch, Event* event) {
 
 void GameLayer::onTouchEnded(Touch* touch, Event* event) {
     _lineEndPoint = touch->getLocation();
+    
+    float xDist = (_lineEndPoint.x - _lineStartPoint.x);
+    float yDist = (_lineEndPoint.y - _lineStartPoint.y);
+    float distance = sqrt((xDist * xDist) + (yDist * yDist));
+    
+    // create a static PhysicsBody
+    auto physicsBody = PhysicsBody::createBox(Size(distance, 10.0f ), PhysicsMaterial(0.1f, 1.0f, 0.0f));
+    physicsBody->setDynamic(false);
+    
+    // create DrawNode for drawing line instead of Sprite
+//    {
+//        auto drawNode = DrawNode::create();
+//        drawNode->drawSegment(_lineStartPoint, _lineEndPoint, 10, Color4F::GRAY);
+//
+//     sprite will use physicsBody
+//        physicsBody->setPositionOffset(Vec2(_lineStartPoint.x + std::abs(_lineEndPoint.x - _lineStartPoint.x) / 2, _lineEndPoint.y));
+//        drawNode->setPhysicsBody(physicsBody);
+//        this->addChild(drawNode, BackgroundLayer::layerTwo);
+//    }
+    
+    // create a Sprite instead of DrawNode
+    {
+        auto sprite = Sprite::create("land.png");
+        sprite->setPosition(Vec2(_lineStartPoint.x, _lineStartPoint.y));
+        sprite->setAnchorPoint(Vec2(0, 0));
+        
+        // sprite will use physicsBody
+        physicsBody->setPositionOffset(Vec2(std::abs(_lineEndPoint.x - _lineStartPoint.x) / 2, 0));
+        sprite->setPhysicsBody(physicsBody);
+        this->addChild(sprite, BackgroundLayer::layerChicken);
+    }
     
 }
 

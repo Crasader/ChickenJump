@@ -7,7 +7,7 @@ typedef enum
     layerTwo,
     layerGround,
     layerFour,
-    layerFive
+    layerChicken
     
 } BackgroundLayer;
 
