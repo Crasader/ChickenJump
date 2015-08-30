@@ -13,7 +13,7 @@ public:
     
 private:
     Sprite* _layerGround;
-    std::string const _spriteImage = "layerground.png";
+    std::string const _imageFile = "layerground.png";
     Vec2 _origin;
     Size _visibleSize;
 };

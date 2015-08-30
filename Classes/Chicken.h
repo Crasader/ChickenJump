@@ -15,7 +15,7 @@ private:
     Size _visibleSize;
     Sprite* _sprite;
     
-    std::string const _spriteImage = "chicken.png";
+    std::string const _imageFile = "playerfly_1.png";
 };
 
 

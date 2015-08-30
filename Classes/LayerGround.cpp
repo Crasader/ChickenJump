@@ -8,15 +8,15 @@ LayerGround::LayerGround(void){
 
 void LayerGround::createLayerGround(cocos2d::Layer* layer) {
 
-    _layerGround = Sprite::create(_spriteImage);
+    _layerGround = Sprite::create(_imageFile);
     _layerGround->setAnchorPoint(Vec2(0,0));
     _layerGround->setPosition(Point(0, _visibleSize.height / 2 - _layerGround->getContentSize().height / 2));
 
-    auto bg2 = Sprite::create(_spriteImage);
+    auto bg2 = Sprite::create(_imageFile);
     bg2->setAnchorPoint(Vec2(0,0));
     bg2->setPosition(Point(_layerGround->getContentSize().width, 0));
     
-    auto bg3 = Sprite::create(_spriteImage);
+    auto bg3 = Sprite::create(_imageFile);
     bg3->setAnchorPoint(Vec2(0,0));
     bg3->setPosition(Point(_layerGround->getContentSize().width * 2, 0));
 

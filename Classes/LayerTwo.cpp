@@ -8,15 +8,15 @@ LayerTwo::LayerTwo(void){
 
 void LayerTwo::createLayerTwo(cocos2d::Layer* layer) {
 
-    _layerTow = Sprite::create(_spriteImage);
+    _layerTow = Sprite::create(_imageFile);
     _layerTow->setAnchorPoint(Vec2(0,0));
     _layerTow->setPosition(Point(0, _visibleSize.height / 2 - _layerTow->getContentSize().height / 2));
 
-    auto bg2 = Sprite::create(_spriteImage);
+    auto bg2 = Sprite::create(_imageFile);
     bg2->setAnchorPoint(Vec2(0,0));
     bg2->setPosition(Point(_layerTow->getContentSize().width, 0));
     
-    auto bg3 = Sprite::create(_spriteImage);
+    auto bg3 = Sprite::create(_imageFile);
     bg3->setAnchorPoint(Vec2(0,0));
     bg3->setPosition(Point(_layerTow->getContentSize().width * 2, 0));
 

@@ -120,30 +120,26 @@ void GameLayer::onTouchEnded(Touch* touch, Event* event) {
     float yDist = (_lineEndPoint.y - _lineStartPoint.y);
     float distance = sqrt((xDist * xDist) + (yDist * yDist)); // distance = √(x^2 + y^2)
     
-    // create a static PhysicsBody
-    auto physicsBody = PhysicsBody::createBox(Size(distance, 10.0f ), PhysicsMaterial(0.1f, 1.0f, 0.0f));
-    physicsBody->setDynamic(false);
+    float trampolineWidth = 15.0f;
+    float trampolineHeight = 15.0f;
     
-    // create DrawNode for drawing line instead of Sprite
-//    {
-//        auto drawNode = DrawNode::create();
-//        drawNode->drawSegment(_lineStartPoint, _lineEndPoint, 10, Color4F::GRAY);
-//
-//     sprite will use physicsBody
-//        physicsBody->setPositionOffset(Vec2(_lineStartPoint.x + std::abs(_lineEndPoint.x - _lineStartPoint.x) / 2, _lineEndPoint.y));
-//        drawNode->setPhysicsBody(physicsBody);
-//        this->addChild(drawNode, BackgroundLayer::layerTwo);
-//    }
+    int numberOfSpritesNeeded = distance / trampolineWidth - 1;
     
-    // create a Sprite instead of DrawNode
-    {
-        auto sprite = Sprite::create("land.png");
-        sprite->setPosition(Vec2(_lineStartPoint.x, _lineStartPoint.y));
-        sprite->setAnchorPoint(Vec2(0, 0));
+    for (int i = 0; i < numberOfSpritesNeeded; i+=2) {
+        /* in real, half of the sprites are enough, so i+=2 */
         
-        // sprite will use physicsBody
-        physicsBody->setPositionOffset(Vec2((_lineEndPoint.x - _lineStartPoint.x) / 2, 0));
+        auto sprite = Sprite::create(_imageTrampoline);
+        sprite->setPosition( Vec2(_lineStartPoint.x + (i * (xDist/numberOfSpritesNeeded)),
+                                  _lineStartPoint.y + (i * (yDist/numberOfSpritesNeeded))) );
+        
+        sprite->setAnchorPoint(Vec2(0, 0));
+    
+        // create a static PhysicsBody and set it to the sprite
+        auto physicsBody = PhysicsBody::createCircle(trampolineWidth, PhysicsMaterial(0.1f, 1.0f, 0.0f));
+//        auto physicsBody = PhysicsBody::createBox(Size(trampolineWidth, trampolineHeight), PhysicsMaterial(0.1f, 1.0f, 0.0f));
+        physicsBody->setDynamic(false);
         sprite->setPhysicsBody(physicsBody);
+        
         this->addChild(sprite, BackgroundLayer::layerChicken);
     }
     

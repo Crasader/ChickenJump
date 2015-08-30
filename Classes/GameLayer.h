@@ -35,6 +35,8 @@ private:
     void spawnCloud(float dt);
     
     cocos2d::PhysicsWorld *_sceneWorld;
+    std::string _imageTrampoline = "trampoline.png";
+    
     Background* _background;
     LayerTwo* _layerTow;
     LayerGround* _layerGround;
