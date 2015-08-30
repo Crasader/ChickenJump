@@ -27,11 +27,59 @@ void Chicken::createChicken(cocos2d::Layer *layer) {
     _sprite->runAction(action);
     
     // physics body
-    auto chickenBody = PhysicsBody::createCircle(_sprite->getContentSize().width / 2);
+    auto chickenBody = PhysicsBody::createCircle(_sprite->getContentSize().width / 2, PhysicsMaterial(0.0f, 0.0f, 0.0f));
 //    auto chickenBody = PhysicsBody::createBox(Size(_sprite->getContentSize().width, _sprite->getContentSize().height));
-//    chickenBody->setDynamic(false);
+    chickenBody->setDynamic(false);
     _sprite->setPhysicsBody(chickenBody);
     
     
     layer->addChild(_sprite, BackgroundLayer::layerChicken);
 }
+
+void Chicken::setState(PlayerState state) {
+    _state = state;
+    if (state == PlayerState::Jumping) {
+        _vector.y = _visibleSize.height * VELOCITY_Y_MAX;
+    }
+}
+
+void Chicken::update(float dt) {
+    CCLOG("Player's Position x:%f, y:%f", _sprite->getPositionX(), _sprite->getPositionY());
+    if (_state != PlayerState::Dying) {
+        _sprite->setPositionY(_sprite->getPositionY() + _vector.y);
+    }
+    
+    switch (_state) {
+        case Moving:
+            
+            break;
+        case Jumping:
+            _vector.y -= _visibleSize.height * VELOCITY_Y_DECREASE_RATE;
+            if (_vector.y <= 0) {
+                _state = PlayerState::Falling;
+            }
+            break;
+        case Falling:
+            _vector.y -= _visibleSize.height * VELOCITY_Y_DECREASE_RATE;
+            break;
+        case Dying:
+            CCLOG("Player DEAD. PLEASE RESET");
+            break;
+        default:
+            CCLOG("Program Should Not Hit This Point");
+            break;
+    }
+
+    if (_sprite->getPositionY() < -_sprite->getContentSize().height * 1.5) {
+        _state = PlayerState::Dying;
+    }
+}
+
+
+
+
+
+
+
+
+

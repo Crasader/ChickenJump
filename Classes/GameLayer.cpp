@@ -10,7 +10,7 @@ Scene* GameLayer::createScene()
     // 'scene' is an autorelease object
 //    auto scene = Scene::create();
     auto scene = Scene::createWithPhysics();
-    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+//    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
     
     // 'layer' is an autorelease object
     GameLayer *layer = GameLayer::create();
@@ -87,6 +87,7 @@ void GameLayer::update(float dt) {
     _background->update(dt);
     _layerTow->update(dt);
     _layerGround->update(dt);
+    _chicken->update(dt);
 }
 
 void GameLayer::spawnTree(float dt) {
@@ -104,7 +105,8 @@ bool GameLayer::onTouchBegan(Touch* touch, Event* event) {
     _lineStartPoint = touch->getLocation();
     _lineEndPoint = _lineStartPoint;
     
-    _chicken->getSprite()->getPhysicsBody()->setVelocity(Vec2(0, 200));
+//    _chicken->getSprite()->getPhysicsBody()->setVelocity(Vec2(0, 200));
+    _chicken->setState(PlayerState::Jumping);
     
     return true;
 }
