@@ -28,6 +28,8 @@ public:
     virtual void onTouchEnded(Touch* touch, Event* event);
     virtual void onTouchMoved(Touch* touch, Event* event);
     
+    bool onContactBegin(cocos2d::PhysicsContact &contact);
+    
     // Added Functions
     void update(float dt);
     

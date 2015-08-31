@@ -44,26 +44,27 @@ bool AppDelegate::applicationDidFinishLaunching() {
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0 / 60);
 
-    // ********* Handling different screen size *********
-    Size screenSize = glview->getFrameSize();
-    Size designSize = Size(2048, 1536);
+    // Handling different screen size
+    {
+        Size screenSize = glview->getFrameSize();
+        Size designSize = Size(2048, 1536);
 
-    glview->setDesignResolutionSize(designSize.width, designSize.height, ResolutionPolicy::FIXED_WIDTH);
+        glview->setDesignResolutionSize(designSize.width, designSize.height, ResolutionPolicy::FIXED_WIDTH);
 
-    std::vector<std::string> searchPaths;
-    if (screenSize.height > 768) {
-        searchPaths.push_back("ipadhd");
-        director->setContentScaleFactor(1536/designSize.height);
-    } else if (screenSize.height > 320) {
-        searchPaths.push_back("ipad");
-        director->setContentScaleFactor(768/designSize.height);
-    } else {
-        searchPaths.push_back("iphone");
-        director->setContentScaleFactor(380/designSize.height);
+        std::vector<std::string> searchPaths;
+        if (screenSize.height > 768) {
+            searchPaths.push_back("ipadhd");
+            director->setContentScaleFactor(1536/designSize.height);
+        } else if (screenSize.height > 320) {
+            searchPaths.push_back("ipad");
+            director->setContentScaleFactor(768/designSize.height);
+        } else {
+            searchPaths.push_back("iphone");
+            director->setContentScaleFactor(380/designSize.height);
+        }
+        auto fileUtils = FileUtils::getInstance();
+        fileUtils->setSearchPaths(searchPaths);
     }
-    auto fileUtils = FileUtils::getInstance();
-    fileUtils->setSearchPaths(searchPaths);
-    // ********* Handling different screen size ********* [END]
 
 
     register_all_packages();

@@ -10,14 +10,14 @@ Chicken::Chicken(void){
 void Chicken::createChicken(cocos2d::Layer *layer) {
     _chicken = Sprite::create(_imageFile);
 //    if (! _chicken) { return; }
-    _state = PlayerState::Moving;
+    _state = PlayerState::Falling;
     _chicken->setPosition(_visibleSize.width / 3 + _origin.x, _visibleSize.height / 2 + _origin.y);
     
-    // adjusting big png
+    // Adjusting big png
     auto scaleTo = ScaleTo::create(0.75f, 0.75f);
     _chicken->runAction(scaleTo);
     
-    // flapping wings animation
+    // Flapping wings animation
     Animation* animation = Animation::create();
     animation->addSpriteFrameWithFile("playerfly_1.png");
     animation->addSpriteFrameWithFile("playerfly_2.png");
@@ -29,10 +29,11 @@ void Chicken::createChicken(cocos2d::Layer *layer) {
     Action* action = Animate::create(animation);
     _chicken->runAction(action);
     
-    // physics body
-    auto chickenBody = PhysicsBody::createCircle(_chicken->getContentSize().width / 2, PhysicsMaterial(0.0f, 0.0f, 0.0f));
-//    auto chickenBody = PhysicsBody::createBox(Size(_chicken->getContentSize().width, _chicken->getContentSize().height));
-    chickenBody->setDynamic(false);
+    // Dynamic physics body
+    auto chickenBody = PhysicsBody::createCircle(_chicken->getContentSize().width / 2, PhysicsMaterial(0.1f, 1.0f, 0.0f));
+    chickenBody->setCollisionBitmask(COLLISION_BITMASK_CHICKEN);
+    chickenBody->setContactTestBitmask(true);
+    chickenBody->setGravityEnable(false);
     _chicken->setPhysicsBody(chickenBody);
     
     

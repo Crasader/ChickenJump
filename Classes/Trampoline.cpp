@@ -53,8 +53,9 @@ void Trampoline::createTrampoline(cocos2d::Layer* layer, Vec2 lineStartPoint, Ve
         sprite->setAnchorPoint(Vec2(0, 0));
         
         // create a static PhysicsBody and set it to the sprite
-        auto physicsBody = PhysicsBody::createCircle(trampolineWidth, PhysicsMaterial(0.1f, 1.0f, 0.0f));
-        //        auto physicsBody = PhysicsBody::createBox(Size(trampolineWidth, trampolineHeight), PhysicsMaterial(0.1f, 1.0f, 0.0f));
+        auto physicsBody = PhysicsBody::createCircle(trampolineWidth, PhysicsMaterial(0.0f, 0.0f, 0.0f));
+        physicsBody->setCollisionBitmask(COLLISION_BITMASK_OBSTACLE);
+        physicsBody->setContactTestBitmask(true);
         physicsBody->setDynamic(false);
         sprite->setPhysicsBody(physicsBody);
         
