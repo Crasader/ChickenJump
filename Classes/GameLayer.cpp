@@ -76,7 +76,8 @@ bool GameLayer::init()
     listener->onTouchMoved = CC_CALLBACK_2(GameLayer::onTouchMoved, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
     
-
+    
+    
     //create main loop
     this->scheduleUpdate();
     
@@ -105,8 +106,15 @@ bool GameLayer::onTouchBegan(Touch* touch, Event* event) {
     _lineStartPoint = touch->getLocation();
     _lineEndPoint = _lineStartPoint;
     
-//    _chicken->getSprite()->getPhysicsBody()->setVelocity(Vec2(0, 200));
-    _chicken->setState(PlayerState::Jumping);
+    // Jump only if the Chicken is within the visible size range
+    if (_chicken->getSprite()->getPositionY() <= _visibleSize.height) {
+        _chicken->setState(PlayerState::Jumping);
+    }
+    
+    // Clean previous Trampoline Sprites
+    for (auto it = _trampolineVector.begin(); it != _trampolineVector.end(); ++it) {
+        this->removeChild(*it);
+    }
     
     return true;
 }
@@ -121,6 +129,18 @@ void GameLayer::onTouchEnded(Touch* touch, Event* event) {
     float xDist = (_lineEndPoint.x - _lineStartPoint.x);
     float yDist = (_lineEndPoint.y - _lineStartPoint.y);
     float distance = sqrt((xDist * xDist) + (yDist * yDist)); // distance = √(x^2 + y^2)
+    float degree = atan2(yDist, xDist) * 180 / 3.1416;
+    
+    // Restrict max trampoline size
+    if (distance > _visibleSize.width / 3) {
+        distance = _visibleSize.width / 3;
+        
+        _lineEndPoint = _lineStartPoint + Vec2(cos(degree2radian(degree)) * distance,
+                                               sin(degree2radian(degree)) * distance);
+        xDist = (_lineEndPoint.x - _lineStartPoint.x);
+        yDist = (_lineEndPoint.y - _lineStartPoint.y);
+    }
+
     
     float trampolineWidth = 15.0f;
     float trampolineHeight = 15.0f;
@@ -143,6 +163,7 @@ void GameLayer::onTouchEnded(Touch* touch, Event* event) {
         sprite->setPhysicsBody(physicsBody);
         
         this->addChild(sprite, BackgroundLayer::layerChicken);
+        _trampolineVector.push_back(sprite);
     }
     
 }

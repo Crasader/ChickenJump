@@ -47,6 +47,9 @@ private:
     
     Vec2 _origin;
     Size _visibleSize;
+    
+    std::vector<Sprite*> _trampolineVector;
+    Sprite* _spriteTemp;
 
 };
 

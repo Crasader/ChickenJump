@@ -1,6 +1,9 @@
 #ifndef __CONSTANTS_H__
 #define __CONSTANTS_H__
 
+#define radian2degree(a) (a * 57.295779513082)
+#define degree2radian(a) (a * 0.017453292519)
+
 // LAYER
 typedef enum
 {
