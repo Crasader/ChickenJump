@@ -1,7 +1,8 @@
 #include "GameLayer.h"
-#include "Tree.h"
+
 #include "Cloud.h"
 #include "Constants.h"
+#include "Tree.h"
 
 using namespace cocos2d;
 
@@ -34,7 +35,7 @@ bool GameLayer::init()
     // 2. origin & window size
     _origin = Director::getInstance()->getVisibleOrigin();
     _visibleSize = Director::getInstance()->getVisibleSize();
-    CCLOG("--- GameLayer _visibleSize width %f, height %f", _visibleSize.width, _visibleSize.height);
+    CCLOG("GameLayer _visibleSize width %f, height %f", _visibleSize.width, _visibleSize.height);
 
     
     // add a physics body box around the screen
@@ -85,10 +86,11 @@ bool GameLayer::init()
 }
 
 void GameLayer::update(float dt) {
-    _background->update(dt);
-    _layerTow->update(dt);
-    _layerGround->update(dt);
-    _chicken->update(dt);
+    if (_background) { _background->update(dt); }
+    if (_layerTow) { _layerTow->update(dt); }
+    if (_layerGround) { _layerGround->update(dt); }
+    if (_chicken) { _chicken->update(dt); }
+    if (_trampoline) { _trampoline->update(dt); }
 }
 
 void GameLayer::spawnTree(float dt) {
@@ -107,65 +109,31 @@ bool GameLayer::onTouchBegan(Touch* touch, Event* event) {
     _lineEndPoint = _lineStartPoint;
     
     // Jump only if the Chicken is within the visible size range
-    if (_chicken->getSprite()->getPositionY() <= _visibleSize.height) {
+    if (_chicken->getChicken()->getPositionY() <= _visibleSize.height) {
         _chicken->setState(PlayerState::Jumping);
     }
-    
-    // Clean previous Trampoline Sprites
-    for (auto it = _trampolineVector.begin(); it != _trampolineVector.end(); ++it) {
-        this->removeChild(*it);
+
+    if (_trampoline) {
+        this->removeChild(_trampoline->getTrampoline());
+        _trampoline = nullptr;
     }
     
     return true;
 }
 
 void GameLayer::onTouchMoved(Touch* touch, Event* event) {
-    _lineEndPoint = touch->getLocation();
+
 }
 
 void GameLayer::onTouchEnded(Touch* touch, Event* event) {
+    if (touch->getLocation() == _lineStartPoint) {
+        return;
+    }
+    
     _lineEndPoint = touch->getLocation();
     
-    float xDist = (_lineEndPoint.x - _lineStartPoint.x);
-    float yDist = (_lineEndPoint.y - _lineStartPoint.y);
-    float distance = sqrt((xDist * xDist) + (yDist * yDist)); // distance = √(x^2 + y^2)
-    float degree = atan2(yDist, xDist) * 180 / 3.1416;
-    
-    // Restrict max trampoline size
-    if (distance > _visibleSize.width / 3) {
-        distance = _visibleSize.width / 3;
-        
-        _lineEndPoint = _lineStartPoint + Vec2(cos(degree2radian(degree)) * distance,
-                                               sin(degree2radian(degree)) * distance);
-        xDist = (_lineEndPoint.x - _lineStartPoint.x);
-        yDist = (_lineEndPoint.y - _lineStartPoint.y);
-    }
-
-    
-    float trampolineWidth = 15.0f;
-    float trampolineHeight = 15.0f;
-    
-    int numberOfSpritesNeeded = distance / trampolineWidth - 1;
-    
-    for (int i = 0; i < numberOfSpritesNeeded; i+=2) {
-        /* in real, half of the sprites are enough, so i+=2 */
-        
-        auto sprite = Sprite::create(_imageTrampoline);
-        sprite->setPosition( Vec2(_lineStartPoint.x + (i * (xDist/numberOfSpritesNeeded)),
-                                  _lineStartPoint.y + (i * (yDist/numberOfSpritesNeeded))) );
-        
-        sprite->setAnchorPoint(Vec2(0, 0));
-    
-        // create a static PhysicsBody and set it to the sprite
-        auto physicsBody = PhysicsBody::createCircle(trampolineWidth, PhysicsMaterial(0.1f, 1.0f, 0.0f));
-//        auto physicsBody = PhysicsBody::createBox(Size(trampolineWidth, trampolineHeight), PhysicsMaterial(0.1f, 1.0f, 0.0f));
-        physicsBody->setDynamic(false);
-        sprite->setPhysicsBody(physicsBody);
-        
-        this->addChild(sprite, BackgroundLayer::layerChicken);
-        _trampolineVector.push_back(sprite);
-    }
-    
+    _trampoline = new Trampoline();
+    _trampoline->createTrampoline(this, _lineStartPoint, _lineEndPoint);
 }
 
 

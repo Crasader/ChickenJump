@@ -1,4 +1,5 @@
 #include "Chicken.h"
+
 #include "Constants.h"
 
 Chicken::Chicken(void){
@@ -7,12 +8,14 @@ Chicken::Chicken(void){
 }
 
 void Chicken::createChicken(cocos2d::Layer *layer) {
-    _sprite = Sprite::create(_imageFile);
-    _sprite->setPosition(_visibleSize.width / 3 + _origin.x, _visibleSize.height / 2 + _origin.y);
+    _chicken = Sprite::create(_imageFile);
+//    if (! _chicken) { return; }
+    _state = PlayerState::Moving;
+    _chicken->setPosition(_visibleSize.width / 3 + _origin.x, _visibleSize.height / 2 + _origin.y);
     
     // adjusting big png
     auto scaleTo = ScaleTo::create(0.75f, 0.75f);
-    _sprite->runAction(scaleTo);
+    _chicken->runAction(scaleTo);
     
     // flapping wings animation
     Animation* animation = Animation::create();
@@ -24,16 +27,16 @@ void Chicken::createChicken(cocos2d::Layer *layer) {
     animation->setLoops(-1);
     
     Action* action = Animate::create(animation);
-    _sprite->runAction(action);
+    _chicken->runAction(action);
     
     // physics body
-    auto chickenBody = PhysicsBody::createCircle(_sprite->getContentSize().width / 2, PhysicsMaterial(0.0f, 0.0f, 0.0f));
-//    auto chickenBody = PhysicsBody::createBox(Size(_sprite->getContentSize().width, _sprite->getContentSize().height));
+    auto chickenBody = PhysicsBody::createCircle(_chicken->getContentSize().width / 2, PhysicsMaterial(0.0f, 0.0f, 0.0f));
+//    auto chickenBody = PhysicsBody::createBox(Size(_chicken->getContentSize().width, _chicken->getContentSize().height));
     chickenBody->setDynamic(false);
-    _sprite->setPhysicsBody(chickenBody);
+    _chicken->setPhysicsBody(chickenBody);
     
     
-    layer->addChild(_sprite, BackgroundLayer::layerChicken);
+    layer->addChild(_chicken, BackgroundLayer::layerChicken);
 }
 
 void Chicken::setState(PlayerState state) {
@@ -44,9 +47,9 @@ void Chicken::setState(PlayerState state) {
 }
 
 void Chicken::update(float dt) {
-    CCLOG("Player's Position x:%f, y:%f", _sprite->getPositionX(), _sprite->getPositionY());
+//    CCLOG("Player's Position x:%f, y:%f", _chicken->getPositionX(), _chicken->getPositionY());
     if (_state != PlayerState::Dying) {
-        _sprite->setPositionY(_sprite->getPositionY() + _vector.y);
+        _chicken->setPositionY(_chicken->getPositionY() + _vector.y);
     }
     
     switch (_state) {
@@ -70,7 +73,7 @@ void Chicken::update(float dt) {
             break;
     }
 
-    if (_sprite->getPositionY() < -_sprite->getContentSize().height * 1.5) {
+    if (_chicken->getPositionY() < -_chicken->getContentSize().height * 1.5) {
         _state = PlayerState::Dying;
     }
 }

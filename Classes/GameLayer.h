@@ -2,10 +2,12 @@
 #define __GAME_LAYER_H__
 
 #include <cocos2d.h>
+
 #include "Background.h"
 #include "Chicken.h"
-#include "LayerTwo.h"
 #include "LayerGround.h"
+#include "LayerTwo.h"
+#include "Trampoline.h"
 
 using namespace cocos2d;
 
@@ -35,12 +37,12 @@ private:
     void spawnCloud(float dt);
     
     cocos2d::PhysicsWorld *_sceneWorld;
-    std::string _imageTrampoline = "trampoline.png";
     
     Background* _background;
     LayerTwo* _layerTow;
     LayerGround* _layerGround;
     Chicken* _chicken;
+    Trampoline* _trampoline;
     
     Vec2 _lineStartPoint;
     Vec2 _lineEndPoint;
@@ -48,7 +50,6 @@ private:
     Vec2 _origin;
     Size _visibleSize;
     
-    std::vector<Sprite*> _trampolineVector;
     Sprite* _spriteTemp;
 
 };

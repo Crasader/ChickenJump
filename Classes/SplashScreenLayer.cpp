@@ -1,6 +1,7 @@
 #include "SplashScreenLayer.h"
-#include "MainMenuLayer.h"
+
 #include "Constants.h"
+#include "MainMenuLayer.h"
 
 using namespace cocos2d;
 

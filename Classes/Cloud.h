@@ -13,7 +13,7 @@ public:
 private:
     Vec2 _origin;
     Size _visibleSize;
-    Sprite* _sprite;
+    Sprite* _cloud;
     
 //    std::string const _spriteImage = "tree_br.png";
 };

@@ -1,4 +1,5 @@
 #include "Background.h"
+
 #include "Constants.h"
 
 Background::Background(void){

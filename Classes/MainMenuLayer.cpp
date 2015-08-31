@@ -1,6 +1,7 @@
 #include "MainMenuLayer.h"
-#include "GameLayer.h"
+
 #include "Constants.h"
+#include "GameLayer.h"
 
 using namespace cocos2d;
 

@@ -19,7 +19,7 @@ class Chicken {
 public:
     Chicken(void);
     void createChicken(cocos2d::Layer* layer);
-    Sprite* getSprite() { return _sprite; }
+    Sprite* getChicken() { return _chicken; }
     void setState(PlayerState state);
     inline void setVectorX(int x) { _vector.x = x; }
     inline void setVectorY(int y) { _vector.y = y; }
@@ -28,7 +28,7 @@ public:
 private:
     Vec2 _origin;
     Size _visibleSize;
-    Sprite* _sprite;
+    Sprite* _chicken;
     PlayerState _state;
     Point _vector;
     
