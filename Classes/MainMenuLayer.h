@@ -21,7 +21,9 @@ public:
 //    void update (float dt);
     
 private:
-    void GoToGamePlayLayer(cocos2d::Ref* sender);
+    void goToGamePlayLayer(cocos2d::Ref* sender);
+    void toggleCountry(cocos2d::Ref* sender);
+    bool _countryFrance;
 };
 
 #endif // __MAINMENU_LAYER_H__

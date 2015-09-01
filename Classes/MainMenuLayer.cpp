@@ -32,26 +32,57 @@ bool MainMenuLayer::init()
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
     Size visibleSize = Director::getInstance()->getVisibleSize();
     
-    // add background
+    // Add background
     auto background = Sprite::create("blank.png");
     background->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
     this->addChild(background);
     
-    // transition to GameLayer
-    auto playItem = MenuItemImage::create("play.png", "playclicked.png",
-                                          CC_CALLBACK_1(MainMenuLayer::GoToGamePlayLayer, this));
-    playItem->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
-    auto menu = Menu::create(playItem, NULL);
-    menu->setPosition(Point::ZERO);
-    this->addChild(menu);
+    {
+        // Play Menu Item
+        auto playItem = MenuItemImage::create("play.png", "playclicked.png",
+                                              CC_CALLBACK_1(MainMenuLayer::goToGamePlayLayer, this));
+        playItem->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+        auto menu = Menu::create(playItem, NULL);
+        menu->setPosition(Point::ZERO);
+        this->addChild(menu);
+    }
+    
+    {
+        // Country toggle
+        MenuItem* france = MenuItemImage::create("france.png", "france.png");
+        MenuItem* england = MenuItemImage::create("england.png", "england.png");
+        MenuItemToggle* countryToggleItem = MenuItemToggle::createWithCallback(CC_CALLBACK_1(MainMenuLayer::toggleCountry, this), france, england, NULL);
+        Menu* countryToggleMenu = Menu::create(countryToggleItem, NULL);
+        countryToggleMenu->setPosition(Vec2(visibleSize.width / 2, countryToggleItem->getContentSize().height + 10));
+        this->addChild(countryToggleMenu);
+        
+        toggleCountry(this);
+    }
+    
     
     return true;
 }
 
-void MainMenuLayer::GoToGamePlayLayer(cocos2d::Ref* sender)
+void MainMenuLayer::goToGamePlayLayer(cocos2d::Ref* sender)
 {
     auto scene = GameLayer::createScene();
     Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
+}
+
+void MainMenuLayer::toggleCountry(cocos2d::Ref* sender) {
+    _countryFrance = !_countryFrance;
+    CCLOG("Country Selected: %s", _countryFrance? "France":"England");
+
+    
+    std::vector<std::string> searchPaths;
+    if (_countryFrance) {
+        searchPaths.push_back("ipad/france");
+    } else {
+        searchPaths.push_back("ipad/england");
+    }
+    
+    auto fileUtils = FileUtils::getInstance();
+    fileUtils->setSearchPaths(searchPaths);
 }
 
 

@@ -33,7 +33,7 @@ bool SplashScreenLayer::init()
     Size visibleSize = Director::getInstance()->getVisibleSize();
 
     // schedule SplashScreen and Transition to MainMenu
-    this->scheduleOnce(schedule_selector(SplashScreenLayer::GoToMainMenuLayer), DISPLAY_TIME_SPLASH_SCREEN);
+    this->scheduleOnce(schedule_selector(SplashScreenLayer::goToMainMenuLayer), DISPLAY_TIME_SPLASH_SCREEN);
     auto backgroundSprite = Sprite::create("splashscreen.png");
     CCLOG("splashscreen.width,height %f, %f", backgroundSprite->getContentSize().width, backgroundSprite->getContentSize().height);
     backgroundSprite->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
@@ -42,7 +42,7 @@ bool SplashScreenLayer::init()
     return true;
 }
 
-void SplashScreenLayer::GoToMainMenuLayer(float dt)
+void SplashScreenLayer::goToMainMenuLayer(float dt)
 {
     auto scene = MainMenuLayer::createScene();
     Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));

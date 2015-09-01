@@ -20,7 +20,7 @@ public:
 // Added Functions
 //    void update (float dt);
 private:
-    void GoToMainMenuLayer(float dt);
+    void goToMainMenuLayer(float dt);
     
 };
 
