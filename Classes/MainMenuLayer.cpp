@@ -76,8 +76,10 @@ void MainMenuLayer::toggleCountry(cocos2d::Ref* sender) {
     
     std::vector<std::string> searchPaths;
     if (_countryFrance) {
+        searchPaths.push_back("ipad");
         searchPaths.push_back("ipad/france");
     } else {
+        searchPaths.push_back("ipad");
         searchPaths.push_back("ipad/england");
     }
     
