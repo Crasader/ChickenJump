@@ -47,7 +47,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
     // Handling different screen size
     {
         Size screenSize = glview->getFrameSize();
-        Size designSize = Size(2048, 1536);
+//        Size designSize = Size(2048, 1536);
+        Size designSize = Size(1024, 768);
 
         glview->setDesignResolutionSize(designSize.width, designSize.height, ResolutionPolicy::FIXED_WIDTH);
 

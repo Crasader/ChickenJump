@@ -41,7 +41,7 @@ void Trampoline::createTrampoline(cocos2d::Layer* layer, Vec2 lineStartPoint, Ve
     
     int numberOfSpritesNeeded = distance / trampolineWidth - 1;
     
-    for (int i = 0; i < numberOfSpritesNeeded; i+=2) {
+    for (int i = 0; i < numberOfSpritesNeeded; ++i) {
         /* in real, half of the sprites are enough, so i+=2 */
         
         auto sprite = Sprite::create(_imageFile);

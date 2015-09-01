@@ -128,18 +128,29 @@ bool GameLayer::onTouchBegan(Touch* touch, Event* event) {
 }
 
 void GameLayer::onTouchMoved(Touch* touch, Event* event) {
-
-}
-
-void GameLayer::onTouchEnded(Touch* touch, Event* event) {
-    if (touch->getLocation() == _lineStartPoint) {
-        return;
-    }
+    if (touch->getLocation() == _lineStartPoint) { return; }
+    if (touch->getLocation().distance(_lineStartPoint) < 30) { return; }
     
     _lineEndPoint = touch->getLocation();
     
+    // Remove old trampoline
+    if (_trampoline) {
+        this->removeChild(_trampoline->getTrampoline());
+        _trampoline = nullptr;
+    }
+    
+    // Create new trampoline
     _trampoline = new Trampoline();
     _trampoline->createTrampoline(this, _lineStartPoint, _lineEndPoint);
+}
+
+void GameLayer::onTouchEnded(Touch* touch, Event* event) {
+//    if (touch->getLocation() == _lineStartPoint) { return; }
+//    
+//    _lineEndPoint = touch->getLocation();
+//    
+//    _trampoline = new Trampoline();
+//    _trampoline->createTrampoline(this, _lineStartPoint, _lineEndPoint);
 }
 
 bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
