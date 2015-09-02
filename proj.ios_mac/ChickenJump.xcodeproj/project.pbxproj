@@ -58,14 +58,8 @@
 		D44C620C132DFF330009C878 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D44C620B132DFF330009C878 /* OpenAL.framework */; };
 		D44C620E132DFF430009C878 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D44C620D132DFF430009C878 /* AVFoundation.framework */; };
 		D44C6210132DFF4E0009C878 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D44C620F132DFF4E0009C878 /* AudioToolbox.framework */; };
-		D5253AA81B077B9100AFC291 /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5253AA61B077B9100AFC291 /* Player.cpp */; };
-		D5253AA91B077B9100AFC291 /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5253AA61B077B9100AFC291 /* Player.cpp */; };
 		D5253ABB1B088B0500AFC291 /* blank.png in Resources */ = {isa = PBXBuildFile; fileRef = D5253ABA1B088B0500AFC291 /* blank.png */; };
 		D5253ABC1B088B0500AFC291 /* blank.png in Resources */ = {isa = PBXBuildFile; fileRef = D5253ABA1B088B0500AFC291 /* blank.png */; };
-		D5253ABF1B13D11300AFC291 /* Block.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5253ABD1B13D11300AFC291 /* Block.cpp */; };
-		D5253AC01B13D11300AFC291 /* Block.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5253ABD1B13D11300AFC291 /* Block.cpp */; };
-		D5253AC81B13DF7300AFC291 /* GameTerrain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5253AC61B13DF7300AFC291 /* GameTerrain.cpp */; };
-		D5253AC91B13DF7300AFC291 /* GameTerrain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5253AC61B13DF7300AFC291 /* GameTerrain.cpp */; };
 		D52BDA041B864CBE0049A538 /* SplashScreenLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D52BDA021B864CBE0049A538 /* SplashScreenLayer.cpp */; };
 		D52BDA051B864CBE0049A538 /* SplashScreenLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D52BDA021B864CBE0049A538 /* SplashScreenLayer.cpp */; };
 		D52BDA081B864E8E0049A538 /* GameLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D52BDA061B864E8E0049A538 /* GameLayer.cpp */; };
@@ -189,13 +183,7 @@
 		D44C620B132DFF330009C878 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 		D44C620D132DFF430009C878 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		D44C620F132DFF4E0009C878 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
-		D5253AA61B077B9100AFC291 /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Player.cpp; sourceTree = "<group>"; };
-		D5253AA71B077B9100AFC291 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
 		D5253ABA1B088B0500AFC291 /* blank.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blank.png; sourceTree = "<group>"; };
-		D5253ABD1B13D11300AFC291 /* Block.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Block.cpp; sourceTree = "<group>"; };
-		D5253ABE1B13D11300AFC291 /* Block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Block.h; sourceTree = "<group>"; };
-		D5253AC61B13DF7300AFC291 /* GameTerrain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameTerrain.cpp; sourceTree = "<group>"; };
-		D5253AC71B13DF7300AFC291 /* GameTerrain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameTerrain.h; sourceTree = "<group>"; };
 		D52BDA021B864CBE0049A538 /* SplashScreenLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SplashScreenLayer.cpp; sourceTree = "<group>"; };
 		D52BDA031B864CBE0049A538 /* SplashScreenLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplashScreenLayer.h; sourceTree = "<group>"; };
 		D52BDA061B864E8E0049A538 /* GameLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameLayer.cpp; sourceTree = "<group>"; };
@@ -439,20 +427,14 @@
 			children = (
 				D52BDA421B8A66270049A538 /* Background.h */,
 				D52BDA411B8A66270049A538 /* Background.cpp */,
-				D5253ABE1B13D11300AFC291 /* Block.h */,
-				D5253ABD1B13D11300AFC291 /* Block.cpp */,
 				D59103D31B8BA5D5005E5CD9 /* Chicken.h */,
 				D59103D21B8BA5D5005E5CD9 /* Chicken.cpp */,
 				D59103D61B8BC1A5005E5CD9 /* Cloud.h */,
 				D59103D51B8BC1A5005E5CD9 /* Cloud.cpp */,
-				D5253AC61B13DF7300AFC291 /* GameTerrain.cpp */,
-				D5253AC71B13DF7300AFC291 /* GameTerrain.h */,
 				D5BDFD171B8FCAC70031AE1B /* LayerGround.h */,
 				D5BDFD161B8FCAC70031AE1B /* LayerGround.cpp */,
 				D5BDFD131B8FB5000031AE1B /* LayerTwo.h */,
 				D5BDFD121B8FB5000031AE1B /* LayerTwo.cpp */,
-				D5253AA71B077B9100AFC291 /* Player.h */,
-				D5253AA61B077B9100AFC291 /* Player.cpp */,
 				D575D0F41B94DD0D0082D427 /* Trampoline.h */,
 				D575D0F31B94DD0D0082D427 /* Trampoline.cpp */,
 				D52BDA461B8A94000049A538 /* Tree.h */,
@@ -624,16 +606,13 @@
 				D59103D41B8BA5D5005E5CD9 /* Chicken.cpp in Sources */,
 				D52BDA471B8A94000049A538 /* Tree.cpp in Sources */,
 				D575D0F51B94DD0D0082D427 /* Trampoline.cpp in Sources */,
-				D5253AA81B077B9100AFC291 /* Player.cpp in Sources */,
 				D52BDA041B864CBE0049A538 /* SplashScreenLayer.cpp in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
 				D52BDA431B8A66270049A538 /* Background.cpp in Sources */,
 				D52BDA081B864E8E0049A538 /* GameLayer.cpp in Sources */,
 				D52BDA0F1B8676250049A538 /* Constants.h in Sources */,
 				D5BDFD141B8FB5000031AE1B /* LayerTwo.cpp in Sources */,
-				D5253ABF1B13D11300AFC291 /* Block.cpp in Sources */,
 				D5BDFD181B8FCAC70031AE1B /* LayerGround.cpp in Sources */,
-				D5253AC81B13DF7300AFC291 /* GameTerrain.cpp in Sources */,
 				D5BDF2E91B8647EF002A11C2 /* MainMenuLayer.cpp in Sources */,
 				503AE10117EB989F00D1A890 /* main.m in Sources */,
 			);
@@ -644,12 +623,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				D52BDA0D1B8651CC0049A538 /* GameOverLayer.cpp in Sources */,
-				D5253AC01B13D11300AFC291 /* Block.cpp in Sources */,
 				D5BDFD151B8FB5000031AE1B /* LayerTwo.cpp in Sources */,
 				46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */,
 				D5BDFD191B8FCAC70031AE1B /* LayerGround.cpp in Sources */,
-				D5253AC91B13DF7300AFC291 /* GameTerrain.cpp in Sources */,
-				D5253AA91B077B9100AFC291 /* Player.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
 				D52BDA091B864E8E0049A538 /* GameLayer.cpp in Sources */,
 				D575D0F61B94DD0D0082D427 /* Trampoline.cpp in Sources */,

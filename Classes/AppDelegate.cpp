@@ -70,7 +70,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     
     auto audioEngine = CocosDenshion::SimpleAudioEngine::getInstance();
     audioEngine->preloadEffect("jump.wav");
-    audioEngine->setEffectsVolume(0.5f);
+    audioEngine->setEffectsVolume(1.0f);
 
 
     register_all_packages();
