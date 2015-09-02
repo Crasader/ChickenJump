@@ -41,6 +41,8 @@ void Chicken::createChicken(cocos2d::Layer *layer) {
 }
 
 void Chicken::setState(PlayerState state) {
+    if (not _chicken) { return; }
+    
     _state = state;
     if (state == PlayerState::Jumping) {
         _vector.y = _visibleSize.height * VELOCITY_Y_MAX;
@@ -48,7 +50,8 @@ void Chicken::setState(PlayerState state) {
 }
 
 void Chicken::update(float dt) {
-//    CCLOG("Player's Position x:%f, y:%f", _chicken->getPositionX(), _chicken->getPositionY());
+    if (not _chicken) { return; }
+    
     if (_state != PlayerState::Dying) {
         _chicken->setPositionY(_chicken->getPositionY() + _vector.y);
     }

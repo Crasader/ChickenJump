@@ -3,6 +3,7 @@
 #include "Cloud.h"
 #include "Constants.h"
 #include "MainMenuLayer.h"
+#include "SimpleAudioEngine.h"
 #include "Tree.h"
 
 using namespace cocos2d;
@@ -129,7 +130,7 @@ bool GameLayer::onTouchBegan(Touch* touch, Event* event) {
 
 void GameLayer::onTouchMoved(Touch* touch, Event* event) {
     if (touch->getLocation() == _lineStartPoint) { return; }
-    if (touch->getLocation().distance(_lineStartPoint) < 30) { return; }
+    if (touch->getLocation().distance(_lineStartPoint) < 30) { return; } // 30 is just trampoline's sprites twice width
     
     _lineEndPoint = touch->getLocation();
     
@@ -145,12 +146,7 @@ void GameLayer::onTouchMoved(Touch* touch, Event* event) {
 }
 
 void GameLayer::onTouchEnded(Touch* touch, Event* event) {
-//    if (touch->getLocation() == _lineStartPoint) { return; }
-//    
-//    _lineEndPoint = touch->getLocation();
-//    
-//    _trampoline = new Trampoline();
-//    _trampoline->createTrampoline(this, _lineStartPoint, _lineEndPoint);
+    if (_trampoline) { _trampoline->setDrawingFinished(true); }
 }
 
 bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
@@ -164,6 +160,7 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
         // Jump only if the Chicken is within the visible size range
         if (_chicken->getChicken()->getPositionY() <= _visibleSize.height) {
             _chicken->setState(PlayerState::Jumping);
+            CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("jump.wav");
         }
     }
     

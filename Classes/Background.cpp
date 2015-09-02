@@ -8,10 +8,7 @@ Background::Background(void){
 }
 
 void Background::createBackground(cocos2d::Layer* layer) {
-//    auto bg = Sprite::create("bg.png");
-//    bg->setPosition(Vec2(_visibleSize.width * 0.5f, _visibleSize.height * 0.5f));
-//    layer->addChild(bg);
-
+    
     _background = Sprite::create(_imageFile);
     _background->setAnchorPoint(Vec2(0,0));
     _background->setPosition(Point(0, _visibleSize.height / 2 - _background->getContentSize().height / 2));
@@ -31,6 +28,8 @@ void Background::createBackground(cocos2d::Layer* layer) {
 }
 
 void Background::update(float dt) {
+    if (not _background) { return; }
+    
     _background->setPositionX(_background->getPosition().x - std::abs(LAYER_ONE_SPEED * _visibleSize.width));
     
     float diffx;

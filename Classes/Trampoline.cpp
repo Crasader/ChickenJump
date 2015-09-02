@@ -7,7 +7,7 @@ Trampoline::Trampoline(void){
     _visibleSize = Director::getInstance()->getVisibleSize();
 }
 
-Sprite* Trampoline::getTrampoline() {
+Sprite* Trampoline::getTrampoline() const {
     return _trampoline;
 }
 
@@ -67,12 +67,8 @@ void Trampoline::createTrampoline(cocos2d::Layer* layer, Vec2 lineStartPoint, Ve
 }
 
 void Trampoline::update(float dt) {
-    _trampoline->setPositionX(_trampoline->getPosition().x - std::abs(LAYER_GROUND_SPEED * _visibleSize.width));
-    
-    float diffx;
-    if (_trampoline->getPositionX() < -_trampoline->getContentSize().width) {
-        diffx = fabs(_trampoline->getPositionX()) - _trampoline->getContentSize().width;
-        _trampoline->setPositionX(-diffx);
+    if (_isDrawingFinished and not _trampoline) {
+        _trampoline->setPositionX(_trampoline->getPosition().x - std::abs(LAYER_GROUND_SPEED * _visibleSize.width));
     }
 }
 

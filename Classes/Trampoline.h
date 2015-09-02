@@ -9,12 +9,14 @@ class Trampoline {
 public:
     Trampoline(void);
     void createTrampoline(cocos2d::Layer* layer, Vec2 lineStartPoint, Vec2 lineEndPoint);
-    Sprite* getTrampoline();
+    Sprite* getTrampoline() const;
+    inline void setDrawingFinished(bool val) { _isDrawingFinished = val; }
     void update(float dt);
     
 private:
     Sprite* _trampoline;
     std::string const _imageFile = "trampoline.png";
+    bool _isDrawingFinished;
     Vec2 _origin;
     Size _visibleSize;
 };

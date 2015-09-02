@@ -1,5 +1,6 @@
 #include "AppDelegate.h"
 #include "SplashScreenLayer.h"
+#include "SimpleAudioEngine.h"
 
 using namespace cocos2d;
 
@@ -66,6 +67,10 @@ bool AppDelegate::applicationDidFinishLaunching() {
         auto fileUtils = FileUtils::getInstance();
         fileUtils->setSearchPaths(searchPaths);
     }
+    
+    auto audioEngine = CocosDenshion::SimpleAudioEngine::getInstance();
+    audioEngine->preloadEffect("jump.wav");
+    audioEngine->setEffectsVolume(0.5f);
 
 
     register_all_packages();

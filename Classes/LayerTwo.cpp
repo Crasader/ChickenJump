@@ -28,6 +28,8 @@ void LayerTwo::createLayerTwo(cocos2d::Layer* layer) {
 }
 
 void LayerTwo::update(float dt) {
+    if (not _layerTow) { return; }
+    
     _layerTow->setPositionX(_layerTow->getPosition().x - std::abs(LAYER_TWO_SPEED * _visibleSize.width));
     
     float diffx;

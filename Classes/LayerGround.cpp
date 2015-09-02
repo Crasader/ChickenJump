@@ -28,6 +28,8 @@ void LayerGround::createLayerGround(cocos2d::Layer* layer) {
 }
 
 void LayerGround::update(float dt) {
+    if (not _layerGround) { return; }
+    
     _layerGround->setPositionX(_layerGround->getPosition().x - std::abs(LAYER_GROUND_SPEED * _visibleSize.width));
     
     float diffx;
