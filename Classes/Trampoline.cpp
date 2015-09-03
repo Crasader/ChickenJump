@@ -5,6 +5,7 @@
 Trampoline::Trampoline(void){
     _origin = Director::getInstance()->getVisibleOrigin();
     _visibleSize = Director::getInstance()->getVisibleSize();
+    _isDrawingFinished = false;
 }
 
 Sprite* Trampoline::getTrampoline() const {
