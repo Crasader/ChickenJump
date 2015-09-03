@@ -84,8 +84,8 @@
 		D52BDA401B8883590049A538 /* iphone in Resources */ = {isa = PBXBuildFile; fileRef = D52BDA3A1B8883590049A538 /* iphone */; };
 		D52BDA431B8A66270049A538 /* Background.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D52BDA411B8A66270049A538 /* Background.cpp */; };
 		D52BDA441B8A66270049A538 /* Background.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D52BDA411B8A66270049A538 /* Background.cpp */; };
-		D52BDA471B8A94000049A538 /* Tree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D52BDA451B8A94000049A538 /* Tree.cpp */; };
-		D52BDA481B8A94000049A538 /* Tree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D52BDA451B8A94000049A538 /* Tree.cpp */; };
+		D52BDA471B8A94000049A538 /* Egg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D52BDA451B8A94000049A538 /* Egg.cpp */; };
+		D52BDA481B8A94000049A538 /* Egg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D52BDA451B8A94000049A538 /* Egg.cpp */; };
 		D575D0F51B94DD0D0082D427 /* Trampoline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D575D0F31B94DD0D0082D427 /* Trampoline.cpp */; };
 		D575D0F61B94DD0D0082D427 /* Trampoline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D575D0F31B94DD0D0082D427 /* Trampoline.cpp */; };
 		D59103D41B8BA5D5005E5CD9 /* Chicken.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D59103D21B8BA5D5005E5CD9 /* Chicken.cpp */; };
@@ -200,8 +200,8 @@
 		D52BDA3A1B8883590049A538 /* iphone */ = {isa = PBXFileReference; lastKnownFileType = folder; path = iphone; sourceTree = "<group>"; };
 		D52BDA411B8A66270049A538 /* Background.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Background.cpp; sourceTree = "<group>"; };
 		D52BDA421B8A66270049A538 /* Background.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Background.h; sourceTree = "<group>"; };
-		D52BDA451B8A94000049A538 /* Tree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tree.cpp; sourceTree = "<group>"; };
-		D52BDA461B8A94000049A538 /* Tree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tree.h; sourceTree = "<group>"; };
+		D52BDA451B8A94000049A538 /* Egg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Egg.cpp; sourceTree = "<group>"; };
+		D52BDA461B8A94000049A538 /* Egg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Egg.h; sourceTree = "<group>"; };
 		D575D0F31B94DD0D0082D427 /* Trampoline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Trampoline.cpp; sourceTree = "<group>"; };
 		D575D0F41B94DD0D0082D427 /* Trampoline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Trampoline.h; sourceTree = "<group>"; };
 		D59103D21B8BA5D5005E5CD9 /* Chicken.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Chicken.cpp; sourceTree = "<group>"; };
@@ -437,8 +437,8 @@
 				D5BDFD121B8FB5000031AE1B /* LayerTwo.cpp */,
 				D575D0F41B94DD0D0082D427 /* Trampoline.h */,
 				D575D0F31B94DD0D0082D427 /* Trampoline.cpp */,
-				D52BDA461B8A94000049A538 /* Tree.h */,
-				D52BDA451B8A94000049A538 /* Tree.cpp */,
+				D52BDA461B8A94000049A538 /* Egg.h */,
+				D52BDA451B8A94000049A538 /* Egg.cpp */,
 			);
 			name = Sprite;
 			sourceTree = "<group>";
@@ -604,7 +604,7 @@
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
 				D52BDA0C1B8651CC0049A538 /* GameOverLayer.cpp in Sources */,
 				D59103D41B8BA5D5005E5CD9 /* Chicken.cpp in Sources */,
-				D52BDA471B8A94000049A538 /* Tree.cpp in Sources */,
+				D52BDA471B8A94000049A538 /* Egg.cpp in Sources */,
 				D575D0F51B94DD0D0082D427 /* Trampoline.cpp in Sources */,
 				D52BDA041B864CBE0049A538 /* SplashScreenLayer.cpp in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
@@ -631,7 +631,7 @@
 				D575D0F61B94DD0D0082D427 /* Trampoline.cpp in Sources */,
 				D52BDA101B8676250049A538 /* Constants.h in Sources */,
 				D5BDF2EA1B8647EF002A11C2 /* MainMenuLayer.cpp in Sources */,
-				D52BDA481B8A94000049A538 /* Tree.cpp in Sources */,
+				D52BDA481B8A94000049A538 /* Egg.cpp in Sources */,
 				D52BDA051B864CBE0049A538 /* SplashScreenLayer.cpp in Sources */,
 				D52BDA441B8A66270049A538 /* Background.cpp in Sources */,
 			);

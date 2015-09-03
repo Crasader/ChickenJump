@@ -17,7 +17,7 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
                    ../../Classes/GameLayer.cpp \
                    ../../Classes/GameOverLayer.cpp \
                    ../../Classes/Background.cpp \
-                   ../../Classes/Tree.cpp \
+                   ../../Classes/Egg.cpp \
                    ../../Classes/Chicken.cpp \
                    ../../Classes/Cloud.cpp \
                    ../../Classes/LayerGround.cpp \

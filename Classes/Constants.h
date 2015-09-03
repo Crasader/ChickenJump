@@ -43,10 +43,11 @@ typedef enum
 #define COLLISION_BITMASK_CHICKEN       0x000001
 #define COLLISION_BITMASK_OBSTACLE      0x000002
 #define COLLISION_BITMASK_GROUND        0x000003
+#define COLLISION_BITMASK_EGG           0x000004
 
 
 // TREE
 #define TREE_SPAWN_FREQUENCY            0.001
-#define TREE_SPEED                      0.004
+#define TREE_SPEED                      0.010
 
 #endif // __CONSTANTS_H__

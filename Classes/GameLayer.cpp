@@ -4,7 +4,7 @@
 #include "Constants.h"
 #include "MainMenuLayer.h"
 #include "SimpleAudioEngine.h"
-#include "Tree.h"
+#include "Egg.h"
 
 using namespace cocos2d;
 
@@ -64,15 +64,15 @@ bool GameLayer::init()
     _layerGround = new LayerGround();
     _layerGround->createLayerGround(this);
     
-    // Spawn tree
-//    this->schedule(schedule_selector(GameLayer::spawnTree), TREE_SPAWN_FREQUENCY * _visibleSize.width);
-
     // Spawn cloud
     this->schedule(schedule_selector(GameLayer::spawnCloud), CLOUD_SPAWN_FREQUENCY * _visibleSize.width);
     
-    // Add Chicken
+    // Add chicken
     _chicken = new Chicken();
     _chicken->createChicken(this);
+    
+    // Spawn egg
+    this->schedule(schedule_selector(GameLayer::spawnEgg), TREE_SPAWN_FREQUENCY * _visibleSize.width);
     
     
     // Listen for touches
@@ -104,9 +104,9 @@ void GameLayer::update(float dt) {
     if (_trampoline) { _trampoline->update(dt); }
 }
 
-void GameLayer::spawnTree(float dt) {
-    Tree* tree = new Tree();
-    tree->spawn(this);
+void GameLayer::spawnEgg(float dt) {
+    Egg* egg = new Egg();
+    egg->spawn(this, _eggs);
 }
 
 void GameLayer::spawnCloud(float dt) {
@@ -154,6 +154,7 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
     PhysicsBody* a = contact.getShapeA()->getBody();
     PhysicsBody* b = contact.getShapeB()->getBody();
     
+    // collision between chicken and trampoline
     if ((a->getCollisionBitmask() == COLLISION_BITMASK_CHICKEN and b->getCollisionBitmask() == COLLISION_BITMASK_OBSTACLE) or
         (b->getCollisionBitmask() == COLLISION_BITMASK_CHICKEN and a->getCollisionBitmask() == COLLISION_BITMASK_OBSTACLE)) {
         
@@ -164,6 +165,7 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
         }
     }
     
+    // collision between chicken and screen edges
     if ((a->getCollisionBitmask() == COLLISION_BITMASK_CHICKEN and b->getCollisionBitmask() == COLLISION_BITMASK_GROUND) or
         (b->getCollisionBitmask() == COLLISION_BITMASK_CHICKEN and a->getCollisionBitmask() == COLLISION_BITMASK_GROUND)) {
         
@@ -171,8 +173,33 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
         Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
     }
     
+    // collision between chicken and eggs
+    if (a->getCollisionBitmask() == COLLISION_BITMASK_CHICKEN and b->getCollisionBitmask() == COLLISION_BITMASK_EGG) {
+        auto egg = (Sprite*)contact.getShapeB()->getBody()->getNode();
+        // Remove colided egg
+        if (egg) {
+            this->removeChild(egg);
+            if (std::find(_eggs.begin(), _eggs.end(), egg) != _eggs.end()) {
+                _eggs.erase(std::find(_eggs.begin(), _eggs.end(), egg));
+            }
+        }
+
+    }
+    else if (b->getCollisionBitmask() == COLLISION_BITMASK_CHICKEN and a->getCollisionBitmask() == COLLISION_BITMASK_EGG) {
+        auto egg = (Sprite*)contact.getShapeA()->getBody()->getNode();
+        // Remove colided egg
+        if (egg) {
+            this->removeChild(egg);
+            if (std::find(_eggs.begin(), _eggs.end(), egg) != _eggs.end()) {
+                _eggs.erase(std::find(_eggs.begin(), _eggs.end(), egg));
+            }
+        }
+        
+    }
+    
     return true;
 }
+
 
 
 

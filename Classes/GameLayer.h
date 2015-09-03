@@ -30,12 +30,11 @@ public:
     
     bool onContactBegin(cocos2d::PhysicsContact &contact);
     
-    // Added Functions
     void update(float dt);
     
 private:
     void setPhysicsWorld(cocos2d::PhysicsWorld *world) { _sceneWorld = world; }
-    void spawnTree(float dt);
+    void spawnEgg(float dt);
     void spawnCloud(float dt);
     
     cocos2d::PhysicsWorld *_sceneWorld;
@@ -45,6 +44,7 @@ private:
     LayerGround* _layerGround;
     Chicken* _chicken;
     Trampoline* _trampoline;
+    std::vector<Sprite*> _eggs;
     
     Vec2 _lineStartPoint;
     Vec2 _lineEndPoint;
