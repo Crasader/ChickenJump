@@ -181,6 +181,7 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
             this->removeChild(egg);
             if (std::find(_eggs.begin(), _eggs.end(), egg) != _eggs.end()) {
                 _eggs.erase(std::find(_eggs.begin(), _eggs.end(), egg));
+                CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("pickup_coin.wav");
             }
         }
 
@@ -192,6 +193,7 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
             this->removeChild(egg);
             if (std::find(_eggs.begin(), _eggs.end(), egg) != _eggs.end()) {
                 _eggs.erase(std::find(_eggs.begin(), _eggs.end(), egg));
+                CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("pickup_coin.wav");
             }
         }
         
