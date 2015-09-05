@@ -5,7 +5,11 @@
 Trampoline::Trampoline(void){
     _origin = Director::getInstance()->getVisibleOrigin();
     _visibleSize = Director::getInstance()->getVisibleSize();
+    _trampoline = Sprite::create();     // Think it as the HEAD of a Linked List
     _isDrawingFinished = false;
+    _spriteToKnowContentWidth = Sprite::create(_imageFile);
+    _trampolineWidth = _spriteToKnowContentWidth->getContentSize().width;
+
 }
 
 Sprite* Trampoline::getTrampoline() const {
@@ -13,10 +17,7 @@ Sprite* Trampoline::getTrampoline() const {
 }
 
 void Trampoline::createTrampoline(cocos2d::Layer* layer, Vec2 lineStartPoint, Vec2 lineEndPoint) {
-    CCLOG("T LineStartPoint x:%f, y:%f", lineStartPoint.x, lineStartPoint.y);
-    CCLOG("T LineEndPoint x:%f, y:%f", lineEndPoint.x, lineEndPoint.y);
     
-    _trampoline = Sprite::create();     // Think it as the HEAD of a Linked List
     _trampoline->setPosition(Vec2(lineStartPoint.x, lineStartPoint.y));
     _trampoline->setAnchorPoint(Vec2(0, 0));
     
@@ -35,26 +36,18 @@ void Trampoline::createTrampoline(cocos2d::Layer* layer, Vec2 lineStartPoint, Ve
         xDist = (lineEndPoint.x - lineStartPoint.x);
         yDist = (lineEndPoint.y - lineStartPoint.y);
     }
-    
-    
-    float trampolineWidth = 15.0f;
-    float trampolineHeight = 15.0f;
-    
-    int numberOfSpritesNeeded = distance / trampolineWidth - 1;
-    
-    for (int i = 0; i < numberOfSpritesNeeded; ++i) {
-        /* in real, half of the sprites are enough, so i+=2 */
         
+    int numberOfSpritesNeeded = distance / _trampolineWidth - 1;
+    
+    for (int i = 0; i < numberOfSpritesNeeded; ++i) {        
         auto sprite = Sprite::create(_imageFile);
         sprite->setPosition( Vec2((i * (xDist/numberOfSpritesNeeded)),
                                   (i * (yDist/numberOfSpritesNeeded))) );
         
-        CCLOG("Trampoline(%d) Position x:%f, y:%f", i, sprite->getPositionX(), sprite->getPositionY());
-        
         sprite->setAnchorPoint(Vec2(0, 0));
         
         // create a static PhysicsBody and set it to the sprite
-        auto physicsBody = PhysicsBody::createCircle(trampolineWidth / 2, PhysicsMaterial(0.0f, 0.0f, 0.0f));
+        auto physicsBody = PhysicsBody::createCircle(_trampolineWidth / 2, PhysicsMaterial(0.0f, 0.0f, 0.0f));
         physicsBody->setCollisionBitmask(COLLISION_BITMASK_OBSTACLE);
         physicsBody->setContactTestBitmask(true);
         physicsBody->setDynamic(false);

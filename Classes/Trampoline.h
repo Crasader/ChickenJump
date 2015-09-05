@@ -15,6 +15,8 @@ public:
     
 private:
     Sprite* _trampoline;
+    Sprite* _spriteToKnowContentWidth;
+    float _trampolineWidth;
     std::string const _imageFile = "trampoline.png";
     bool _isDrawingFinished;
     Vec2 _origin;
