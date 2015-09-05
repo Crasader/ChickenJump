@@ -1,5 +1,6 @@
 #include "LayerGround.h"
 
+#include "Chicken.h"
 #include "Constants.h"
 
 LayerGround::LayerGround(void){
@@ -27,10 +28,9 @@ void LayerGround::createLayerGround(cocos2d::Layer* layer) {
     layer->addChild(_layerGround, BackgroundLayer::layerGround);
 }
 
-void LayerGround::update(float dt) {
+void LayerGround::update(float playerSpeed) {
     if (not _layerGround) { return; }
-    
-    _layerGround->setPositionX(_layerGround->getPosition().x - std::abs(LAYER_GROUND_SPEED * _visibleSize.width));
+    _layerGround->setPositionX(_layerGround->getPosition().x - LAYER_GROUND_SPEED * _visibleSize.width * playerSpeed);
     
     float diffx;
     if (_layerGround->getPositionX() < -_layerGround->getContentSize().width) {

@@ -11,7 +11,7 @@ public:
     void createTrampoline(cocos2d::Layer* layer, Vec2 lineStartPoint, Vec2 lineEndPoint);
     Sprite* getTrampoline() const;
     inline void setDrawingFinished(bool val) { _isDrawingFinished = val; }
-    void update(float dt);
+    void update(float playerSpeed);
     
 private:
     Sprite* _trampoline;

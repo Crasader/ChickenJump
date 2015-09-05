@@ -20,17 +20,21 @@ public:
     Chicken(void);
     void createChicken(cocos2d::Layer* layer);
     Sprite* getChicken() { return _chicken; }
+    float getSpeedX();
+    void increaseSpeedX();
+    void decreaseSpeedX();
     void setState(PlayerState state);
     inline void setVectorX(int x) { _vector.x = x; }
     inline void setVectorY(int y) { _vector.y = y; }
     void update(float dt);
+    void altufaltu();
 
 private:
     Vec2 _origin;
     Size _visibleSize;
     Sprite* _chicken;
     PlayerState _state;
-    Point _vector;
+    Vec2 _vector;
     
     std::string const _imageFile = "playerfly_1.png";
 };

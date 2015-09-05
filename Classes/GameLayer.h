@@ -36,6 +36,7 @@ private:
     void setPhysicsWorld(cocos2d::PhysicsWorld *world) { _sceneWorld = world; }
     void spawnEgg(float dt);
     void spawnCloud(float dt);
+    void speedUp(float dt);
     
     cocos2d::PhysicsWorld *_sceneWorld;
     

@@ -9,8 +9,11 @@ Chicken::Chicken(void){
 
 void Chicken::createChicken(cocos2d::Layer *layer) {
     _chicken = Sprite::create(_imageFile);
-//    if (! _chicken) { return; }
+    if (! _chicken) { return; }
+    
+    _vector.x = 1.0; // initial speedX
     _state = PlayerState::Falling;
+    
     _chicken->setPosition(_visibleSize.width / 3 + _origin.x, _visibleSize.height / 5 * 4 + _origin.y);
     
     // Adjusting big png
@@ -50,6 +53,24 @@ void Chicken::setState(PlayerState state) {
     }
 }
 
+float Chicken::getSpeedX() {
+    return _vector.x;
+}
+
+void Chicken::increaseSpeedX() {
+    _vector.x *= 1.5;   // increase speed by 1.5
+    if (_vector.x >= MAX_SPEED_X) {
+        _vector.x = MAX_SPEED_X;
+    }
+}
+
+void Chicken::decreaseSpeedX() {
+    _vector.x /= 1.5;
+    if (_vector.x <= 1) {
+        _vector.x = 1;
+    }
+}
+
 void Chicken::update(float dt) {
     if (not _chicken) { return; }
     
@@ -63,7 +84,6 @@ void Chicken::update(float dt) {
             break;
         case Jumping:
             _vector.y -= _visibleSize.height * VELOCITY_Y_DECREASE_RATE;
-            CCLOG("vector.y %f", _vector.y);
             if (_vector.y <= 0) {
                 _state = PlayerState::Falling;
             }
@@ -84,7 +104,10 @@ void Chicken::update(float dt) {
     }
 }
 
-
+void Chicken::altufaltu() {
+    _state = PlayerState::Dying;
+    _vector.x = 3;
+}
 
 
 

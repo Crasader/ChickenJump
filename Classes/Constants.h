@@ -21,8 +21,8 @@ typedef enum
 #define TRANSITION_TIME                 0.5
 
 // LAYERS
-#define LAYER_ONE_SPEED                 0.0005  // (Bigger = Faster)
-#define LAYER_TWO_SPEED                 0.001   // (Bigger = Faster)
+#define LAYER_ONE_SPEED                 0.0007  // (Bigger = Faster)
+#define LAYER_TWO_SPEED                 0.002   // (Bigger = Faster)
 #define LAYER_GROUND_SPEED              0.002   // (Bigger = Faster)
 
 // CLOUD
@@ -30,6 +30,8 @@ typedef enum
 #define CLOUD_SPEED                     0.020   // Amount of time the cloud gets to cross the screen (Bigger = Slow)
 
 // CHICKEN
+#define SPEED_CHANGE_FREQUENCY          0.01
+#define MAX_SPEED_X                     10 // = starting speed times 10
 #define ACCELERATION                    0.5
 #define INITIAL_SPEED                   8
 #define FORCE_GRAVITY                   1.5
@@ -40,10 +42,10 @@ typedef enum
 #define VELOCITY_Y_DECREASE_RATE        0.0003   // 0.0001 // ScreenHeight x .0001 | .0003 = 0.027 | .081 (Bigger = More)
 
 // COLLISION BITMASKS
-#define COLLISION_BITMASK_CHICKEN       0x000001
-#define COLLISION_BITMASK_OBSTACLE      0x000002
-#define COLLISION_BITMASK_GROUND        0x000003
-#define COLLISION_BITMASK_EGG           0x000004
+#define COLLISION_BITMASK_CHICKEN       0x0001
+#define COLLISION_BITMASK_OBSTACLE      0x0002
+#define COLLISION_BITMASK_GROUND        0x0003
+#define COLLISION_BITMASK_EGG           0x0004
 
 
 // TREE

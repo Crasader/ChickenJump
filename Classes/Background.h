@@ -9,7 +9,7 @@ class Background {
 public:
     Background(void);
     void createBackground(cocos2d::Layer* layer);
-    void update(float dt);
+    void update(float playerSpeed);
     
 private:
     Sprite* _background;

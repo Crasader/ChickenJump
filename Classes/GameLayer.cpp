@@ -71,6 +71,9 @@ bool GameLayer::init()
     _chicken = new Chicken();
     _chicken->createChicken(this);
     
+    // Increase speed
+    this->schedule(schedule_selector(GameLayer::speedUp), SPEED_CHANGE_FREQUENCY * _visibleSize.width);
+    
     // Spawn egg
     this->schedule(schedule_selector(GameLayer::spawnEgg), TREE_SPAWN_FREQUENCY * _visibleSize.width);
     
@@ -97,11 +100,13 @@ bool GameLayer::init()
 }
 
 void GameLayer::update(float dt) {
-    if (_background) { _background->update(dt); }
-    if (_layerTow) { _layerTow->update(dt); }
-    if (_layerGround) { _layerGround->update(dt); }
+    if (_background) { _background->update(_chicken->getSpeedX()); }
+    
+    if (_layerTow) { _layerTow->update(_chicken->getSpeedX()); }
+    if (_layerGround) { _layerGround->update(_chicken->getSpeedX()); }
+    if (_trampoline) { _trampoline->update(_chicken->getSpeedX()); }
+    
     if (_chicken) { _chicken->update(dt); }
-    if (_trampoline) { _trampoline->update(dt); }
 }
 
 void GameLayer::spawnEgg(float dt) {
@@ -112,6 +117,10 @@ void GameLayer::spawnEgg(float dt) {
 void GameLayer::spawnCloud(float dt) {
     Cloud* cloud = new Cloud();
     cloud->spawn(this);
+}
+
+void GameLayer::speedUp(float dt) {
+    _chicken->increaseSpeedX();
 }
 
 

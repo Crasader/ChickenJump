@@ -27,10 +27,10 @@ void Background::createBackground(cocos2d::Layer* layer) {
     layer->addChild(_background, BackgroundLayer::layerBackground);
 }
 
-void Background::update(float dt) {
+void Background::update(float playerSpeed) {
     if (not _background) { return; }
     
-    _background->setPositionX(_background->getPosition().x - std::abs(LAYER_ONE_SPEED * _visibleSize.width));
+    _background->setPositionX(_background->getPosition().x - LAYER_ONE_SPEED * _visibleSize.width * playerSpeed);
     
     float diffx;
     if (_background->getPositionX() < -_background->getContentSize().width) {
