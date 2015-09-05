@@ -36,8 +36,8 @@ typedef enum
 #define TERMINAL_VELOCITY               70
 
 // CHICKEN JUMP
-#define VELOCITY_Y_MAX                  0.008    // ScreenHeight x 0.07 = 80 (Bigger = Higher)
-#define VELOCITY_Y_DECREASE_RATE        0.0001   // ScreenHeight x 0.0045 = 5 (Bigger = More)
+#define VELOCITY_Y_MAX                  0.013    // 0.008  // ScreenHeight x .008 | .031 = 2.16 | 3.51 (Bigger = Higher)
+#define VELOCITY_Y_DECREASE_RATE        0.0003   // 0.0001 // ScreenHeight x .0001 | .0003 = 0.027 | .081 (Bigger = More)
 
 // COLLISION BITMASKS
 #define COLLISION_BITMASK_CHICKEN       0x000001

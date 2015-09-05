@@ -11,7 +11,7 @@ void Chicken::createChicken(cocos2d::Layer *layer) {
     _chicken = Sprite::create(_imageFile);
 //    if (! _chicken) { return; }
     _state = PlayerState::Falling;
-    _chicken->setPosition(_visibleSize.width / 3 + _origin.x, _visibleSize.height / 5 * 3 + _origin.y);
+    _chicken->setPosition(_visibleSize.width / 3 + _origin.x, _visibleSize.height / 5 * 4 + _origin.y);
     
     // Adjusting big png
     auto scaleTo = ScaleTo::create(0.75f, 0.75f);
@@ -22,6 +22,7 @@ void Chicken::createChicken(cocos2d::Layer *layer) {
     animation->addSpriteFrameWithFile("playerfly_1.png");
     animation->addSpriteFrameWithFile("playerfly_2.png");
     animation->addSpriteFrameWithFile("playerfly_3.png");
+    animation->addSpriteFrameWithFile("playerfly_2.png");
     animation->setDelayPerUnit(0.2f / 1.0f);
     animation->setRestoreOriginalFrame(false);
     animation->setLoops(-1);
@@ -62,6 +63,7 @@ void Chicken::update(float dt) {
             break;
         case Jumping:
             _vector.y -= _visibleSize.height * VELOCITY_Y_DECREASE_RATE;
+            CCLOG("vector.y %f", _vector.y);
             if (_vector.y <= 0) {
                 _state = PlayerState::Falling;
             }
