@@ -79,6 +79,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     auto audioEngine = CocosDenshion::SimpleAudioEngine::getInstance();
     audioEngine->preloadEffect("jump.wav");
     audioEngine->preloadEffect("pickup_coin.wav");
+    audioEngine->preloadEffect("bump.wav");
     audioEngine->setEffectsVolume(0.5f);
     
     

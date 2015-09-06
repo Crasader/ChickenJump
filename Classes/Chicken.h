@@ -7,10 +7,11 @@ using namespace cocos2d;
 
 typedef enum
 {
-    Moving,
-    Jumping,
+    Dying,
     Falling,
-    Dying
+    Jumping,
+    Moving,
+    Start
     
 } PlayerState;
 
@@ -24,10 +25,10 @@ public:
     void increaseSpeedX();
     void decreaseSpeedX();
     void setState(PlayerState state);
+    PlayerState getState();
     inline void setVectorX(int x) { _vector.x = x; }
     inline void setVectorY(int y) { _vector.y = y; }
     void update(float dt);
-    void altufaltu();
 
 private:
     Vec2 _origin;

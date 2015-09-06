@@ -100,6 +100,8 @@
 		D5BDFD151B8FB5000031AE1B /* LayerTwo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5BDFD121B8FB5000031AE1B /* LayerTwo.cpp */; };
 		D5BDFD181B8FCAC70031AE1B /* LayerGround.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5BDFD161B8FCAC70031AE1B /* LayerGround.cpp */; };
 		D5BDFD191B8FCAC70031AE1B /* LayerGround.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5BDFD161B8FCAC70031AE1B /* LayerGround.cpp */; };
+		D5DBF5F41B9C9F1B004BEC38 /* bump.wav in Resources */ = {isa = PBXBuildFile; fileRef = D5DBF5F31B9C9F1B004BEC38 /* bump.wav */; };
+		D5DBF5F51B9C9F1B004BEC38 /* bump.wav in Resources */ = {isa = PBXBuildFile; fileRef = D5DBF5F31B9C9F1B004BEC38 /* bump.wav */; };
 		D6B0611B1803AB670077942B /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6B0611A1803AB670077942B /* CoreMotion.framework */; };
 /* End PBXBuildFile section */
 
@@ -220,6 +222,7 @@
 		D5BDFD131B8FB5000031AE1B /* LayerTwo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LayerTwo.h; sourceTree = "<group>"; };
 		D5BDFD161B8FCAC70031AE1B /* LayerGround.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LayerGround.cpp; sourceTree = "<group>"; };
 		D5BDFD171B8FCAC70031AE1B /* LayerGround.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LayerGround.h; sourceTree = "<group>"; };
+		D5DBF5F31B9C9F1B004BEC38 /* bump.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = bump.wav; sourceTree = "<group>"; };
 		D6B0611A1803AB670077942B /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.0.sdk/System/Library/Frameworks/CoreMotion.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
@@ -338,6 +341,7 @@
 		46880B7519C43A67006E1F66 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				D5DBF5F31B9C9F1B004BEC38 /* bump.wav */,
 				D57CF0321B996DD600987F3E /* jump.wav */,
 				D57CF02F1B996DA400987F3E /* pickup_coin.wav */,
 				D52BDA381B8883590049A538 /* ipad */,
@@ -561,6 +565,7 @@
 				5087E77D17EB970100C73F5D /* Default-568h@2x.png in Resources */,
 				5087E78517EB970100C73F5D /* Icon-72.png in Resources */,
 				521A8E6519F0C34300D177D7 /* Default-736h@3x.png in Resources */,
+				D5DBF5F41B9C9F1B004BEC38 /* bump.wav in Resources */,
 				D52BDA3D1B8883590049A538 /* ipadhd in Resources */,
 				D52BDA181B867C170049A538 /* splash.png in Resources */,
 				D5253ABB1B088B0500AFC291 /* blank.png in Resources */,
@@ -588,6 +593,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5DBF5F51B9C9F1B004BEC38 /* bump.wav in Resources */,
 				D57CF0341B996DD600987F3E /* jump.wav in Resources */,
 				D52BDA3E1B8883590049A538 /* ipadhd in Resources */,
 				D52BDA201B8686890049A538 /* play.png in Resources */,

@@ -18,8 +18,8 @@ Sprite* Trampoline::getTrampoline() const {
 
 void Trampoline::createTrampoline(cocos2d::Layer* layer, Vec2 lineStartPoint, Vec2 lineEndPoint) {
     
-    _trampoline->setPosition(Vec2(lineStartPoint.x, lineStartPoint.y));
     _trampoline->setAnchorPoint(Vec2(0, 0));
+    _trampoline->setPosition(Vec2(lineStartPoint.x, lineStartPoint.y));
     
     float xDist = (lineEndPoint.x - lineStartPoint.x);
     float yDist = (lineEndPoint.y - lineStartPoint.y);
@@ -37,7 +37,7 @@ void Trampoline::createTrampoline(cocos2d::Layer* layer, Vec2 lineStartPoint, Ve
         yDist = (lineEndPoint.y - lineStartPoint.y);
     }
         
-    int numberOfSpritesNeeded = distance / _trampolineWidth - 1;
+    int numberOfSpritesNeeded = distance / _trampolineWidth;
     
     for (int i = 0; i < numberOfSpritesNeeded; ++i) {        
         auto sprite = Sprite::create(_imageFile);

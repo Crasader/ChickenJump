@@ -9,6 +9,7 @@ Chicken::Chicken(void){
 
 void Chicken::createChicken(cocos2d::Layer *layer) {
     _chicken = Sprite::create(_imageFile);
+    _chicken->setAnchorPoint(Vec2(0, 0));
     if (! _chicken) { return; }
     
     _vector.x = 1.0; // initial speedX
@@ -51,6 +52,15 @@ void Chicken::setState(PlayerState state) {
     if (state == PlayerState::Jumping) {
         _vector.y = _visibleSize.height * VELOCITY_Y_MAX;
     }
+    else if (state == PlayerState::Falling) {
+        _vector.y = -_visibleSize.height * VELOCITY_Y_DECREASE_RATE;
+    }
+}
+
+PlayerState Chicken::getState() {
+    if (not _chicken) { return PlayerState::Start; }
+    
+    return _state;
 }
 
 float Chicken::getSpeedX() {
@@ -58,14 +68,14 @@ float Chicken::getSpeedX() {
 }
 
 void Chicken::increaseSpeedX() {
-    _vector.x *= 1.5;   // increase speed by 1.5
+    _vector.x *= ACCELERATION;   // increase speed by 1.5
     if (_vector.x >= MAX_SPEED_X) {
         _vector.x = MAX_SPEED_X;
     }
 }
 
 void Chicken::decreaseSpeedX() {
-    _vector.x /= 1.5;
+    _vector.x /= ACCELERATION;
     if (_vector.x <= 1) {
         _vector.x = 1;
     }
@@ -73,10 +83,6 @@ void Chicken::decreaseSpeedX() {
 
 void Chicken::update(float dt) {
     if (not _chicken) { return; }
-    
-    if (_state != PlayerState::Dying) {
-        _chicken->setPositionY(_chicken->getPositionY() + _vector.y);
-    }
     
     switch (_state) {
         case Moving:
@@ -99,15 +105,17 @@ void Chicken::update(float dt) {
             break;
     }
 
+    if (_state != PlayerState::Dying) {
+        _chicken->setPositionY(_chicken->getPositionY() + _vector.y);
+    }
+    
     if (_chicken->getPositionY() < -_chicken->getContentSize().height * 1.5) {
         _state = PlayerState::Dying;
     }
 }
 
-void Chicken::altufaltu() {
-    _state = PlayerState::Dying;
-    _vector.x = 3;
-}
+
+
 
 
 

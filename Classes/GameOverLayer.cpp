@@ -43,15 +43,32 @@ bool GameOverLayer::init()
         background->setPosition(Point(_visibleSize.width / 2 + _origin.x, _visibleSize.height / 2 + _origin.y));
         this->addChild(background);
     }
-    
+
+    // HighScore Label
+    {
+        UserDefault* d = UserDefault::getInstance();
+        auto highScore = d->getIntegerForKey("HIGHSCORE", 0);
+        if (_score > highScore) {
+            highScore = _score;
+            d->setIntegerForKey("HIGHSCORE", highScore);
+            d->flush();
+        }
+        std::string highScoreStr = String::createWithFormat("HighScore: %d", highScore)->getCString();
+        Label* highScoreLabel = Label::createWithTTF(highScoreStr, "Marker Felt.ttf", _visibleSize.height * SCORE_FONT_SIZE);
+        if (highScoreLabel) {
+            highScoreLabel->setColor(Color3B::WHITE);
+            highScoreLabel->setPosition(_visibleSize.width / 2 + _origin.x, _visibleSize.height * 0.88 + _origin.y);
+            this->addChild(highScoreLabel, BackgroundLayer::layerChicken);
+        }
+    }
+
     // Score Label
     {
-        CCLOG("init: %d", _score);
         std::string scoreStr = String::createWithFormat("Score: %d", _score)->getCString();
         Label* scoreLabel = Label::createWithTTF(scoreStr, "Marker Felt.ttf", _visibleSize.height * SCORE_FONT_SIZE);
         if (scoreLabel) {
             scoreLabel->setColor(Color3B::WHITE);
-            scoreLabel->setPosition(_visibleSize.width / 2 + _origin.x, _visibleSize.height * 0.88 + _origin.y);
+            scoreLabel->setPosition(_visibleSize.width / 2 + _origin.x, _visibleSize.height * 0.7 + _origin.y);
             this->addChild(scoreLabel, BackgroundLayer::layerChicken);
         }
     }
@@ -60,7 +77,7 @@ bool GameOverLayer::init()
     {
         auto playItem = MenuItemImage::create("play.png", "playclicked.png",
                                               CC_CALLBACK_1(GameOverLayer::gotoGamePlayLayer, this));
-        playItem->setPosition(Point(_visibleSize.width / 2 + _origin.x, _visibleSize.height * 0.5 + _origin.y));
+        playItem->setPosition(Point(_visibleSize.width / 2 + _origin.x, _visibleSize.height * 0.42 + _origin.y));
         auto menu = Menu::create(playItem, NULL);
         menu->setPosition(Point::ZERO);
         this->addChild(menu);
