@@ -2,7 +2,7 @@
 
 #include "Cloud.h"
 #include "Constants.h"
-#include "MainMenuLayer.h"
+#include "GameOverLayer.h"
 #include "SimpleAudioEngine.h"
 #include "Egg.h"
 
@@ -75,7 +75,7 @@ bool GameLayer::init()
     this->schedule(schedule_selector(GameLayer::speedUp), SPEED_CHANGE_FREQUENCY * _visibleSize.width);
     
     // Spawn egg
-    this->schedule(schedule_selector(GameLayer::spawnEgg), TREE_SPAWN_FREQUENCY * _visibleSize.width);
+    this->schedule(schedule_selector(GameLayer::spawnEgg), EGG_SPAWN_FREQUENCY * _visibleSize.width);
     
     
     // Listen for touches
@@ -87,11 +87,20 @@ bool GameLayer::init()
     Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(touchListener, this);
     
     
-    // Listen for contacts
+    // Listen for collision
     auto contactListener = EventListenerPhysicsContact::create();
     contactListener->onContactBegin = CC_CALLBACK_1(GameLayer::onContactBegin, this);
     Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, this);
     
+    // Score Label
+    _score = 0;
+    std::string scoreStr = String::createWithFormat("%d", _score)->getCString();
+    _scoreLabel = Label::createWithTTF(scoreStr, "Marker Felt.ttf", _visibleSize.height * SCORE_FONT_SIZE);
+    if (_scoreLabel) {
+        _scoreLabel->setColor(Color3B::WHITE);
+        _scoreLabel->setPosition(_visibleSize.width / 2 + _origin.x, _visibleSize.height * 0.9 + _origin.y);
+        this->addChild(_scoreLabel, BackgroundLayer::layerChicken);
+    }
     
     // Create main loop
     this->scheduleUpdate();
@@ -107,6 +116,8 @@ void GameLayer::update(float dt) {
     if (_trampoline) { _trampoline->update(_chicken->getSpeedX()); }
     
     if (_chicken) { _chicken->update(dt); }
+    
+    updateEggs(_chicken->getSpeedX());
 }
 
 void GameLayer::spawnEgg(float dt) {
@@ -117,6 +128,17 @@ void GameLayer::spawnEgg(float dt) {
 void GameLayer::spawnCloud(float dt) {
     Cloud* cloud = new Cloud();
     cloud->spawn(this);
+}
+
+void GameLayer::updateEggs(float playerSpeed) {
+    for (auto it = _eggs.begin(); it != _eggs.end(); ++it) {
+        (*it)->setPositionX((*it)->getPosition().x - LAYER_GROUND_SPEED * _visibleSize.width * playerSpeed);
+        
+        if ((*it)->getPositionX() < -(*it)->getContentSize().width) {
+            this->removeChild(*it);
+            _eggs.erase(it);
+        }
+    }
 }
 
 void GameLayer::speedUp(float dt) {
@@ -159,7 +181,7 @@ void GameLayer::onTouchEnded(Touch* touch, Event* event) {
 }
 
 bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
-    CCLOG("CONTACT");
+//    CCLOG("CONTACT");
     PhysicsBody* a = contact.getShapeA()->getBody();
     PhysicsBody* b = contact.getShapeB()->getBody();
     
@@ -178,12 +200,17 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
     if ((a->getCollisionBitmask() == COLLISION_BITMASK_CHICKEN and b->getCollisionBitmask() == COLLISION_BITMASK_GROUND) or
         (b->getCollisionBitmask() == COLLISION_BITMASK_CHICKEN and a->getCollisionBitmask() == COLLISION_BITMASK_GROUND)) {
         
-        auto scene = MainMenuLayer::createScene();
-        Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
+        auto gameOver = GameOverLayer::createScene(_score);
+        Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, gameOver));
     }
     
     // collision between chicken and eggs
     if (a->getCollisionBitmask() == COLLISION_BITMASK_CHICKEN and b->getCollisionBitmask() == COLLISION_BITMASK_EGG) {
+        _score ++;
+        if (_scoreLabel) {
+            _scoreLabel->setString(String::createWithFormat("%d", _score)->getCString());
+        }
+        
         auto egg = (Sprite*)contact.getShapeB()->getBody()->getNode();
         // Remove colided egg
         if (egg) {
@@ -193,9 +220,13 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
                 CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("pickup_coin.wav");
             }
         }
-
     }
     else if (b->getCollisionBitmask() == COLLISION_BITMASK_CHICKEN and a->getCollisionBitmask() == COLLISION_BITMASK_EGG) {
+        _score ++;
+        if (_scoreLabel) {
+            _scoreLabel->setString(String::createWithFormat("%d", _score)->getCString());
+        }
+        
         auto egg = (Sprite*)contact.getShapeA()->getBody()->getNode();
         // Remove colided egg
         if (egg) {
@@ -205,7 +236,6 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
                 CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("pickup_coin.wav");
             }
         }
-        
     }
     
     return true;

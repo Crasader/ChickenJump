@@ -31,11 +31,12 @@ typedef enum
 
 // CHICKEN
 #define SPEED_CHANGE_FREQUENCY          0.01
-#define MAX_SPEED_X                     10 // = starting speed times 10
-#define ACCELERATION                    0.5
-#define INITIAL_SPEED                   8
-#define FORCE_GRAVITY                   1.5
-#define TERMINAL_VELOCITY               70
+#define MAX_SPEED_X                     10      // = starting speed times 10
+
+//#define ACCELERATION                    0.5
+//#define INITIAL_SPEED                   8
+//#define FORCE_GRAVITY                   1.5
+//#define TERMINAL_VELOCITY               70
 
 // CHICKEN JUMP
 #define VELOCITY_Y_MAX                  0.013    // 0.008  // ScreenHeight x .008 | .031 = 2.16 | 3.51 (Bigger = Higher)
@@ -47,9 +48,11 @@ typedef enum
 #define COLLISION_BITMASK_GROUND        0x0003
 #define COLLISION_BITMASK_EGG           0x0004
 
+// EGG
+#define EGG_SPAWN_FREQUENCY            0.001
+#define EGG_SPEED                      0.010
 
-// TREE
-#define TREE_SPAWN_FREQUENCY            0.001
-#define TREE_SPEED                      0.010
+// SCORE LABEL
+#define SCORE_FONT_SIZE                0.1
 
 #endif // __CONSTANTS_H__

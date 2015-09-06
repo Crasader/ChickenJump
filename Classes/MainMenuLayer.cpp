@@ -33,22 +33,24 @@ bool MainMenuLayer::init()
     _visibleSize = Director::getInstance()->getVisibleSize();
     
     // Add background
-    auto background = Sprite::create("blank.png");
-    background->setPosition(Point(_visibleSize.width / 2 + _origin.x, _visibleSize.height / 2 + _origin.y));
-    this->addChild(background);
-    
     {
-        // Play Menu Item
+        auto background = Sprite::create("blank.png");
+        background->setPosition(Point(_visibleSize.width / 2 + _origin.x, _visibleSize.height / 2 + _origin.y));
+        this->addChild(background);
+    }
+    
+    // Play Menu Item
+    {
         auto playItem = MenuItemImage::create("play.png", "playclicked.png",
-                                              CC_CALLBACK_1(MainMenuLayer::goToGamePlayLayer, this));
+                                              CC_CALLBACK_1(MainMenuLayer::gotoGamePlayLayer, this));
         playItem->setPosition(Point(_visibleSize.width / 2 + _origin.x, _visibleSize.height / 2 + _origin.y));
         auto menu = Menu::create(playItem, NULL);
         menu->setPosition(Point::ZERO);
         this->addChild(menu);
     }
     
+    // Country toggle
     {
-        // Country toggle
         MenuItem* france = MenuItemImage::create("france.png", "france.png");
         MenuItem* england = MenuItemImage::create("england.png", "england.png");
         MenuItemToggle* countryToggleItem = MenuItemToggle::createWithCallback(CC_CALLBACK_1(MainMenuLayer::toggleCountry, this), france, england, NULL);
@@ -63,7 +65,7 @@ bool MainMenuLayer::init()
     return true;
 }
 
-void MainMenuLayer::goToGamePlayLayer(cocos2d::Ref* sender)
+void MainMenuLayer::gotoGamePlayLayer(cocos2d::Ref* sender)
 {
     auto scene = GameLayer::createScene();
     Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));

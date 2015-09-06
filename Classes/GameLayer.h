@@ -37,6 +37,7 @@ private:
     void spawnEgg(float dt);
     void spawnCloud(float dt);
     void speedUp(float dt);
+    void updateEggs(float speed);
     
     cocos2d::PhysicsWorld *_sceneWorld;
     
@@ -49,6 +50,9 @@ private:
     
     Vec2 _lineStartPoint;
     Vec2 _lineEndPoint;
+    
+    unsigned int _score;
+    Label* _scoreLabel;
     
     Vec2 _origin;
     Size _visibleSize;

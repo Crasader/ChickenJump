@@ -37,14 +37,14 @@ void Egg::spawn(cocos2d::Layer* layer, std::vector<Sprite*>& eggs) {
     int posY = CCRANDOM_0_1() * heightRange + minHeight;
     _egg->setPosition(Vec2(posX,  posY));
     
-    auto action = MoveTo::create(TREE_SPEED * _visibleSize.width,
-                                 Point(-_egg->getContentSize().width * ((maxDelayWidth + 1) - randDelayWidth), _egg->getPositionY()));
+//    auto action = MoveTo::create(EGG_SPEED * _visibleSize.width,
+//                                 Point(-_egg->getContentSize().width * ((maxDelayWidth + 1) - randDelayWidth), _egg->getPositionY()));
     
     // MoveTo works as: goto the destination within the time given.
     // So speed depends on the distance it needs to cover.
     // In order to make the distance same for each Cloud we drag the Cloud upto the (-randDelayWidth * contentWidth) distance.
 //    auto action = MoveTo::create(TREE_SPEED * _visibleSize.width, Point(-_tree->getContentSize().width * (6 - random), _tree->getPositionY()));
-    _egg->runAction(action);
+//    _egg->runAction(action);
     
     layer->addChild(_egg, BackgroundLayer::layerChicken);
     eggs.push_back(_egg);
