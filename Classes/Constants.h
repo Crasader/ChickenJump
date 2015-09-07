@@ -8,6 +8,7 @@
 // LAYER
 typedef enum
 {
+    layerBG,
     layerBackground,
     layerTwo,
     layerGround,

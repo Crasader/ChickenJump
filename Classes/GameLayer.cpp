@@ -39,6 +39,10 @@ bool GameLayer::init()
     _visibleSize = Director::getInstance()->getVisibleSize();
     CCLOG("GameLayer _visibleSize width %f, height %f", _visibleSize.width, _visibleSize.height);
 
+    
+    auto bg = Sprite::create("bg.png");
+    bg->setPosition(Vec2(_visibleSize.width * 0.5f, _visibleSize.height * 0.5f));
+    this->addChild(bg, BackgroundLayer::layerBG);
 
     // Add background
     _background = new Background();
