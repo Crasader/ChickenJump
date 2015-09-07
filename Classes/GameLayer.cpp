@@ -103,14 +103,22 @@ void GameLayer::update(float dt) {
     }
     else {
         if (_background) { _background->update(_chicken->getSpeedX()); }
-        
         if (_layerTow) { _layerTow->update(_chicken->getSpeedX()); }
         if (_layerGround) { _layerGround->update(_chicken->getSpeedX()); }
         if (_trampoline) { _trampoline->update(_chicken->getSpeedX()); }
-        
         if (_chicken) { _chicken->update(dt); }
         
-        updateEggs(_chicken->getSpeedX());        
+        updateEggs(_chicken->getSpeedX());
+        
+        // keep the camera on the player
+        if(_chicken->getChicken()->getPositionY() > _visibleSize.height * 0.6f) {
+            // keep camera on the Player
+            this->setPositionY( (_visibleSize.height * 0.6f - _chicken->getChicken()->getPositionY()) * 0.8f);
+            CCLOG("position b4 mul %f", (_visibleSize.height * 0.6f - _chicken->getChicken()->getPositionY()));
+            CCLOG("this->PositionY %f", this->getPositionY());
+        } else {
+            this->setPositionY(0);
+        }
     }
 }
 
@@ -177,7 +185,10 @@ void GameLayer::onTouchMoved(Touch* touch, Event* event) {
         _trampoline = nullptr;
     }
     
-    // Create new trampoline
+    // don't draw trampoline above the screen height
+    if (_lineStartPoint.y - this->getPositionY() > _visibleSize.height) { return; }
+    
+    // Draw new trampoline
     _trampoline = new Trampoline();
     _trampoline->createTrampoline(this, _lineStartPoint, _lineEndPoint);
 }
@@ -231,14 +242,6 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
             CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("bump.wav");
         }
     }
-    
-    // collision between chicken and screen edges
-//    if ((a->getCollisionBitmask() == COLLISION_BITMASK_CHICKEN and b->getCollisionBitmask() == COLLISION_BITMASK_GROUND) or
-//        (b->getCollisionBitmask() == COLLISION_BITMASK_CHICKEN and a->getCollisionBitmask() == COLLISION_BITMASK_GROUND)) {
-//        
-//        auto gameOver = GameOverLayer::createScene(_score);
-//        Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, gameOver));
-//    }
     
     // collision between chicken and eggs
     if (a->getCollisionBitmask() == COLLISION_BITMASK_CHICKEN and b->getCollisionBitmask() == COLLISION_BITMASK_EGG) {

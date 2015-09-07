@@ -19,7 +19,7 @@ Sprite* Trampoline::getTrampoline() const {
 void Trampoline::createTrampoline(cocos2d::Layer* layer, Vec2 lineStartPoint, Vec2 lineEndPoint) {
     
     _trampoline->setAnchorPoint(Vec2(0, 0));
-    _trampoline->setPosition(Vec2(lineStartPoint.x, lineStartPoint.y));
+    _trampoline->setPosition(Vec2(lineStartPoint.x, lineStartPoint.y - layer->getPositionY()));
     
     float xDist = (lineEndPoint.x - lineStartPoint.x);
     float yDist = (lineEndPoint.y - lineStartPoint.y);
