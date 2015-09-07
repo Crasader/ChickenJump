@@ -80,6 +80,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     audioEngine->preloadEffect("jump.wav");
     audioEngine->preloadEffect("pickup_coin.wav");
     audioEngine->preloadEffect("bump.wav");
+    audioEngine->preloadEffect("lost.wav");
     audioEngine->setEffectsVolume(0.5f);
     
     
