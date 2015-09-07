@@ -22,12 +22,12 @@ public:
     void createChicken(cocos2d::Layer* layer);
     Sprite* getChicken() { return _chicken; }
     float getSpeedX();
+    void changeSpeedX(float speed);
     void increaseSpeedX();
     void decreaseSpeedX();
     void setState(PlayerState state);
     PlayerState getState();
-    inline void setVectorX(int x) { _vector.x = x; }
-    inline void setVectorY(int y) { _vector.y = y; }
+    Vec2* getVector() { return &_vector; }
     void update(float dt);
 
 private:

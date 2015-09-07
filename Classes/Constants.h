@@ -32,7 +32,8 @@ typedef enum
 // CHICKEN
 #define SPEED_CHANGE_FREQUENCY          0.01
 #define MAX_SPEED_X                     10      // = starting speed times 10
-#define ACCELERATION                    1.3
+#define ACCELERATION_DEFAULT            1.3
+#define CUSTOM_ACCELERATION             0.05    // (Bigger = Faster)
 
 //#define INITIAL_SPEED                   8
 //#define FORCE_GRAVITY                   1.5
@@ -44,7 +45,7 @@ typedef enum
 
 // COLLISION BITMASKS
 #define COLLISION_BITMASK_CHICKEN       0x0001
-#define COLLISION_BITMASK_OBSTACLE      0x0002
+#define COLLISION_BITMASK_TRAMPOLINE    0x0002
 #define COLLISION_BITMASK_GROUND        0x0003
 #define COLLISION_BITMASK_EGG           0x0004
 
@@ -55,4 +56,22 @@ typedef enum
 // SCORE LABEL
 #define SCORE_FONT_SIZE                0.1
 
+
 #endif // __CONSTANTS_H__
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

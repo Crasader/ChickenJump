@@ -28,8 +28,8 @@ void Trampoline::createTrampoline(cocos2d::Layer* layer, Vec2 lineStartPoint, Ve
     float degree = atan2(yDist, xDist) * 180 / PI;
     
     // Restrict to max trampoline size
-    if (distance > _visibleSize.width / 3) {
-        distance = _visibleSize.width / 3;
+    if (distance > _visibleSize.width * 0.25) {
+        distance = _visibleSize.width * 0.25;
         
         lineEndPoint = lineStartPoint + Vec2(cos(degree2radian(degree)) * distance,
                                              sin(degree2radian(degree)) * distance);
@@ -48,7 +48,7 @@ void Trampoline::createTrampoline(cocos2d::Layer* layer, Vec2 lineStartPoint, Ve
         
         // create a static PhysicsBody and set it to the sprite
         auto physicsBody = PhysicsBody::createCircle(_trampolineWidth / 2, PhysicsMaterial(0.0f, 0.0f, 0.0f));
-        physicsBody->setCollisionBitmask(COLLISION_BITMASK_OBSTACLE);
+        physicsBody->setCollisionBitmask(COLLISION_BITMASK_TRAMPOLINE);
         physicsBody->setContactTestBitmask(true);
         physicsBody->setDynamic(false);
         sprite->setPhysicsBody(physicsBody);

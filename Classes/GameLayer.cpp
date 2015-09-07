@@ -72,7 +72,7 @@ bool GameLayer::init()
     _chicken->createChicken(this);
     
     // Increase speed
-    this->schedule(schedule_selector(GameLayer::speedUp), SPEED_CHANGE_FREQUENCY * _visibleSize.width);
+//    this->schedule(schedule_selector(GameLayer::speedUp), SPEED_CHANGE_FREQUENCY * _visibleSize.width);
     
     // Spawn egg
     this->schedule(schedule_selector(GameLayer::spawnEgg), EGG_SPAWN_FREQUENCY * _visibleSize.width);
@@ -142,7 +142,19 @@ void GameLayer::updateEggs(float playerSpeed) {
 }
 
 void GameLayer::speedUp(float dt) {
-    _chicken->increaseSpeedX();
+//    _chicken->increaseSpeedX();
+    float xDist = (_lineEndPoint.x - _lineStartPoint.x);
+    float yDist = (_lineEndPoint.y - _lineStartPoint.y);
+    
+    if (_lineStartPoint.x > _lineEndPoint.x) {
+        xDist = (_lineStartPoint.x - _lineEndPoint.x);
+        yDist = (_lineStartPoint.y - _lineEndPoint.y);
+    }
+
+    float degree = atan2(yDist, xDist) * 180 / PI;
+    
+    _chicken->changeSpeedX(-degree * CUSTOM_ACCELERATION);
+
 }
 
 
@@ -186,7 +198,7 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
     PhysicsBody* b = contact.getShapeB()->getBody();
     
     // collision between chicken and trampoline
-    if ((a->getCollisionBitmask() == COLLISION_BITMASK_CHICKEN and b->getCollisionBitmask() == COLLISION_BITMASK_OBSTACLE)) {
+    if ((a->getCollisionBitmask() == COLLISION_BITMASK_CHICKEN and b->getCollisionBitmask() == COLLISION_BITMASK_TRAMPOLINE)) {
         auto trampoline = (Sprite*)contact.getShapeB()->getBody()->getNode();
         
         if (_chicken->getChicken()->getPositionY() > trampoline->getPositionY() + _trampoline->getTrampoline()->getPositionY() and
@@ -194,6 +206,7 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
 
             _chicken->setState(PlayerState::Jumping);
             CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("jump.wav");
+            speedUp(0);
         }
         else if (trampoline->getPositionY() + _trampoline->getTrampoline()->getPositionY() > _chicken->getChicken()->getPositionY() and
                  _chicken->getState() == PlayerState::Jumping) {
@@ -203,7 +216,7 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
         }
     }
     // collision between trampoline and chicken
-    if ((b->getCollisionBitmask() == COLLISION_BITMASK_CHICKEN and a->getCollisionBitmask() == COLLISION_BITMASK_OBSTACLE)) {
+    if ((b->getCollisionBitmask() == COLLISION_BITMASK_CHICKEN and a->getCollisionBitmask() == COLLISION_BITMASK_TRAMPOLINE)) {
         auto trampoline = (Sprite*)contact.getShapeA()->getBody()->getNode();
         
         if (_chicken->getChicken()->getPositionY() > trampoline->getPositionY() + _trampoline->getTrampoline()->getPositionY() and
@@ -211,6 +224,7 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
 
             _chicken->setState(PlayerState::Jumping);
             CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("jump.wav");
+            speedUp(0);
         }
         else if (trampoline->getPositionY() + _trampoline->getTrampoline()->getPositionY() > _chicken->getChicken()->getPositionY() and
                  _chicken->getState() == PlayerState::Jumping) {
