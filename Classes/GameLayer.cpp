@@ -197,18 +197,21 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
     PhysicsBody* a = contact.getShapeA()->getBody();
     PhysicsBody* b = contact.getShapeB()->getBody();
     
+    float chickenPositionY = _chicken->getChicken()->getPositionY();
+    
     // collision between chicken and trampoline
     if ((a->getCollisionBitmask() == COLLISION_BITMASK_CHICKEN and b->getCollisionBitmask() == COLLISION_BITMASK_TRAMPOLINE)) {
         auto trampoline = (Sprite*)contact.getShapeB()->getBody()->getNode();
+        float trampolinePositionY = trampoline->getPositionY() + _trampoline->getTrampoline()->getPositionY();
         
-        if (_chicken->getChicken()->getPositionY() > trampoline->getPositionY() + _trampoline->getTrampoline()->getPositionY() and
+        if (chickenPositionY > trampolinePositionY and
             _chicken->getState() == PlayerState::Falling) {
 
             _chicken->setState(PlayerState::Jumping);
             CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("jump.wav");
             speedUp(0);
         }
-        else if (trampoline->getPositionY() + _trampoline->getTrampoline()->getPositionY() > _chicken->getChicken()->getPositionY() and
+        else if (trampolinePositionY > chickenPositionY and
                  _chicken->getState() == PlayerState::Jumping) {
 
             _chicken->setState(PlayerState::Falling);
@@ -218,15 +221,16 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
     // collision between trampoline and chicken
     if ((b->getCollisionBitmask() == COLLISION_BITMASK_CHICKEN and a->getCollisionBitmask() == COLLISION_BITMASK_TRAMPOLINE)) {
         auto trampoline = (Sprite*)contact.getShapeA()->getBody()->getNode();
+        float trampolinePositionY = trampoline->getPositionY() + _trampoline->getTrampoline()->getPositionY();
         
-        if (_chicken->getChicken()->getPositionY() > trampoline->getPositionY() + _trampoline->getTrampoline()->getPositionY() and
+        if (chickenPositionY > trampolinePositionY and
             _chicken->getState() == PlayerState::Falling) {
 
             _chicken->setState(PlayerState::Jumping);
             CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("jump.wav");
             speedUp(0);
         }
-        else if (trampoline->getPositionY() + _trampoline->getTrampoline()->getPositionY() > _chicken->getChicken()->getPositionY() and
+        else if (trampolinePositionY > chickenPositionY and
                  _chicken->getState() == PlayerState::Jumping) {
 
             _chicken->setState(PlayerState::Falling);
