@@ -112,10 +112,7 @@ void GameLayer::update(float dt) {
         
         // keep the camera on the player
         if(_chicken->getChicken()->getPositionY() > _visibleSize.height * 0.6f) {
-            // keep camera on the Player
             this->setPositionY( (_visibleSize.height * 0.6f - _chicken->getChicken()->getPositionY()) * 0.8f);
-            CCLOG("position b4 mul %f", (_visibleSize.height * 0.6f - _chicken->getChicken()->getPositionY()));
-            CCLOG("this->PositionY %f", this->getPositionY());
         } else {
             this->setPositionY(0);
         }
