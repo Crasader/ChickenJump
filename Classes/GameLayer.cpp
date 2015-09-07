@@ -39,18 +39,6 @@ bool GameLayer::init()
     _visibleSize = Director::getInstance()->getVisibleSize();
     CCLOG("GameLayer _visibleSize width %f, height %f", _visibleSize.width, _visibleSize.height);
 
-    
-    // Add a physics body box around the screen
-    {
-        auto edgeBody = PhysicsBody::createEdgeBox(_visibleSize, PHYSICSBODY_MATERIAL_DEFAULT, 3);
-        edgeBody->setCollisionBitmask(COLLISION_BITMASK_GROUND);
-        edgeBody->setContactTestBitmask(true);
-        
-        auto edgeNode = Node::create();
-        edgeNode->setPosition(Point(_visibleSize.width / 2 + _origin.x, _visibleSize.height / 2 + _origin.y));
-        edgeNode->setPhysicsBody(edgeBody);
-        this->addChild(edgeNode);
-    }
 
     // Add background
     _background = new Background();
@@ -109,15 +97,21 @@ bool GameLayer::init()
 }
 
 void GameLayer::update(float dt) {
-    if (_background) { _background->update(_chicken->getSpeedX()); }
-    
-    if (_layerTow) { _layerTow->update(_chicken->getSpeedX()); }
-    if (_layerGround) { _layerGround->update(_chicken->getSpeedX()); }
-    if (_trampoline) { _trampoline->update(_chicken->getSpeedX()); }
-    
-    if (_chicken) { _chicken->update(dt); }
-    
-    updateEggs(_chicken->getSpeedX());
+    if (_chicken->getState() == PlayerState::Dying) {
+        auto gameOver = GameOverLayer::createScene(_score);
+        Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, gameOver));
+    }
+    else {
+        if (_background) { _background->update(_chicken->getSpeedX()); }
+        
+        if (_layerTow) { _layerTow->update(_chicken->getSpeedX()); }
+        if (_layerGround) { _layerGround->update(_chicken->getSpeedX()); }
+        if (_trampoline) { _trampoline->update(_chicken->getSpeedX()); }
+        
+        if (_chicken) { _chicken->update(dt); }
+        
+        updateEggs(_chicken->getSpeedX());        
+    }
 }
 
 void GameLayer::spawnEgg(float dt) {
@@ -239,12 +233,12 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
     }
     
     // collision between chicken and screen edges
-    if ((a->getCollisionBitmask() == COLLISION_BITMASK_CHICKEN and b->getCollisionBitmask() == COLLISION_BITMASK_GROUND) or
-        (b->getCollisionBitmask() == COLLISION_BITMASK_CHICKEN and a->getCollisionBitmask() == COLLISION_BITMASK_GROUND)) {
-        
-        auto gameOver = GameOverLayer::createScene(_score);
-        Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, gameOver));
-    }
+//    if ((a->getCollisionBitmask() == COLLISION_BITMASK_CHICKEN and b->getCollisionBitmask() == COLLISION_BITMASK_GROUND) or
+//        (b->getCollisionBitmask() == COLLISION_BITMASK_CHICKEN and a->getCollisionBitmask() == COLLISION_BITMASK_GROUND)) {
+//        
+//        auto gameOver = GameOverLayer::createScene(_score);
+//        Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, gameOver));
+//    }
     
     // collision between chicken and eggs
     if (a->getCollisionBitmask() == COLLISION_BITMASK_CHICKEN and b->getCollisionBitmask() == COLLISION_BITMASK_EGG) {

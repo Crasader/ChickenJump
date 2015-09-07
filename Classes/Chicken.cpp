@@ -116,7 +116,7 @@ void Chicken::update(float dt) {
         _chicken->setPositionY(_chicken->getPositionY() + _vector.y);
     }
     
-    if (_chicken->getPositionY() < -_chicken->getContentSize().height * 1.5) {
+    if (_chicken->getPositionY() < -_chicken->getContentSize().height * 0.5) {
         _state = PlayerState::Dying;
     }
 }
