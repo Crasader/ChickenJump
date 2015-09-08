@@ -68,10 +68,6 @@
 		D52BDA0D1B8651CC0049A538 /* GameOverLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D52BDA0A1B8651CC0049A538 /* GameOverLayer.cpp */; };
 		D52BDA0F1B8676250049A538 /* Constants.h in Sources */ = {isa = PBXBuildFile; fileRef = D52BDA0E1B8676250049A538 /* Constants.h */; };
 		D52BDA101B8676250049A538 /* Constants.h in Sources */ = {isa = PBXBuildFile; fileRef = D52BDA0E1B8676250049A538 /* Constants.h */; };
-		D52BDA1F1B8686890049A538 /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = D52BDA1D1B8686890049A538 /* play.png */; };
-		D52BDA201B8686890049A538 /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = D52BDA1D1B8686890049A538 /* play.png */; };
-		D52BDA211B8686890049A538 /* playclicked.png in Resources */ = {isa = PBXBuildFile; fileRef = D52BDA1E1B8686890049A538 /* playclicked.png */; };
-		D52BDA221B8686890049A538 /* playclicked.png in Resources */ = {isa = PBXBuildFile; fileRef = D52BDA1E1B8686890049A538 /* playclicked.png */; };
 		D52BDA3B1B8883590049A538 /* ipad in Resources */ = {isa = PBXBuildFile; fileRef = D52BDA381B8883590049A538 /* ipad */; };
 		D52BDA3C1B8883590049A538 /* ipad in Resources */ = {isa = PBXBuildFile; fileRef = D52BDA381B8883590049A538 /* ipad */; };
 		D52BDA3D1B8883590049A538 /* ipadhd in Resources */ = {isa = PBXBuildFile; fileRef = D52BDA391B8883590049A538 /* ipadhd */; };
@@ -194,8 +190,6 @@
 		D52BDA0A1B8651CC0049A538 /* GameOverLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameOverLayer.cpp; sourceTree = "<group>"; };
 		D52BDA0B1B8651CC0049A538 /* GameOverLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameOverLayer.h; sourceTree = "<group>"; };
 		D52BDA0E1B8676250049A538 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
-		D52BDA1D1B8686890049A538 /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = "<group>"; };
-		D52BDA1E1B8686890049A538 /* playclicked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = playclicked.png; sourceTree = "<group>"; };
 		D52BDA381B8883590049A538 /* ipad */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ipad; sourceTree = "<group>"; };
 		D52BDA391B8883590049A538 /* ipadhd */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ipadhd; sourceTree = "<group>"; };
 		D52BDA3A1B8883590049A538 /* iphone */ = {isa = PBXFileReference; lastKnownFileType = folder; path = iphone; sourceTree = "<group>"; };
@@ -344,8 +338,6 @@
 				D52BDA381B8883590049A538 /* ipad */,
 				D52BDA391B8883590049A538 /* ipadhd */,
 				D52BDA3A1B8883590049A538 /* iphone */,
-				D52BDA1D1B8686890049A538 /* play.png */,
-				D52BDA1E1B8686890049A538 /* playclicked.png */,
 				D5253ABA1B088B0500AFC291 /* blank.png */,
 				521A8EA819F11F5000D177D7 /* fonts */,
 				3EACC98E19EE6D4300EB3C5E /* res */,
@@ -572,8 +564,6 @@
 				5087E78217EB970100C73F5D /* Icon-144.png in Resources */,
 				D57CF0301B996DA400987F3E /* pickup_coin.wav in Resources */,
 				3EACC98F19EE6D4300EB3C5E /* res in Resources */,
-				D52BDA1F1B8686890049A538 /* play.png in Resources */,
-				D52BDA211B8686890049A538 /* playclicked.png in Resources */,
 				50EF629817ECD46A001EB2F8 /* Icon-80.png in Resources */,
 				5087E78417EB970100C73F5D /* Icon-57.png in Resources */,
 				D52BDA3B1B8883590049A538 /* ipad in Resources */,
@@ -590,14 +580,12 @@
 				D5DBF5F51B9C9F1B004BEC38 /* bump.wav in Resources */,
 				D57CF0341B996DD600987F3E /* jump.wav in Resources */,
 				D52BDA3E1B8883590049A538 /* ipadhd in Resources */,
-				D52BDA201B8686890049A538 /* play.png in Resources */,
 				503AE0F817EB97AB00D1A890 /* Icon.icns in Resources */,
 				D57CF0311B996DA400987F3E /* pickup_coin.wav in Resources */,
 				3EACC99019EE6D4300EB3C5E /* res in Resources */,
 				521A8EAA19F11F5000D177D7 /* fonts in Resources */,
 				D52BDA3C1B8883590049A538 /* ipad in Resources */,
 				D5253ABC1B088B0500AFC291 /* blank.png in Resources */,
-				D52BDA221B8686890049A538 /* playclicked.png in Resources */,
 				D52BDA401B8883590049A538 /* iphone in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

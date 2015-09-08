@@ -75,7 +75,7 @@ bool GameOverLayer::init()
 
     // Play Menu Item
     {
-        auto playItem = MenuItemImage::create("play.png", "playclicked.png",
+        auto playItem = MenuItemImage::create("retry.png", "retryclicked.png",
                                               CC_CALLBACK_1(GameOverLayer::gotoGamePlayLayer, this));
         playItem->setPosition(Point(_visibleSize.width / 2 + _origin.x, _visibleSize.height * 0.42 + _origin.y));
         auto menu = Menu::create(playItem, NULL);
