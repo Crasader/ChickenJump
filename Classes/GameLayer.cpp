@@ -39,6 +39,7 @@ bool GameLayer::init()
     _visibleSize = Director::getInstance()->getVisibleSize();
     CCLOG("GameLayer _visibleSize width %f, height %f", _visibleSize.width, _visibleSize.height);
 
+    _isPaused = false;
     
     auto bg = Sprite::create("bg.png");
     bg->setPosition(Vec2(_visibleSize.width * 0.5f, _visibleSize.height * 0.5f));
@@ -85,22 +86,42 @@ bool GameLayer::init()
     Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, this);
     
     // Score Label
-    _score = 0;
-    std::string scoreStr = String::createWithFormat("%d", _score)->getCString();
-    _scoreLabel = Label::createWithTTF(scoreStr, "Marker Felt.ttf", _visibleSize.height * SCORE_FONT_SIZE);
-    if (_scoreLabel) {
-        _scoreLabel->setColor(Color3B::WHITE);
-        _scoreLabel->setPosition(_visibleSize.width / 2 + _origin.x, _visibleSize.height * 0.9 + _origin.y);
-        this->addChild(_scoreLabel, BackgroundLayer::layerChicken);
+    {
+        _score = 0;
+        _scoreIcon = Sprite::create("egg.png");
+        _scoreIcon->setAnchorPoint(Vec2(0, 0));
+        _scoreIcon->setPosition(_scoreIcon->getContentSize().width, _visibleSize.height * 0.87);
+        this->addChild(_scoreIcon, BackgroundLayer::layerChicken);
+        
+        std::string scoreStr = String::createWithFormat("%d", _score)->getCString();
+        _scoreLabel = Label::createWithTTF(scoreStr, "Marker Felt.ttf", _visibleSize.height * SCORE_FONT_SIZE);
+        if (_scoreLabel) {
+            _scoreLabel->setColor(Color3B::WHITE);
+            _scoreLabel->setAnchorPoint(Vec2(0, 0));
+            _scoreLabel->setPosition(_scoreIcon->getContentSize().width * 2.5, _visibleSize.height * 0.86);
+            this->addChild(_scoreLabel, BackgroundLayer::layerChicken);
+        }
     }
     
-    // Create main loop
+    // Pause/Resume toggle
+    {
+        MenuItem* pause = MenuItemImage::create("pause.png", "pause.png");
+        MenuItem* resume = MenuItemImage::create("resume.png", "resume.png");
+        MenuItemToggle* pauseToggleItem = MenuItemToggle::createWithCallback(CC_CALLBACK_1(GameLayer::togglePause, this), pause, resume, NULL);
+        _pauseToggleMenu = Menu::create(pauseToggleItem, NULL);
+        _pauseToggleMenu->setPosition(Vec2(_visibleSize.width / 2, _visibleSize.height * 0.95)); // position updated in update fn
+        this->addChild(_pauseToggleMenu, BackgroundLayer::layerChicken);
+    }
+    
+    // Activate main update loop
     this->scheduleUpdate();
     
     return true;
 }
 
 void GameLayer::update(float dt) {
+    if (_isPaused) { return; }
+    
     if (_chicken->getState() == PlayerState::Dying) {
         auto gameOver = GameOverLayer::createScene(_score);
         Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, gameOver));
@@ -120,17 +141,14 @@ void GameLayer::update(float dt) {
         } else {
             this->setPositionY(0);
         }
+        
+        // update pause menu
+        _pauseToggleMenu->setPosition(_visibleSize.width / 2, _visibleSize.height * 0.95 - this->getPositionY());
+        
+        // update score label
+        _scoreIcon->setPosition(_scoreIcon->getContentSize().width, _visibleSize.height * 0.87 - this->getPositionY());
+        _scoreLabel->setPosition(_scoreIcon->getContentSize().width * 2.5, _visibleSize.height * 0.86 - this->getPositionY());
     }
-}
-
-void GameLayer::spawnEgg(float dt) {
-    Egg* egg = new Egg();
-    egg->spawn(this, _eggs);
-}
-
-void GameLayer::spawnCloud(float dt) {
-    Cloud* cloud = new Cloud();
-    cloud->spawn(this);
 }
 
 void GameLayer::updateEggs(float playerSpeed) {
@@ -143,6 +161,16 @@ void GameLayer::updateEggs(float playerSpeed) {
             _eggs.erase(_eggs.begin() + i);
         }
     }
+}
+
+void GameLayer::spawnEgg(float dt) {
+    Egg* egg = new Egg();
+    egg->spawn(this, _eggs);
+}
+
+void GameLayer::spawnCloud(float dt) {
+    Cloud* cloud = new Cloud();
+    cloud->spawn(this);
 }
 
 void GameLayer::speedUp(float dt) {
@@ -158,7 +186,16 @@ void GameLayer::speedUp(float dt) {
     float degree = atan2(yDist, xDist) * 180 / PI;
     
     _chicken->changeSpeedX(-degree * CUSTOM_ACCELERATION);
+}
 
+void GameLayer::togglePause(cocos2d::Ref* layer) {
+    _isPaused = not _isPaused;
+    if (_isPaused) {
+        Director::getInstance()->pause();
+    }
+    else {
+        Director::getInstance()->resume();
+    }
 }
 
 

@@ -50,11 +50,11 @@ typedef enum
 #define COLLISION_BITMASK_EGG           0x0004
 
 // EGG
-#define EGG_SPAWN_FREQUENCY            0.001
-#define EGG_SPEED                      0.010
+#define EGG_SPAWN_FREQUENCY             0.001
+#define EGG_SPEED                       0.010
 
 // SCORE LABEL
-#define SCORE_FONT_SIZE                0.1
+#define SCORE_FONT_SIZE                 0.085
 
 
 #endif // __CONSTANTS_H__

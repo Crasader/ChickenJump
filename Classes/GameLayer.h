@@ -38,8 +38,10 @@ private:
     void spawnCloud(float dt);
     void speedUp(float dt);
     void updateEggs(float speed);
+    void togglePause(cocos2d::Ref* layer);
     
     cocos2d::PhysicsWorld *_sceneWorld;
+    Menu* _pauseToggleMenu;
     
     Background* _background;
     LayerTwo* _layerTow;
@@ -47,17 +49,17 @@ private:
     Chicken* _chicken;
     Trampoline* _trampoline;
     std::vector<Sprite*> _eggs;
+    bool _isPaused;
     
     Vec2 _lineStartPoint;
     Vec2 _lineEndPoint;
     
     unsigned int _score;
     Label* _scoreLabel;
+    Sprite* _scoreIcon;
     
     Vec2 _origin;
     Size _visibleSize;
-    
-    Sprite* _spriteTemp;
 
 };
 
