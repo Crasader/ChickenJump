@@ -63,7 +63,7 @@ bool GameLayer::init()
     _chicken = new Chicken();
     _chicken->createChicken(this);
     
-    // Increase speed
+    // Increase speed periodicaly
 //    this->schedule(schedule_selector(GameLayer::speedUp), SPEED_CHANGE_FREQUENCY * _visibleSize.width);
     
     // Spawn egg
@@ -134,12 +134,13 @@ void GameLayer::spawnCloud(float dt) {
 }
 
 void GameLayer::updateEggs(float playerSpeed) {
-    for (auto it = _eggs.begin(); it != _eggs.end(); ++it) {
-        (*it)->setPositionX((*it)->getPosition().x - LAYER_GROUND_SPEED * _visibleSize.width * playerSpeed);
+    for (int i = 0; i < _eggs.size(); ++i) {
+        Sprite* e = _eggs.at(i);
+        e->setPositionX(e->getPosition().x - LAYER_GROUND_SPEED * _visibleSize.width * playerSpeed);
         
-        if ((*it)->getPositionX() < -(*it)->getContentSize().width) {
-            this->removeChild(*it);
-            _eggs.erase(it);
+        if (e->getPositionX() < -e->getContentSize().width) {
+            this->removeChild(e);
+            _eggs.erase(_eggs.begin() + i);
         }
     }
 }
