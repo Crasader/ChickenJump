@@ -22,8 +22,9 @@ void Egg::spawn(cocos2d::Layer* layer, std::vector<Sprite*>& eggs) {
 
     // Static physics body
     auto eggBody = PhysicsBody::createCircle(_egg->getContentSize().width / 2, PhysicsMaterial(0.1f, 1.0f, 0.0f));
-    eggBody->setCollisionBitmask(COLLISION_BITMASK_EGG);
-    eggBody->setContactTestBitmask(true);
+    eggBody->setCategoryBitmask(CATEGORY_BITMASK_EGG);
+    // eggBody->setCollisionBitmask(1);
+    eggBody->setContactTestBitmask(CATEGORY_BITMASK_CHICKEN);
     eggBody->setDynamic(false);
     _egg->setPhysicsBody(eggBody);
 

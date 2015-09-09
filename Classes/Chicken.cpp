@@ -41,8 +41,9 @@ void Chicken::createChicken(cocos2d::Layer *layer) {
     
     // Dynamic physics body
     auto chickenBody = PhysicsBody::createCircle(_chicken->getContentSize().width / 2, PhysicsMaterial(0.1f, 1.0f, 0.0f));
-    chickenBody->setCollisionBitmask(COLLISION_BITMASK_CHICKEN);
-    chickenBody->setContactTestBitmask(true);
+    chickenBody->setCategoryBitmask(CATEGORY_BITMASK_CHICKEN);
+    chickenBody->setContactTestBitmask(CONTACTTEST_BITMASK_CHICKEN_ALL);
+    chickenBody->setCollisionBitmask(false); // not to get dragged-by others
     chickenBody->setGravityEnable(false);
     _chicken->setPhysicsBody(chickenBody);
     

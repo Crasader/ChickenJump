@@ -149,6 +149,8 @@ void GameLayer::update(float dt) {
         _scoreIcon->setPosition(_scoreIcon->getContentSize().width, _visibleSize.height * 0.9 - this->getPositionY());
         _scoreLabel->setPosition(_scoreIcon->getContentSize().width * 2.5, _visibleSize.height * 0.89 - this->getPositionY());
         
+        //
+        
     }
 }
 
@@ -241,14 +243,14 @@ void GameLayer::onTouchEnded(Touch* touch, Event* event) {
 
 // ########## COLLISION HANDLING ########## //
 bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
-//    CCLOG("CONTACT");
+    CCLOG("CONTACT");
     PhysicsBody* a = contact.getShapeA()->getBody();
     PhysicsBody* b = contact.getShapeB()->getBody();
     
     float chickenPositionY = _chicken->getChicken()->getPositionY();
     
     // collision between chicken and trampoline
-    if ((a->getCollisionBitmask() == COLLISION_BITMASK_CHICKEN and b->getCollisionBitmask() == COLLISION_BITMASK_TRAMPOLINE)) {
+    if ((a->getCategoryBitmask() == 1 and b->getCategoryBitmask() == 2)) {
         auto trampoline = (Sprite*)contact.getShapeB()->getBody()->getNode();
         float trampolinePositionY = trampoline->getPositionY() + _trampoline->getTrampoline()->getPositionY();
         
@@ -259,15 +261,15 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
             CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("jump.wav");
             speedUp(0);
         }
-        else if (trampolinePositionY > chickenPositionY and
-                 _chicken->getState() == PlayerState::Jumping) {
-
-            _chicken->setState(PlayerState::Falling);
-            CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("bump.wav");
-        }
+//        else if (trampolinePositionY > chickenPositionY and
+//                 _chicken->getState() == PlayerState::Jumping) {
+//
+//            _chicken->setState(PlayerState::Falling);
+//            CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("bump.wav");
+//        }
     }
     // collision between trampoline and chicken
-    else if ((a->getCollisionBitmask() == COLLISION_BITMASK_TRAMPOLINE and b->getCollisionBitmask() == COLLISION_BITMASK_CHICKEN)) {
+    else if ((a->getCategoryBitmask() == 2 and b->getCategoryBitmask() == 1)) {
         auto trampoline = (Sprite*)contact.getShapeA()->getBody()->getNode();
         float trampolinePositionY = trampoline->getPositionY() + _trampoline->getTrampoline()->getPositionY();
         
@@ -278,17 +280,17 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
             CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("jump.wav");
             speedUp(0);
         }
-        else if (trampolinePositionY > chickenPositionY and
-                 _chicken->getState() == PlayerState::Jumping) {
-
-            _chicken->setState(PlayerState::Falling);
-            CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("bump.wav");
-        }
+//        else if (trampolinePositionY > chickenPositionY and
+//                 _chicken->getState() == PlayerState::Jumping) {
+//
+//            _chicken->setState(PlayerState::Falling);
+//            CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("bump.wav");
+//        }
     }
     
     
     // collision between chicken and eggs
-    if (a->getCollisionBitmask() == COLLISION_BITMASK_CHICKEN and b->getCollisionBitmask() == COLLISION_BITMASK_EGG) {
+    if (a->getCategoryBitmask() == 1 and b->getCategoryBitmask() == 4) {
         _score ++;
         if (_scoreLabel) {
             _scoreLabel->setString(String::createWithFormat("%d", _score)->getCString());
@@ -305,7 +307,7 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
         }
     }
     // collision between eggs and chicken
-    else if (a->getCollisionBitmask() == COLLISION_BITMASK_EGG and b->getCollisionBitmask() == COLLISION_BITMASK_CHICKEN) {
+    else if (a->getCategoryBitmask() == 4 and b->getCategoryBitmask() == 1) {
         _score ++;
         if (_scoreLabel) {
             _scoreLabel->setString(String::createWithFormat("%d", _score)->getCString());
