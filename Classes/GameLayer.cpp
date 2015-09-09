@@ -148,6 +148,7 @@ void GameLayer::update(float dt) {
         // update score label
         _scoreIcon->setPosition(_scoreIcon->getContentSize().width, _visibleSize.height * 0.9 - this->getPositionY());
         _scoreLabel->setPosition(_scoreIcon->getContentSize().width * 2.5, _visibleSize.height * 0.89 - this->getPositionY());
+        
     }
 }
 
@@ -199,6 +200,7 @@ void GameLayer::togglePause(cocos2d::Ref* layer) {
 }
 
 
+// ########## TOUCH EVENTS ########## //
 bool GameLayer::onTouchBegan(Touch* touch, Event* event) {
     _lineStartPoint = touch->getLocation();
     _lineEndPoint = _lineStartPoint;
@@ -236,6 +238,8 @@ void GameLayer::onTouchEnded(Touch* touch, Event* event) {
     if (_trampoline) { _trampoline->setDrawingFinished(true); }
 }
 
+
+// ########## COLLISION HANDLING ########## //
 bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
 //    CCLOG("CONTACT");
     PhysicsBody* a = contact.getShapeA()->getBody();
@@ -281,6 +285,7 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
             CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("bump.wav");
         }
     }
+    
     
     // collision between chicken and eggs
     if (a->getCollisionBitmask() == COLLISION_BITMASK_CHICKEN and b->getCollisionBitmask() == COLLISION_BITMASK_EGG) {
