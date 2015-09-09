@@ -273,7 +273,8 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
             _chicken->setState(PlayerState::Jumping);
             CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("jump.wav");
             speedUp(0);
-        }    }
+        }
+    }
     
     
     // collision between chicken and eggs
