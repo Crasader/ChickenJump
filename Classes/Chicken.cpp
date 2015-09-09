@@ -106,9 +106,15 @@ void Chicken::update(float dt) {
             if (_vector.y <= 0) {
                 _state = PlayerState::Falling;
             }
+            
+            // only collide with eggs now
+            _chicken->getPhysicsBody()->setContactTestBitmask(CONTACTTEST_BITMASK_CHICKEN_EGG);
             break;
         case Falling:
             _vector.y -= _visibleSize.height * VELOCITY_Y_DECREASE_RATE;
+            
+            // collide with both eggs and trampoline again
+            _chicken->getPhysicsBody()->setContactTestBitmask(CONTACTTEST_BITMASK_CHICKEN_ALL);
             break;
         case Dying:
             CCLOG("Player DEAD. PLEASE RESET");

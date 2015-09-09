@@ -261,12 +261,6 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
             CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("jump.wav");
             speedUp(0);
         }
-//        else if (trampolinePositionY > chickenPositionY and
-//                 _chicken->getState() == PlayerState::Jumping) {
-//
-//            _chicken->setState(PlayerState::Falling);
-//            CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("bump.wav");
-//        }
     }
     // collision between trampoline and chicken
     else if ((a->getCategoryBitmask() == 2 and b->getCategoryBitmask() == 1)) {
@@ -279,14 +273,7 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
             _chicken->setState(PlayerState::Jumping);
             CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("jump.wav");
             speedUp(0);
-        }
-//        else if (trampolinePositionY > chickenPositionY and
-//                 _chicken->getState() == PlayerState::Jumping) {
-//
-//            _chicken->setState(PlayerState::Falling);
-//            CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("bump.wav");
-//        }
-    }
+        }    }
     
     
     // collision between chicken and eggs
