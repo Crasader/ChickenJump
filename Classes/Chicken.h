@@ -10,7 +10,6 @@ typedef enum
     Dying,
     Falling,
     Jumping,
-    Moving,
     Start
     
 } PlayerState;

@@ -263,7 +263,7 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
         }
     }
     // collision between trampoline and chicken
-    if ((b->getCollisionBitmask() == COLLISION_BITMASK_CHICKEN and a->getCollisionBitmask() == COLLISION_BITMASK_TRAMPOLINE)) {
+    else if ((a->getCollisionBitmask() == COLLISION_BITMASK_TRAMPOLINE and b->getCollisionBitmask() == COLLISION_BITMASK_CHICKEN)) {
         auto trampoline = (Sprite*)contact.getShapeA()->getBody()->getNode();
         float trampolinePositionY = trampoline->getPositionY() + _trampoline->getTrampoline()->getPositionY();
         
@@ -299,7 +299,8 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
             }
         }
     }
-    else if (b->getCollisionBitmask() == COLLISION_BITMASK_CHICKEN and a->getCollisionBitmask() == COLLISION_BITMASK_EGG) {
+    // collision between eggs and chicken
+    else if (a->getCollisionBitmask() == COLLISION_BITMASK_EGG and b->getCollisionBitmask() == COLLISION_BITMASK_CHICKEN) {
         _score ++;
         if (_scoreLabel) {
             _scoreLabel->setString(String::createWithFormat("%d", _score)->getCString());

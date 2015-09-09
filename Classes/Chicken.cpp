@@ -12,8 +12,10 @@ void Chicken::createChicken(cocos2d::Layer *layer) {
     _chicken->setAnchorPoint(Vec2(0, 0));
     if (! _chicken) { return; }
     
-    _vector.x = 1.0; // initial speedX
-    _state = PlayerState::Falling;
+    // initial speedX
+    _vector.x = 1.0;
+    _vector.y = 0.0;
+    _state = PlayerState::Start;
     
     _chicken->setPosition(_visibleSize.width * 0.33 + _origin.x, _visibleSize.height * 0.9 + _origin.y);
     
@@ -95,8 +97,8 @@ void Chicken::update(float dt) {
     if (not _chicken) { return; }
     
     switch (_state) {
-        case Moving:
-            
+        case Start:
+            _state = Falling;
             break;
         case Jumping:
             _vector.y -= _visibleSize.height * VELOCITY_Y_DECREASE_RATE;
