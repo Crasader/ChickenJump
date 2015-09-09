@@ -24,9 +24,12 @@ void Chicken::createChicken(cocos2d::Layer *layer) {
     // Flapping wings animation
     Animation* animation = Animation::create();
     animation->addSpriteFrameWithFile("playerfly_1.png");
+    animation->addSpriteFrameWithFile("playerfly_3.png");
+    animation->addSpriteFrameWithFile("playerfly_1.png");
+    animation->addSpriteFrameWithFile("playerfly_3.png");
+    animation->addSpriteFrameWithFile("playerfly_1.png");
     animation->addSpriteFrameWithFile("playerfly_2.png");
     animation->addSpriteFrameWithFile("playerfly_3.png");
-    animation->addSpriteFrameWithFile("playerfly_2.png");
     animation->setDelayPerUnit(0.2f / 1.0f);
     animation->setRestoreOriginalFrame(false);
     animation->setLoops(-1);
@@ -112,11 +115,14 @@ void Chicken::update(float dt) {
             break;
     }
 
+    // jumping
     if (_state != PlayerState::Dying) {
         _chicken->setPositionY(_chicken->getPositionY() + _vector.y);
     }
     
-    if (_chicken->getPositionY() < -_chicken->getContentSize().height * 0.5) {
+    // Die
+    if (_chicken->getPositionY() < -_chicken->getContentSize().height * 0.5 or
+        _chicken->getPositionX() < -_chicken->getContentSize().width * 1.5) {
         _state = PlayerState::Dying;
     }
 }

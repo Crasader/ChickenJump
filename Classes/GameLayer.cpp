@@ -90,7 +90,7 @@ bool GameLayer::init()
         _score = 0;
         _scoreIcon = Sprite::create("egg.png");
         _scoreIcon->setAnchorPoint(Vec2(0, 0));
-        _scoreIcon->setPosition(_scoreIcon->getContentSize().width, _visibleSize.height * 0.87);
+//        _scoreIcon->setPosition(_scoreIcon->getContentSize().width, _visibleSize.height * 0.87);
         this->addChild(_scoreIcon, BackgroundLayer::layerChicken);
         
         std::string scoreStr = String::createWithFormat("%d", _score)->getCString();
@@ -98,7 +98,7 @@ bool GameLayer::init()
         if (_scoreLabel) {
             _scoreLabel->setColor(Color3B::WHITE);
             _scoreLabel->setAnchorPoint(Vec2(0, 0));
-            _scoreLabel->setPosition(_scoreIcon->getContentSize().width * 2.5, _visibleSize.height * 0.86);
+//            _scoreLabel->setPosition(_scoreIcon->getContentSize().width * 2.5, _visibleSize.height * 0.86);
             this->addChild(_scoreLabel, BackgroundLayer::layerChicken);
         }
     }
@@ -136,18 +136,18 @@ void GameLayer::update(float dt) {
         updateEggs(_chicken->getSpeedX());
         
         // keep the camera on the player
-        if(_chicken->getChicken()->getPositionY() > _visibleSize.height * 0.6f) {
-            this->setPositionY( (_visibleSize.height * 0.6f - _chicken->getChicken()->getPositionY()) * 0.8f);
-        } else {
-            this->setPositionY(0);
-        }
+//        if(_chicken->getChicken()->getPositionY() > _visibleSize.height * 0.6f) {
+//            this->setPositionY( (_visibleSize.height * 0.6f - _chicken->getChicken()->getPositionY()) * 0.8f);
+//        } else {
+//            this->setPositionY(0);
+//        }
         
         // update pause menu
         _pauseToggleMenu->setPosition(_visibleSize.width / 2, _visibleSize.height * 0.95 - this->getPositionY());
         
         // update score label
-        _scoreIcon->setPosition(_scoreIcon->getContentSize().width, _visibleSize.height * 0.87 - this->getPositionY());
-        _scoreLabel->setPosition(_scoreIcon->getContentSize().width * 2.5, _visibleSize.height * 0.86 - this->getPositionY());
+        _scoreIcon->setPosition(_scoreIcon->getContentSize().width, _visibleSize.height * 0.9 - this->getPositionY());
+        _scoreLabel->setPosition(_scoreIcon->getContentSize().width * 2.5, _visibleSize.height * 0.89 - this->getPositionY());
     }
 }
 
