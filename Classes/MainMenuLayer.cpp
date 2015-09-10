@@ -41,24 +41,24 @@ bool MainMenuLayer::init()
     
     // Play Menu Item
     {
-        auto playItem = MenuItemImage::create("play.png", "playclicked.png",
-                                              CC_CALLBACK_1(MainMenuLayer::gotoGamePlayLayer, this));
-        playItem->setPosition(Point(_visibleSize.width / 2 + _origin.x, _visibleSize.height / 2 + _origin.y));
-        auto menu = Menu::create(playItem, NULL);
-        menu->setPosition(Point::ZERO);
-        this->addChild(menu);
+        Label* selectLevel = Label::createWithTTF("Select Level", "Marker Felt.ttf", _visibleSize.height * SCORE_FONT_SIZE);
+        if (selectLevel) {
+            selectLevel->setColor(Color3B::WHITE);
+            selectLevel->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.7);
+            this->addChild(selectLevel);
+        }
     }
     
-    // Country toggle
+    // Select Levels
     {
-        MenuItem* france = MenuItemImage::create("france.png", "france.png");
-        MenuItem* england = MenuItemImage::create("england.png", "england.png");
-        MenuItemToggle* countryToggleItem = MenuItemToggle::createWithCallback(CC_CALLBACK_1(MainMenuLayer::toggleCountry, this), france, england, NULL);
-        Menu* countryToggleMenu = Menu::create(countryToggleItem, NULL);
-        countryToggleMenu->setPosition(Vec2(_visibleSize.width / 2, countryToggleItem->getContentSize().height + 10));
-        this->addChild(countryToggleMenu);
+        MenuItem* france = MenuItemImage::create("france.png", "france.png", CC_CALLBACK_1(MainMenuLayer::menuSelectFrance, this));
+        MenuItem* england = MenuItemImage::create("england.png", "england.png", CC_CALLBACK_1(MainMenuLayer::menuSelectEngland, this));
+        MenuItem* spain = MenuItemImage::create("spain.png", "spain.png", CC_CALLBACK_1(MainMenuLayer::menuSelectSpain, this));
         
-        toggleCountry(this);
+        Menu* menu = Menu::create(france, england, spain, NULL);
+        menu->alignItemsHorizontallyWithPadding(25);
+        menu->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.4);
+        this->addChild(menu);
     }
     
     
@@ -71,54 +71,46 @@ void MainMenuLayer::gotoGamePlayLayer(cocos2d::Ref* sender)
     Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }
 
+
+
 static Size smallResource  = Size(480, 320); // "iphone"
 static Size mediumResource = Size(1024, 768); // "ipad"
 static Size largeResource  = Size(2048, 1536); // "ipadhd"
 static Size designResolution = Size(480, 320);
 
-void MainMenuLayer::toggleCountry(cocos2d::Ref* sender) {
-    _countryFrance = !_countryFrance;
-    CCLOG("Country Selected: %s", _countryFrance? "France":"England");
+void MainMenuLayer::menuSelectFrance(cocos2d::Ref* sender) {
+    selectLevel("france");
+    gotoGamePlayLayer(this);
+}
 
-    // Handling different screen size
-    {
-        Size screenSize = Director::getInstance()->getOpenGLView()->getFrameSize();
-        std::vector<std::string> searchPaths;
-        if (screenSize.height > mediumResource.height) {
-            CCLOG("MainMenu:path: ipadhd");
-            if (_countryFrance) {
-                searchPaths.push_back("ipadhd");
-                searchPaths.push_back("ipadhd/france");
-            }
-            else {
-                searchPaths.push_back("ipadhd");
-                searchPaths.push_back("ipadhd/england");
-            }
-        }
-        else if (screenSize.width > smallResource.width) {
-            CCLOG("MainMenu:path: ipad");
-            if (_countryFrance) {
-                searchPaths.push_back("ipad");
-                searchPaths.push_back("ipad/france");
-            }
-            else {
-                searchPaths.push_back("ipad");
-                searchPaths.push_back("ipad/england");
-            }        }
-        else {
-            CCLOG("MainMenu:path: iphone");
-            if (_countryFrance) {
-                searchPaths.push_back("iphone");
-                searchPaths.push_back("iphone/france");
-            }
-            else {
-                searchPaths.push_back("iphone");
-                searchPaths.push_back("iphone/england");
-            }
-        }
-        auto fileUtils = FileUtils::getInstance();
-        fileUtils->setSearchPaths(searchPaths);
+void MainMenuLayer::menuSelectEngland(cocos2d::Ref* sender) {
+    selectLevel("england");
+    gotoGamePlayLayer(this);
+}
+
+void MainMenuLayer::menuSelectSpain(cocos2d::Ref* sender) {
+    selectLevel("spain");
+    gotoGamePlayLayer(this);
+}
+
+void MainMenuLayer::selectLevel(std::string level) {
+    Size screenSize = Director::getInstance()->getOpenGLView()->getFrameSize();
+    std::vector<std::string> searchPaths;
+    
+    if (screenSize.height > mediumResource.height) {
+        searchPaths.push_back("ipadhd");
+        searchPaths.push_back("ipadhd/" + level);
     }
+    else if (screenSize.width > smallResource.width) {
+        searchPaths.push_back("ipad");
+        searchPaths.push_back("ipad/" + level);
+    }
+    else {
+        searchPaths.push_back("iphone");
+        searchPaths.push_back("iphone/" + level);
+    }
+    auto fileUtils = FileUtils::getInstance();
+    fileUtils->setSearchPaths(searchPaths);
     
 }
 

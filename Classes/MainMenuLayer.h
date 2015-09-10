@@ -22,7 +22,10 @@ public:
     
 private:
     void gotoGamePlayLayer(cocos2d::Ref* sender);
-    void toggleCountry(cocos2d::Ref* sender);
+    void menuSelectFrance(cocos2d::Ref* sender);
+    void menuSelectEngland(cocos2d::Ref* sender);
+    void menuSelectSpain(cocos2d::Ref* sender);
+    void selectLevel(std::string level);
     bool _countryFrance;
     
     Vec2 _origin;

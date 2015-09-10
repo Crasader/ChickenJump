@@ -41,9 +41,9 @@ bool GameLayer::init()
 
     _isPaused = false;
     
-    auto bg = Sprite::create("bg.png");
-    bg->setPosition(Vec2(_visibleSize.width * 0.5f, _visibleSize.height * 0.5f));
-    this->addChild(bg, BackgroundLayer::layerBG);
+//    auto bg = Sprite::create("bg.png");
+//    bg->setPosition(Vec2(_visibleSize.width * 0.5f, _visibleSize.height * 0.5f));
+//    this->addChild(bg, BackgroundLayer::layerBG);
 
     // Add background
     _background = new Background();

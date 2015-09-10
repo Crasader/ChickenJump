@@ -8,7 +8,7 @@ Trampoline::Trampoline(void){
     _trampoline = Sprite::create();     // Think it as the HEAD of a Linked List
     _isDrawingFinished = false;
     _spriteToKnowContentWidth = Sprite::create(_imageFile);
-    _trampolineWidth = _spriteToKnowContentWidth->getContentSize().width;
+    if (_spriteToKnowContentWidth) { _trampolineWidth = _spriteToKnowContentWidth->getContentSize().width; }
 
 }
 

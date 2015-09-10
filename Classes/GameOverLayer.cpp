@@ -1,7 +1,7 @@
 #include "GameOverLayer.h"
 
 #include "Constants.h"
-#include "GameLayer.h"
+#include "MainMenuLayer.h"
 
 using namespace cocos2d;
 
@@ -73,7 +73,7 @@ bool GameOverLayer::init()
         }
     }
 
-    // Play Menu Item
+    // Retry Menu Item
     {
         auto playItem = MenuItemImage::create("retry.png", "retryclicked.png",
                                               CC_CALLBACK_1(GameOverLayer::gotoGamePlayLayer, this));
@@ -82,18 +82,6 @@ bool GameOverLayer::init()
         menu->setPosition(Point::ZERO);
         this->addChild(menu);
     }
-    
-    // Country toggle
-    {
-        MenuItem* france = MenuItemImage::create("france.png", "france.png");
-        MenuItem* england = MenuItemImage::create("england.png", "england.png");
-        MenuItemToggle* countryToggleItem = MenuItemToggle::createWithCallback(CC_CALLBACK_1(GameOverLayer::toggleCountry, this), france, england, NULL);
-        Menu* countryToggleMenu = Menu::create(countryToggleItem, NULL);
-        countryToggleMenu->setPosition(Vec2(_visibleSize.width / 2, countryToggleItem->getContentSize().height + 10));
-        this->addChild(countryToggleMenu);
-        
-        toggleCountry(this);
-    }
 
     
     return true;
@@ -101,61 +89,9 @@ bool GameOverLayer::init()
 
 void GameOverLayer::gotoGamePlayLayer(cocos2d::Ref* sender)
 {
-    auto scene = GameLayer::createScene();
+    auto scene = MainMenuLayer::createScene();
     Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }
-
-static Size smallResource  = Size(480, 320); // "iphone"
-static Size mediumResource = Size(1024, 768); // "ipad"
-static Size largeResource  = Size(2048, 1536); // "ipadhd"
-static Size designResolution = Size(480, 320);
-
-void GameOverLayer::toggleCountry(cocos2d::Ref* sender) {
-    _countryFrance = !_countryFrance;
-    CCLOG("Country Selected: %s", _countryFrance? "France":"England");
-    
-    // Handling different screen size
-    {
-        Size screenSize = Director::getInstance()->getOpenGLView()->getFrameSize();
-        std::vector<std::string> searchPaths;
-        if (screenSize.height > mediumResource.height) {
-            CCLOG("MainMenu:path: ipadhd");
-            if (_countryFrance) {
-                searchPaths.push_back("ipadhd");
-                searchPaths.push_back("ipadhd/france");
-            }
-            else {
-                searchPaths.push_back("ipadhd");
-                searchPaths.push_back("ipadhd/england");
-            }
-        }
-        else if (screenSize.width > smallResource.width) {
-            CCLOG("MainMenu:path: ipad");
-            if (_countryFrance) {
-                searchPaths.push_back("ipad");
-                searchPaths.push_back("ipad/france");
-            }
-            else {
-                searchPaths.push_back("ipad");
-                searchPaths.push_back("ipad/england");
-            }        }
-        else {
-            CCLOG("MainMenu:path: iphone");
-            if (_countryFrance) {
-                searchPaths.push_back("iphone");
-                searchPaths.push_back("iphone/france");
-            }
-            else {
-                searchPaths.push_back("iphone");
-                searchPaths.push_back("iphone/england");
-            }
-        }
-        auto fileUtils = FileUtils::getInstance();
-        fileUtils->setSearchPaths(searchPaths);
-    }
-    
-}
-
 
 
 

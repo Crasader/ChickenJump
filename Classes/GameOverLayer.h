@@ -22,8 +22,6 @@ public:
     
 private:
     void gotoGamePlayLayer(cocos2d::Ref* sender);
-    void toggleCountry(cocos2d::Ref* sender);
-    bool _countryFrance;
 
     Vec2 _origin;
     Size _visibleSize;
