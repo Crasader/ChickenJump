@@ -90,7 +90,7 @@ bool GameLayer::init()
         _score = 0;
         _scoreIcon = Sprite::create("egg.png");
         _scoreIcon->setAnchorPoint(Vec2(0, 0));
-//        _scoreIcon->setPosition(_scoreIcon->getContentSize().width, _visibleSize.height * 0.87);
+        _scoreIcon->setPosition(_scoreIcon->getContentSize().width, _visibleSize.height * 0.9);
         this->addChild(_scoreIcon, BackgroundLayer::layerChicken);
         
         std::string scoreStr = String::createWithFormat("%d", _score)->getCString();
@@ -98,7 +98,7 @@ bool GameLayer::init()
         if (_scoreLabel) {
             _scoreLabel->setColor(Color3B::WHITE);
             _scoreLabel->setAnchorPoint(Vec2(0, 0));
-//            _scoreLabel->setPosition(_scoreIcon->getContentSize().width * 2.5, _visibleSize.height * 0.86);
+            _scoreLabel->setPosition(_scoreIcon->getContentSize().width * 2.5, _visibleSize.height * 0.89);
             this->addChild(_scoreLabel, BackgroundLayer::layerChicken);
         }
     }
@@ -113,6 +113,22 @@ bool GameLayer::init()
         this->addChild(_pauseToggleMenu, BackgroundLayer::layerChicken);
     }
     
+    // Tutorial
+    {
+        _finger = Sprite::create("finger.png");
+        _finger->setAnchorPoint(Vec2(0, 0));
+        _finger->setPosition(_visibleSize.width * 0.20, _visibleSize.height * 0.20);
+        this->addChild(_finger, BackgroundLayer::layerChicken);
+        
+        MoveTo* draw = MoveTo::create(2, Point(_visibleSize.width * 0.5, _finger->getPositionY()));
+        MoveTo* reset = MoveTo::create(0, Point(_visibleSize.width * 0.20, _finger->getPositionY()));
+        auto delay = DelayTime::create(0.25f);
+        auto seq = Sequence::create(draw, delay, reset, delay, NULL);
+        auto tutorial = RepeatForever::create((ActionInterval*)seq);
+        _finger->runAction(tutorial);
+        
+    }
+    
     // Activate main update loop
     this->scheduleUpdate();
     
@@ -121,6 +137,7 @@ bool GameLayer::init()
 
 void GameLayer::update(float dt) {
     if (_isPaused) { return; }
+    if (not _isGameStarted) { return; }
     
     if (_chicken->getState() == PlayerState::Dying) {
         auto gameOver = GameOverLayer::createScene(_score);
@@ -167,13 +184,17 @@ void GameLayer::updateEggs(float playerSpeed) {
 }
 
 void GameLayer::spawnEgg(float dt) {
-    Egg* egg = new Egg();
-    egg->spawn(this, _eggs);
+    if (_isGameStarted) {
+        Egg* egg = new Egg();
+        egg->spawn(this, _eggs);
+    }
 }
 
 void GameLayer::spawnCloud(float dt) {
-    Cloud* cloud = new Cloud();
-    cloud->spawn(this);
+    if (_isGameStarted) {
+        Cloud* cloud = new Cloud();
+        cloud->spawn(this);
+    }
 }
 
 void GameLayer::speedUp(float dt) {
@@ -204,6 +225,12 @@ void GameLayer::togglePause(cocos2d::Ref* layer) {
 
 // ########## TOUCH EVENTS ########## //
 bool GameLayer::onTouchBegan(Touch* touch, Event* event) {
+    if (not _isGameStarted) {
+        _isGameStarted = true;
+        _finger->stopAllActions();
+        this->removeChild(_finger);
+    }
+
     _lineStartPoint = touch->getLocation();
     _lineEndPoint = _lineStartPoint;
 

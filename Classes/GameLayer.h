@@ -49,7 +49,9 @@ private:
     Chicken* _chicken;
     Trampoline* _trampoline;
     std::vector<Sprite*> _eggs;
+    Sprite* _finger;
     bool _isPaused;
+    bool _isGameStarted;
     
     Vec2 _lineStartPoint;
     Vec2 _lineEndPoint;

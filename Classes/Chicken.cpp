@@ -17,7 +17,7 @@ void Chicken::createChicken(cocos2d::Layer *layer) {
     _vector.y = 0.0;
     _state = PlayerState::Start;
     
-    _chicken->setPosition(_visibleSize.width * 0.33 + _origin.x, _visibleSize.height * 0.9 + _origin.y);
+    _chicken->setPosition(_visibleSize.width * 0.30 + _origin.x, _visibleSize.height * 0.9 + _origin.y);
     
     // Adjusting big png
     auto scaleTo = ScaleTo::create(0.75f, 0.75f);
