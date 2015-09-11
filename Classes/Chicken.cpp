@@ -7,59 +7,46 @@ Chicken::Chicken(void){
     _visibleSize = Director::getInstance()->getVisibleSize();
 }
 
-void Chicken::createChicken(cocos2d::Layer *layer) {
-    _chicken = Sprite::create(_imageFile);
-    _chicken->setAnchorPoint(Vec2(0, 0));
-    if (! _chicken) { return; }
-    
-    // initial speedX
-    _vector.x = 1.0;
-    _vector.y = 0.0;
-    _state = PlayerState::Start;
-    
-    _chicken->setPosition(_visibleSize.width * 0.30 + _origin.x, _visibleSize.height * 0.9 + _origin.y);
-    
-    // Adjusting big png
-    auto scaleTo = ScaleTo::create(0.75f, 0.75f);
-    _chicken->runAction(scaleTo);
-    
-    // Flapping wings animation
-    Animation* animation = Animation::create();
-    animation->addSpriteFrameWithFile("playerfly_1.png");
-    animation->addSpriteFrameWithFile("playerfly_3.png");
-    animation->addSpriteFrameWithFile("playerfly_1.png");
-    animation->addSpriteFrameWithFile("playerfly_3.png");
-    animation->addSpriteFrameWithFile("playerfly_1.png");
-    animation->addSpriteFrameWithFile("playerfly_2.png");
-    animation->addSpriteFrameWithFile("playerfly_3.png");
-    animation->setDelayPerUnit(0.2f / 1.0f);
-    animation->setRestoreOriginalFrame(false);
-    animation->setLoops(-1);
-    
-    Action* action = Animate::create(animation);
-    _chicken->runAction(action);
-    
-    // Dynamic physics body
+void Chicken::addPhysicsBody() {
     auto chickenBody = PhysicsBody::createCircle(_chicken->getContentSize().width / 2, PhysicsMaterial(0.1f, 1.0f, 0.0f));
     chickenBody->setCategoryBitmask(CATEGORY_BITMASK_CHICKEN);
     chickenBody->setContactTestBitmask(CONTACTTEST_BITMASK_CHICKEN_ALL);
     chickenBody->setCollisionBitmask(false); // not to get dragged-by others
     chickenBody->setGravityEnable(false);
     _chicken->setPhysicsBody(chickenBody);
+}
+
+void Chicken::createChicken(cocos2d::Layer *layer) {
+    _chicken = Sprite::create(_imageFile);
+    _chicken->setAnchorPoint(Vec2(0, 0));
+    if (! _chicken) { return; }
     
+    // Dynamic physics body
+    addPhysicsBody();
+    
+    // initial speed and state
+    _vector.x = 1.0;
+    _vector.y = 0.0;
+    _state = PlayerState::Start;
+    
+    // initial position
+    _chicken->setPosition(_visibleSize.width * 0.30 + _origin.x, _visibleSize.height * 0.9 + _origin.y);
+    
+    // TODO: remove this adjusting
+    // Adjusting big png
+    auto scaleTo = ScaleTo::create(0.75f, 0.75f);
+    _chicken->runAction(scaleTo);
+    
+    // Flapping wings animation
+    setAnimation();
     
     layer->addChild(_chicken, BackgroundLayer::layerChicken);
 }
 
-void Chicken::setState(PlayerState state) {
-    if (not _chicken) { return; }
-    
-    _state = state;
-    if (state == PlayerState::Jumping) {
-        _vector.y = _visibleSize.height * VELOCITY_Y_MAX;
-    }
-    else if (state == PlayerState::Falling) {
-        _vector.y = -_visibleSize.height * VELOCITY_Y_DECREASE_RATE;
+void Chicken::decreaseSpeedX() {
+    _vector.x /= ACCELERATION_DEFAULT;
+    if (_vector.x <= 1) {
+        _vector.x = 1;
     }
 }
 
@@ -80,17 +67,39 @@ void Chicken::increaseSpeedX() {
     }
 }
 
-void Chicken::decreaseSpeedX() {
-    _vector.x /= ACCELERATION_DEFAULT;
-    if (_vector.x <= 1) {
-        _vector.x = 1;
-    }
+void Chicken::setAnimation() {
+    Animation* animation = Animation::create();
+    animation->addSpriteFrameWithFile("playerfly_1.png");
+    animation->addSpriteFrameWithFile("playerfly_3.png");
+    animation->addSpriteFrameWithFile("playerfly_1.png");
+    animation->addSpriteFrameWithFile("playerfly_3.png");
+    animation->addSpriteFrameWithFile("playerfly_1.png");
+    animation->addSpriteFrameWithFile("playerfly_2.png");
+    animation->addSpriteFrameWithFile("playerfly_3.png");
+    animation->setDelayPerUnit(0.2f / 1.0f);
+    animation->setRestoreOriginalFrame(false);
+    animation->setLoops(-1);
+    
+    Action* action = Animate::create(animation);
+    _chicken->runAction(action);
 }
 
-void Chicken::changeSpeedX(float speed) {
+void Chicken::setSpeedX(float speed) {
     _vector.x += speed;
     if (_vector.x <= 1) {
         _vector.x = 1; // minimum speed
+    }
+}
+
+void Chicken::setState(PlayerState state) {
+    if (not _chicken) { return; }
+    
+    _state = state;
+    if (state == PlayerState::Jumping) {
+        _vector.y = _visibleSize.height * VELOCITY_Y_MAX;
+    }
+    else if (state == PlayerState::Falling) {
+        _vector.y = -_visibleSize.height * VELOCITY_Y_DECREASE_RATE;
     }
 }
 

@@ -18,15 +18,17 @@ typedef enum
 class Chicken {
 public:
     Chicken(void);
+    void addPhysicsBody();
     void createChicken(cocos2d::Layer* layer);
-    Sprite* getChicken() { return _chicken; }
-    float getSpeedX();
-    void changeSpeedX(float speed);
-    void increaseSpeedX();
     void decreaseSpeedX();
-    void setState(PlayerState state);
+    Sprite* getChicken() { return _chicken; }
     PlayerState getState();
+    float getSpeedX();
     Vec2* getVector() { return &_vector; }
+    void increaseSpeedX();
+    void setAnimation();
+    void setSpeedX(float speed);
+    void setState(PlayerState state);
     void update(float dt);
 
 private:

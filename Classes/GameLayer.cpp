@@ -60,21 +60,8 @@ bool GameLayer::init()
     // Add layerGround
     addGroundLayer();
     
-    // Spawn cloud
-    this->schedule(schedule_selector(GameLayer::spawnCloud), CLOUD_SPAWN_FREQUENCY * _visibleSize.width);
-    
     // Add chicken
     addChicken();
-    
-    // Spawn egg
-    this->schedule(schedule_selector(GameLayer::spawnEgg), EGG_SPAWN_FREQUENCY * _visibleSize.width);
-    
-    
-    // Listen for touches
-    addTouchListners();
-    
-    // Listen for collision
-    addContactListners();
     
     // Score Label
     addScoreLabel();
@@ -85,6 +72,21 @@ bool GameLayer::init()
     // Tutorial
     addTutorial();
     
+
+    // Spawn cloud
+    this->schedule(schedule_selector(GameLayer::spawnCloud), CLOUD_SPAWN_FREQUENCY * _visibleSize.width);
+    
+    // Spawn egg
+    this->schedule(schedule_selector(GameLayer::spawnEgg), EGG_SPAWN_FREQUENCY * _visibleSize.width);
+    
+
+    // Listen for touches
+    addTouchListners();
+    
+    // Listen for collision
+    addContactListners();
+    
+
     // Activate main update loop
     this->scheduleUpdate();
     
@@ -127,6 +129,8 @@ void GameLayer::addPauseMenu()     {
     _pauseToggleMenu = Menu::create(pauseToggleItem, NULL);
     _pauseToggleMenu->setPosition(Vec2(_visibleSize.width / 2, _visibleSize.height * 0.95)); // position also updated in update function
     this->addChild(_pauseToggleMenu, BackgroundLayer::layerChicken);
+    
+    _pauseToggleMenu->setEnabled(false); // enable it when _isGameStarted = true
 }
 
 void GameLayer::addSecondLayer() {
@@ -235,7 +239,7 @@ void GameLayer::speedUp() {
 
     float degree = atan2(yDist, xDist) * 180 / PI;
     
-    _chicken->changeSpeedX(-degree * CUSTOM_ACCELERATION);
+    _chicken->setSpeedX(-degree * CUSTOM_ACCELERATION);
 }
 
 void GameLayer::togglePause(cocos2d::Ref* layer) {
@@ -255,6 +259,8 @@ bool GameLayer::onTouchBegan(Touch* touch, Event* event) {
         _isGameStarted = true;
         _finger->stopAllActions();
         this->removeChild(_finger);
+        
+        _pauseToggleMenu->setEnabled(true);
     }
 
     _lineStartPoint = touch->getLocation();
