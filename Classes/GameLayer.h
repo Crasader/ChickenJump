@@ -34,13 +34,29 @@ public:
     void update(float dt);
     
 private:
+    void addBG();
+    void addChicken();
+    void addContactListners();
+    void addFirstLayer();
+    void addGroundLayer();
+    void addPauseMenu();
+    void addSecondLayer();
+    void addScoreLabel();
+    void addTouchListners();
+    void addTutorial();
+    void focusOnCharacter();
+    void jump(float trampolinePositionY);
     void releaseTouch();
-    void setPhysicsWorld(cocos2d::PhysicsWorld *world) { _sceneWorld = world; }
+    void removeEggSprite(Sprite* egg);
+    inline void setPhysicsWorld(cocos2d::PhysicsWorld *world) { _sceneWorld = world; }
     void spawnEgg(float dt);
     void spawnCloud(float dt);
     void speedUp();
     void togglePause(cocos2d::Ref* layer);
     void updateEggs(float speed);
+    void updatePauseMenuPosition();
+    void updateScoreLabel();
+    void updateScoreLabelPosition();
     
     cocos2d::PhysicsWorld *_sceneWorld;
     Menu* _pauseToggleMenu;
