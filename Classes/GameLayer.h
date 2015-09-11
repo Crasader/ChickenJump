@@ -23,22 +23,24 @@ public:
     // implement the "static create()" method manually
     CREATE_FUNC(GameLayer);
     
-    //listener for touches
+    // contact listners
+    bool onContactBegin(cocos2d::PhysicsContact &contact);
+    
+    // touch listners
     virtual bool onTouchBegan(Touch* touch, Event* event);
     virtual void onTouchEnded(Touch* touch, Event* event);
     virtual void onTouchMoved(Touch* touch, Event* event);
     
-    bool onContactBegin(cocos2d::PhysicsContact &contact);
-    
     void update(float dt);
     
 private:
+    void releaseTouch();
     void setPhysicsWorld(cocos2d::PhysicsWorld *world) { _sceneWorld = world; }
     void spawnEgg(float dt);
     void spawnCloud(float dt);
-    void speedUp(float dt);
-    void updateEggs(float speed);
+    void speedUp();
     void togglePause(cocos2d::Ref* layer);
+    void updateEggs(float speed);
     
     cocos2d::PhysicsWorld *_sceneWorld;
     Menu* _pauseToggleMenu;
