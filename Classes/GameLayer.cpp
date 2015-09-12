@@ -8,19 +8,23 @@
 
 using namespace cocos2d;
 
-static std::string const imageEgg = "egg.png";
-static std::string const imagePause = "pause.png";
-static std::string const imageResume = "resume.png";
-static std::string const imageFinger = "finger.png";
-static std::string const soundJump = "jump.wav";
-static std::string const soundCollectEgg = "pickup_coin.wav";
-static std::string const fontMarkerFelt = "Marker Felt.ttf";
+static const std::string imageScore = "score.png";
+static const std::string imagePause = "pause.png";
+static const std::string imageResume = "resume.png";
+static const std::string imageFinger = "finger.png";
+static const std::string soundJump = "jump.wav";
+static const std::string soundCollectEgg = "pickup_coin.wav";
+static const std::string fontMarkerFelt = "Marker Felt.ttf";
+
+static const int spawnPattern[] = {1, 2, 3, 0, 1, 2, 0, 3, 1, 0, 2, 2, 0, 1, 1, 0, 3, 1, 3, 0};
+static const std::vector<int> eggSpawnPattern(spawnPattern, spawnPattern + sizeof(spawnPattern) / sizeof(int));
+static int currentPatternIndex = 0;
 
 Scene* GameLayer::createScene()
 {
     // 'scene' is an autorelease object
     auto scene = Scene::createWithPhysics();
-//    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
     
     // 'layer' is an autorelease object
     GameLayer *layer = GameLayer::create();
@@ -47,6 +51,9 @@ bool GameLayer::init()
     CCLOG("GameLayer _visibleSize width %f, height %f", _visibleSize.width, _visibleSize.height);
 
     _isPaused = false;
+    _stageLength = _visibleSize.width * 100;  // _visibleSize.width: 480.000
+//    _elapsedStage = 0;
+    _elapsedStage = _visibleSize.width * 0.50; // TEMP // moving ahead egg spwaning
     
     // add static background
 //    addBG();
@@ -77,7 +84,7 @@ bool GameLayer::init()
     this->schedule(schedule_selector(GameLayer::spawnCloud), CLOUD_SPAWN_FREQUENCY * _visibleSize.width);
     
     // Spawn egg
-    this->schedule(schedule_selector(GameLayer::spawnEgg), EGG_SPAWN_FREQUENCY * _visibleSize.width);
+//    this->schedule(schedule_selector(GameLayer::spawnEgg), EGG_SPAWN_FREQUENCY * _visibleSize.width);
     
 
     // Listen for touches
@@ -140,7 +147,7 @@ void GameLayer::addSecondLayer() {
 
 void GameLayer::addScoreLabel() {
     _score = 0;
-    _scoreIcon = Sprite::create(imageEgg);
+    _scoreIcon = Sprite::create(imageScore);
     _scoreIcon->setAnchorPoint(Vec2(0, 0));
     _scoreIcon->setPosition(_scoreIcon->getContentSize().width, _visibleSize.height * 0.9);
     this->addChild(_scoreIcon, BackgroundLayer::layerChicken);
@@ -214,10 +221,10 @@ void GameLayer::releaseTouch() {
     _lineStartPoint = _lineEndPoint;
 }
 
-void GameLayer::spawnEgg(float dt) {
+void GameLayer::spawnEgg() {
     if (_isGameStarted) {
         Egg* egg = new Egg();
-        egg->spawn(this, _eggs);
+        egg->spawn(this, _eggs, eggSpawnPattern.at(currentPatternIndex++ % eggSpawnPattern.size()));
     }
 }
 
@@ -352,7 +359,10 @@ void GameLayer::update(float dt) {
     }
     else {
         if (_background) { _background->update(_chicken->getVectorX()); }
-        if (_layerTow) { _layerTow->update(_chicken->getVectorX()); }
+        if (_layerTow) {
+            _layerTow->update(_chicken->getVectorX());
+            updateStageComplesion(_chicken->getVectorX());
+        }
         if (_layerGround) { _layerGround->update(_chicken->getVectorX()); }
         if (_trampoline) { _trampoline->update(_chicken->getVectorX()); }
         if (_chicken) { _chicken->update(dt); }
@@ -379,6 +389,8 @@ void GameLayer::updateEggs(float playerSpeed) {
         if (e->getPositionX() < -e->getContentSize().width) {
             this->removeChild(e);
             _eggs.erase(_eggs.begin() + i);
+            
+            --i; // handle new number one's position in next iteration
         }
     }
 }
@@ -398,11 +410,17 @@ void GameLayer::updateScoreLabelPosition() {
     _scoreLabel->setPosition(_scoreIcon->getContentSize().width * 2.5, _visibleSize.height * 0.89 - this->getPositionY());
 }
 
-
-
-void GameLayer::layerTwoCrossed(float pix) {
-    CCLOG("Layer Two Crossed %f Pixels", pix);
+void GameLayer::updateStageComplesion(float speed) {
+    _elapsedStage += speed * LAYER_TWO_SPEED * _visibleSize.width;
+    if (_elapsedStage > _visibleSize.width * 0.5) {
+        _elapsedStage = 0;
+        spawnEgg();
+        // BASED ON NUMBER OF THIS ELAPSING, FINISH THE STAGE
+    }
 }
+
+
+
 
 
 

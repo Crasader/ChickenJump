@@ -105,7 +105,7 @@ void Chicken::setVectorX(float speed) {
     }
 }
 
-void Chicken::update(float dt) {
+void Chicken::update(float speed) {
     if (not _chicken) { return; }
     
     switch (_state) {

@@ -28,10 +28,10 @@ void LayerTwo::createLayerTwo(cocos2d::Layer* layer) {
     layer->addChild(_layerTow, BackgroundLayer::layerTwo);
 }
 
-void LayerTwo::update(float playerSpeed) {
+void LayerTwo::update(float speed) {
     if (not _layerTow) { return; }
     
-    _layerTow->setPositionX(_layerTow->getPosition().x - LAYER_TWO_SPEED * _visibleSize.width * playerSpeed);
+    _layerTow->setPositionX(_layerTow->getPosition().x - LAYER_TWO_SPEED * _visibleSize.width * speed);
     
     float diffx;
     if (_layerTow->getPositionX() < -_layerTow->getContentSize().width) {

@@ -9,7 +9,7 @@ class LayerTwo {
 public:
     LayerTwo(void);
     void createLayerTwo(cocos2d::Layer* layer);
-    void update(float playerSpeed);
+    void update(float speed);
     
 private:
     Sprite* _layerTow;

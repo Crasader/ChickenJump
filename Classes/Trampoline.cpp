@@ -62,9 +62,9 @@ void Trampoline::createTrampoline(cocos2d::Layer* layer, Vec2 lineStartPoint, Ve
     layer->addChild(_trampoline, BackgroundLayer::layerChicken);
 }
 
-void Trampoline::update(float playerSpeed) {
+void Trampoline::update(float speed) {
     if (_isDrawingFinished and _trampoline) {
-        _trampoline->setPositionX(_trampoline->getPosition().x - LAYER_GROUND_SPEED * _visibleSize.width * playerSpeed);
+        _trampoline->setPositionX(_trampoline->getPosition().x - LAYER_GROUND_SPEED * _visibleSize.width * speed);
     }
 }
 

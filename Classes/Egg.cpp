@@ -7,50 +7,67 @@ Egg::Egg(void){
     _visibleSize = Director::getInstance()->getVisibleSize();
 }
 
-void Egg::spawn(cocos2d::Layer* layer, std::vector<Sprite*>& eggs) {
+void Egg::spawn(cocos2d::Layer* layer, std::vector<Sprite*>& eggs, int pattern) {
     if (not layer) { return; }
-
-    /* Make TREE_SPAWN_FREQUENCY a bit bigger,
-       So that we get some space to move our spawaning position */
     
-//    int eggType = CCRANDOM_0_1() * 3 + 1;
-//    if (eggType == 3) {
-//        eggType = 1;  // handle boundary condition
-//    }
+    const float distanceBetweenEggs = 0.001;
+    int numberOfEggs = 0;
+    int degree = 0;
+    float radius = 0.0;
     
-    _egg = Sprite::create(_imageFile);
-//    _egg = Sprite::create(String::createWithFormat("tree%i.png", treeType)->getCString());
-//    _tree->setAnchorPoint(Vec2(0, 0));
-
-    // Static physics body
-    auto eggBody = PhysicsBody::createCircle(_egg->getContentSize().width / 2, PhysicsMaterial(0.1f, 1.0f, 0.0f));
-    eggBody->setCategoryBitmask(CATEGORY_BITMASK_EGG);
-    // eggBody->setCollisionBitmask(1);
-    eggBody->setContactTestBitmask(CATEGORY_BITMASK_CHICKEN);
-    eggBody->setDynamic(false);
-    _egg->setPhysicsBody(eggBody);
-
+    switch (pattern) {
+        case 0:
+            return;
+        case 1:
+            numberOfEggs = 5;
+            degree = 45;
+            radius = 0.075;
+            break;
+        case 2:
+            numberOfEggs = 7;
+            degree = 30;
+            radius = 0.15;
+            break;
+        case 3:
+            numberOfEggs = 3;
+            degree = 90;
+            radius = 0.05;
+            break;
+            
+        default:
+            return;
+    }
     
-    int maxDelayWidth = 1;
-    int randDelayWidth = CCRANDOM_0_1() * maxDelayWidth + 1; // range=1~4
-    int posX = _visibleSize.width + _egg->getContentSize().width * randDelayWidth;
+    int eggType = CCRANDOM_0_1() * 3 + 1;
+    if (eggType == 3) {
+        eggType = 1;  // handle boundary condition
+    }
     
-    int heightRange = _visibleSize.height / 2 - _egg->getContentSize().height * 2;
-    int minHeight = (_visibleSize.height / 2);
-    int posY = CCRANDOM_0_1() * heightRange + minHeight;
-    _egg->setPosition(Vec2(posX,  posY));
+    int heightRange = _visibleSize.height * 0.25;
+    int minHeight = (_visibleSize.height * 0.4);
+    int minPosY = CCRANDOM_0_1() * heightRange + minHeight;
     
-//    auto action = MoveTo::create(EGG_SPEED * _visibleSize.width,
-//                                 Point(-_egg->getContentSize().width * ((maxDelayWidth + 1) - randDelayWidth), _egg->getPositionY()));
-    
-    // MoveTo works as: goto the destination within the time given.
-    // So speed depends on the distance it needs to cover.
-    // In order to make the distance same for each Cloud we drag the Cloud upto the (-randDelayWidth * contentWidth) distance.
-//    auto action = MoveTo::create(TREE_SPEED * _visibleSize.width, Point(-_tree->getContentSize().width * (6 - random), _tree->getPositionY()));
-//    _egg->runAction(action);
-    
-    layer->addChild(_egg, BackgroundLayer::layerChicken);
-    eggs.push_back(_egg);
+    float positionX = _visibleSize.width;
+    float positionY;
+    for (int i = 0; i < numberOfEggs; ++i) {
+        Sprite* egg = Sprite::create(String::createWithFormat("egg%i.png", eggType)->getCString());
+        
+        positionX += _visibleSize.width * distanceBetweenEggs; // distance between eggs
+        positionY = (_visibleSize.width * radius) * sin(degree2radian(i * degree)); // y = radius * sin(angle) // bigger radius = higher parabola
+        egg->setPosition(Vec2(positionX, minPosY + positionY));
+        
+        auto eggBody = PhysicsBody::createCircle(egg->getContentSize().width / 2, PhysicsMaterial(0.1f, 1.0f, 0.0f));
+        eggBody->setCategoryBitmask(CATEGORY_BITMASK_EGG);
+        // eggBody->setCollisionBitmask(1);
+        eggBody->setContactTestBitmask(CATEGORY_BITMASK_CHICKEN);
+        eggBody->setDynamic(false);
+        egg->setPhysicsBody(eggBody);
+        
+        layer->addChild(egg, BackgroundLayer::layerChicken);
+        eggs.push_back(egg);
+        
+        positionX += egg->getContentSize().width * 1.5; // distance must be atleast 1.5 egg width
+    }
 }
 
 

@@ -29,9 +29,9 @@ void LayerGround::createLayerGround(cocos2d::Layer* layer) {
     layer->addChild(_layerGround, BackgroundLayer::layerGround);
 }
 
-void LayerGround::update(float playerSpeed) {
+void LayerGround::update(float speed) {
     if (not _layerGround) { return; }
-    _layerGround->setPositionX(_layerGround->getPosition().x - LAYER_GROUND_SPEED * _visibleSize.width * playerSpeed);
+    _layerGround->setPositionX(_layerGround->getPosition().x - LAYER_GROUND_SPEED * _visibleSize.width * speed);
     
     float diffx;
     if (_layerGround->getPositionX() < -_layerGround->getContentSize().width) {

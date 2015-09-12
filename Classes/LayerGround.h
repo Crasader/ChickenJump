@@ -9,7 +9,7 @@ class LayerGround {
 public:
     LayerGround(void);
     void createLayerGround(cocos2d::Layer* layer);
-    void update(float playerSpeed);
+    void update(float speed);
     
 private:
     Sprite* _layerGround;

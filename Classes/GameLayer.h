@@ -32,9 +32,6 @@ public:
     virtual void onTouchMoved(Touch* touch, Event* event);
     
     void update(float dt);
-
-    void layerTwoCrossed(float pix);
-    
 private:
     void addBG();
     void addChicken();
@@ -51,7 +48,7 @@ private:
     void releaseTouch();
     void removeEggSprite(Sprite* egg);
     inline void setPhysicsWorld(cocos2d::PhysicsWorld *world) { _sceneWorld = world; }
-    void spawnEgg(float dt);
+    void spawnEgg();
     void spawnCloud(float dt);
     void speedUp();
     void togglePause(cocos2d::Ref* layer);
@@ -59,6 +56,8 @@ private:
     void updatePauseMenuPosition();
     void updateScoreLabel();
     void updateScoreLabelPosition();
+    void updateStageComplesion(float speed);
+    
     
     cocos2d::PhysicsWorld *_sceneWorld;
     Menu* _pauseToggleMenu;
@@ -79,6 +78,9 @@ private:
     unsigned int _score;
     Label* _scoreLabel;
     Sprite* _scoreIcon;
+    
+    float _stageLength;
+    float _elapsedStage;
     
     Vec2 _origin;
     Size _visibleSize;
