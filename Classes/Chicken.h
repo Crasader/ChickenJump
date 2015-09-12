@@ -20,15 +20,15 @@ public:
     Chicken(void);
     void addPhysicsBody();
     void createChicken(cocos2d::Layer* layer);
-    void decreaseSpeedX();
+    void decreaseVectorX();
     Sprite* getChicken() { return _chicken; }
     PlayerState getState();
-    float getSpeedX();
+    float getVectorX();
     Vec2* getVector() { return &_vector; }
-    void increaseSpeedX();
+    void increaseVectorX();
     void setAnimation();
-    void setSpeedX(float speed);
     void setState(PlayerState state);
+    void setVectorX(float speed);
     void update(float dt);
 
 private:

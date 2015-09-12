@@ -43,7 +43,7 @@ void Chicken::createChicken(cocos2d::Layer *layer) {
     layer->addChild(_chicken, BackgroundLayer::layerChicken);
 }
 
-void Chicken::decreaseSpeedX() {
+void Chicken::decreaseVectorX() {
     _vector.x /= ACCELERATION_DEFAULT;
     if (_vector.x <= 1) {
         _vector.x = 1;
@@ -56,11 +56,11 @@ PlayerState Chicken::getState() {
     return _state;
 }
 
-float Chicken::getSpeedX() {
+float Chicken::getVectorX() {
     return _vector.x;
 }
 
-void Chicken::increaseSpeedX() {
+void Chicken::increaseVectorX() {
     _vector.x *= ACCELERATION_DEFAULT;   // increase speed by 1.5
     if (_vector.x >= MAX_SPEED_X) {
         _vector.x = MAX_SPEED_X;
@@ -84,13 +84,6 @@ void Chicken::setAnimation() {
     _chicken->runAction(action);
 }
 
-void Chicken::setSpeedX(float speed) {
-    _vector.x += speed;
-    if (_vector.x <= 1) {
-        _vector.x = 1; // minimum speed
-    }
-}
-
 void Chicken::setState(PlayerState state) {
     if (not _chicken) { return; }
     
@@ -100,6 +93,13 @@ void Chicken::setState(PlayerState state) {
     }
     else if (state == PlayerState::Falling) {
         _vector.y = -_visibleSize.height * VELOCITY_Y_DECREASE_RATE;
+    }
+}
+
+void Chicken::setVectorX(float speed) {
+    _vector.x += speed;
+    if (_vector.x <= 1) {
+        _vector.x = 1; // minimum speed
     }
 }
 

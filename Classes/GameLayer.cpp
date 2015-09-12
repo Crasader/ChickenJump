@@ -239,7 +239,7 @@ void GameLayer::speedUp() {
 
     float degree = atan2(yDist, xDist) * 180 / PI;
     
-    _chicken->setSpeedX(-degree * CUSTOM_ACCELERATION);
+    _chicken->setVectorX(-degree * CUSTOM_ACCELERATION);
 }
 
 void GameLayer::togglePause(cocos2d::Ref* layer) {
@@ -351,13 +351,13 @@ void GameLayer::update(float dt) {
         Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, gameOver));
     }
     else {
-        if (_background) { _background->update(_chicken->getSpeedX()); }
-        if (_layerTow) { _layerTow->update(_chicken->getSpeedX()); }
-        if (_layerGround) { _layerGround->update(_chicken->getSpeedX()); }
-        if (_trampoline) { _trampoline->update(_chicken->getSpeedX()); }
+        if (_background) { _background->update(_chicken->getVectorX()); }
+        if (_layerTow) { _layerTow->update(_chicken->getVectorX()); }
+        if (_layerGround) { _layerGround->update(_chicken->getVectorX()); }
+        if (_trampoline) { _trampoline->update(_chicken->getVectorX()); }
         if (_chicken) { _chicken->update(dt); }
         
-        updateEggs(_chicken->getSpeedX());
+        updateEggs(_chicken->getVectorX());
         
         // keep the camera on the player
 //        focusOnCharacter();
