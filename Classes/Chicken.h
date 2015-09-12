@@ -21,7 +21,7 @@ public:
     void addPhysicsBody();
     void createChicken(cocos2d::Layer* layer);
     void decreaseVectorX();
-    Sprite* getChicken() { return _chicken; }
+    Vec2 getPosition() { return _chicken->getPosition(); }
     PlayerState getState();
     float getVectorX();
     Vec2* getVector() { return &_vector; }

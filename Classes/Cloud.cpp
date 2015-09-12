@@ -8,6 +8,8 @@ Cloud::Cloud(void){
 }
 
 void Cloud::spawn(cocos2d::Layer* layer) {
+    if (not layer) { return; }
+
     /* Make TREE_SPAWN_FREQUENCY a bit bigger,
        So that we get some space to move our spawaning position */
 

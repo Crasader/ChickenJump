@@ -17,6 +17,8 @@ void Chicken::addPhysicsBody() {
 }
 
 void Chicken::createChicken(cocos2d::Layer *layer) {
+    if (not layer) { return; }
+
     _chicken = Sprite::create(_imageFile);
     _chicken->setAnchorPoint(Vec2(0, 0));
     if (! _chicken) { return; }

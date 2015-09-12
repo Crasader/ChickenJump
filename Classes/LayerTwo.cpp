@@ -8,6 +8,7 @@ LayerTwo::LayerTwo(void){
 }
 
 void LayerTwo::createLayerTwo(cocos2d::Layer* layer) {
+    if (not layer) { return; }
 
     _layerTow = Sprite::create(_imageFile);
     _layerTow->setAnchorPoint(Vec2(0,0));

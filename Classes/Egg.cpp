@@ -8,6 +8,8 @@ Egg::Egg(void){
 }
 
 void Egg::spawn(cocos2d::Layer* layer, std::vector<Sprite*>& eggs) {
+    if (not layer) { return; }
+
     /* Make TREE_SPAWN_FREQUENCY a bit bigger,
        So that we get some space to move our spawaning position */
     

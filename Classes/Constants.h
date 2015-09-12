@@ -54,7 +54,7 @@ typedef enum
 
 // EGG
 #define EGG_SPAWN_FREQUENCY             0.001
-#define EGG_SPEED                       0.010
+#define EGG_SPEED                       LAYER_TWO_SPEED
 
 // SCORE LABEL
 #define SCORE_FONT_SIZE                 0.085

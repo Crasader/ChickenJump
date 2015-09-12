@@ -183,15 +183,15 @@ void GameLayer::addTutorial() {
 }
 
 void GameLayer::focusOnCharacter() {
-    if(_chicken->getChicken()->getPositionY() > _visibleSize.height * 0.6f) {
-        this->setPositionY( (_visibleSize.height * 0.6f - _chicken->getChicken()->getPositionY()) * 0.8f);
+    if(_chicken->getPosition().y > _visibleSize.height * 0.6f) {
+        this->setPositionY( (_visibleSize.height * 0.6f - _chicken->getPosition().y) * 0.8f);
     } else {
         this->setPositionY(0);
     }
 }
 
 void GameLayer::jump(float trampolinePositionY) {
-    if (_chicken->getChicken()->getPositionY() > trampolinePositionY and
+    if (_chicken->getPosition().y > trampolinePositionY and
         _chicken->getState() == PlayerState::Falling) {
         
         _chicken->setState(PlayerState::Jumping);
@@ -374,7 +374,7 @@ void GameLayer::update(float dt) {
 void GameLayer::updateEggs(float playerSpeed) {
     for (int i = 0; i < _eggs.size(); ++i) {
         Sprite* e = _eggs.at(i);
-        e->setPositionX(e->getPosition().x - LAYER_GROUND_SPEED * _visibleSize.width * playerSpeed);
+        e->setPositionX(e->getPosition().x - EGG_SPEED * _visibleSize.width * playerSpeed);
         
         if (e->getPositionX() < -e->getContentSize().width) {
             this->removeChild(e);
@@ -400,7 +400,9 @@ void GameLayer::updateScoreLabelPosition() {
 
 
 
-
+void GameLayer::layerTwoCrossed(float pix) {
+    CCLOG("Layer Two Crossed %f Pixels", pix);
+}
 
 
 

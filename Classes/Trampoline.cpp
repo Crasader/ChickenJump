@@ -17,7 +17,8 @@ Sprite* Trampoline::getTrampoline() const {
 }
 
 void Trampoline::createTrampoline(cocos2d::Layer* layer, Vec2 lineStartPoint, Vec2 lineEndPoint) {
-    
+    if (not layer) { return; }
+
     _trampoline->setAnchorPoint(Vec2(0, 0));
     _trampoline->setPosition(Vec2(lineStartPoint.x, lineStartPoint.y - layer->getPositionY()));
     

@@ -8,7 +8,8 @@ Background::Background(void){
 }
 
 void Background::createBackground(cocos2d::Layer* layer) {
-    
+    if (not layer) { return; }
+
     _background = Sprite::create(_imageFile);
     _background->setAnchorPoint(Vec2(0,0));
     _background->setPosition(Point(0, _visibleSize.height / 2 - _background->getContentSize().height / 2));

@@ -9,6 +9,7 @@ LayerGround::LayerGround(void){
 }
 
 void LayerGround::createLayerGround(cocos2d::Layer* layer) {
+    if (not layer) { return; }
 
     _layerGround = Sprite::create(_imageFile);
     _layerGround->setAnchorPoint(Vec2(0,0));

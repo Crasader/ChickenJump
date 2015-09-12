@@ -32,6 +32,8 @@ public:
     virtual void onTouchMoved(Touch* touch, Event* event);
     
     void update(float dt);
+
+    void layerTwoCrossed(float pix);
     
 private:
     void addBG();
