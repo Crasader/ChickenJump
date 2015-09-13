@@ -7,11 +7,11 @@ using namespace cocos2d;
 
 typedef enum
 {
-    Dying,
-    Falling,
-    Jumping,
-    Start
-    
+    start,
+    jumping,
+    falling,
+    dying
+
 } PlayerState;
 
 
@@ -19,16 +19,20 @@ class Chicken {
 public:
     Chicken(void);
     void addPhysicsBody();
+    void applySpeedX(float speed);
     void createChicken(cocos2d::Layer* layer);
     void decreaseVectorX();
+    Sprite* getChicken() { return _chicken; }
     Vec2 getPosition() { return _chicken->getPosition(); }
     PlayerState getState();
     float getVectorX();
     Vec2* getVector() { return &_vector; }
     void increaseVectorX();
+//    void moveToFinishingPosition();
+//    void runFinishingMove();
     void setAnimation();
     void setState(PlayerState state);
-    void setVectorX(float speed);
+    void setVector(Vec2 vector) { _vector = vector; }
     void update(float dt);
 
 private:

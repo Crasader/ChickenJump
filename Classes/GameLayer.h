@@ -11,6 +11,15 @@
 
 using namespace cocos2d;
 
+typedef enum {
+    init,
+    started,
+    paused,
+    finishing,
+    finished
+    
+} GameState;
+
 class GameLayer : public cocos2d::LayerColor
 {
 public:
@@ -43,13 +52,15 @@ private:
     void addScoreLabel();
     void addTouchListners();
     void addTutorial();
+    void endOfStage();
     void focusOnCharacter();
     void jump(float trampolinePositionY);
     void releaseTouch();
     void removeEggSprite(Sprite* egg);
     inline void setPhysicsWorld(cocos2d::PhysicsWorld *world) { _sceneWorld = world; }
-    void spawnEgg();
     void spawnCloud(float dt);
+    void spawnEgg();
+    void spawnEndOfStageItem();
     void speedUp();
     void togglePause(cocos2d::Ref* layer);
     void updateEggs(float speed);
@@ -69,8 +80,7 @@ private:
     Trampoline* _trampoline;
     std::vector<Sprite*> _eggs;
     Sprite* _finger;
-    bool _isPaused;
-    bool _isGameStarted;
+    GameState _state;
     
     Vec2 _lineStartPoint;
     Vec2 _lineEndPoint;
@@ -81,6 +91,7 @@ private:
     
     float _stageLength;
     float _elapsedStage;
+    Sprite* _flag;
     
     Vec2 _origin;
     Size _visibleSize;

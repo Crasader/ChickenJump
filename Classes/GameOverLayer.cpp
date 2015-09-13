@@ -5,11 +5,13 @@
 
 using namespace cocos2d;
 
-unsigned int _score;
+unsigned int _score = 0;
+bool _isStageClear = false;
 
-Scene* GameOverLayer::createScene(unsigned int score)
+Scene* GameOverLayer::createScene(unsigned int score, bool isStageClear)
 {
     _score = score;
+    _isStageClear = isStageClear;
     
     // 'scene' is an autorelease object
     auto scene = Scene::create();

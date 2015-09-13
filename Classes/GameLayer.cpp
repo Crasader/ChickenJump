@@ -16,7 +16,7 @@ static const std::string soundJump = "jump.wav";
 static const std::string soundCollectEgg = "pickup_coin.wav";
 static const std::string fontMarkerFelt = "Marker Felt.ttf";
 
-static const int spawnPattern[] = {1, 2, 3, 0, 1, 2, 0, 3, 1, 0, 2, 2, 0, 1, 1, 0, 3, 1, 3, 0};
+static const int spawnPattern[] = {1, 2, 3, 0, 1, 2, 0, 3, 1, 0, 1, 2, 0, 1, 1, 0, 3, 1, 3, 0};
 static const std::vector<int> eggSpawnPattern(spawnPattern, spawnPattern + sizeof(spawnPattern) / sizeof(int));
 static int currentPatternIndex = 0;
 
@@ -24,7 +24,7 @@ Scene* GameLayer::createScene()
 {
     // 'scene' is an autorelease object
     auto scene = Scene::createWithPhysics();
-    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+//    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
     
     // 'layer' is an autorelease object
     GameLayer *layer = GameLayer::create();
@@ -50,10 +50,11 @@ bool GameLayer::init()
     _visibleSize = Director::getInstance()->getVisibleSize();
     CCLOG("GameLayer _visibleSize width %f, height %f", _visibleSize.width, _visibleSize.height);
 
-    _isPaused = false;
-    _stageLength = _visibleSize.width * 100;  // _visibleSize.width: 480.000
+    _state = GameState::init;
+    
+    _stageLength = _visibleSize.width * 5;  // _visibleSize.width: 480.000
 //    _elapsedStage = 0;
-    _elapsedStage = _visibleSize.width * 0.50; // TEMP // moving ahead egg spwaning
+    _elapsedStage = _visibleSize.width * 0.50; // moving ahead egg spwaning
     
     // add static background
 //    addBG();
@@ -189,6 +190,29 @@ void GameLayer::addTutorial() {
     _finger->runAction(tutorial);
 }
 
+void GameLayer::endOfStage() {
+    _chicken->setVector(Vec2(0, 0));
+    spawnEndOfStageItem();
+
+    if (_chicken->getChicken() and _flag and _state == GameState::finishing) {
+        auto delay = DelayTime::create(1);
+        
+        auto chickenAction1 = MoveTo::create(1, Point(_chicken->getPosition().x, _visibleSize.height * 0.60));
+        auto flagAction = MoveTo::create(1, Point(_visibleSize.width - _flag->getContentSize().width, _visibleSize.height * 0.5));
+        auto chickenAction2 = MoveTo::create(1, Point(_visibleSize.width + _chicken->getChicken()->getContentSize().width, _visibleSize.height * 0.60));
+    
+        TargetedAction* acChickenMove = TargetedAction::create(_chicken->getChicken(), chickenAction1);
+        TargetedAction* acFlagMove = TargetedAction::create(_flag, flagAction);
+        TargetedAction* acChickenMoveToFinish = TargetedAction::create(_chicken->getChicken(), chickenAction2);
+        
+        // last two delays are to finish chicken's move b4 going to finished state
+        Sequence* finishingActions = Sequence::create(acChickenMove, delay, acFlagMove, delay, delay, acChickenMoveToFinish, NULL);
+        this->runAction(finishingActions);
+        _state = GameState::finished;
+    }
+
+}
+
 void GameLayer::focusOnCharacter() {
     if(_chicken->getPosition().y > _visibleSize.height * 0.6f) {
         this->setPositionY( (_visibleSize.height * 0.6f - _chicken->getPosition().y) * 0.8f);
@@ -199,9 +223,9 @@ void GameLayer::focusOnCharacter() {
 
 void GameLayer::jump(float trampolinePositionY) {
     if (_chicken->getPosition().y > trampolinePositionY and
-        _chicken->getState() == PlayerState::Falling) {
+        _chicken->getState() == PlayerState::falling) {
         
-        _chicken->setState(PlayerState::Jumping);
+        _chicken->setState(PlayerState::jumping);
         CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(soundJump.c_str());
         speedUp();
         releaseTouch();
@@ -222,14 +246,22 @@ void GameLayer::releaseTouch() {
 }
 
 void GameLayer::spawnEgg() {
-    if (_isGameStarted) {
+    if (_state == GameState::started) {
         Egg* egg = new Egg();
         egg->spawn(this, _eggs, eggSpawnPattern.at(currentPatternIndex++ % eggSpawnPattern.size()));
     }
 }
 
+void GameLayer::spawnEndOfStageItem() {
+    _flag = Sprite::create("flag.png");
+    if (not _flag) { return; }
+    
+    _flag->setPosition(_visibleSize.width + _flag->getContentSize().width * 1.5, _visibleSize.height * 0.5);
+    this->addChild(_flag, BackgroundLayer::layerFour);
+}
+
 void GameLayer::spawnCloud(float dt) {
-    if (_isGameStarted) {
+    if (_state == GameState::started) {
         Cloud* cloud = new Cloud();
         cloud->spawn(this);
     }
@@ -246,60 +278,66 @@ void GameLayer::speedUp() {
 
     float degree = atan2(yDist, xDist) * 180 / PI;
     
-    _chicken->setVectorX(-degree * CUSTOM_ACCELERATION);
+    _chicken->applySpeedX(-degree * CUSTOM_ACCELERATION);
 }
 
 void GameLayer::togglePause(cocos2d::Ref* layer) {
-    _isPaused = not _isPaused;
-    if (_isPaused) {
-        Director::getInstance()->pause();
-    }
-    else {
+    if (_state == GameState::paused) {
+        _state = GameState::started;
         Director::getInstance()->resume();
+    }
+    else if (_state != GameState::paused) {
+        _state = GameState::paused;
+        Director::getInstance()->pause();
     }
 }
 
 
 // ########## TOUCH EVENTS ########## //
 bool GameLayer::onTouchBegan(Touch* touch, Event* event) {
-    if (not _isGameStarted) {
-        _isGameStarted = true;
+    if (_state == GameState::init) {
+        _state = GameState::started;
         _finger->stopAllActions();
         this->removeChild(_finger);
         
         _pauseToggleMenu->setEnabled(true);
     }
 
-    _lineStartPoint = touch->getLocation();
-    _lineEndPoint = _lineStartPoint;
+    if (_state == GameState::started) {
+        _lineStartPoint = touch->getLocation();
+        _lineEndPoint = _lineStartPoint;
 
-    // Remove old trampoline
-    if (_trampoline) {
-        this->removeChild(_trampoline->getTrampoline());
-        _trampoline = nullptr;
+        // Remove old trampoline
+        if (_trampoline) {
+            this->removeChild(_trampoline->getTrampoline());
+            _trampoline = nullptr;
+        }
     }
     
     return true;
 }
 
 void GameLayer::onTouchMoved(Touch* touch, Event* event) {
-    if (touch->getLocation() == _lineStartPoint) { return; }
-    if (touch->getLocation().distance(_lineStartPoint) < 30) { return; } // 30 is just trampoline's sprites twice width
-    
-    _lineEndPoint = touch->getLocation();
-    
-    // Remove old trampoline
-    if (_trampoline) {
-        this->removeChild(_trampoline->getTrampoline());
-        _trampoline = nullptr;
+
+    if (_state == GameState::started) {
+        if (touch->getLocation() == _lineStartPoint) { return; }
+        if (touch->getLocation().distance(_lineStartPoint) < 30) { return; } // 30 is just trampoline's sprites twice width
+        
+        _lineEndPoint = touch->getLocation();
+        
+        // Remove old trampoline
+        if (_trampoline) {
+            this->removeChild(_trampoline->getTrampoline());
+            _trampoline = nullptr;
+        }
+        
+        // don't draw trampoline above the screen height
+        if (_lineStartPoint.y - this->getPositionY() > _visibleSize.height) { return; }
+        
+        // Draw new trampoline
+        _trampoline = new Trampoline();
+        _trampoline->createTrampoline(this, _lineStartPoint, _lineEndPoint);
     }
-    
-    // don't draw trampoline above the screen height
-    if (_lineStartPoint.y - this->getPositionY() > _visibleSize.height) { return; }
-    
-    // Draw new trampoline
-    _trampoline = new Trampoline();
-    _trampoline->createTrampoline(this, _lineStartPoint, _lineEndPoint);
 }
 
 void GameLayer::onTouchEnded(Touch* touch, Event* event) {
@@ -350,14 +388,23 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
 
 // ########## UPDATE ########## //
 void GameLayer::update(float dt) {
-    if (_isPaused) { return; }
-    if (not _isGameStarted) { return; }
+    if (_state == GameState::init or _state == GameState::paused) {
+        return;
+    }
     
-    if (_chicken->getState() == PlayerState::Dying) {
-        auto gameOver = GameOverLayer::createScene(_score);
+    if (_state == GameState::finished and _chicken->getPosition().x >= _visibleSize.width) {
+        // goto game over scene with state: stage cleared
+        auto gameOver = GameOverLayer::createScene(_score, true);
+        Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, gameOver));
+    }
+    
+    if (_chicken->getState() == PlayerState::dying) {
+        // goto game over scene with state: stage not cleared
+        auto gameOver = GameOverLayer::createScene(_score, false);
         Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, gameOver));
     }
     else {
+        // chicken is alive and game state is not finished
         if (_background) { _background->update(_chicken->getVectorX()); }
         if (_layerTow) {
             _layerTow->update(_chicken->getVectorX());
@@ -378,6 +425,18 @@ void GameLayer::update(float dt) {
         // update score label
         updateScoreLabelPosition();
         
+        // stage finished
+        if (_state == GameState::finishing and not _eggs.size()) {
+//            CCLOG("Chicken Speed X %f", _chicken->getVectorX());
+            _pauseToggleMenu->setEnabled(false);
+            
+            _chicken->setState(PlayerState::start);
+            _chicken->applySpeedX( - _chicken->getVectorX() * 0.075);
+            
+            if (_chicken->getVectorX() <= 1) {
+                endOfStage();
+            }
+        }
     }
 }
 
@@ -413,8 +472,16 @@ void GameLayer::updateScoreLabelPosition() {
 void GameLayer::updateStageComplesion(float speed) {
     _elapsedStage += speed * LAYER_TWO_SPEED * _visibleSize.width;
     if (_elapsedStage > _visibleSize.width * 0.5) {
+        _stageLength -= _elapsedStage;
+        CCLOG("Stage Remaining: %f", _stageLength);
         _elapsedStage = 0;
+        
+        // spawn eggs based on scrolled length
         spawnEgg();
+        
+        if (_stageLength <= 0) {
+            _state = GameState::finishing;
+        }
         // BASED ON NUMBER OF THIS ELAPSING, FINISH THE STAGE
     }
 }

@@ -16,6 +16,13 @@ void Chicken::addPhysicsBody() {
     _chicken->setPhysicsBody(chickenBody);
 }
 
+void Chicken::applySpeedX(float speed) {
+    _vector.x += speed;
+    if (_vector.x <= 1) {
+        _vector.x = 1; // minimum speed
+    }
+}
+
 void Chicken::createChicken(cocos2d::Layer *layer) {
     if (not layer) { return; }
 
@@ -29,7 +36,7 @@ void Chicken::createChicken(cocos2d::Layer *layer) {
     // initial speed and state
     _vector.x = 1.0;
     _vector.y = 0.0;
-    _state = PlayerState::Start;
+    _state = PlayerState::falling;
     
     // initial position
     _chicken->setPosition(_visibleSize.width * 0.30 + _origin.x, _visibleSize.height * 0.9 + _origin.y);
@@ -53,7 +60,7 @@ void Chicken::decreaseVectorX() {
 }
 
 PlayerState Chicken::getState() {
-    if (not _chicken) { return PlayerState::Start; }
+    if (not _chicken) { return PlayerState::start; }
     
     return _state;
 }
@@ -63,11 +70,27 @@ float Chicken::getVectorX() {
 }
 
 void Chicken::increaseVectorX() {
+    if (_state == PlayerState::dying) { return; }
+    
     _vector.x *= ACCELERATION_DEFAULT;   // increase speed by 1.5
     if (_vector.x >= MAX_SPEED_X) {
         _vector.x = MAX_SPEED_X;
     }
 }
+
+//void Chicken::moveToFinishingPosition() {
+//    if (not _chicken) { return; }
+//    
+//    auto action = MoveTo::create(1, Point(_chicken->getPosition().x, _visibleSize.height * 0.60));
+//    _chicken->runAction(action);
+//}
+
+//void Chicken::runFinishingMove() {
+//    if (not _chicken) { return; }
+//    
+//    auto action = MoveTo::create(1, Point(_visibleSize.width + _chicken->getContentSize().width * 1.5, _visibleSize.height * 0.60));
+//    _chicken->runAction(action);
+//}
 
 void Chicken::setAnimation() {
     Animation* animation = Animation::create();
@@ -90,18 +113,11 @@ void Chicken::setState(PlayerState state) {
     if (not _chicken) { return; }
     
     _state = state;
-    if (state == PlayerState::Jumping) {
+    if (state == PlayerState::jumping) {
         _vector.y = _visibleSize.height * VELOCITY_Y_MAX;
     }
-    else if (state == PlayerState::Falling) {
+    else if (state == PlayerState::falling) {
         _vector.y = -_visibleSize.height * VELOCITY_Y_DECREASE_RATE;
-    }
-}
-
-void Chicken::setVectorX(float speed) {
-    _vector.x += speed;
-    if (_vector.x <= 1) {
-        _vector.x = 1; // minimum speed
     }
 }
 
@@ -109,19 +125,19 @@ void Chicken::update(float speed) {
     if (not _chicken) { return; }
     
     switch (_state) {
-        case Start:
-            _state = Falling;
+        case start:
+            _vector.y = 0;
             break;
-        case Jumping:
+        case jumping:
             _vector.y -= _visibleSize.height * VELOCITY_Y_DECREASE_RATE;
             if (_vector.y <= 0) {
-                _state = PlayerState::Falling;
+                _state = PlayerState::falling;
             }
             break;
-        case Falling:
+        case falling:
             _vector.y -= _visibleSize.height * VELOCITY_Y_DECREASE_RATE;
             break;
-        case Dying:
+        case dying:
             CCLOG("Player DEAD. PLEASE RESET");
             break;
         default:
@@ -130,14 +146,14 @@ void Chicken::update(float speed) {
     }
 
     // jumping
-    if (_state != PlayerState::Dying) {
+    if (_state != PlayerState::dying) {
         _chicken->setPositionY(_chicken->getPositionY() + _vector.y);
     }
     
     // Die
     if (_chicken->getPositionY() < -_chicken->getContentSize().height * 0.5 or
         _chicken->getPositionX() < -_chicken->getContentSize().width * 1.5) {
-        _state = PlayerState::Dying;
+        _state = PlayerState::dying;
     }
 }
 

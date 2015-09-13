@@ -9,7 +9,7 @@ class GameOverLayer : public cocos2d::Layer
 {
 public:
     // there's no 'id' in cpp, so we recommend returning the class instance pointer
-    static cocos2d::Scene* createScene(unsigned int score);
+    static cocos2d::Scene* createScene(unsigned int score, bool isStageClear);
 
     // Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
     virtual bool init();
@@ -22,7 +22,7 @@ public:
     
 private:
     void gotoGamePlayLayer(cocos2d::Ref* sender);
-
+    
     Vec2 _origin;
     Size _visibleSize;
 };
