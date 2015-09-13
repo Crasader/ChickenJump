@@ -25,6 +25,7 @@ private:
     void menuSelectFrance(cocos2d::Ref* sender);
     void menuSelectEngland(cocos2d::Ref* sender);
     void menuSelectSpain(cocos2d::Ref* sender);
+    void menuSelectItaly(cocos2d::Ref* sender);
     void selectLevel(std::string level);
     bool _countryFrance;
     

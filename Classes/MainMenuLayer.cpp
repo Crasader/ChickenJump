@@ -54,8 +54,9 @@ bool MainMenuLayer::init()
         MenuItem* france = MenuItemImage::create("france.png", "france.png", CC_CALLBACK_1(MainMenuLayer::menuSelectFrance, this));
         MenuItem* england = MenuItemImage::create("england.png", "england.png", CC_CALLBACK_1(MainMenuLayer::menuSelectEngland, this));
         MenuItem* spain = MenuItemImage::create("spain.png", "spain.png", CC_CALLBACK_1(MainMenuLayer::menuSelectSpain, this));
+        MenuItem* italy = MenuItemImage::create("italy.png", "italy.png", CC_CALLBACK_1(MainMenuLayer::menuSelectItaly, this));
         
-        Menu* menu = Menu::create(france, england, spain, NULL);
+        Menu* menu = Menu::create(france, england, spain, italy, NULL);
         menu->alignItemsHorizontallyWithPadding(25);
         menu->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.4);
         this->addChild(menu);
@@ -90,6 +91,11 @@ void MainMenuLayer::menuSelectEngland(cocos2d::Ref* sender) {
 
 void MainMenuLayer::menuSelectSpain(cocos2d::Ref* sender) {
     selectLevel("spain");
+    gotoGamePlayLayer(this);
+}
+
+void MainMenuLayer::menuSelectItaly(cocos2d::Ref* sender) {
+    selectLevel("italy");
     gotoGamePlayLayer(this);
 }
 
