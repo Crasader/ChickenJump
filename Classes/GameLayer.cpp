@@ -131,14 +131,12 @@ void GameLayer::addGroundLayer() {
 }
 
 void GameLayer::addPauseMenu()     {
-    MenuItem* pause = MenuItemImage::create(imagePause, imagePause);
-    MenuItem* resume = MenuItemImage::create(imageResume, imageResume);
-    MenuItemToggle* pauseToggleItem = MenuItemToggle::createWithCallback(CC_CALLBACK_1(GameLayer::togglePause, this), pause, resume, NULL);
-    _pauseToggleMenu = Menu::create(pauseToggleItem, NULL);
-    _pauseToggleMenu->setPosition(Vec2(_visibleSize.width / 2, _visibleSize.height * 0.95)); // position also updated in update function
-    this->addChild(_pauseToggleMenu, BackgroundLayer::layerChicken);
+    MenuItem* pause = MenuItemImage::create(imagePause, imagePause, CC_CALLBACK_1(GameLayer::pause, this));
+    _pauseMenu = Menu::create(pause, NULL);
+    _pauseMenu->setPosition(Vec2(_visibleSize.width / 2, _visibleSize.height * 0.95)); // position also updated in update function
+    this->addChild(_pauseMenu, BackgroundLayer::layerChicken);
     
-    _pauseToggleMenu->setEnabled(false); // enable it when _isGameStarted = true
+    _pauseMenu->setEnabled(false); // enable it when _isGameStarted = true
 }
 
 void GameLayer::addSecondLayer() {
@@ -210,7 +208,6 @@ void GameLayer::endOfStage() {
         this->runAction(finishingActions);
         _state = GameState::finished;
     }
-
 }
 
 void GameLayer::focusOnCharacter() {
@@ -230,6 +227,10 @@ void GameLayer::jump(float trampolinePositionY) {
         speedUp();
         releaseTouch();
     }
+}
+
+void GameLayer::pause(cocos2d::Ref* sender) {
+    Director::getInstance()->pushScene(PauseLayer::createScene());
 }
 
 void GameLayer::removeEggSprite(cocos2d::Sprite *egg) {
@@ -281,17 +282,6 @@ void GameLayer::speedUp() {
     _chicken->applySpeedX(-degree * CUSTOM_ACCELERATION);
 }
 
-void GameLayer::togglePause(cocos2d::Ref* layer) {
-    if (_state == GameState::paused) {
-        _state = GameState::started;
-        Director::getInstance()->resume();
-    }
-    else if (_state != GameState::paused) {
-        _state = GameState::paused;
-        Director::getInstance()->pause();
-    }
-}
-
 
 // ########## TOUCH EVENTS ########## //
 bool GameLayer::onTouchBegan(Touch* touch, Event* event) {
@@ -300,7 +290,7 @@ bool GameLayer::onTouchBegan(Touch* touch, Event* event) {
         _finger->stopAllActions();
         this->removeChild(_finger);
         
-        _pauseToggleMenu->setEnabled(true);
+        _pauseMenu->setEnabled(true);
     }
 
     if (_state == GameState::started) {
@@ -388,9 +378,7 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
 
 // ########## UPDATE ########## //
 void GameLayer::update(float dt) {
-    if (_state == GameState::init or _state == GameState::paused) {
-        return;
-    }
+    if (_state == GameState::init) { return; }
     
     if (_state == GameState::finished and _chicken->getPosition().x >= _visibleSize.width) {
         // goto game over scene with state: stage cleared
@@ -428,7 +416,7 @@ void GameLayer::update(float dt) {
         // stage finished
         if (_state == GameState::finishing and not _eggs.size()) {
 //            CCLOG("Chicken Speed X %f", _chicken->getVectorX());
-            _pauseToggleMenu->setEnabled(false);
+            _pauseMenu->setEnabled(false);
             
             _chicken->setState(PlayerState::start);
             _chicken->applySpeedX( - _chicken->getVectorX() * 0.075);
@@ -455,7 +443,7 @@ void GameLayer::updateEggs(float playerSpeed) {
 }
 
 void GameLayer::updatePauseMenuPosition() {
-    _pauseToggleMenu->setPosition(_visibleSize.width / 2, _visibleSize.height * 0.95 - this->getPositionY());
+    _pauseMenu->setPosition(_visibleSize.width / 2, _visibleSize.height * 0.95 - this->getPositionY());
 }
 
 void GameLayer::updateScoreLabel() {
@@ -485,6 +473,27 @@ void GameLayer::updateStageComplesion(float speed) {
         // BASED ON NUMBER OF THIS ELAPSING, FINISH THE STAGE
     }
 }
+
+
+
+//////////////////////////////////////////////////////////////////
+
+Scene* PauseLayer::createScene() {
+    auto scene = Scene::create();
+    auto layer = PauseLayer::create();
+    auto resume = MenuItemFont::create("Resume", CC_CALLBACK_1(PauseLayer::menuResumeCallback, layer));
+    auto resumeMenu = Menu::create(resume, nullptr);
+    resumeMenu->setNormalizedPosition(Vec2(0.5f,0.4f));
+    layer->addChild(resumeMenu);
+    scene->addChild(layer);
+    return scene;
+}
+void PauseLayer::menuResumeCallback(Ref* pSender) {
+    Director::getInstance()->popScene();
+}
+
+
+
 
 
 

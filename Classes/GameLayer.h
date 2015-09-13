@@ -14,7 +14,6 @@ using namespace cocos2d;
 typedef enum {
     init,
     started,
-    paused,
     finishing,
     finished
     
@@ -55,6 +54,7 @@ private:
     void endOfStage();
     void focusOnCharacter();
     void jump(float trampolinePositionY);
+    void pause(cocos2d::Ref* sender);
     void releaseTouch();
     void removeEggSprite(Sprite* egg);
     inline void setPhysicsWorld(cocos2d::PhysicsWorld *world) { _sceneWorld = world; }
@@ -62,7 +62,6 @@ private:
     void spawnEgg();
     void spawnEndOfStageItem();
     void speedUp();
-    void togglePause(cocos2d::Ref* layer);
     void updateEggs(float speed);
     void updatePauseMenuPosition();
     void updateScoreLabel();
@@ -71,7 +70,6 @@ private:
     
     
     cocos2d::PhysicsWorld *_sceneWorld;
-    Menu* _pauseToggleMenu;
     
     Background* _background;
     LayerTwo* _layerTow;
@@ -79,23 +77,41 @@ private:
     Chicken* _chicken;
     Trampoline* _trampoline;
     std::vector<Sprite*> _eggs;
-    Sprite* _finger;
-    GameState _state;
-    
-    Vec2 _lineStartPoint;
-    Vec2 _lineEndPoint;
-    
-    unsigned int _score;
-    Label* _scoreLabel;
+
     Sprite* _scoreIcon;
+    Sprite* _finger;
+    Sprite* _flag;
+    Menu* _pauseMenu;
+    Label* _scoreLabel;
+    unsigned int _score;
+    GameState _state;
     
     float _stageLength;
     float _elapsedStage;
-    Sprite* _flag;
+
+    Vec2 _lineStartPoint;
+    Vec2 _lineEndPoint;
     
     Vec2 _origin;
     Size _visibleSize;
 
 };
 
+
+//////////////////////////////////////////////////////////////////
+
+class PauseLayer : public cocos2d::Layer {
+public:
+    static cocos2d::Scene* createScene();
+    void menuResumeCallback(cocos2d::Ref* pSender);
+    CREATE_FUNC(PauseLayer);
+};
+
 #endif // __GAME_LAYER_H__
+
+
+
+
+
+
+
