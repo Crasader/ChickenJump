@@ -44,7 +44,7 @@ bool MainMenuLayer::init()
         Label* selectLevel = Label::createWithTTF("Select Level", "Marker Felt.ttf", _visibleSize.height * SCORE_FONT_SIZE);
         if (selectLevel) {
             selectLevel->setColor(Color3B::WHITE);
-            selectLevel->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.7);
+            selectLevel->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.85);
             this->addChild(selectLevel);
         }
     }
@@ -55,11 +55,21 @@ bool MainMenuLayer::init()
         MenuItem* england = MenuItemImage::create("england.png", "england.png", CC_CALLBACK_1(MainMenuLayer::menuSelectEngland, this));
         MenuItem* spain = MenuItemImage::create("spain.png", "spain.png", CC_CALLBACK_1(MainMenuLayer::menuSelectSpain, this));
         MenuItem* italy = MenuItemImage::create("italy.png", "italy.png", CC_CALLBACK_1(MainMenuLayer::menuSelectItaly, this));
+        MenuItem* italy2 = MenuItemImage::create("italy_.png", "italy_.png", CC_CALLBACK_1(MainMenuLayer::menuSelectItaly2, this)); //////// remove later
+        MenuItem* germany = MenuItemImage::create("germany.png", "germany.png", CC_CALLBACK_1(MainMenuLayer::menuSelectGermany, this));
+        MenuItem* netherlands = MenuItemImage::create("netherlands.png", "netherlands.png", CC_CALLBACK_1(MainMenuLayer::menuSelectNetherlands, this));
         
-        Menu* menu = Menu::create(france, england, spain, italy, NULL);
+        Menu* menu = Menu::create(france, england, spain, italy, germany, NULL);
+        Menu* menu2 = Menu::create(italy2, netherlands, NULL);
+
         menu->alignItemsHorizontallyWithPadding(25);
-        menu->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.4);
+        menu2->alignItemsHorizontallyWithPadding(25);
+        
+        menu->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.6);
+        menu2->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.3);
+
         this->addChild(menu);
+        this->addChild(menu2);
     }
     
     
@@ -96,6 +106,20 @@ void MainMenuLayer::menuSelectSpain(cocos2d::Ref* sender) {
 
 void MainMenuLayer::menuSelectItaly(cocos2d::Ref* sender) {
     selectLevel("italy");
+    gotoGamePlayLayer(this);
+}
+void MainMenuLayer::menuSelectItaly2(cocos2d::Ref* sender) { //////// remove later
+    selectLevel("italy2");
+    gotoGamePlayLayer(this);
+}
+
+void MainMenuLayer::menuSelectGermany(cocos2d::Ref *sender) {
+    selectLevel("germany");
+    gotoGamePlayLayer(this);
+}
+
+void MainMenuLayer::menuSelectNetherlands(cocos2d::Ref *sender) {
+    selectLevel("netherlands");
     gotoGamePlayLayer(this);
 }
 
