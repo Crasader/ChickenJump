@@ -419,7 +419,9 @@ void GameLayer::update(float dt) {
             _pauseMenu->setEnabled(false);
             
             _chicken->setState(PlayerState::start);
-            _chicken->applySpeedX( - _chicken->getVectorX() * 0.075);
+
+            // slow down in 2% decrease reate
+            _chicken->applySpeedX( - _chicken->getVectorX() * 0.02);
             
             if (_chicken->getVectorX() <= 1) {
                 endOfStage();
