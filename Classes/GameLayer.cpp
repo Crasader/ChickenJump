@@ -286,6 +286,7 @@ void GameLayer::speedUp() {
 
 // ########## TOUCH EVENTS ########## //
 bool GameLayer::onTouchBegan(Touch* touch, Event* event) {
+    // disable the tutorial
     if (_state == GameState::init) {
         _state = GameState::started;
         _finger->stopAllActions();
@@ -312,9 +313,7 @@ void GameLayer::onTouchMoved(Touch* touch, Event* event) {
 
     if (_state == GameState::started) {
         if (touch->getLocation() == _lineStartPoint) { return; }
-        if (touch->getLocation().distance(_lineStartPoint) < 30) { return; } // 30 is just trampoline's sprites twice width
-        
-        _lineEndPoint = touch->getLocation();
+        if (touch->getLocation().distance(_lineStartPoint) < 30) { return; } // 30 is just trampoline sprite's twice width
         
         // Remove old trampoline
         if (_trampoline) {
@@ -327,6 +326,10 @@ void GameLayer::onTouchMoved(Touch* touch, Event* event) {
         
         // Draw new trampoline
         _trampoline = new Trampoline();
+        if (not _trampoline) { return; }
+
+        _lineEndPoint = touch->getLocation();
+//        _lineStartPoint.x -= LAYER_TWO_SPEED * _visibleSize.width * _chicken->getVectorX();
         _trampoline->createTrampoline(this, _lineStartPoint, _lineEndPoint);
     }
 }
@@ -403,15 +406,27 @@ void GameLayer::update(float dt) {
         if (_trampoline) { _trampoline->update(_chicken->getVectorX()); }
         if (_chicken) { _chicken->update(dt); }
         
+        // if you start to draw trampoline then don't move your finger
+        if (_trampoline and not _trampoline->isDrawingFinished()) {
+            this->removeChild(_trampoline->getTrampoline());
+            _trampoline = nullptr;
+            
+            _trampoline = new Trampoline();
+            if (not _trampoline) { return; }
+            
+            _lineStartPoint.x -= LAYER_TWO_SPEED * _visibleSize.width * _chicken->getVectorX();
+            _trampoline->createTrampoline(this, _lineStartPoint, _lineEndPoint);
+        }
+        
         updateEggs(_chicken->getVectorX());
         
         // keep the camera on the player
 //        focusOnCharacter();
         
-        // update pause menu
+        // update pause menu position, needed if camera movement enabled
         updatePauseMenuPosition();
         
-        // update score label
+        // update score label position, needed if camera movement enabled
         updateScoreLabelPosition();
         
         // stage finished
