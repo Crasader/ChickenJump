@@ -51,6 +51,7 @@ private:
     void addScoreLabel();
     void addTouchListners();
     void addTutorial();
+    void drawNewTrampoline();
     void endOfStage();
     void focusOnCharacter();
     void jump(float trampolinePositionY);

@@ -189,6 +189,14 @@ void GameLayer::addTutorial() {
     _finger->runAction(tutorial);
 }
 
+void GameLayer::drawNewTrampoline() {
+    _trampoline = new Trampoline();
+    if (not _trampoline) { return; }
+    
+    _lineStartPoint.x -= LAYER_TWO_SPEED * _visibleSize.width * _chicken->getVectorX();
+    _trampoline->createTrampoline(this, _lineStartPoint, _lineEndPoint);
+}
+
 void GameLayer::endOfStage() {
     _chicken->setVector(Vec2(0, 0));
     spawnEndOfStageItem();
@@ -411,11 +419,7 @@ void GameLayer::update(float dt) {
             this->removeChild(_trampoline->getTrampoline());
             _trampoline = nullptr;
             
-            _trampoline = new Trampoline();
-            if (not _trampoline) { return; }
-            
-            _lineStartPoint.x -= LAYER_TWO_SPEED * _visibleSize.width * _chicken->getVectorX();
-            _trampoline->createTrampoline(this, _lineStartPoint, _lineEndPoint);
+            drawNewTrampoline();
         }
         
         updateEggs(_chicken->getVectorX());
