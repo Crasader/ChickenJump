@@ -12,8 +12,8 @@ void LayerGround::createLayerGround(cocos2d::Layer* layer) {
     if (not layer) { return; }
 
     _layerGround = Sprite::create(_imageFile);
-    _layerGround->setAnchorPoint(Vec2(0,0));
-    _layerGround->setPosition(Point(0, _visibleSize.height / 2 - _layerGround->getContentSize().height / 2));
+//    _layerGround->setAnchorPoint(Vec2(0,0));
+    _layerGround->setPosition(Point(_visibleSize.width/2 + _origin.x, _visibleSize.height/2 + _origin.y));
 
     auto bg2 = Sprite::create(_imageFile);
     bg2->setAnchorPoint(Vec2(0,0));

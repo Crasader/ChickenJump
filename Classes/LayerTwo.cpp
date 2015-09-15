@@ -11,8 +11,8 @@ void LayerTwo::createLayerTwo(cocos2d::Layer* layer) {
     if (not layer) { return; }
 
     _layerTow = Sprite::create(_imageFile);
-    _layerTow->setAnchorPoint(Vec2(0,0));
-    _layerTow->setPosition(Point(0, _visibleSize.height / 2 - _layerTow->getContentSize().height / 2));
+//    _layerTow->setAnchorPoint(Vec2(0,0));
+    _layerTow->setPosition(Point(_visibleSize.width/2 + _origin.x, _visibleSize.height/2 + _origin.y));
 
     auto bg2 = Sprite::create(_imageFile);
     bg2->setAnchorPoint(Vec2(0,0));

@@ -48,7 +48,8 @@ bool GameLayer::init()
     // 2. Origin & window size
     _origin = Director::getInstance()->getVisibleOrigin();
     _visibleSize = Director::getInstance()->getVisibleSize();
-    CCLOG("GameLayer _visibleSize width %f, height %f", _visibleSize.width, _visibleSize.height);
+    CCLOG("GameLayer _visibleSize width-height (%dx%d)", (int)_visibleSize.width, (int)_visibleSize.height);
+    CCLOG("GameLayer _origin (x, y) (%f, %f)", _origin.x, _origin.y);
 
     _state = GameState::init;
     

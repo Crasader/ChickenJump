@@ -11,8 +11,8 @@ void Background::createBackground(cocos2d::Layer* layer) {
     if (not layer) { return; }
 
     _background = Sprite::create(_imageFile);
-    _background->setAnchorPoint(Vec2(0,0));
-    _background->setPosition(Point(0, _visibleSize.height / 2 - _background->getContentSize().height / 2));
+//    _background->setAnchorPoint(Vec2(0,0));
+    _background->setPosition(Point(_visibleSize.width/2 + _origin.x, _visibleSize.height/2 + _origin.y));
 
     auto bg2 = Sprite::create(_imageFile);
     bg2->setAnchorPoint(Vec2(0,0));

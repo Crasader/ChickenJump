@@ -33,7 +33,7 @@ static int register_all_packages()
 static Size smallResource  = Size(480, 320); // "iphone"
 static Size mediumResource = Size(1024, 768); // "ipad"
 static Size largeResource  = Size(2048, 1536); // "ipadhd"
-static Size designResolution = Size(480, 320);
+static Size designResolution = Size(1024, 768);
 
 bool AppDelegate::applicationDidFinishLaunching() {
     // initialize director

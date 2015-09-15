@@ -34,7 +34,7 @@ bool MainMenuLayer::init()
     
     // Add background
     {
-        auto background = Sprite::create("blank.png");
+        auto background = Sprite::create("bg.png");
         background->setPosition(Point(_visibleSize.width / 2 + _origin.x, _visibleSize.height / 2 + _origin.y));
         this->addChild(background);
     }
