@@ -68,16 +68,13 @@
 		D52BDA0D1B8651CC0049A538 /* GameOverLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D52BDA0A1B8651CC0049A538 /* GameOverLayer.cpp */; };
 		D52BDA0F1B8676250049A538 /* Constants.h in Sources */ = {isa = PBXBuildFile; fileRef = D52BDA0E1B8676250049A538 /* Constants.h */; };
 		D52BDA101B8676250049A538 /* Constants.h in Sources */ = {isa = PBXBuildFile; fileRef = D52BDA0E1B8676250049A538 /* Constants.h */; };
-		D52BDA3B1B8883590049A538 /* ipad in Resources */ = {isa = PBXBuildFile; fileRef = D52BDA381B8883590049A538 /* ipad */; };
-		D52BDA3C1B8883590049A538 /* ipad in Resources */ = {isa = PBXBuildFile; fileRef = D52BDA381B8883590049A538 /* ipad */; };
-		D52BDA3D1B8883590049A538 /* ipadhd in Resources */ = {isa = PBXBuildFile; fileRef = D52BDA391B8883590049A538 /* ipadhd */; };
-		D52BDA3E1B8883590049A538 /* ipadhd in Resources */ = {isa = PBXBuildFile; fileRef = D52BDA391B8883590049A538 /* ipadhd */; };
-		D52BDA3F1B8883590049A538 /* iphone in Resources */ = {isa = PBXBuildFile; fileRef = D52BDA3A1B8883590049A538 /* iphone */; };
-		D52BDA401B8883590049A538 /* iphone in Resources */ = {isa = PBXBuildFile; fileRef = D52BDA3A1B8883590049A538 /* iphone */; };
 		D52BDA431B8A66270049A538 /* Background.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D52BDA411B8A66270049A538 /* Background.cpp */; };
 		D52BDA441B8A66270049A538 /* Background.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D52BDA411B8A66270049A538 /* Background.cpp */; };
 		D52BDA471B8A94000049A538 /* Egg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D52BDA451B8A94000049A538 /* Egg.cpp */; };
 		D52BDA481B8A94000049A538 /* Egg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D52BDA451B8A94000049A538 /* Egg.cpp */; };
+		D53DBEC91BA89FC4001A812F /* resource_hd in Resources */ = {isa = PBXBuildFile; fileRef = D53DBEC61BA89FC4001A812F /* resource_hd */; };
+		D53DBECA1BA89FC4001A812F /* resource_hd2 in Resources */ = {isa = PBXBuildFile; fileRef = D53DBEC71BA89FC4001A812F /* resource_hd2 */; };
+		D53DBECB1BA89FC4001A812F /* resource_sd in Resources */ = {isa = PBXBuildFile; fileRef = D53DBEC81BA89FC4001A812F /* resource_sd */; };
 		D575D0F51B94DD0D0082D427 /* Trampoline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D575D0F31B94DD0D0082D427 /* Trampoline.cpp */; };
 		D575D0F61B94DD0D0082D427 /* Trampoline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D575D0F31B94DD0D0082D427 /* Trampoline.cpp */; };
 		D57CF0301B996DA400987F3E /* pickup_coin.wav in Resources */ = {isa = PBXBuildFile; fileRef = D57CF02F1B996DA400987F3E /* pickup_coin.wav */; };
@@ -190,13 +187,13 @@
 		D52BDA0A1B8651CC0049A538 /* GameOverLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameOverLayer.cpp; sourceTree = "<group>"; };
 		D52BDA0B1B8651CC0049A538 /* GameOverLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameOverLayer.h; sourceTree = "<group>"; };
 		D52BDA0E1B8676250049A538 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
-		D52BDA381B8883590049A538 /* ipad */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ipad; sourceTree = "<group>"; };
-		D52BDA391B8883590049A538 /* ipadhd */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ipadhd; sourceTree = "<group>"; };
-		D52BDA3A1B8883590049A538 /* iphone */ = {isa = PBXFileReference; lastKnownFileType = folder; path = iphone; sourceTree = "<group>"; };
 		D52BDA411B8A66270049A538 /* Background.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Background.cpp; sourceTree = "<group>"; };
 		D52BDA421B8A66270049A538 /* Background.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Background.h; sourceTree = "<group>"; };
 		D52BDA451B8A94000049A538 /* Egg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Egg.cpp; sourceTree = "<group>"; };
 		D52BDA461B8A94000049A538 /* Egg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Egg.h; sourceTree = "<group>"; };
+		D53DBEC61BA89FC4001A812F /* resource_hd */ = {isa = PBXFileReference; lastKnownFileType = folder; path = resource_hd; sourceTree = "<group>"; };
+		D53DBEC71BA89FC4001A812F /* resource_hd2 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = resource_hd2; sourceTree = "<group>"; };
+		D53DBEC81BA89FC4001A812F /* resource_sd */ = {isa = PBXFileReference; lastKnownFileType = folder; path = resource_sd; sourceTree = "<group>"; };
 		D575D0F31B94DD0D0082D427 /* Trampoline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Trampoline.cpp; sourceTree = "<group>"; };
 		D575D0F41B94DD0D0082D427 /* Trampoline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Trampoline.h; sourceTree = "<group>"; };
 		D57CF02F1B996DA400987F3E /* pickup_coin.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = pickup_coin.wav; sourceTree = "<group>"; };
@@ -335,12 +332,12 @@
 				D57CF0321B996DD600987F3E /* jump.wav */,
 				D5AB92AC1B9E34C600FEA024 /* lost.wav */,
 				D57CF02F1B996DA400987F3E /* pickup_coin.wav */,
-				D52BDA381B8883590049A538 /* ipad */,
-				D52BDA391B8883590049A538 /* ipadhd */,
-				D52BDA3A1B8883590049A538 /* iphone */,
 				D5253ABA1B088B0500AFC291 /* blank.png */,
 				521A8EA819F11F5000D177D7 /* fonts */,
 				3EACC98E19EE6D4300EB3C5E /* res */,
+				D53DBEC61BA89FC4001A812F /* resource_hd */,
+				D53DBEC71BA89FC4001A812F /* resource_hd2 */,
+				D53DBEC81BA89FC4001A812F /* resource_sd */,
 			);
 			name = Resources;
 			path = ../Resources;
@@ -542,31 +539,31 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D53DBEC91BA89FC4001A812F /* resource_hd in Resources */,
 				D5AB92AD1B9E34C600FEA024 /* lost.wav in Resources */,
 				D57CF0331B996DD600987F3E /* jump.wav in Resources */,
 				5087E78117EB970100C73F5D /* Icon-120.png in Resources */,
 				5087E78617EB970100C73F5D /* Icon-76.png in Resources */,
 				5087E77F17EB970100C73F5D /* Default@2x.png in Resources */,
+				D53DBECA1BA89FC4001A812F /* resource_hd2 in Resources */,
 				50EF629917ECD46A001EB2F8 /* Icon-100.png in Resources */,
 				5087E78317EB970100C73F5D /* Icon-152.png in Resources */,
+				D53DBECB1BA89FC4001A812F /* resource_sd in Resources */,
 				5087E77D17EB970100C73F5D /* Default-568h@2x.png in Resources */,
 				5087E78517EB970100C73F5D /* Icon-72.png in Resources */,
 				521A8E6519F0C34300D177D7 /* Default-736h@3x.png in Resources */,
 				D5DBF5F41B9C9F1B004BEC38 /* bump.wav in Resources */,
-				D52BDA3D1B8883590049A538 /* ipadhd in Resources */,
 				D5253ABB1B088B0500AFC291 /* blank.png in Resources */,
 				521A8EA919F11F5000D177D7 /* fonts in Resources */,
 				50EF62A317ECD613001EB2F8 /* Icon-50.png in Resources */,
 				5087E78017EB970100C73F5D /* Icon-114.png in Resources */,
 				50EF62A217ECD613001EB2F8 /* Icon-29.png in Resources */,
 				50EF629617ECD46A001EB2F8 /* Icon-40.png in Resources */,
-				D52BDA3F1B8883590049A538 /* iphone in Resources */,
 				5087E78217EB970100C73F5D /* Icon-144.png in Resources */,
 				D57CF0301B996DA400987F3E /* pickup_coin.wav in Resources */,
 				3EACC98F19EE6D4300EB3C5E /* res in Resources */,
 				50EF629817ECD46A001EB2F8 /* Icon-80.png in Resources */,
 				5087E78417EB970100C73F5D /* Icon-57.png in Resources */,
-				D52BDA3B1B8883590049A538 /* ipad in Resources */,
 				5087E77E17EB970100C73F5D /* Default.png in Resources */,
 				521A8E6419F0C34300D177D7 /* Default-667h@2x.png in Resources */,
 				50EF629717ECD46A001EB2F8 /* Icon-58.png in Resources */,
@@ -579,14 +576,11 @@
 			files = (
 				D5DBF5F51B9C9F1B004BEC38 /* bump.wav in Resources */,
 				D57CF0341B996DD600987F3E /* jump.wav in Resources */,
-				D52BDA3E1B8883590049A538 /* ipadhd in Resources */,
 				503AE0F817EB97AB00D1A890 /* Icon.icns in Resources */,
 				D57CF0311B996DA400987F3E /* pickup_coin.wav in Resources */,
 				3EACC99019EE6D4300EB3C5E /* res in Resources */,
 				521A8EAA19F11F5000D177D7 /* fonts in Resources */,
-				D52BDA3C1B8883590049A538 /* ipad in Resources */,
 				D5253ABC1B088B0500AFC291 /* blank.png in Resources */,
-				D52BDA401B8883590049A538 /* iphone in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

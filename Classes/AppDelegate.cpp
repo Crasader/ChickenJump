@@ -46,7 +46,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     }
     
     // turn on display FPS
-    director->setDisplayStats(true);
+//    director->setDisplayStats(true);
     
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0 / 60);
@@ -59,15 +59,15 @@ bool AppDelegate::applicationDidFinishLaunching() {
         
         std::vector<std::string> searchPaths;
         if (screenSize.height > mediumResource.height) {
-            searchPaths.push_back("ipadhd");
+            searchPaths.push_back("resource_hd2");
             director->setContentScaleFactor(largeResource.height / designResolution.height);
         }
-        else if (screenSize.width > smallResource.width) {
-            searchPaths.push_back("ipad");
+        else if (screenSize.height > smallResource.height) {
+            searchPaths.push_back("resource_hd");
             director->setContentScaleFactor(mediumResource.height / designResolution.height);
         }
         else {
-            searchPaths.push_back("iphone");
+            searchPaths.push_back("resource_sd");
             director->setContentScaleFactor(smallResource.height / designResolution.height);
         }
         CCLOG("Path: %s", searchPaths.at(0).c_str());

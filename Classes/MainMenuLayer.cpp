@@ -55,12 +55,11 @@ bool MainMenuLayer::init()
         MenuItem* england = MenuItemImage::create("england.png", "england.png", CC_CALLBACK_1(MainMenuLayer::menuSelectEngland, this));
         MenuItem* spain = MenuItemImage::create("spain.png", "spain.png", CC_CALLBACK_1(MainMenuLayer::menuSelectSpain, this));
         MenuItem* italy = MenuItemImage::create("italy.png", "italy.png", CC_CALLBACK_1(MainMenuLayer::menuSelectItaly, this));
-        MenuItem* italy2 = MenuItemImage::create("italy_.png", "italy_.png", CC_CALLBACK_1(MainMenuLayer::menuSelectItaly2, this)); //////// remove later
         MenuItem* germany = MenuItemImage::create("germany.png", "germany.png", CC_CALLBACK_1(MainMenuLayer::menuSelectGermany, this));
         MenuItem* netherlands = MenuItemImage::create("netherlands.png", "netherlands.png", CC_CALLBACK_1(MainMenuLayer::menuSelectNetherlands, this));
         
-        Menu* menu = Menu::create(france, england, spain, italy, germany, NULL);
-        Menu* menu2 = Menu::create(italy2, netherlands, NULL);
+        Menu* menu = Menu::create(france, england, spain, NULL);
+        Menu* menu2 = Menu::create(italy, germany, netherlands, NULL);
 
         menu->alignItemsHorizontallyWithPadding(25);
         menu2->alignItemsHorizontallyWithPadding(25);
@@ -108,10 +107,6 @@ void MainMenuLayer::menuSelectItaly(cocos2d::Ref* sender) {
     selectLevel("italy");
     gotoGamePlayLayer(this);
 }
-void MainMenuLayer::menuSelectItaly2(cocos2d::Ref* sender) { //////// remove later
-    selectLevel("italy2");
-    gotoGamePlayLayer(this);
-}
 
 void MainMenuLayer::menuSelectGermany(cocos2d::Ref *sender) {
     selectLevel("germany");
@@ -128,16 +123,16 @@ void MainMenuLayer::selectLevel(std::string level) {
     std::vector<std::string> searchPaths;
     
     if (screenSize.height > mediumResource.height) {
-        searchPaths.push_back("ipadhd");
-        searchPaths.push_back("ipadhd/" + level);
+        searchPaths.push_back("resource_hd2");
+        searchPaths.push_back("resource_hd2/" + level);
     }
     else if (screenSize.width > smallResource.width) {
-        searchPaths.push_back("ipad");
-        searchPaths.push_back("ipad/" + level);
+        searchPaths.push_back("resource_hd");
+        searchPaths.push_back("resource_hd/" + level);
     }
     else {
-        searchPaths.push_back("iphone");
-        searchPaths.push_back("iphone/" + level);
+        searchPaths.push_back("resource_sd");
+        searchPaths.push_back("resource_sd/" + level);
     }
     auto fileUtils = FileUtils::getInstance();
     fileUtils->setSearchPaths(searchPaths);
