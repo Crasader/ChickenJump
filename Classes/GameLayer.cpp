@@ -205,16 +205,18 @@ void GameLayer::endOfStage() {
     if (_chicken->getChicken() and _flag and _state == GameState::finishing) {
         auto delay = DelayTime::create(1);
         
-        auto chickenAction1 = MoveTo::create(1, Point(_chicken->getPosition().x, _visibleSize.height * 0.60));
+        auto chickenTakePosition = MoveTo::create(1, Point(_chicken->getPosition().x, _visibleSize.height * 0.60));
+        auto chickenAchieveEnergy = MoveTo::create(1, Point(_chicken->getChicken()->getContentSize().width, _visibleSize.height * 0.60));
         auto flagAction = MoveTo::create(1, Point(_visibleSize.width - _flag->getContentSize().width, _visibleSize.height * 0.5));
-        auto chickenAction2 = MoveTo::create(1, Point(_visibleSize.width + _chicken->getChicken()->getContentSize().width, _visibleSize.height * 0.60));
+        auto chickenRunThrough = MoveTo::create(1, Point(_visibleSize.width + _chicken->getChicken()->getContentSize().width, _visibleSize.height * 0.60));
     
-        TargetedAction* acChickenMove = TargetedAction::create(_chicken->getChicken(), chickenAction1);
+        TargetedAction* acChickenMove1 = TargetedAction::create(_chicken->getChicken(), chickenTakePosition);
+        TargetedAction* acChickenMove2 = TargetedAction::create(_chicken->getChicken(), chickenAchieveEnergy);
         TargetedAction* acFlagMove = TargetedAction::create(_flag, flagAction);
-        TargetedAction* acChickenMoveToFinish = TargetedAction::create(_chicken->getChicken(), chickenAction2);
+        TargetedAction* acChickenMoveToFinish = TargetedAction::create(_chicken->getChicken(), chickenRunThrough);
         
         // last two delays are to finish chicken's move b4 going to finished state
-        Sequence* finishingActions = Sequence::create(acChickenMove, delay, acFlagMove, delay, delay, acChickenMoveToFinish, NULL);
+        Sequence* finishingActions = Sequence::create(acChickenMove1, delay, acFlagMove, delay, delay, acChickenMove2, acChickenMoveToFinish, NULL);
         this->runAction(finishingActions);
         _state = GameState::finished;
     }
