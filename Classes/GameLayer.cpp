@@ -303,7 +303,7 @@ bool GameLayer::onTouchBegan(Touch* touch, Event* event) {
         _pauseMenu->setEnabled(true);
     }
 
-    if (_state == GameState::started) {
+    if (_state == GameState::started or _state == GameState::finishing) {
         _lineStartPoint = touch->getLocation();
         _lineEndPoint = _lineStartPoint;
 
@@ -319,7 +319,7 @@ bool GameLayer::onTouchBegan(Touch* touch, Event* event) {
 
 void GameLayer::onTouchMoved(Touch* touch, Event* event) {
 
-    if (_state == GameState::started) {
+    if (_state == GameState::started or _state == GameState::finishing) {
         if (touch->getLocation() == _lineStartPoint) { return; }
         if (touch->getLocation().distance(_lineStartPoint) < 30) { return; } // 30 is just trampoline sprite's twice width
         
