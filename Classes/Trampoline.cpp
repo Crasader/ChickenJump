@@ -2,11 +2,12 @@
 
 #include "Constants.h"
 
+bool Trampoline::isDrawingOngoing = false;
+
 Trampoline::Trampoline(void){
     _origin = Director::getInstance()->getVisibleOrigin();
     _visibleSize = Director::getInstance()->getVisibleSize();
     _trampoline = Sprite::create();     // Think it as the HEAD of a Linked List
-    _isDrawingFinished = false;
     _spriteToKnowContentWidth = Sprite::create(_imageFile);
     if (_spriteToKnowContentWidth) { _trampolineWidth = _spriteToKnowContentWidth->getContentSize().width; }
 
@@ -28,9 +29,12 @@ void Trampoline::createTrampoline(cocos2d::Layer* layer, Vec2 lineStartPoint, Ve
     
     float degree = atan2(yDist, xDist) * 180 / PI;
     
-    // Restrict to max trampoline size
+    /* Trampoline drawing is finished once we reach the max length of trampoline.
+     * Restrict to max trampoline size and
+     * Finish trampoline drawing and enable update method to move the trampoline */
     if (distance > _visibleSize.width * 0.25) {
         distance = _visibleSize.width * 0.25;
+        isDrawingOngoing = false;
         
         lineEndPoint = lineStartPoint + Vec2(cos(degree2radian(degree)) * distance,
                                              sin(degree2radian(degree)) * distance);
@@ -63,7 +67,8 @@ void Trampoline::createTrampoline(cocos2d::Layer* layer, Vec2 lineStartPoint, Ve
 }
 
 void Trampoline::update(float speed) {
-    if (_isDrawingFinished and _trampoline) {
+    // when trampoline drawing is done, start to move trampoline according to chicken's speedX
+    if (_trampoline and not isDrawingOngoing) {
         _trampoline->setPositionX(_trampoline->getPosition().x - LAYER_GROUND_SPEED * _visibleSize.width * speed);
     }
 }

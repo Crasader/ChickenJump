@@ -193,6 +193,7 @@ void GameLayer::drawNewTrampoline() {
     _trampoline = new Trampoline();
     if (not _trampoline) { return; }
     
+    // trampoline starting point is moving alone with the speedX
     _lineStartPoint.x -= LAYER_TWO_SPEED * _visibleSize.width * _chicken->getVectorX();
     _trampoline->createTrampoline(this, _lineStartPoint, _lineEndPoint);
 }
@@ -251,7 +252,7 @@ void GameLayer::removeEggSprite(cocos2d::Sprite *egg) {
 }
 
 void GameLayer::releaseTouch() {
-    if (_trampoline) { _trampoline->setDrawingFinished(true); }
+    if (_trampoline) { Trampoline::isDrawingOngoing = false; }
     _lineStartPoint = _lineEndPoint;
 }
 
@@ -294,6 +295,8 @@ void GameLayer::speedUp() {
 
 // ########## TOUCH EVENTS ########## //
 bool GameLayer::onTouchBegan(Touch* touch, Event* event) {
+    if (_state == GameState::finished or Trampoline::isDrawingOngoing) { return false; }
+    
     // disable the tutorial
     if (_state == GameState::init) {
         _state = GameState::started;
@@ -303,47 +306,47 @@ bool GameLayer::onTouchBegan(Touch* touch, Event* event) {
         _pauseMenu->setEnabled(true);
     }
 
-    if (_state == GameState::started or _state == GameState::finishing) {
-        _lineStartPoint = touch->getLocation();
-        _lineEndPoint = _lineStartPoint;
+    // start preparation to draw new trampoline
+    _lineStartPoint = touch->getLocation();
+    _lineEndPoint = _lineStartPoint;
+    Trampoline::isDrawingOngoing = true; // start trampoline drawing
 
-        // Remove old trampoline
-        if (_trampoline) {
-            this->removeChild(_trampoline->getTrampoline());
-            _trampoline = nullptr;
-        }
+    // Remove old trampoline
+    if (_trampoline) {
+        this->removeChild(_trampoline->getTrampoline());
+        _trampoline = nullptr;
     }
     
     return true;
 }
 
 void GameLayer::onTouchMoved(Touch* touch, Event* event) {
+    // continue only if trampoline drawing is ongoing
+    if (_state == GameState::finished or not Trampoline::isDrawingOngoing) { return; }
 
-    if (_state == GameState::started or _state == GameState::finishing) {
-        if (touch->getLocation() == _lineStartPoint) { return; }
-        if (touch->getLocation().distance(_lineStartPoint) < 30) { return; } // 30 is just trampoline sprite's twice width
-        
-        // Remove old trampoline
-        if (_trampoline) {
-            this->removeChild(_trampoline->getTrampoline());
-            _trampoline = nullptr;
-        }
-        
-        // don't draw trampoline above the screen height
-        if (_lineStartPoint.y - this->getPositionY() > _visibleSize.height) { return; }
-        
-        // Draw new trampoline
-        _trampoline = new Trampoline();
-        if (not _trampoline) { return; }
-
-        _lineEndPoint = touch->getLocation();
-//        _lineStartPoint.x -= LAYER_TWO_SPEED * _visibleSize.width * _chicken->getVectorX();
-        _trampoline->createTrampoline(this, _lineStartPoint, _lineEndPoint);
+    if (touch->getLocation() == _lineStartPoint) { return; }
+    if (touch->getLocation().distance(_lineStartPoint) < 30) { return; } // 30 is just trampoline sprite's twice width
+    
+    // Remove old trampoline
+    if (_trampoline) {
+        this->removeChild(_trampoline->getTrampoline());
+        _trampoline = nullptr;
     }
+    
+    // don't draw trampoline above the screen height
+    if (_lineStartPoint.y - this->getPositionY() > _visibleSize.height) { return; }
+    
+    // Draw new trampoline
+    _trampoline = new Trampoline();
+    if (not _trampoline) { return; }
+
+    _lineEndPoint = touch->getLocation();
+    _trampoline->createTrampoline(this, _lineStartPoint, _lineEndPoint);
+    // trampoline drawing is finished once we reach the max length of trampoline
 }
 
 void GameLayer::onTouchEnded(Touch* touch, Event* event) {
-    if (_trampoline) { _trampoline->setDrawingFinished(true); }
+    if (_trampoline) { Trampoline::isDrawingOngoing = false; }
 }
 
 
@@ -357,11 +360,13 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
     if ((a->getCategoryBitmask() == 1 and b->getCategoryBitmask() == 2)) {
         auto trampoline = (Sprite*)contact.getShapeB()->getBody()->getNode();
         jump(trampoline->getPositionY() + _trampoline->getTrampoline()->getPositionY());
+        if (_trampoline) { Trampoline::isDrawingOngoing = false; } // trampoline drawing finished
     }
     // collision between trampoline and chicken
     else if ((a->getCategoryBitmask() == 2 and b->getCategoryBitmask() == 1)) {
         auto trampoline = (Sprite*)contact.getShapeA()->getBody()->getNode();
         jump(trampoline->getPositionY() + _trampoline->getTrampoline()->getPositionY());
+        if (_trampoline) { Trampoline::isDrawingOngoing = false; } // trampoline drawing finished
     }
     
     
@@ -414,12 +419,13 @@ void GameLayer::update(float dt) {
         if (_trampoline) { _trampoline->update(_chicken->getVectorX()); }
         if (_chicken) { _chicken->update(dt); }
         
-        // if you start to draw trampoline then don't move your finger
-        if (_trampoline and not _trampoline->isDrawingFinished()) {
+        // if you start to draw trampoline, then don't move your finger
+        if (_trampoline and Trampoline::isDrawingOngoing) {
             this->removeChild(_trampoline->getTrampoline());
             _trampoline = nullptr;
             
             drawNewTrampoline();
+            // Trampoline drawing is finished once we reach the max length of trampoline.
         }
         
         updateEggs(_chicken->getVectorX());
@@ -433,7 +439,7 @@ void GameLayer::update(float dt) {
         // update score label position, needed if camera movement enabled
         updateScoreLabelPosition();
         
-        // stage finished
+        // stage about to finish
         if (_state == GameState::finishing and not _eggs.size()) {
 //            CCLOG("Chicken Speed X %f", _chicken->getVectorX());
             _pauseMenu->setEnabled(false);

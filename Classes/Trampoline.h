@@ -10,16 +10,17 @@ public:
     Trampoline(void);
     void createTrampoline(cocos2d::Layer* layer, Vec2 lineStartPoint, Vec2 lineEndPoint);
     Sprite* getTrampoline() const;
-    inline void setDrawingFinished(bool val) { _isDrawingFinished = val; }
-    inline bool isDrawingFinished() { return _isDrawingFinished; }
+//    inline void setDrawingFinished(bool val) { _isDrawingFinished = val; }
+//    inline bool isDrawingFinished() { return _isDrawingFinished; }
     void update(float speed);
-    
+
+    static bool isDrawingOngoing;
+
 private:
     Sprite* _trampoline;
     Sprite* _spriteToKnowContentWidth;
     float _trampolineWidth;
     std::string const _imageFile = "trampoline.png";
-    bool _isDrawingFinished;
     Vec2 _origin;
     Size _visibleSize;
 };
