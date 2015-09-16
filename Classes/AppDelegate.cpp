@@ -60,15 +60,15 @@ bool AppDelegate::applicationDidFinishLaunching() {
         std::vector<std::string> searchPaths;
         if (screenSize.height > mediumResource.height) {
             searchPaths.push_back("resource_hd2");
-            director->setContentScaleFactor(largeResource.height / designResolution.height);
+            director->setContentScaleFactor(largeResource.width / designResolution.width);
         }
         else if (screenSize.height > smallResource.height) {
             searchPaths.push_back("resource_hd");
-            director->setContentScaleFactor(mediumResource.height / designResolution.height);
+            director->setContentScaleFactor(mediumResource.width / designResolution.width);
         }
         else {
             searchPaths.push_back("resource_sd");
-            director->setContentScaleFactor(smallResource.height / designResolution.height);
+            director->setContentScaleFactor(smallResource.width / designResolution.width);
         }
         CCLOG("Path: %s", searchPaths.at(0).c_str());
         auto fileUtils = FileUtils::getInstance();
