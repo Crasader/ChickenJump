@@ -22,13 +22,13 @@ typedef enum
 #define TRANSITION_TIME                 0.5
 
 // LAYERS
-#define LAYER_ONE_SPEED                 0.0007  // (Bigger = Faster)
+#define LAYER_ONE_SPEED                 0.0006  // (Bigger = Faster)
 #define LAYER_TWO_SPEED                 0.002   // (Bigger = Faster)
 #define LAYER_GROUND_SPEED              0.002   // (Bigger = Faster)
 
 // CLOUD
 #define CLOUD_SPAWN_FREQUENCY           0.005   // How frequently spawn function will be called (Bigger = Less Frequently)
-#define CLOUD_SPEED                     0.020   // Amount of time the cloud gets to cross the screen (Bigger = Slow)
+#define CLOUD_SPEED                     0.030   // Amount of time the cloud gets to cross the screen (Bigger = Slow)
 
 // CHICKEN
 #define SPEED_CHANGE_FREQUENCY          0.01
