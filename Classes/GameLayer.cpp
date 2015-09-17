@@ -237,7 +237,7 @@ void GameLayer::jump(float trampolinePositionY) {
         _chicken->setState(PlayerState::jumping);
         CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(soundJump.c_str());
         speedUp();
-        releaseTouch();
+//        releaseTouch(); // finish trampoline drawing
     }
 }
 
@@ -362,13 +362,11 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
     if ((a->getCategoryBitmask() == 1 and b->getCategoryBitmask() == 2)) {
         auto trampoline = (Sprite*)contact.getShapeB()->getBody()->getNode();
         jump(trampoline->getPositionY() + _trampoline->getTrampoline()->getPositionY());
-        if (_trampoline) { Trampoline::isDrawingOngoing = false; } // trampoline drawing finished
     }
     // collision between trampoline and chicken
     else if ((a->getCategoryBitmask() == 2 and b->getCategoryBitmask() == 1)) {
         auto trampoline = (Sprite*)contact.getShapeA()->getBody()->getNode();
         jump(trampoline->getPositionY() + _trampoline->getTrampoline()->getPositionY());
-        if (_trampoline) { Trampoline::isDrawingOngoing = false; } // trampoline drawing finished
     }
     
     
@@ -447,6 +445,12 @@ void GameLayer::update(float dt) {
             _pauseMenu->setEnabled(false);
             
             _chicken->setState(PlayerState::start);
+            
+            // remove the last trampoline alive
+            if (_trampoline) {
+                this->removeChild(_trampoline->getTrampoline());
+                _trampoline = nullptr;
+            }
 
             // slow down in 2% decrease reate
             _chicken->applySpeedX( - _chicken->getVectorX() * 0.02);
