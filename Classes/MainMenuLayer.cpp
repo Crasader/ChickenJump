@@ -7,16 +7,12 @@ using namespace cocos2d;
 
 Scene* MainMenuLayer::createScene()
 {
-    // 'scene' is an autorelease object
     auto scene = Scene::create();
     
-    // 'layer' is an autorelease object
     MainMenuLayer *layer = MainMenuLayer::create();
 
-    // add layer as a child to scene
     scene->addChild(layer);
 
-    // return the scene
     return scene;
 }
 

@@ -2,9 +2,10 @@
 
 #include "Cloud.h"
 #include "Constants.h"
-#include "GameOverLayer.h"
-#include "SimpleAudioEngine.h"
 #include "Egg.h"
+#include "GameOverLayer.h"
+#include "PauseLayer.h"
+#include "SimpleAudioEngine.h"
 
 using namespace cocos2d;
 
@@ -164,11 +165,6 @@ void GameLayer::addScoreLabel() {
 
 void GameLayer::addTouchListners() {
     auto touchListener = EventListenerTouchOneByOne::create();
-    if (not touchListener) {
-        Director::getInstance()->end();
-        return;
-    }
-    
     touchListener->setSwallowTouches(true);
     touchListener->onTouchBegan = CC_CALLBACK_2(GameLayer::onTouchBegan, this);
     touchListener->onTouchEnded = CC_CALLBACK_2(GameLayer::onTouchEnded, this);
@@ -509,39 +505,6 @@ void GameLayer::updateStageComplesion(float speed) {
         }
         // BASED ON NUMBER OF THIS ELAPSING, FINISH THE STAGE
     }
-}
-
-
-
-//////////////////////////////////////////////////////////////////
-
-Scene* PauseLayer::createScene() {
-    auto scene = Scene::create();
-    auto layer = PauseLayer::create();
-
-    auto resume = MenuItemFont::create("Resume", CC_CALLBACK_1(PauseLayer::menuResumeCallback, layer));
-    auto resumeMenu = Menu::create(resume, nullptr);
-    resumeMenu->setNormalizedPosition(Vec2(0.5f,0.6f));
-    layer->addChild(resumeMenu);
-
-    // add exit button only for android. apple might not approve exit(0)
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-    auto exit = MenuItemFont::create("Exit", CC_CALLBACK_1(PauseLayer::menuExitCallback, layer));
-    auto exitMenu = Menu::create(exit, nullptr);
-    exitMenu->setNormalizedPosition(Vec2(0.5f,0.4f));
-    layer->addChild(exitMenu);
-#endif
-
-    scene->addChild(layer);
-    return scene;
-}
-void PauseLayer::menuResumeCallback(Ref* pSender) {
-    Director::getInstance()->popScene();
-}
-void PauseLayer::menuExitCallback(Ref* pSender) {
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-    Director::getInstance()->end();
-#endif
 }
 
 

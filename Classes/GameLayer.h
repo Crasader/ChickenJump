@@ -99,16 +99,6 @@ private:
 };
 
 
-//////////////////////////////////////////////////////////////////
-
-class PauseLayer : public cocos2d::Layer {
-public:
-    static cocos2d::Scene* createScene();
-    void menuResumeCallback(cocos2d::Ref* pSender);
-    void menuExitCallback(cocos2d::Ref* pSender);
-    CREATE_FUNC(PauseLayer);
-};
-
 #endif // __GAME_LAYER_H__
 
 

@@ -13,16 +13,12 @@ Scene* GameOverLayer::createScene(unsigned int score, bool isStageClear)
     _score = score;
     _isStageClear = isStageClear;
     
-    // 'scene' is an autorelease object
     auto scene = Scene::create();
     
-    // 'layer' is an autorelease object
     GameOverLayer *layer = GameOverLayer::create();
 
-    // add layer as a child to scene
     scene->addChild(layer);
 
-    // return the scene
     return scene;
 }
 
