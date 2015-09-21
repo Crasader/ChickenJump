@@ -22,7 +22,8 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
                    ../../Classes/Cloud.cpp \
                    ../../Classes/LayerGround.cpp \
                    ../../Classes/LayerTwo.cpp \
-                   ../../Classes/Trampoline.cpp
+                   ../../Classes/Trampoline.cpp \
+                   ../../Classes/PauseLayer.cpp
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes
 

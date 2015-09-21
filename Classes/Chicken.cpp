@@ -95,10 +95,6 @@ void Chicken::increaseVectorX() {
 void Chicken::setAnimation() {
     Animation* animation = Animation::create();
     animation->addSpriteFrameWithFile("playerfly_1.png");
-    animation->addSpriteFrameWithFile("playerfly_3.png");
-    animation->addSpriteFrameWithFile("playerfly_1.png");
-    animation->addSpriteFrameWithFile("playerfly_3.png");
-    animation->addSpriteFrameWithFile("playerfly_1.png");
     animation->addSpriteFrameWithFile("playerfly_2.png");
     animation->addSpriteFrameWithFile("playerfly_3.png");
     animation->setDelayPerUnit(0.2f / 1.0f);
