@@ -42,7 +42,7 @@ Scene* GameLayer::createScene()
 bool GameLayer::init()
 {
     // 1. Super init first
-    if ( !LayerColor::initWithColor(Color4B(255,255,255,255))) {
+    if ( !LayerColor::initWithColor(Color4B(255,255,255,255)) ) {
         return false;
     }
     
@@ -53,9 +53,10 @@ bool GameLayer::init()
     CCLOG("GameLayer _origin (x, y) (%f, %f)", _origin.x, _origin.y);
 
     _state = GameState::init;
+    Trampoline::isDrawingOngoing = false;   // new trampoline drawing can begin
     
     _stageLength = _visibleSize.width * 5;  // _visibleSize.width: 480.000
-//    _elapsedStage = 0;
+    // _elapsedStage = 0;
     _elapsedStage = _visibleSize.width * 0.50; // moving ahead egg spwaning
     
     // add static background
@@ -85,9 +86,6 @@ bool GameLayer::init()
 
     // Spawn cloud
     this->schedule(schedule_selector(GameLayer::spawnCloud), CLOUD_SPAWN_FREQUENCY * _visibleSize.width);
-    
-    // Spawn egg
-//    this->schedule(schedule_selector(GameLayer::spawnEgg), EGG_SPAWN_FREQUENCY * _visibleSize.width);
     
 
     // Listen for touches
@@ -347,7 +345,7 @@ void GameLayer::onTouchMoved(Touch* touch, Event* event) {
 }
 
 void GameLayer::onTouchEnded(Touch* touch, Event* event) {
-    if (_trampoline) { Trampoline::isDrawingOngoing = false; }
+    Trampoline::isDrawingOngoing = false;
 }
 
 
