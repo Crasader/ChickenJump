@@ -5,13 +5,18 @@
 
 using namespace cocos2d;
 
-class PauseLayer : public cocos2d::Layer
+class PauseLayer : public cocos2d::LayerColor
 {
 public:
-    static cocos2d::Scene* createScene();
+    virtual bool init();
+    CREATE_FUNC(PauseLayer);
+    
     void menuResumeCallback(cocos2d::Ref* pSender);
     void menuExitCallback(cocos2d::Ref* pSender);
-    CREATE_FUNC(PauseLayer);
+    
+private:
+    Vec2 _origin;
+    Size _visibleSize;
 };
 
 

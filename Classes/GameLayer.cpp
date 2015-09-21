@@ -4,7 +4,6 @@
 #include "Constants.h"
 #include "Egg.h"
 #include "GameOverLayer.h"
-#include "PauseLayer.h"
 #include "SimpleAudioEngine.h"
 
 using namespace cocos2d;
@@ -21,6 +20,8 @@ static const int spawnPattern[] = {1, 2, 3, 0, 1, 2, 0, 3, 1, 0, 1, 2, 0, 1, 1, 
 static const std::vector<int> eggSpawnPattern(spawnPattern, spawnPattern + sizeof(spawnPattern) / sizeof(int));
 static int currentPatternIndex = 0;
 
+GameLayer* GameLayer::_instance = 0;
+
 Scene* GameLayer::createScene()
 {
     // 'scene' is an autorelease object
@@ -30,12 +31,25 @@ Scene* GameLayer::createScene()
     // 'layer' is an autorelease object
     GameLayer *layer = GameLayer::create();
     layer->setPhysicsWorld(scene->getPhysicsWorld());
+    _instance = layer;
 
     // add layer as a child to scene
     scene->addChild(layer);
+    
+    PauseLayer* pauseLayer = PauseLayer::create();
+    scene->addChild(pauseLayer);
+    pauseLayer->setVisible(false);
+    layer->_pauseLayer = pauseLayer;
 
     // return the scene
     return scene;
+}
+
+GameLayer* GameLayer::getInstance() {
+    if (not _instance) {
+        _instance = GameLayer::create();
+    }
+    return _instance;
 }
 
 // on "init" you need to initialize your instance
@@ -130,10 +144,10 @@ void GameLayer::addGroundLayer() {
     _layerGround->createLayerGround(this);
 }
 
-void GameLayer::addPauseMenu()     {
-    MenuItem* pause = MenuItemImage::create(imagePause, imagePause, CC_CALLBACK_1(GameLayer::pause, this));
+void GameLayer::addPauseMenu() {
+    MenuItem* pause = MenuItemImage::create("pause.png", "pause.png", CC_CALLBACK_1(GameLayer::pauseGame, this));
     _pauseMenu = Menu::create(pause, NULL);
-    _pauseMenu->setPosition(Vec2(_visibleSize.width / 2, _visibleSize.height * 0.95)); // position also updated in update function
+    _pauseMenu->setPosition(Vec2(_visibleSize.width * 0.5, _visibleSize.height * 0.95)); // position updated in update fn
     this->addChild(_pauseMenu, BackgroundLayer::layerChicken);
     
     _pauseMenu->setEnabled(false); // enable it when _isGameStarted = true
@@ -234,12 +248,26 @@ void GameLayer::jump(float trampolinePositionY) {
         _chicken->setState(PlayerState::jumping);
         CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(soundJump.c_str());
         speedUp();
-//        releaseTouch(); // finish trampoline drawing
+        // releaseTouch(); // finish trampoline drawing
     }
 }
 
-void GameLayer::pause(cocos2d::Ref* sender) {
-    Director::getInstance()->pushScene(PauseLayer::createScene());
+void GameLayer::pauseGame(cocos2d::Ref* sender) {
+    if (_state == GameState::started) {
+        Director::getInstance()->pause();
+        _state = GameState::paused;
+        _pauseLayer->setVisible(true);
+        _pauseMenu->setVisible(false);
+    }
+}
+
+void GameLayer::resumeGame(cocos2d::Ref* sender) {
+    if (_state == GameState::paused) {
+        Director::getInstance()->resume();
+        _state = GameState::started;
+        _pauseLayer->setVisible(false);
+        _pauseMenu->setVisible(true);
+    }
 }
 
 void GameLayer::removeEggSprite(cocos2d::Sprite *egg) {
@@ -392,7 +420,7 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
 
 // ########## UPDATE ########## //
 void GameLayer::update(float dt) {
-    if (_state == GameState::init) { return; }
+    if (_state == GameState::init or _state == GameState::paused) { return; }
     
     if (_state == GameState::finished and _chicken->getPosition().x >= _visibleSize.width) {
         // goto game over scene with state: stage cleared

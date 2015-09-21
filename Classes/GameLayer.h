@@ -7,6 +7,7 @@
 #include "Chicken.h"
 #include "LayerGround.h"
 #include "LayerTwo.h"
+#include "PauseLayer.h"
 #include "Trampoline.h"
 
 using namespace cocos2d;
@@ -14,6 +15,7 @@ using namespace cocos2d;
 typedef enum {
     init,
     started,
+    paused,
     finishing,
     finished
     
@@ -30,6 +32,11 @@ public:
     
     // implement the "static create()" method manually
     CREATE_FUNC(GameLayer);
+    
+
+    static GameLayer* getInstance();
+    void pauseGame(cocos2d::Ref* sender);
+    void resumeGame(cocos2d::Ref* sender);
     
     // contact listners
     bool onContactBegin(cocos2d::PhysicsContact &contact);
@@ -55,7 +62,6 @@ private:
     void endOfStage();
     void focusOnCharacter();
     void jump(float trampolinePositionY);
-    void pause(cocos2d::Ref* sender);
     void releaseTouch();
     void removeEggSprite(Sprite* egg);
     inline void setPhysicsWorld(cocos2d::PhysicsWorld *world) { _sceneWorld = world; }
@@ -69,7 +75,7 @@ private:
     void updateScoreLabelPosition();
     void updateStageComplesion(float speed);
     
-    
+    static GameLayer* _instance;
     cocos2d::PhysicsWorld *_sceneWorld;
     
     Background* _background;
@@ -78,14 +84,15 @@ private:
     Chicken* _chicken;
     Trampoline* _trampoline;
     std::vector<Sprite*> _eggs;
+    GameState _state;
 
+    PauseLayer* _pauseLayer;
     Sprite* _scoreIcon;
     Sprite* _finger;
     Sprite* _flag;
     Menu* _pauseMenu;
     Label* _scoreLabel;
     unsigned int _score;
-    GameState _state;
     
     float _stageLength;
     float _elapsedStage;
