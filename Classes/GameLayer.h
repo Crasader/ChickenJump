@@ -8,6 +8,7 @@
 #include "LayerGround.h"
 #include "LayerTwo.h"
 #include "PauseLayer.h"
+#include "ScoreLayer.h"
 #include "Trampoline.h"
 
 using namespace cocos2d;
@@ -56,7 +57,6 @@ private:
     void addGroundLayer();
     void addPauseMenu();
     void addSecondLayer();
-    void addScoreLabel();
     void addTouchListners();
     void addTutorial();
     void drawNewTrampoline();
@@ -71,9 +71,7 @@ private:
     void spawnEndOfStageItem();
     void speedUp();
     void updateEggs(float speed);
-    void updatePauseMenuPosition();
     void updateScoreLabel();
-    void updateScoreLabelPosition();
     void updateStageComplesion(float speed);
     
     static GameLayer* _instance;
@@ -87,12 +85,11 @@ private:
     std::vector<Sprite*> _eggs;
     GameState _state;
 
-    PauseLayer* _pauseLayer;
-    Sprite* _scoreIcon;
+    PauseLayer* _pauseHUD;
+    ScoreLayer* _scoreHUD;
     Sprite* _finger;
     Sprite* _flag;
     Menu* _pauseMenu;
-    Label* _scoreLabel;
     unsigned int _score;
     
     float _stageLength;

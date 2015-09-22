@@ -4,6 +4,7 @@
 #include "Constants.h"
 #include "Egg.h"
 #include "GameOverLayer.h"
+#include "ScoreLayer.h"
 #include "SimpleAudioEngine.h"
 
 using namespace cocos2d;
@@ -14,7 +15,6 @@ static const std::string imageResume = "resume.png";
 static const std::string imageFinger = "finger.png";
 static const std::string soundJump = "jump.wav";
 static const std::string soundCollectEgg = "pickup_coin.wav";
-static const std::string fontMarkerFelt = "Marker Felt.ttf";
 
 static const int spawnPattern[] = {1, 2, 3, 0, 1, 2, 0, 3, 1, 0, 1, 2, 0, 1, 1, 0, 3, 1, 3, 0};
 static const std::vector<int> eggSpawnPattern(spawnPattern, spawnPattern + sizeof(spawnPattern) / sizeof(int));
@@ -36,10 +36,21 @@ Scene* GameLayer::createScene()
     // add layer as a child to scene
     scene->addChild(layer);
     
-    PauseLayer* pauseLayer = PauseLayer::create();
-    scene->addChild(pauseLayer);
-    pauseLayer->setVisible(false);
-    layer->_pauseLayer = pauseLayer;
+    
+    // add the Pause HUD Layer
+    {
+        PauseLayer* pauseLayer = PauseLayer::create();
+        scene->addChild(pauseLayer);
+        pauseLayer->setVisible(false);
+        layer->_pauseHUD = pauseLayer;
+    }
+    
+    // add score HUD
+    {
+        ScoreLayer* scoreLayer = ScoreLayer::create();
+        scene->addChild(scoreLayer);
+        layer->_scoreHUD = scoreLayer;
+    }
 
     // return the scene
     return scene;
@@ -87,9 +98,6 @@ bool GameLayer::init()
     
     // Add chicken
     addChicken();
-    
-    // Score Label
-    addScoreLabel();
     
     // Pause/Resume toggle
     addPauseMenu();
@@ -156,23 +164,6 @@ void GameLayer::addPauseMenu() {
 void GameLayer::addSecondLayer() {
     _layerTow = new LayerTwo();
     _layerTow->createLayerTwo(this);
-}
-
-void GameLayer::addScoreLabel() {
-    _score = 0;
-    _scoreIcon = Sprite::create(imageScore);
-    _scoreIcon->setAnchorPoint(Vec2(0, 0));
-    _scoreIcon->setPosition(_scoreIcon->getContentSize().width, _visibleSize.height * 0.9);
-    this->addChild(_scoreIcon, BackgroundLayer::layerChicken);
-    
-    std::string scoreStr = String::createWithFormat("%d", _score)->getCString();
-    _scoreLabel = Label::createWithTTF(scoreStr, fontMarkerFelt, _visibleSize.height * SCORE_FONT_SIZE);
-    if (_scoreLabel) {
-        _scoreLabel->setColor(Color3B::WHITE);
-        _scoreLabel->setAnchorPoint(Vec2(0, 0));
-        _scoreLabel->setPosition(_scoreIcon->getContentSize().width * 2.5, _visibleSize.height * 0.89);
-        this->addChild(_scoreLabel, BackgroundLayer::layerChicken);
-    }
 }
 
 void GameLayer::addTouchListners() {
@@ -256,7 +247,7 @@ void GameLayer::pauseGame(cocos2d::Ref* sender) {
     if (_state == GameState::started) {
         Director::getInstance()->pause();
         _state = GameState::paused;
-        _pauseLayer->setVisible(true);
+        _pauseHUD->setVisible(true);
         _pauseMenu->setVisible(false);
     }
 }
@@ -267,7 +258,7 @@ void GameLayer::resumeClicked(cocos2d::Ref* sender) {
     // then a callback to set GameState and others.
     
     if (_state == GameState::paused) {
-        _pauseLayer->setVisible(false);
+        _pauseHUD->setVisible(false);
         Director::getInstance()->resume();
         
         auto callback = CallFunc::create( [this]() {
@@ -487,12 +478,6 @@ void GameLayer::update(float dt) {
         // keep the camera on the player
 //        focusOnCharacter();
         
-        // update pause menu position, needed if camera movement enabled
-        updatePauseMenuPosition();
-        
-        // update score label position, needed if camera movement enabled
-        updateScoreLabelPosition();
-        
         // stage about to finish
         if (_state == GameState::finishing and not _eggs.size()) {
 //            CCLOG("Chicken Speed X %f", _chicken->getVectorX());
@@ -530,19 +515,10 @@ void GameLayer::updateEggs(float playerSpeed) {
     }
 }
 
-void GameLayer::updatePauseMenuPosition() {
-    _pauseMenu->setPosition(_visibleSize.width / 2, _visibleSize.height * 0.95 - this->getPositionY());
-}
-
 void GameLayer::updateScoreLabel() {
-    if (_scoreLabel) {
-        _scoreLabel->setString(String::createWithFormat("%d", _score)->getCString());
+    if (_scoreHUD) {
+        _scoreHUD->updateScore(_score);
     }
-}
-
-void GameLayer::updateScoreLabelPosition() {
-    _scoreIcon->setPosition(_scoreIcon->getContentSize().width, _visibleSize.height * 0.9 - this->getPositionY());
-    _scoreLabel->setPosition(_scoreIcon->getContentSize().width * 2.5, _visibleSize.height * 0.89 - this->getPositionY());
 }
 
 void GameLayer::updateStageComplesion(float speed) {

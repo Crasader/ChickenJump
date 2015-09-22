@@ -58,6 +58,8 @@
 		D44C620C132DFF330009C878 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D44C620B132DFF330009C878 /* OpenAL.framework */; };
 		D44C620E132DFF430009C878 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D44C620D132DFF430009C878 /* AVFoundation.framework */; };
 		D44C6210132DFF4E0009C878 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D44C620F132DFF4E0009C878 /* AudioToolbox.framework */; };
+		D51B37851BB2095D005A5976 /* ScoreLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D51B37831BB2095D005A5976 /* ScoreLayer.cpp */; };
+		D51B37861BB2095D005A5976 /* ScoreLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D51B37831BB2095D005A5976 /* ScoreLayer.cpp */; };
 		D5253ABB1B088B0500AFC291 /* blank.png in Resources */ = {isa = PBXBuildFile; fileRef = D5253ABA1B088B0500AFC291 /* blank.png */; };
 		D5253ABC1B088B0500AFC291 /* blank.png in Resources */ = {isa = PBXBuildFile; fileRef = D5253ABA1B088B0500AFC291 /* blank.png */; };
 		D52BDA041B864CBE0049A538 /* SplashScreenLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D52BDA021B864CBE0049A538 /* SplashScreenLayer.cpp */; };
@@ -181,6 +183,8 @@
 		D44C620B132DFF330009C878 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 		D44C620D132DFF430009C878 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		D44C620F132DFF4E0009C878 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		D51B37831BB2095D005A5976 /* ScoreLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScoreLayer.cpp; sourceTree = "<group>"; };
+		D51B37841BB2095D005A5976 /* ScoreLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreLayer.h; sourceTree = "<group>"; };
 		D5253ABA1B088B0500AFC291 /* blank.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blank.png; sourceTree = "<group>"; };
 		D52BDA021B864CBE0049A538 /* SplashScreenLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SplashScreenLayer.cpp; sourceTree = "<group>"; };
 		D52BDA031B864CBE0049A538 /* SplashScreenLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplashScreenLayer.h; sourceTree = "<group>"; };
@@ -418,6 +422,8 @@
 				D5BDF2E81B8647EF002A11C2 /* MainMenuLayer.cpp */,
 				D52C3BBC1BAF550E001F0205 /* PauseLayer.h */,
 				D52C3BBB1BAF550E001F0205 /* PauseLayer.cpp */,
+				D51B37841BB2095D005A5976 /* ScoreLayer.h */,
+				D51B37831BB2095D005A5976 /* ScoreLayer.cpp */,
 				D52BDA031B864CBE0049A538 /* SplashScreenLayer.h */,
 				D52BDA021B864CBE0049A538 /* SplashScreenLayer.cpp */,
 			);
@@ -607,6 +613,7 @@
 				D52BDA041B864CBE0049A538 /* SplashScreenLayer.cpp in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
 				D52C3BBD1BAF550E001F0205 /* PauseLayer.cpp in Sources */,
+				D51B37851BB2095D005A5976 /* ScoreLayer.cpp in Sources */,
 				D52BDA431B8A66270049A538 /* Background.cpp in Sources */,
 				D52BDA081B864E8E0049A538 /* GameLayer.cpp in Sources */,
 				D52BDA0F1B8676250049A538 /* Constants.h in Sources */,
@@ -633,6 +640,7 @@
 				D52BDA481B8A94000049A538 /* Egg.cpp in Sources */,
 				D52C3BBE1BAF550E001F0205 /* PauseLayer.cpp in Sources */,
 				D52BDA051B864CBE0049A538 /* SplashScreenLayer.cpp in Sources */,
+				D51B37861BB2095D005A5976 /* ScoreLayer.cpp in Sources */,
 				D52BDA441B8A66270049A538 /* Background.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
