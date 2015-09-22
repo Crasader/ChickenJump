@@ -216,10 +216,10 @@ void GameLayer::endOfStage() {
     if (_chicken->getChicken() and _flag and _state == GameState::finishing) {
         auto delay = DelayTime::create(1);
         
-        auto chickenTakePosition = MoveTo::create(1, Point(_chicken->getPosition().x, _visibleSize.height * 0.60));
-        auto chickenAchieveEnergy = MoveTo::create(1, Point(_chicken->getChicken()->getContentSize().width, _visibleSize.height * 0.60));
-        auto flagAction = MoveTo::create(1, Point(_visibleSize.width - _flag->getContentSize().width, _visibleSize.height * 0.5));
-        auto chickenRunThrough = MoveTo::create(1, Point(_visibleSize.width + _chicken->getChicken()->getContentSize().width, _visibleSize.height * 0.60));
+        auto chickenTakePosition = MoveTo::create(1.0, Point(_chicken->getPosition().x, _visibleSize.height * 0.60));
+        auto chickenAchieveEnergy = MoveTo::create(1.0, Point(_chicken->getChicken()->getContentSize().width, _visibleSize.height * 0.60));
+        auto flagAction = MoveTo::create(1.0, Point(_visibleSize.width - _flag->getContentSize().width, _visibleSize.height * 0.5));
+        auto chickenRunThrough = MoveTo::create(1.0, Point(_visibleSize.width + _chicken->getChicken()->getContentSize().width, _visibleSize.height * 0.60));
     
         TargetedAction* acChickenMove1 = TargetedAction::create(_chicken->getChicken(), chickenTakePosition);
         TargetedAction* acChickenMove2 = TargetedAction::create(_chicken->getChicken(), chickenAchieveEnergy);
@@ -261,11 +261,40 @@ void GameLayer::pauseGame(cocos2d::Ref* sender) {
     }
 }
 
+void GameLayer::resumeClicked(cocos2d::Ref* sender) {
+    // don't change the GameState.
+    // set resume in Director and show a FadeOut action of "Ready..?" label
+    // then a callback to set GameState and others.
+    
+    if (_state == GameState::paused) {
+        _pauseLayer->setVisible(false);
+        Director::getInstance()->resume();
+        
+        auto callback = CallFunc::create( [this]() {
+            this->resumeGame(this);
+        });
+        
+        auto delay = DelayTime::create(1.0f);
+        
+        auto resumeLabel = Label::createWithTTF("Ready..?", fontMarkerFelt, _visibleSize.height * SCORE_FONT_SIZE);
+        if (resumeLabel) {
+            resumeLabel->setColor(Color3B::YELLOW);
+            resumeLabel->setAnchorPoint(Vec2(0, 0));
+            resumeLabel->setPosition(_visibleSize.width * 0.5 - resumeLabel->getContentSize().width * 0.5,
+                                     _visibleSize.height * 0.75 - resumeLabel->getContentSize().height * 0.5);
+            this->addChild(resumeLabel, BackgroundLayer::layerChicken);
+            
+            resumeLabel->runAction(Sequence::create(delay,
+                                                    FadeOut::create(1.0),
+                                                    callback,
+                                                    NULL));
+        }
+    }
+}
+
 void GameLayer::resumeGame(cocos2d::Ref* sender) {
     if (_state == GameState::paused) {
-        Director::getInstance()->resume();
         _state = GameState::started;
-        _pauseLayer->setVisible(false);
         _pauseMenu->setVisible(true);
     }
 }

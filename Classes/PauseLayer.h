@@ -1,5 +1,5 @@
-#ifndef __MAINMENU_SCENE_H__
-#define __MAINMENU_SCENE_H__
+#ifndef __PAUSELAYER_H__
+#define __PAUSELAYER_H__
 
 #include "cocos2d.h"
 
@@ -20,4 +20,4 @@ private:
 };
 
 
-#endif // __MAINMENU_SCENE_H__
+#endif // __PAUSELAYER_H__

@@ -36,6 +36,7 @@ public:
 
     static GameLayer* getInstance();
     void pauseGame(cocos2d::Ref* sender);
+    void resumeClicked(cocos2d::Ref* sender);
     void resumeGame(cocos2d::Ref* sender);
     
     // contact listners

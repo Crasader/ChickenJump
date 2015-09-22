@@ -6,20 +6,19 @@ using namespace cocos2d;
 
 bool PauseLayer::init()
 {
-    if ( !LayerColor::initWithColor(Color4B(255, 255, 0,128)) ) {
+    if ( !LayerColor::initWithColor(Color4B(0, 0, 0, 192)) ) {
         return false;
     }
 
     _origin = Director::getInstance()->getVisibleOrigin();
     _visibleSize = Director::getInstance()->getVisibleSize();
 
-    this->setContentSize(Size(_visibleSize.width * 0.5, _visibleSize.height * 0.7));
-    this->setPosition(_visibleSize.width * 0.5 - this->getContentSize().width * 0.5,
-                      _visibleSize.height * 0.5 - this->getContentSize().height * 0.5);
+    this->setContentSize(Size(_visibleSize.width * 0.08, _visibleSize.height));
+    this->setPosition(0, 0);
     
-    auto resume = MenuItemFont::create("Resume", CC_CALLBACK_1(GameLayer::resumeGame, GameLayer::getInstance()));
+    auto resume = MenuItemImage::create("resume.png", "resume.png", CC_CALLBACK_1(GameLayer::resumeClicked, GameLayer::getInstance()));
     auto resumeMenu = Menu::create(resume, nullptr);
-    resumeMenu->setNormalizedPosition(Vec2(0.5f,0.6f));
+    resumeMenu->setNormalizedPosition(Vec2(0.5f,0.1f));
     this->addChild(resumeMenu);
     
     // add exit button only for android. apple might not approve exit(0)
