@@ -351,7 +351,7 @@ void GameLayer::speedUp() {
 
 // ########## TOUCH EVENTS ########## //
 bool GameLayer::onTouchBegan(Touch* touch, Event* event) {
-    if (_state == GameState::finished or Trampoline::isDrawingOngoing) { return false; }
+    if (_state == GameState::finished or _state == GameState::paused or Trampoline::isDrawingOngoing) { return false; }
     
     // disable the tutorial
     if (_state == GameState::init) {
@@ -378,7 +378,7 @@ bool GameLayer::onTouchBegan(Touch* touch, Event* event) {
 
 void GameLayer::onTouchMoved(Touch* touch, Event* event) {
     // continue only if trampoline drawing is ongoing
-    if (_state == GameState::finished or not Trampoline::isDrawingOngoing) { return; }
+    if (_state == GameState::finished or _state == GameState::paused or not Trampoline::isDrawingOngoing) { return; }
 
     if (touch->getLocation() == _lineStartPoint) { return; }
     if (touch->getLocation().distance(_lineStartPoint) < 30) { return; } // 30 is just trampoline sprite's twice width
