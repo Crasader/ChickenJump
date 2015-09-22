@@ -25,7 +25,7 @@ bool PauseLayer::init()
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
     auto exit = MenuItemFont::create("Exit", CC_CALLBACK_1(PauseLayer::menuExitCallback, this));
     auto exitMenu = Menu::create(exit, nullptr);
-    exitMenu->setNormalizedPosition(Vec2(0.5f,0.4f));
+    exitMenu->setNormalizedPosition(Vec2(0.5f,0.25f));
     this->addChild(exitMenu);
 #endif
     
