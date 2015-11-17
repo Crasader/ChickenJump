@@ -43,19 +43,16 @@ void Collectable::spawn(cocos2d::Layer* layer, std::vector<Sprite*>& collectable
             return;
     }
     
-    int collectableType = CCRANDOM_0_1() * 4 + 1;
+    int collectableType = CCRANDOM_0_1() * 3 + 1;
     switch (collectableType) {
         case 1:
             _type = CollectableType::egg;
             break;
         case 2:
-            _type = CollectableType::egg;
+            _type = CollectableType::pizza;
             break;
         case 3:
             _type = CollectableType::bomb;
-            break;
-        case 4:
-            _type = CollectableType::pizza;
             break;
             
         default:

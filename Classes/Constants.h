@@ -40,6 +40,7 @@ typedef enum
 #define CUSTOM_ACCELERATION             0.05    // (Bigger = Faster)
 #define MAX_WEIGHT                      2.0
 #define MIN_WEIGHT                      1.0
+#define MAX_SCALE                       2.0
 
 //#define INITIAL_SPEED                   8
 //#define FORCE_GRAVITY                   1.5

@@ -425,7 +425,9 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
         // Remove colided collectables
         auto collectable = (Sprite*)contact.getShapeB()->getBody()->getNode();
         if (collectable) {
-            CCLOG("+++++ %d", collectable->getTag());
+            if (collectable->getTag() == 2) {   //  1:egg; 2:pizza; 3:bomb
+                _chicken->increaseSpriteSize();
+            }
             removeCollectable(collectable);
         }
     }
@@ -437,8 +439,11 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
         // Remove colided collectable
         auto collectable = (Sprite*)contact.getShapeA()->getBody()->getNode();
         if (collectable) {
-            CCLOG("+++++ %d", collectable->getTag());
-            removeCollectable(collectable);        }
+            if (collectable->getTag() == 2) {   //  1:egg; 2:pizza; 3:bomb
+                _chicken->increaseSpriteSize();
+            }
+            removeCollectable(collectable);
+        }
     }
     
     return true;

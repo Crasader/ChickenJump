@@ -27,6 +27,7 @@ public:
     PlayerState getState();
     float getVectorX();
     Vec2* getVector() { return &_vector; }
+    void increaseSpriteSize();
     void increaseVectorX();
 //    void moveToFinishingPosition();
 //    void runFinishingMove();
@@ -42,6 +43,9 @@ private:
     PlayerState _state;
     Vec2 _vector;
     float _weight;
+    float _scale;
+    
+    void increaseWeight();
     
     std::string const _imageFile = "playerfly_1.png";
 };

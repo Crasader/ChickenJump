@@ -27,8 +27,10 @@ void Chicken::createChicken(cocos2d::Layer *layer) {
     if (not layer) { return; }
 
     _chicken = Sprite::create(_imageFile);
-    _chicken->setAnchorPoint(Vec2(0, 0));
+    
     if (! _chicken) { return; }
+    
+    _chicken->setAnchorPoint(Vec2(0, 0));
     
     // Dynamic physics body
     addPhysicsBody();
@@ -38,14 +40,15 @@ void Chicken::createChicken(cocos2d::Layer *layer) {
     _vector.y = 0.0;
     _state = PlayerState::falling;
     _weight = 1.0;
+    _scale = 1.0;
     
     // initial position
     _chicken->setPosition(_visibleSize.width * 0.30 + _origin.x, _visibleSize.height * 0.9 + _origin.y);
     
     // TODO: remove this adjusting
     // Adjusting big png
-    auto scaleTo = ScaleTo::create(0.75f, 0.75f);
-    _chicken->runAction(scaleTo);
+//    auto scaleTo = ScaleTo::create(0.75f, 0.75f);
+//    _chicken->runAction(scaleTo);
     
     // Flapping wings animation
     setAnimation();
@@ -70,12 +73,26 @@ float Chicken::getVectorX() {
     return _vector.x;
 }
 
+void Chicken::increaseSpriteSize() {
+    if (_scale + 0.25 <= MAX_SCALE) {
+        auto scaleTo = ScaleTo::create(0.1f, _scale += 0.25);
+        _chicken->runAction(scaleTo);
+        increaseWeight();
+    }
+}
+
 void Chicken::increaseVectorX() {
     if (_state == PlayerState::dying) { return; }
     
     _vector.x *= ACCELERATION_DEFAULT;   // increase speed by 1.5
     if (_vector.x >= MAX_SPEED_X) {
         _vector.x = MAX_SPEED_X;
+    }
+}
+
+void Chicken::increaseWeight() {
+    if (_weight + 0.25 <= MAX_WEIGHT) {
+        _weight += 0.25;
     }
 }
 
@@ -126,13 +143,13 @@ void Chicken::update(float speed) {
             _vector.y = 0;
             break;
         case jumping:
-            _vector.y -= _visibleSize.height * VELOCITY_Y_DECREASE_RATE;
+            _vector.y -= _visibleSize.height * VELOCITY_Y_DECREASE_RATE * _weight;
             if (_vector.y <= 0) {
                 _state = PlayerState::falling;
             }
             break;
         case falling:
-            _vector.y -= _visibleSize.height * VELOCITY_Y_DECREASE_RATE;
+            _vector.y -= _visibleSize.height * VELOCITY_Y_DECREASE_RATE * _weight;
             break;
         case dying:
             CCLOG("Player DEAD. PLEASE RESET");
