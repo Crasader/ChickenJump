@@ -5,6 +5,11 @@
 Collectable::Collectable(void){
     _origin = Director::getInstance()->getVisibleOrigin();
     _visibleSize = Director::getInstance()->getVisibleSize();
+    _type = CollectableType::none;
+}
+
+CollectableType Collectable::getType() {
+    return _type;
 }
 
 void Collectable::spawn(cocos2d::Layer* layer, std::vector<Sprite*>& collectables, int pattern) {
@@ -54,7 +59,7 @@ void Collectable::spawn(cocos2d::Layer* layer, std::vector<Sprite*>& collectable
             break;
             
         default:
-            _type = CollectableType::egg;
+            _type = CollectableType::none;
             break;
     }
     
@@ -66,6 +71,7 @@ void Collectable::spawn(cocos2d::Layer* layer, std::vector<Sprite*>& collectable
     float positionY;
     for (int i = 0; i < numberOfCollectable; ++i) {
         Sprite* collectable = Sprite::create(String::createWithFormat("egg%i.png", collectableType)->getCString());
+        collectable->setTag(_type); // used as CollectableType
         
         positionX += _visibleSize.width * distanceBetweenCollectables; // distance between collectables
         positionY = (_visibleSize.width * radius) * sin(degree2radian(i * degree)); // y = radius * sin(angle) // bigger radius = higher parabola

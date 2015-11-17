@@ -88,13 +88,13 @@ bool GameLayer::init()
 //    addBG();
 
     // Add background
-    addFirstLayer();
+//    addFirstLayer();
     
     // Add layerTwo. collectable spawns based on this layer.
     addSecondLayer();
     
     // Add layerGround
-    addGroundLayer();
+//    addGroundLayer();
     
     // Add chicken
     addChicken();
@@ -341,6 +341,7 @@ void GameLayer::speedUp() {
 
 
 // ########## TOUCH EVENTS ########## //
+#pragma mark Touch Events
 bool GameLayer::onTouchBegan(Touch* touch, Event* event) {
     if (_state == GameState::finished or _state == GameState::paused or Trampoline::isDrawingOngoing) { return false; }
     
@@ -398,6 +399,7 @@ void GameLayer::onTouchEnded(Touch* touch, Event* event) {
 
 
 // ########## COLLISION HANDLING ########## //
+#pragma mark Collision Detection
 bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
     // CCLOG("CONTACT");
     PhysicsBody* a = contact.getShapeA()->getBody();
@@ -422,7 +424,10 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
 
         // Remove colided collectables
         auto collectable = (Sprite*)contact.getShapeB()->getBody()->getNode();
-        if (collectable) { removeCollectable(collectable); }
+        if (collectable) {
+            CCLOG("+++++ %d", collectable->getTag());
+            removeCollectable(collectable);
+        }
     }
     // collision between collectables and chicken
     else if (a->getCategoryBitmask() == 4 and b->getCategoryBitmask() == 1) {
@@ -431,7 +436,9 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
 
         // Remove colided collectable
         auto collectable = (Sprite*)contact.getShapeA()->getBody()->getNode();
-        if (collectable) { removeCollectable(collectable); }
+        if (collectable) {
+            CCLOG("+++++ %d", collectable->getTag());
+            removeCollectable(collectable);        }
     }
     
     return true;
@@ -439,6 +446,7 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
 
 
 // ########## UPDATE ########## //
+#pragma mark Update
 void GameLayer::update(float dt) {
     if (_state == GameState::init or _state == GameState::paused) { return; }
     

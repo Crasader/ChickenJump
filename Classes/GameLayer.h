@@ -5,6 +5,7 @@
 
 #include "Background.h"
 #include "Chicken.h"
+#include "Collectable.h"
 #include "LayerGround.h"
 #include "LayerTwo.h"
 #include "PauseLayer.h"
@@ -64,7 +65,7 @@ private:
     void focusOnCharacter();
     void jump(float trampolinePositionY);
     void releaseTouch();
-    void removeCollectable(Sprite* egg);
+    void removeCollectable(Sprite* collectable);
     inline void setPhysicsWorld(cocos2d::PhysicsWorld *world) { _sceneWorld = world; }
     void spawnCloud(float dt);
     void spawnCollectable();
