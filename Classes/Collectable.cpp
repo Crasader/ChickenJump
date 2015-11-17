@@ -1,13 +1,13 @@
-#include "Egg.h"
+#include "Collectable.h"
 
 #include "Constants.h"
 
-Egg::Egg(void){
+Collectable::Collectable(void){
     _origin = Director::getInstance()->getVisibleOrigin();
     _visibleSize = Director::getInstance()->getVisibleSize();
 }
 
-void Egg::spawn(cocos2d::Layer* layer, std::vector<Sprite*>& eggs, int pattern) {
+void Collectable::spawn(cocos2d::Layer* layer, std::vector<Sprite*>& collectables, int pattern) {
     if (not layer) { return; }
     
     const float distanceBetweenEggs = 0.001;
@@ -50,23 +50,23 @@ void Egg::spawn(cocos2d::Layer* layer, std::vector<Sprite*>& eggs, int pattern) 
     float positionX = _visibleSize.width;
     float positionY;
     for (int i = 0; i < numberOfEggs; ++i) {
-        Sprite* egg = Sprite::create(String::createWithFormat("egg%i.png", eggType)->getCString());
+        Sprite* collectable = Sprite::create(String::createWithFormat("egg%i.png", eggType)->getCString());
         
         positionX += _visibleSize.width * distanceBetweenEggs; // distance between eggs
         positionY = (_visibleSize.width * radius) * sin(degree2radian(i * degree)); // y = radius * sin(angle) // bigger radius = higher parabola
-        egg->setPosition(Vec2(positionX, minPosY + positionY));
+        collectable->setPosition(Vec2(positionX, minPosY + positionY));
         
-        auto eggBody = PhysicsBody::createCircle(egg->getContentSize().width / 2, PhysicsMaterial(0.1f, 1.0f, 0.0f));
-        eggBody->setCategoryBitmask(CATEGORY_BITMASK_EGG);
+        auto body = PhysicsBody::createCircle(collectable->getContentSize().width / 2, PhysicsMaterial(0.1f, 1.0f, 0.0f));
+        body->setCategoryBitmask(CATEGORY_BITMASK_EGG);
         // eggBody->setCollisionBitmask(1);
-        eggBody->setContactTestBitmask(CATEGORY_BITMASK_CHICKEN);
-        eggBody->setDynamic(false);
-        egg->setPhysicsBody(eggBody);
+        body->setContactTestBitmask(CATEGORY_BITMASK_CHICKEN);
+        body->setDynamic(false);
+        collectable->setPhysicsBody(body);
         
-        layer->addChild(egg, BackgroundLayer::layerChicken);
-        eggs.push_back(egg);
+        layer->addChild(collectable, BackgroundLayer::layerChicken);
+        collectables.push_back(collectable);
         
-        positionX += egg->getContentSize().width * 1.5; // distance must be atleast 1.5 egg width
+        positionX += collectable->getContentSize().width * 1.5; // distance must be atleast 1.5 egg width
     }
 }
 

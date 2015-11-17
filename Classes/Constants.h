@@ -57,9 +57,9 @@ typedef enum
 #define CONTACTTEST_BITMASK_CHICKEN_ALL 0x0006
 
 
-// EGG
-#define EGG_SPAWN_FREQUENCY             0.001
-#define EGG_SPEED                       LAYER_TWO_SPEED
+// COLLECTABLE
+#define COLLECTABLE_SPAWN_FREQUENCY             0.001
+#define COLLECTABLE_SPEED                       LAYER_TWO_SPEED
 
 // SCORE LABEL
 #define SCORE_FONT_SIZE                 0.085

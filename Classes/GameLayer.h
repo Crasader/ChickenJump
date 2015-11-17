@@ -64,13 +64,13 @@ private:
     void focusOnCharacter();
     void jump(float trampolinePositionY);
     void releaseTouch();
-    void removeEggSprite(Sprite* egg);
+    void removeCollectable(Sprite* egg);
     inline void setPhysicsWorld(cocos2d::PhysicsWorld *world) { _sceneWorld = world; }
     void spawnCloud(float dt);
-    void spawnEgg();
+    void spawnCollectable();
     void spawnEndOfStageItem();
     void speedUp();
-    void updateEggs(float speed);
+    void updateCollectables(float speed);
     void updateScoreLabel();
     void updateStageComplesion(float speed);
     
@@ -82,7 +82,7 @@ private:
     LayerGround* _layerGround;
     Chicken* _chicken;
     Trampoline* _trampoline;
-    std::vector<Sprite*> _eggs;
+    std::vector<Sprite*> _collectables;
     GameState _state;
 
     PauseLayer* _pauseHUD;

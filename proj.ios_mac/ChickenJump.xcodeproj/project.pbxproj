@@ -72,8 +72,8 @@
 		D52BDA101B8676250049A538 /* Constants.h in Sources */ = {isa = PBXBuildFile; fileRef = D52BDA0E1B8676250049A538 /* Constants.h */; };
 		D52BDA431B8A66270049A538 /* Background.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D52BDA411B8A66270049A538 /* Background.cpp */; };
 		D52BDA441B8A66270049A538 /* Background.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D52BDA411B8A66270049A538 /* Background.cpp */; };
-		D52BDA471B8A94000049A538 /* Egg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D52BDA451B8A94000049A538 /* Egg.cpp */; };
-		D52BDA481B8A94000049A538 /* Egg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D52BDA451B8A94000049A538 /* Egg.cpp */; };
+		D52BDA471B8A94000049A538 /* Collectable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D52BDA451B8A94000049A538 /* Collectable.cpp */; };
+		D52BDA481B8A94000049A538 /* Collectable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D52BDA451B8A94000049A538 /* Collectable.cpp */; };
 		D52C3BBD1BAF550E001F0205 /* PauseLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D52C3BBB1BAF550E001F0205 /* PauseLayer.cpp */; };
 		D52C3BBE1BAF550E001F0205 /* PauseLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D52C3BBB1BAF550E001F0205 /* PauseLayer.cpp */; };
 		D53DBEC91BA89FC4001A812F /* resource_hd in Resources */ = {isa = PBXBuildFile; fileRef = D53DBEC61BA89FC4001A812F /* resource_hd */; };
@@ -195,8 +195,8 @@
 		D52BDA0E1B8676250049A538 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		D52BDA411B8A66270049A538 /* Background.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Background.cpp; sourceTree = "<group>"; };
 		D52BDA421B8A66270049A538 /* Background.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Background.h; sourceTree = "<group>"; };
-		D52BDA451B8A94000049A538 /* Egg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Egg.cpp; sourceTree = "<group>"; };
-		D52BDA461B8A94000049A538 /* Egg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Egg.h; sourceTree = "<group>"; };
+		D52BDA451B8A94000049A538 /* Collectable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Collectable.cpp; sourceTree = "<group>"; };
+		D52BDA461B8A94000049A538 /* Collectable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Collectable.h; sourceTree = "<group>"; };
 		D52C3BBB1BAF550E001F0205 /* PauseLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PauseLayer.cpp; sourceTree = "<group>"; };
 		D52C3BBC1BAF550E001F0205 /* PauseLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PauseLayer.h; sourceTree = "<group>"; };
 		D53DBEC61BA89FC4001A812F /* resource_hd */ = {isa = PBXFileReference; lastKnownFileType = folder; path = resource_hd; sourceTree = "<group>"; };
@@ -439,14 +439,14 @@
 				D59103D21B8BA5D5005E5CD9 /* Chicken.cpp */,
 				D59103D61B8BC1A5005E5CD9 /* Cloud.h */,
 				D59103D51B8BC1A5005E5CD9 /* Cloud.cpp */,
+				D52BDA461B8A94000049A538 /* Collectable.h */,
+				D52BDA451B8A94000049A538 /* Collectable.cpp */,
 				D5BDFD171B8FCAC70031AE1B /* LayerGround.h */,
 				D5BDFD161B8FCAC70031AE1B /* LayerGround.cpp */,
 				D5BDFD131B8FB5000031AE1B /* LayerTwo.h */,
 				D5BDFD121B8FB5000031AE1B /* LayerTwo.cpp */,
 				D575D0F41B94DD0D0082D427 /* Trampoline.h */,
 				D575D0F31B94DD0D0082D427 /* Trampoline.cpp */,
-				D52BDA461B8A94000049A538 /* Egg.h */,
-				D52BDA451B8A94000049A538 /* Egg.cpp */,
 			);
 			name = Sprite;
 			sourceTree = "<group>";
@@ -608,7 +608,7 @@
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
 				D52BDA0C1B8651CC0049A538 /* GameOverLayer.cpp in Sources */,
 				D59103D41B8BA5D5005E5CD9 /* Chicken.cpp in Sources */,
-				D52BDA471B8A94000049A538 /* Egg.cpp in Sources */,
+				D52BDA471B8A94000049A538 /* Collectable.cpp in Sources */,
 				D575D0F51B94DD0D0082D427 /* Trampoline.cpp in Sources */,
 				D52BDA041B864CBE0049A538 /* SplashScreenLayer.cpp in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
@@ -637,7 +637,7 @@
 				D575D0F61B94DD0D0082D427 /* Trampoline.cpp in Sources */,
 				D52BDA101B8676250049A538 /* Constants.h in Sources */,
 				D5BDF2EA1B8647EF002A11C2 /* MainMenuLayer.cpp in Sources */,
-				D52BDA481B8A94000049A538 /* Egg.cpp in Sources */,
+				D52BDA481B8A94000049A538 /* Collectable.cpp in Sources */,
 				D52C3BBE1BAF550E001F0205 /* PauseLayer.cpp in Sources */,
 				D52BDA051B864CBE0049A538 /* SplashScreenLayer.cpp in Sources */,
 				D51B37861BB2095D005A5976 /* ScoreLayer.cpp in Sources */,

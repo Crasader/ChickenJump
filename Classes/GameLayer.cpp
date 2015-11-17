@@ -2,7 +2,7 @@
 
 #include "Cloud.h"
 #include "Constants.h"
-#include "Egg.h"
+#include "Collectable.h"
 #include "GameOverLayer.h"
 #include "ScoreLayer.h"
 #include "SimpleAudioEngine.h"
@@ -14,10 +14,10 @@ static const std::string imagePause = "pause.png";
 static const std::string imageResume = "resume.png";
 static const std::string imageFinger = "finger.png";
 static const std::string soundJump = "jump.wav";
-static const std::string soundCollectEgg = "pickup_coin.wav";
+static const std::string soundCollectCollectable = "pickup_coin.wav";
 
 static const int spawnPattern[] = {1, 2, 3, 0, 1, 2, 0, 3, 1, 0, 1, 2, 0, 1, 1, 0, 3, 1, 3, 0};
-static const std::vector<int> eggSpawnPattern(spawnPattern, spawnPattern + sizeof(spawnPattern) / sizeof(int));
+static const std::vector<int> collectableSpawnPattern(spawnPattern, spawnPattern + sizeof(spawnPattern) / sizeof(int));
 static int currentPatternIndex = 0;
 
 GameLayer* GameLayer::_instance = 0;
@@ -82,19 +82,19 @@ bool GameLayer::init()
     
     _stageLength = _visibleSize.width * 5;  // _visibleSize.width: 480.000
     // _elapsedStage = 0;
-    _elapsedStage = _visibleSize.width * 0.50; // moving ahead egg spwaning
+    _elapsedStage = _visibleSize.width * 0.50; // moving ahead collectable spwaning
     
     // add static background
 //    addBG();
 
     // Add background
-//    addFirstLayer();
+    addFirstLayer();
     
-    // Add layerTwo. Egg spawns based on this layer.
+    // Add layerTwo. collectable spawns based on this layer.
     addSecondLayer();
     
     // Add layerGround
-//    addGroundLayer();
+    addGroundLayer();
     
     // Add chicken
     addChicken();
@@ -265,7 +265,7 @@ void GameLayer::resumeClicked(cocos2d::Ref* sender) {
             this->resumeGame(this);
         });
         
-        auto delay = DelayTime::create(1.0f);
+        auto delay = DelayTime::create(1.5f);
         
         auto resumeLabel = Label::createWithTTF("Ready..?", fontMarkerFelt, _visibleSize.height * SCORE_FONT_SIZE);
         if (resumeLabel) {
@@ -290,11 +290,11 @@ void GameLayer::resumeGame(cocos2d::Ref* sender) {
     }
 }
 
-void GameLayer::removeEggSprite(cocos2d::Sprite *egg) {
-    this->removeChild(egg);
-    if (std::find(_eggs.begin(), _eggs.end(), egg) != _eggs.end()) {
-        _eggs.erase(std::find(_eggs.begin(), _eggs.end(), egg));
-        CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(soundCollectEgg.c_str());
+void GameLayer::removeCollectable(cocos2d::Sprite *collectable) {
+    this->removeChild(collectable);
+    if (std::find(_collectables.begin(), _collectables.end(), collectable) != _collectables.end()) {
+        _collectables.erase(std::find(_collectables.begin(), _collectables.end(), collectable));
+        CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(soundCollectCollectable.c_str());
     }
 }
 
@@ -303,10 +303,10 @@ void GameLayer::releaseTouch() {
     _lineStartPoint = _lineEndPoint;
 }
 
-void GameLayer::spawnEgg() {
+void GameLayer::spawnCollectable() {
     if (_state == GameState::started) {
-        Egg* egg = new Egg();
-        egg->spawn(this, _eggs, eggSpawnPattern.at(currentPatternIndex++ % eggSpawnPattern.size()));
+        Collectable* collectable = new Collectable();
+        collectable->spawn(this, _collectables, collectableSpawnPattern.at(currentPatternIndex++ % collectableSpawnPattern.size()));
     }
 }
 
@@ -415,23 +415,23 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
     }
     
     
-    // collision between chicken and eggs
+    // collision between chicken and collectables
     if (a->getCategoryBitmask() == 1 and b->getCategoryBitmask() == 4) {
         _score ++;
         updateScoreLabel();
 
-        // Remove colided egg
-        auto egg = (Sprite*)contact.getShapeB()->getBody()->getNode();
-        if (egg) { removeEggSprite(egg); }
+        // Remove colided collectables
+        auto collectable = (Sprite*)contact.getShapeB()->getBody()->getNode();
+        if (collectable) { removeCollectable(collectable); }
     }
-    // collision between eggs and chicken
+    // collision between collectables and chicken
     else if (a->getCategoryBitmask() == 4 and b->getCategoryBitmask() == 1) {
         _score ++;
         updateScoreLabel();
 
-        // Remove colided egg
-        auto egg = (Sprite*)contact.getShapeA()->getBody()->getNode();
-        if (egg) { removeEggSprite(egg); }
+        // Remove colided collectable
+        auto collectable = (Sprite*)contact.getShapeA()->getBody()->getNode();
+        if (collectable) { removeCollectable(collectable); }
     }
     
     return true;
@@ -473,13 +473,13 @@ void GameLayer::update(float dt) {
             // Trampoline drawing is finished once we reach the max length of trampoline.
         }
         
-        updateEggs(_chicken->getVectorX());
+        updateCollectables(_chicken->getVectorX());
         
         // keep the camera on the player
 //        focusOnCharacter();
         
         // stage about to finish
-        if (_state == GameState::finishing and not _eggs.size()) {
+        if (_state == GameState::finishing and not _collectables.size()) {
 //            CCLOG("Chicken Speed X %f", _chicken->getVectorX());
             _pauseMenu->setEnabled(false);
             
@@ -501,14 +501,14 @@ void GameLayer::update(float dt) {
     }
 }
 
-void GameLayer::updateEggs(float playerSpeed) {
-    for (int i = 0; i < _eggs.size(); ++i) {
-        Sprite* e = _eggs.at(i);
-        e->setPositionX(e->getPosition().x - EGG_SPEED * _visibleSize.width * playerSpeed);
+void GameLayer::updateCollectables(float playerSpeed) {
+    for (int i = 0; i < _collectables.size(); ++i) {
+        Sprite* e = _collectables.at(i);
+        e->setPositionX(e->getPosition().x - COLLECTABLE_SPEED * _visibleSize.width * playerSpeed);
         
         if (e->getPositionX() < -e->getContentSize().width) {
             this->removeChild(e);
-            _eggs.erase(_eggs.begin() + i);
+            _collectables.erase(_collectables.begin() + i);
             
             --i; // handle new number one's position in next iteration
         }
@@ -528,8 +528,8 @@ void GameLayer::updateStageComplesion(float speed) {
         CCLOG("Stage Remaining: %f", _stageLength);
         _elapsedStage = 0;
         
-        // spawn eggs based on scrolled length
-        spawnEgg();
+        // spawn collectables based on scrolled length
+        spawnCollectable();
         
         if (_stageLength <= 0) {
             _state = GameState::finishing;
