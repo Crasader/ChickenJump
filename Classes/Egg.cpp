@@ -38,10 +38,10 @@ void Egg::spawn(cocos2d::Layer* layer, std::vector<Sprite*>& eggs, int pattern) 
             return;
     }
     
-    int eggType = CCRANDOM_0_1() * 3 + 1;
-    if (eggType == 3) {
-        eggType = 1;  // handle boundary condition
-    }
+    int eggType = CCRANDOM_0_1() * 4 + 1;
+//    if (eggType == 3) {
+//        eggType = 1;  // handle boundary condition
+//    }
     
     int heightRange = _visibleSize.height * 0.25;
     int minHeight = (_visibleSize.height * 0.4);

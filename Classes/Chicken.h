@@ -41,6 +41,7 @@ private:
     Sprite* _chicken;
     PlayerState _state;
     Vec2 _vector;
+    float _weight;
     
     std::string const _imageFile = "playerfly_1.png";
 };

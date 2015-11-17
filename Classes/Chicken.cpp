@@ -33,10 +33,11 @@ void Chicken::createChicken(cocos2d::Layer *layer) {
     // Dynamic physics body
     addPhysicsBody();
     
-    // initial speed and state
+    // initial speed, weight and state
     _vector.x = 1.0;
     _vector.y = 0.0;
     _state = PlayerState::falling;
+    _weight = 1.0;
     
     // initial position
     _chicken->setPosition(_visibleSize.width * 0.30 + _origin.x, _visibleSize.height * 0.9 + _origin.y);
