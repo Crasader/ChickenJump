@@ -88,13 +88,13 @@ bool GameLayer::init()
 //    addBG();
 
     // Add background
-//    addFirstLayer();
+    addFirstLayer();
     
     // Add layerTwo. collectable spawns based on this layer.
     addSecondLayer();
     
     // Add layerGround
-//    addGroundLayer();
+    addGroundLayer();
     
     // Add chicken
     addChicken();
