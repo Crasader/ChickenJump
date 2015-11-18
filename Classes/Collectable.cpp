@@ -2,14 +2,16 @@
 
 #include "Constants.h"
 
+
+// 1:egg 2:pizza 3:bomb
+//static const int pattern[] = {1, 2, 3, 1, 1, 2, 3, 3, 1, 2, 1, 2, 3, 1, 1, 2, 3, 1, 3, 2};
+static const int pattern[] = {2, 2, 2};
+static const std::vector<int> collectablePattern(pattern, pattern + sizeof(pattern) / sizeof(int));
+static int currentPatternIndex = 0;
+
 Collectable::Collectable(void){
     _origin = Director::getInstance()->getVisibleOrigin();
     _visibleSize = Director::getInstance()->getVisibleSize();
-    _type = CollectableType::none;
-}
-
-CollectableType Collectable::getType() {
-    return _type;
 }
 
 void Collectable::spawn(cocos2d::Layer* layer, std::vector<Sprite*>& collectables, int pattern) {
@@ -43,22 +45,7 @@ void Collectable::spawn(cocos2d::Layer* layer, std::vector<Sprite*>& collectable
             return;
     }
     
-    int collectableType = CCRANDOM_0_1() * 3 + 1;
-    switch (collectableType) {
-        case 1:
-            _type = CollectableType::egg;
-            break;
-        case 2:
-            _type = CollectableType::pizza;
-            break;
-        case 3:
-            _type = CollectableType::bomb;
-            break;
-            
-        default:
-            _type = CollectableType::none;
-            break;
-    }
+    int collectableType = collectablePattern.at(currentPatternIndex++ % collectablePattern.size());
     
     int heightRange = _visibleSize.height * 0.25;
     int minHeight = (_visibleSize.height * 0.4);
@@ -68,7 +55,7 @@ void Collectable::spawn(cocos2d::Layer* layer, std::vector<Sprite*>& collectable
     float positionY;
     for (int i = 0; i < numberOfCollectable; ++i) {
         Sprite* collectable = Sprite::create(String::createWithFormat("egg%i.png", collectableType)->getCString());
-        collectable->setTag(_type); // used as CollectableType
+        collectable->setTag(collectableType); // used as CollectableType:: 1:egg 2:pizza 3:bomb
         
         positionX += _visibleSize.width * distanceBetweenCollectables; // distance between collectables
         positionY = (_visibleSize.width * radius) * sin(degree2radian(i * degree)); // y = radius * sin(angle) // bigger radius = higher parabola
