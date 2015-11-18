@@ -108,6 +108,7 @@ void Chicken::increaseWeight() {
     if (_weight + SCALE_FACTOR <= MAX_WEIGHT) {
         _weight += SCALE_FACTOR;
     }
+    CCLOG("+++++ %f", _weight);
 }
 
 //void Chicken::moveToFinishingPosition() {
@@ -127,6 +128,7 @@ void Chicken::increaseWeight() {
 void Chicken::resetSizeAndWeight() {
     _scale = MIN_SCALE;
     _weight = MIN_WEIGHT;
+    CCLOG("+++++ RESET %f", _weight);
 }
 
 void Chicken::setAnimation() {

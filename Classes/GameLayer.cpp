@@ -239,16 +239,20 @@ void GameLayer::handleCollectableConsumption(Sprite* collectable) {
             break;
         case 2:
             _chicken->increaseSpriteSize();
+            
             {// delay + decreaseSize + delay + decreaseSize + delay + decreaseSizeToNormal
                 auto callback = CallFunc::create([this]() {
                     _chicken->resetSizeAndWeight();
                 } );
                 
-                auto delay = DelayTime::create(2.0f);
-                _chicken->getChicken()->runAction(Sequence::create(delay,
-                                                  ScaleTo::create(1.0f, 1.0f),
-                                                  callback,
-                                                  NULL));
+                auto delay = DelayTime::create(3.0f);
+                
+                _chicken->getChicken()->stopAction(_sequence);
+                _sequence = Sequence::create(delay,
+                                             ScaleTo::create(2.0f, 1.0f),
+                                             callback,
+                                             NULL);
+                _chicken->getChicken()->runAction(_sequence);
             }
             break;
         case 3:

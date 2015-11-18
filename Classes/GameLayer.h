@@ -86,6 +86,7 @@ private:
     Trampoline* _trampoline;
     std::vector<Sprite*> _collectables;
     GameState _state;
+    Sequence* _sequence;
 
     PauseLayer* _pauseHUD;
     ScoreLayer* _scoreHUD;
