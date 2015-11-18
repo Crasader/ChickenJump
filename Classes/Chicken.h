@@ -21,6 +21,7 @@ public:
     void addPhysicsBody();
     void applySpeedX(float speed);
     void createChicken(cocos2d::Layer* layer);
+    void decreaseSpriteSize();
     void decreaseVectorX();
     Sprite* getChicken() { return _chicken; }
     Vec2 getPosition() { return _chicken->getPosition(); }
@@ -31,6 +32,7 @@ public:
     void increaseVectorX();
 //    void moveToFinishingPosition();
 //    void runFinishingMove();
+    void resetSizeAndWeight();
     void setAnimation();
     void setState(PlayerState state);
     void setVector(Vec2 vector) { _vector = vector; }
@@ -45,6 +47,7 @@ private:
     float _weight;
     float _scale;
     
+    void decreaseWeight();
     void increaseWeight();
     
     std::string const _imageFile = "playerfly_1.png";

@@ -232,6 +232,34 @@ void GameLayer::focusOnCharacter() {
     }
 }
 
+void GameLayer::handleCollectableConsumption(Sprite* collectable) {
+    //  1:egg; 2:pizza; 3:bomb
+    switch (collectable->getTag()) {
+        case 1:
+            break;
+        case 2:
+            _chicken->increaseSpriteSize();
+            {// delay + decreaseSize + delay + decreaseSize + delay + decreaseSizeToNormal
+                auto callback = CallFunc::create([this]() {
+                    _chicken->resetSizeAndWeight();
+                } );
+                
+                auto delay = DelayTime::create(2.0f);
+                _chicken->getChicken()->runAction(Sequence::create(delay,
+                                                  ScaleTo::create(1.0f, 1.0f),
+                                                  callback,
+                                                  NULL));
+            }
+            break;
+        case 3:
+            break;
+            
+        default:
+            break;
+    }
+    removeCollectable(collectable);
+}
+
 void GameLayer::jump(float trampolinePositionY) {
     if (_chicken->getPosition().y > trampolinePositionY and
         _chicken->getState() == PlayerState::falling) {
@@ -425,10 +453,7 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
         // Remove colided collectables
         auto collectable = (Sprite*)contact.getShapeB()->getBody()->getNode();
         if (collectable) {
-            if (collectable->getTag() == 2) {   //  1:egg; 2:pizza; 3:bomb
-                _chicken->increaseSpriteSize();
-            }
-            removeCollectable(collectable);
+            handleCollectableConsumption(collectable);
         }
     }
     // collision between collectables and chicken
@@ -439,10 +464,7 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
         // Remove colided collectable
         auto collectable = (Sprite*)contact.getShapeA()->getBody()->getNode();
         if (collectable) {
-            if (collectable->getTag() == 2) {   //  1:egg; 2:pizza; 3:bomb
-                _chicken->increaseSpriteSize();
-            }
-            removeCollectable(collectable);
+            handleCollectableConsumption(collectable);
         }
     }
     

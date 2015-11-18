@@ -63,6 +63,7 @@ private:
     void drawNewTrampoline();
     void endOfStage();
     void focusOnCharacter();
+    void handleCollectableConsumption(Sprite* collectable);
     void jump(float trampolinePositionY);
     void releaseTouch();
     void removeCollectable(Sprite* collectable);

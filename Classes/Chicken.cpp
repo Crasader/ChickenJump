@@ -56,10 +56,24 @@ void Chicken::createChicken(cocos2d::Layer *layer) {
     layer->addChild(_chicken, BackgroundLayer::layerChicken);
 }
 
+void Chicken::decreaseSpriteSize() {
+    if (_scale - SCALE_FACTOR <= MIN_SCALE) {
+        auto scaleTo = ScaleTo::create(0.1f, _scale -= SCALE_FACTOR);
+        _chicken->runAction(scaleTo);
+        decreaseWeight();
+    }
+}
+
 void Chicken::decreaseVectorX() {
     _vector.x /= ACCELERATION_DEFAULT;
     if (_vector.x <= 1) {
         _vector.x = 1;
+    }
+}
+
+void Chicken::decreaseWeight() {
+    if (_weight - SCALE_FACTOR <= MIN_WEIGHT) {
+        _weight -= SCALE_FACTOR;
     }
 }
 
@@ -74,8 +88,8 @@ float Chicken::getVectorX() {
 }
 
 void Chicken::increaseSpriteSize() {
-    if (_scale + 0.25 <= MAX_SCALE) {
-        auto scaleTo = ScaleTo::create(0.1f, _scale += 0.25);
+    if (_scale + SCALE_FACTOR <= MAX_SCALE) {
+        auto scaleTo = ScaleTo::create(0.1f, _scale += SCALE_FACTOR);
         _chicken->runAction(scaleTo);
         increaseWeight();
     }
@@ -91,8 +105,8 @@ void Chicken::increaseVectorX() {
 }
 
 void Chicken::increaseWeight() {
-    if (_weight + 0.25 <= MAX_WEIGHT) {
-        _weight += 0.25;
+    if (_weight + SCALE_FACTOR <= MAX_WEIGHT) {
+        _weight += SCALE_FACTOR;
     }
 }
 
@@ -109,6 +123,11 @@ void Chicken::increaseWeight() {
 //    auto action = MoveTo::create(1, Point(_visibleSize.width + _chicken->getContentSize().width * 1.5, _visibleSize.height * 0.60));
 //    _chicken->runAction(action);
 //}
+
+void Chicken::resetSizeAndWeight() {
+    _scale = MIN_SCALE;
+    _weight = MIN_WEIGHT;
+}
 
 void Chicken::setAnimation() {
     Animation* animation = Animation::create();
