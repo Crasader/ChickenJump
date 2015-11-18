@@ -12,10 +12,19 @@ LOCAL_MODULE_FILENAME := libcocos2dcpp
 
 LOCAL_SRC_FILES := hellocpp/main.cpp \
                    ../../Classes/AppDelegate.cpp \
-                   ../../Classes/Scene_GameLayer.cpp \
-                   ../../Classes/Sprite_Block.cpp \
-                   ../../Classes/Sprite_Player.cpp \
-                   ../../Classes/Sprite_GameTerrain.cpp
+                   ../../Classes/SplashScreenLayer.cpp \
+                   ../../Classes/MainMenuLayer.cpp \
+                   ../../Classes/GameLayer.cpp \
+                   ../../Classes/GameOverLayer.cpp \
+                   ../../Classes/Background.cpp \
+                   ../../Classes/Collectable.cpp \
+                   ../../Classes/Chicken.cpp \
+                   ../../Classes/Cloud.cpp \
+                   ../../Classes/LayerGround.cpp \
+                   ../../Classes/LayerTwo.cpp \
+                   ../../Classes/Trampoline.cpp \
+                   ../../Classes/PauseLayer.cpp \
+                   ../../Classes/ScoreLayer.cpp
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes
 
