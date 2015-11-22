@@ -299,7 +299,7 @@ void GameLayer::resumeClicked(cocos2d::Ref* sender) {
         
         auto delay = DelayTime::create(1.5f);
         
-        auto resumeLabel = Label::createWithTTF("Ready..?", fontMarkerFelt, _visibleSize.height * SCORE_FONT_SIZE);
+        auto resumeLabel = Label::createWithTTF("Ready..?", font, _visibleSize.height * SCORE_FONT_SIZE);
         if (resumeLabel) {
             resumeLabel->setColor(Color3B::YELLOW);
             resumeLabel->setAnchorPoint(Vec2(0, 0));

@@ -6,7 +6,7 @@
 #define degree2radian(a)                (a * 0.017453292519)
 
 // FONT
-#define fontMarkerFelt                  "Marker Felt.ttf"
+#define font                            "Marker Felt.ttf"
 
 // LAYER
 typedef enum

@@ -52,7 +52,7 @@ bool GameOverLayer::init()
             d->flush();
         }
         std::string highScoreStr = String::createWithFormat("HighScore: %d", highScore)->getCString();
-        Label* highScoreLabel = Label::createWithTTF(highScoreStr, "Marker Felt.ttf", _visibleSize.height * SCORE_FONT_SIZE);
+        Label* highScoreLabel = Label::createWithTTF(highScoreStr, font, _visibleSize.height * SCORE_FONT_SIZE);
         if (highScoreLabel) {
             highScoreLabel->setColor(Color3B::WHITE);
             highScoreLabel->setPosition(_visibleSize.width / 2 + _origin.x, _visibleSize.height * 0.88 + _origin.y);
@@ -63,7 +63,7 @@ bool GameOverLayer::init()
     // Score Label
     {
         std::string scoreStr = String::createWithFormat("Score: %d", _score)->getCString();
-        Label* scoreLabel = Label::createWithTTF(scoreStr, "Marker Felt.ttf", _visibleSize.height * SCORE_FONT_SIZE);
+        Label* scoreLabel = Label::createWithTTF(scoreStr, font, _visibleSize.height * SCORE_FONT_SIZE);
         if (scoreLabel) {
             scoreLabel->setColor(Color3B::WHITE);
             scoreLabel->setPosition(_visibleSize.width / 2 + _origin.x, _visibleSize.height * 0.7 + _origin.y);

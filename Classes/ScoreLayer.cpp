@@ -26,7 +26,7 @@ bool ScoreLayer::init()
     }
 
     // add score(text)
-    _scoreLabel = Label::createWithTTF("0", fontMarkerFelt, _visibleSize.height * SCORE_FONT_SIZE);
+    _scoreLabel = Label::createWithTTF("0", font, _visibleSize.height * SCORE_FONT_SIZE);
     if (_scoreLabel) {
         _scoreLabel->setColor(Color3B::WHITE);
         _scoreLabel->setPosition(Vec2(_visibleSize.width - sprite->getContentSize().width, this->getContentSize().height * 0.44));

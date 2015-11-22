@@ -37,7 +37,7 @@ bool MainMenuLayer::init()
     
     // Play Menu Item
     {
-        Label* selectLevel = Label::createWithTTF("Select Level", "Marker Felt.ttf", _visibleSize.height * SCORE_FONT_SIZE);
+        Label* selectLevel = Label::createWithTTF("Select Level", font, _visibleSize.height * SCORE_FONT_SIZE);
         if (selectLevel) {
             selectLevel->setColor(Color3B::WHITE);
             selectLevel->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.85);
