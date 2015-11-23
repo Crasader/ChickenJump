@@ -67,7 +67,6 @@ bool MainMenuLayer::init()
         this->addChild(menu2);
     }
     
-    
     return true;
 }
 

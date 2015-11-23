@@ -2,6 +2,7 @@
 
 #include "Constants.h"
 #include "MainMenuLayer.h"
+#include "StageStat.h"
 
 using namespace cocos2d;
 
@@ -57,7 +58,7 @@ bool GameOverLayer::init()
             highScoreLabel->setColor(Color3B::WHITE);
             highScoreLabel->setPosition(_visibleSize.width / 2 + _origin.x, _visibleSize.height * 0.88 + _origin.y);
             this->addChild(highScoreLabel, BackgroundLayer::layerChicken);
-        }
+        }        
     }
 
     // Score Label

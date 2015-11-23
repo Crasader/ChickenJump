@@ -7,6 +7,7 @@
 
 // FONT
 #define font                            "Marker Felt.ttf"
+//#define font                            "ALBAS.TTF"
 
 // LAYER
 typedef enum

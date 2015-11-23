@@ -6,6 +6,7 @@
 #include "GameOverLayer.h"
 #include "ScoreLayer.h"
 #include "SimpleAudioEngine.h"
+#include "StageStat.h"
 
 using namespace cocos2d;
 
@@ -556,7 +557,7 @@ void GameLayer::updateCollectables(float playerSpeed) {
 
 void GameLayer::updateScoreLabel() {
     if (_scoreHUD) {
-        _scoreHUD->updateScore(_score);
+        _scoreHUD->updateScore(_score);        
     }
 }
 

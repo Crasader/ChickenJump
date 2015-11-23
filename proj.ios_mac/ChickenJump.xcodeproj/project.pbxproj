@@ -76,6 +76,12 @@
 		D52BDA481B8A94000049A538 /* Collectable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D52BDA451B8A94000049A538 /* Collectable.cpp */; };
 		D52C3BBD1BAF550E001F0205 /* PauseLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D52C3BBB1BAF550E001F0205 /* PauseLayer.cpp */; };
 		D52C3BBE1BAF550E001F0205 /* PauseLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D52C3BBB1BAF550E001F0205 /* PauseLayer.cpp */; };
+		D536C9E51C024E970046C82B /* HomeLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D536C9E31C024E970046C82B /* HomeLayer.cpp */; };
+		D536C9E61C024E970046C82B /* HomeLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D536C9E31C024E970046C82B /* HomeLayer.cpp */; };
+		D536C9E91C02E81A0046C82B /* StageStat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D536C9E71C02E81A0046C82B /* StageStat.cpp */; };
+		D536C9EA1C02E81A0046C82B /* StageStat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D536C9E71C02E81A0046C82B /* StageStat.cpp */; };
+		D536C9ED1C03BF660046C82B /* FileOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D536C9EC1C03BF660046C82B /* FileOperation.cpp */; };
+		D536C9EE1C03BF660046C82B /* FileOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D536C9EC1C03BF660046C82B /* FileOperation.cpp */; };
 		D53DBEC91BA89FC4001A812F /* resource_hd in Resources */ = {isa = PBXBuildFile; fileRef = D53DBEC61BA89FC4001A812F /* resource_hd */; };
 		D53DBECA1BA89FC4001A812F /* resource_hd2 in Resources */ = {isa = PBXBuildFile; fileRef = D53DBEC71BA89FC4001A812F /* resource_hd2 */; };
 		D53DBECB1BA89FC4001A812F /* resource_sd in Resources */ = {isa = PBXBuildFile; fileRef = D53DBEC81BA89FC4001A812F /* resource_sd */; };
@@ -199,6 +205,12 @@
 		D52BDA461B8A94000049A538 /* Collectable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Collectable.h; sourceTree = "<group>"; };
 		D52C3BBB1BAF550E001F0205 /* PauseLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PauseLayer.cpp; sourceTree = "<group>"; };
 		D52C3BBC1BAF550E001F0205 /* PauseLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PauseLayer.h; sourceTree = "<group>"; };
+		D536C9E31C024E970046C82B /* HomeLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HomeLayer.cpp; sourceTree = "<group>"; };
+		D536C9E41C024E970046C82B /* HomeLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeLayer.h; sourceTree = "<group>"; };
+		D536C9E71C02E81A0046C82B /* StageStat.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StageStat.cpp; sourceTree = "<group>"; };
+		D536C9E81C02E81A0046C82B /* StageStat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StageStat.h; sourceTree = "<group>"; };
+		D536C9EB1C03BF5B0046C82B /* FileOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileOperation.h; sourceTree = "<group>"; };
+		D536C9EC1C03BF660046C82B /* FileOperation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FileOperation.cpp; sourceTree = "<group>"; };
 		D53DBEC61BA89FC4001A812F /* resource_hd */ = {isa = PBXFileReference; lastKnownFileType = folder; path = resource_hd; sourceTree = "<group>"; };
 		D53DBEC71BA89FC4001A812F /* resource_hd2 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = resource_hd2; sourceTree = "<group>"; };
 		D53DBEC81BA89FC4001A812F /* resource_sd */ = {isa = PBXFileReference; lastKnownFileType = folder; path = resource_sd; sourceTree = "<group>"; };
@@ -359,6 +371,10 @@
 				D5BDF2E51B850DD6002A11C2 /* Scene */,
 				46880B8419C43A87006E1F66 /* AppDelegate.cpp */,
 				46880B8519C43A87006E1F66 /* AppDelegate.h */,
+				D536C9EB1C03BF5B0046C82B /* FileOperation.h */,
+				D536C9EC1C03BF660046C82B /* FileOperation.cpp */,
+				D536C9E71C02E81A0046C82B /* StageStat.cpp */,
+				D536C9E81C02E81A0046C82B /* StageStat.h */,
 			);
 			name = Classes;
 			path = ../Classes;
@@ -418,6 +434,8 @@
 				D52BDA061B864E8E0049A538 /* GameLayer.cpp */,
 				D52BDA0B1B8651CC0049A538 /* GameOverLayer.h */,
 				D52BDA0A1B8651CC0049A538 /* GameOverLayer.cpp */,
+				D536C9E41C024E970046C82B /* HomeLayer.h */,
+				D536C9E31C024E970046C82B /* HomeLayer.cpp */,
 				D5BDF2E71B8647EF002A11C2 /* MainMenuLayer.h */,
 				D5BDF2E81B8647EF002A11C2 /* MainMenuLayer.cpp */,
 				D52C3BBC1BAF550E001F0205 /* PauseLayer.h */,
@@ -605,6 +623,7 @@
 			files = (
 				46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */,
 				D59103D71B8BC1A5005E5CD9 /* Cloud.cpp in Sources */,
+				D536C9E91C02E81A0046C82B /* StageStat.cpp in Sources */,
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
 				D52BDA0C1B8651CC0049A538 /* GameOverLayer.cpp in Sources */,
 				D59103D41B8BA5D5005E5CD9 /* Chicken.cpp in Sources */,
@@ -614,6 +633,8 @@
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
 				D52C3BBD1BAF550E001F0205 /* PauseLayer.cpp in Sources */,
 				D51B37851BB2095D005A5976 /* ScoreLayer.cpp in Sources */,
+				D536C9ED1C03BF660046C82B /* FileOperation.cpp in Sources */,
+				D536C9E51C024E970046C82B /* HomeLayer.cpp in Sources */,
 				D52BDA431B8A66270049A538 /* Background.cpp in Sources */,
 				D52BDA081B864E8E0049A538 /* GameLayer.cpp in Sources */,
 				D52BDA0F1B8676250049A538 /* Constants.h in Sources */,
@@ -633,6 +654,8 @@
 				46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */,
 				D5BDFD191B8FCAC70031AE1B /* LayerGround.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
+				D536C9EE1C03BF660046C82B /* FileOperation.cpp in Sources */,
+				D536C9E61C024E970046C82B /* HomeLayer.cpp in Sources */,
 				D52BDA091B864E8E0049A538 /* GameLayer.cpp in Sources */,
 				D575D0F61B94DD0D0082D427 /* Trampoline.cpp in Sources */,
 				D52BDA101B8676250049A538 /* Constants.h in Sources */,
@@ -641,6 +664,7 @@
 				D52C3BBE1BAF550E001F0205 /* PauseLayer.cpp in Sources */,
 				D52BDA051B864CBE0049A538 /* SplashScreenLayer.cpp in Sources */,
 				D51B37861BB2095D005A5976 /* ScoreLayer.cpp in Sources */,
+				D536C9EA1C02E81A0046C82B /* StageStat.cpp in Sources */,
 				D52BDA441B8A66270049A538 /* Background.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
