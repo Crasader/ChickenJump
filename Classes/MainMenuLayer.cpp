@@ -29,11 +29,7 @@ bool MainMenuLayer::init()
     _visibleSize = Director::getInstance()->getVisibleSize();
     
     // Add background
-    {
-        auto background = Sprite::create("bg.png");
-        background->setPosition(Point(_visibleSize.width / 2 + _origin.x, _visibleSize.height / 2 + _origin.y));
-        this->addChild(background);
-    }
+    addBackground();
     
     // Play Menu Item
     {
@@ -70,12 +66,18 @@ bool MainMenuLayer::init()
     return true;
 }
 
+void MainMenuLayer::addBackground() {
+    auto background = Sprite::create("home_bg.png");
+    if (not background) { return; }
+    background->setPosition(Point(_visibleSize.width / 2 + _origin.x, _visibleSize.height / 2 + _origin.y));
+    this->addChild(background);
+}
+
 void MainMenuLayer::gotoGamePlayLayer(cocos2d::Ref* sender)
 {
     auto scene = GameLayer::createScene();
     Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }
-
 
 
 static Size smallResource  = Size(480, 320); // "iphone"

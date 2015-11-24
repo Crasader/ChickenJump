@@ -15,6 +15,7 @@ public:
     CREATE_FUNC(MainMenuLayer);
     
 private:
+    void addBackground();
     void gotoGamePlayLayer(cocos2d::Ref* sender);
     void menuSelectFrance(cocos2d::Ref* sender);
     void menuSelectEngland(cocos2d::Ref* sender);

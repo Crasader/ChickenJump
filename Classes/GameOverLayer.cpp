@@ -39,6 +39,7 @@ bool GameOverLayer::init()
     // Background
     {
         auto background = Sprite::create("blank.png");
+        if (not background) { retain(); }
         background->setPosition(Point(_visibleSize.width / 2 + _origin.x, _visibleSize.height / 2 + _origin.y));
         this->addChild(background);
     }
@@ -74,10 +75,11 @@ bool GameOverLayer::init()
 
     // Retry Menu Item
     {
-        auto playItem = MenuItemImage::create("retry.png", "retryclicked.png",
-                                              CC_CALLBACK_1(GameOverLayer::gotoGamePlayLayer, this));
-        playItem->setPosition(Point(_visibleSize.width / 2 + _origin.x, _visibleSize.height * 0.42 + _origin.y));
-        auto menu = Menu::create(playItem, NULL);
+        auto retryItem = MenuItemImage::create("retry.png", "retryclicked.png",
+                                              CC_CALLBACK_1(GameOverLayer::gotoMainMenuLayer, this));
+        if (not retryItem) { retain(); }
+        retryItem->setPosition(Point(_visibleSize.width / 2 + _origin.x, _visibleSize.height * 0.42 + _origin.y));
+        auto menu = Menu::create(retryItem, NULL);
         menu->setPosition(Point::ZERO);
         this->addChild(menu);
     }
@@ -86,7 +88,7 @@ bool GameOverLayer::init()
     return true;
 }
 
-void GameOverLayer::gotoGamePlayLayer(cocos2d::Ref* sender)
+void GameOverLayer::gotoMainMenuLayer(cocos2d::Ref* sender)
 {
     auto scene = MainMenuLayer::createScene();
     Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));

@@ -1,6 +1,7 @@
 #include "SplashScreenLayer.h"
 
 #include "Constants.h"
+#include "HomeLayer.h"
 #include "MainMenuLayer.h"
 
 using namespace cocos2d;
@@ -27,7 +28,7 @@ bool SplashScreenLayer::init()
     Size visibleSize = Director::getInstance()->getVisibleSize();
 
     // schedule SplashScreen and Transition to MainMenu
-    this->scheduleOnce(schedule_selector(SplashScreenLayer::goToMainMenuLayer), DISPLAY_TIME_SPLASH_SCREEN);
+    this->scheduleOnce(schedule_selector(SplashScreenLayer::gotoHomeLayer), DISPLAY_TIME_SPLASH_SCREEN);
     auto backgroundSprite = Sprite::create("splashscreen.png");
     backgroundSprite->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
     this->addChild(backgroundSprite);
@@ -35,9 +36,9 @@ bool SplashScreenLayer::init()
     return true;
 }
 
-void SplashScreenLayer::goToMainMenuLayer(float dt)
+void SplashScreenLayer::gotoHomeLayer(float dt)
 {
-    auto scene = MainMenuLayer::createScene();
+    auto scene = HomeLayer::createScene();
     Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }
 

@@ -15,7 +15,7 @@ public:
     CREATE_FUNC(SplashScreenLayer);
     
 private:
-    void goToMainMenuLayer(float dt);
+    void gotoHomeLayer(float dt);
     
 };
 

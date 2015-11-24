@@ -15,7 +15,7 @@ public:
     CREATE_FUNC(GameOverLayer);
     
 private:
-    void gotoGamePlayLayer(cocos2d::Ref* sender);
+    void gotoMainMenuLayer(cocos2d::Ref* sender);
     
     Vec2 _origin;
     Size _visibleSize;

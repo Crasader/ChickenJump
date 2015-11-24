@@ -13,6 +13,10 @@ public:
     CREATE_FUNC(HomeLayer);
     
 private:
+    void addBackground();
+    void addGround();
+    void addPlayMenu();
+    void gotoMainMenuLayer(cocos2d::Ref* sender);
     Vec2 _origin;
     Size _visibleSize;
 };
