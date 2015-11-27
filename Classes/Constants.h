@@ -21,6 +21,9 @@ typedef enum
     
 } BackgroundLayer;
 
+#define FIRST_TIME                      "FIRST_TIME"
+#define HIGHSCORE                       "HIGHSCORE"
+
 // SPLASH SCREEN
 #define DISPLAY_TIME_SPLASH_SCREEN      2
 #define TRANSITION_TIME                 0.5

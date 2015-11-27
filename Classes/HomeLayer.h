@@ -17,6 +17,7 @@ private:
     void addGround();
     void addPlayMenu();
     void gotoMainMenuLayer(cocos2d::Ref* sender);
+    void writeFreshStageStats();
     Vec2 _origin;
     Size _visibleSize;
 };

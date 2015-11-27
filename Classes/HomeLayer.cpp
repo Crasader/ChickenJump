@@ -1,6 +1,7 @@
 #include "HomeLayer.h"
 #include "Constants.h"
 #include "MainMenuLayer.h"
+#include "FileOperation.h"
 
 using namespace cocos2d;
 
@@ -32,6 +33,15 @@ bool HomeLayer::init()
     // Retry Menu Item
     addPlayMenu();
     
+    UserDefault* ud = UserDefault::getInstance();
+    if (ud->getBoolForKey(FIRST_TIME, true)) {
+        writeFreshStageStats();
+
+        // Set default value FIRST_TIME to false
+        ud->setBoolForKey(FIRST_TIME, false);
+        ud->flush();
+    }
+
     return true;
 }
 
@@ -58,6 +68,25 @@ void HomeLayer::addPlayMenu() {
     menu->setPosition(Point::ZERO);
     this->addChild(menu, BackgroundLayer::layerChicken);
     
+}
+
+void HomeLayer::writeFreshStageStats() {
+    try {
+        CCLOG("Writing fresh stage stats");
+        std::vector<StageStat> stageStats = { StageStat("france", "france.png", 0, 0, true),
+            StageStat("germany", "germany.png", 0, 0, true),
+            StageStat("england", "england.png", 0, 0, true),
+            StageStat("italy", "italy.png", 0, 0, true),
+            StageStat("spain", "spain.png", 0, 0, true),
+            StageStat("netherlands", "netherlands.png", 0, 0, true) };
+        
+        // Save fresh StageStats
+        FileOperation fo;
+        fo.saveFile(stageStats);
+    }
+    catch(...) {
+        CCLOG("Error while writing fresh stage stats");
+    }
 }
 
 void HomeLayer::gotoMainMenuLayer(cocos2d::Ref* sender)

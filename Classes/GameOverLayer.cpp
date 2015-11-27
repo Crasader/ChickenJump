@@ -3,14 +3,17 @@
 #include "Constants.h"
 #include "MainMenuLayer.h"
 #include "StageStat.h"
+#include "FileOperation.h"
 
 using namespace cocos2d;
 
 unsigned int _score = 0;
 bool _isStageClear = false;
+StageStat _stage;
 
-Scene* GameOverLayer::createScene(unsigned int score, bool isStageClear)
+Scene* GameOverLayer::createScene(unsigned int score, StageStat& stage, bool isStageClear)
 {
+    _stage = stage;
     _score = score;
     _isStageClear = isStageClear;
     
@@ -47,10 +50,10 @@ bool GameOverLayer::init()
     // HighScore Label
     {
         UserDefault* d = UserDefault::getInstance();
-        auto highScore = d->getIntegerForKey("HIGHSCORE", 0);
+        auto highScore = d->getIntegerForKey(HIGHSCORE, 0);
         if (_score > highScore) {
             highScore = _score;
-            d->setIntegerForKey("HIGHSCORE", highScore);
+            d->setIntegerForKey(HIGHSCORE, highScore);
             d->flush();
         }
         std::string highScoreStr = String::createWithFormat("HighScore: %d", highScore)->getCString();
@@ -83,8 +86,19 @@ bool GameOverLayer::init()
         menu->setPosition(Point::ZERO);
         this->addChild(menu);
     }
-
     
+    // Save StageStat
+    {
+        try {
+            StageStat ss(_stage.getName(), _stage.getImageFile(), _stage.getScore(), _stage.getStar(), not _isStageClear);
+            FileOperation fo;
+            fo.saveFile(ss);
+        }
+        catch(...) {
+            CCLOG("Coulnd't write stage info from GameOver");
+        }
+    }
+
     return true;
 }
 

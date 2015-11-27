@@ -1,63 +1,85 @@
-// to enable CCLOG()
-#define COCOS2D_DEBUG 1
+//#define COCOS2D_DEBUG 1     // to enable CCLOG()
 
 #include "cocos2d.h"
 #include "FileOperation.h"
-#include <stdio.h>
 
-using namespace std;
+using namespace cocos2d;
 
-void FileOperation::saveFile()
+void FileOperation::saveFile(StageStat const& stage)
 {
-	string path = getFilePath();
-	FILE *fp = fopen(path.c_str(), "w");
-
-	if (! fp)
-	{
-		CCLOG("can not create file %s", path.c_str());
-		return;
-	}
-
-	fputs("file example", fp);
-	fclose(fp);
+    try {
+        std::vector<StageStat> stages = readFile();
+        
+        for (uint8_t i = 0; i < stages.size(); ++i) {
+            if (stages.at(i).getName() == stage.getName()) {
+                stages[i] = stage;
+            }
+        }
+        
+        saveFile(stages);
+        
+    } catch (...) {
+        CCLOG("Exception::FileOperation: during single stage write");
+    }
+    
+}
+void FileOperation::saveFile(std::vector<StageStat> stages)
+{
+    try {
+        std::string path = getFilePath();
+        FILE *fp = fopen(path.c_str(), "wb");
+        
+        if (not fp) {
+            CCLOG("can not create file %s", path.c_str());
+            return;
+        }
+        
+        uint8_t size = stages.size();
+        fwrite(&size, sizeof(uint8_t), 1, fp);
+        for (uint8_t i = 0; i < size; ++i) {
+            fwrite(&stages.at(i), sizeof(StageStat), 1, fp);
+        }
+        
+        fclose(fp);
+        
+    } catch (...) {
+        CCLOG("Exception::FileOperation: during %lu stages write", stages.size());
+    }
 }
 
-void FileOperation::readFile()
+std::vector<StageStat> FileOperation::readFile()
 {
-	string path = getFilePath();
-	FILE *fp = fopen(path.c_str(), "r");
-	char buf[50] = {0};
+    std::vector<StageStat> stages;
 
-	if (! fp)
-	{
-		CCLOG("can not open file %s", path.c_str());
-		return;
-	}
+    try {
+        std::string path = getFilePath();
+        FILE *fp = fopen(path.c_str(), "rb");
+        
+        if (not fp) {
+            CCLOG("can not open file %s", path.c_str());
+            return stages;
+        }
+        
+        uint8_t count;
+        fread(&count, sizeof(uint8_t), 1, fp);
 
-	fgets(buf, 50, fp);
-	CCLOG("read content %s", buf);
-
-	fclose(fp);
+        StageStat ss;
+        for(uint8_t i = 0; i < count; i++) {
+            fread(&ss, sizeof(StageStat), 1, fp);
+            stages.push_back(ss);
+        }
+        
+        fclose(fp);
+        
+    } catch (...) {
+        CCLOG("Exception::FileOperation: during file read");
+    }
+    return stages;
 }
 
-string FileOperation::getFilePath()
+std::string FileOperation::getFilePath()
 {
-	string path("");
-
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-	// In android, every programe has a director under /data/data.
-	// The path is /data/data/ + start activity package name.
-	// You can save application specific data here.
-	path.append("/data/data/com.sixeyes.chickenjump/tmpfile");
-#endif
-
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-    // save to document folder
-//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-//    NSString *documentsDirectory = [paths objectAtIndex:0];
-//    string path = [documentsDirectory UTF8String];
-//    path.append( "/test.txt" );
-#endif
-
-	return path;
+    std::string path = FileUtils::getInstance()->getWritablePath() + "stagestatus.txt";
+    return path;
 }
+

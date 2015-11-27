@@ -7,6 +7,7 @@
 #include "ScoreLayer.h"
 #include "SimpleAudioEngine.h"
 #include "StageStat.h"
+#include "FileOperation.h"
 
 using namespace cocos2d;
 
@@ -22,8 +23,9 @@ static const std::vector<int> collectableSpawnPattern(spawnPattern, spawnPattern
 static int currentPatternIndex = 0;
 
 GameLayer* GameLayer::_instance = 0;
+StageStat _st;
 
-Scene* GameLayer::createScene()
+Scene* GameLayer::createScene(StageStat& stage)
 {
     // 'scene' is an autorelease object
     auto scene = Scene::createWithPhysics();
@@ -31,12 +33,15 @@ Scene* GameLayer::createScene()
     
     // 'layer' is an autorelease object
     GameLayer *layer = GameLayer::create();
+    if (not layer) { return nullptr; }
     layer->setPhysicsWorld(scene->getPhysicsWorld());
     _instance = layer;
 
     // add layer as a child to scene
     scene->addChild(layer);
-    
+
+    // hold the stage
+    _st = stage;
     
     // add the Pause HUD Layer
     {
@@ -484,13 +489,13 @@ void GameLayer::update(float dt) {
     
     if (_state == GameState::finished and _chicken->getPosition().x >= _visibleSize.width) {
         // goto game over scene with state: stage cleared
-        auto gameOver = GameOverLayer::createScene(_score, true);
+        auto gameOver = GameOverLayer::createScene(_score, _st, true);
         Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, gameOver));
     }
     
     if (_chicken->getState() == PlayerState::dying) {
         // goto game over scene with state: stage not cleared
-        auto gameOver = GameOverLayer::createScene(_score, false);
+        auto gameOver = GameOverLayer::createScene(_score, _st, false);
         Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, gameOver));
     }
     else {
@@ -557,7 +562,7 @@ void GameLayer::updateCollectables(float playerSpeed) {
 
 void GameLayer::updateScoreLabel() {
     if (_scoreHUD) {
-        _scoreHUD->updateScore(_score);        
+        _scoreHUD->updateScore(_score);
     }
 }
 

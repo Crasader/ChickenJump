@@ -2,6 +2,7 @@
 
 #include "Constants.h"
 #include "GameLayer.h"
+#include "FileOperation.h"
 
 using namespace cocos2d;
 
@@ -43,26 +44,37 @@ bool MainMenuLayer::init()
     
     // Select Levels
     {
-        MenuItem* france = MenuItemImage::create("france.png", "france.png", CC_CALLBACK_1(MainMenuLayer::menuSelectFrance, this));
-        MenuItem* england = MenuItemImage::create("england.png", "england.png", CC_CALLBACK_1(MainMenuLayer::menuSelectEngland, this));
-        MenuItem* spain = MenuItemImage::create("spain.png", "spain.png", CC_CALLBACK_1(MainMenuLayer::menuSelectSpain, this));
-        MenuItem* italy = MenuItemImage::create("italy.png", "italy.png", CC_CALLBACK_1(MainMenuLayer::menuSelectItaly, this));
-        MenuItem* germany = MenuItemImage::create("germany.png", "germany.png", CC_CALLBACK_1(MainMenuLayer::menuSelectGermany, this));
-        MenuItem* netherlands = MenuItemImage::create("netherlands.png", "netherlands.png", CC_CALLBACK_1(MainMenuLayer::menuSelectNetherlands, this));
+        FileOperation fo;
+        std::vector<StageStat> stageStats = fo.readFile();
         
-        Menu* menu = Menu::create(france, england, spain, NULL);
-        Menu* menu2 = Menu::create(italy, germany, netherlands, NULL);
+        Vector<MenuItem*> menuItems;
+        for (uint8_t i = 0; i < stageStats.size(); ++i) {
+            auto menuItem = MenuItemImage::create(stageStats.at(i).getImageFile(), stageStats.at(i).getImageFile(),
+                                                  CC_CALLBACK_1(MainMenuLayer::menuSelectSgate, this, stageStats.at(i)));
+            if (stageStats.at(i).isLocked()) {
+                menuItem->setOpacity(90);
+            }
+            menuItems.pushBack(menuItem);
+        }
 
-        menu->alignItemsHorizontallyWithPadding(25);
-        menu2->alignItemsHorizontallyWithPadding(25);
-        
-        menu->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.6);
-        menu2->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.3);
-
+        Menu* menu = Menu::createWithArray(menuItems);
+        menu->alignItemsInColumns(3, 3, NULL);
         this->addChild(menu);
-        this->addChild(menu2);
+
+        
+//        {   // DUBUG
+//            Label* l1 = Label::createWithTTF(StringUtils::format("path: %s", fo.getFilePath().c_str()), font, _visibleSize.height * 0.04);
+//            l1->setColor(Color3B::BLUE);
+//            l1->setPosition(10, 10);
+//            this->addChild(l1, BackgroundLayer::layerGround);
+//            
+//            Label* l2 = Label::createWithTTF(StringUtils::format("vsize: %lu", stageStats.size()), font, _visibleSize.height * 0.04);
+//            l2->setColor(Color3B::BLUE);
+//            l2->setPosition(10, 40);
+//            this->addChild(l2, BackgroundLayer::layerGround);
+//        }
     }
-    
+
     return true;
 }
 
@@ -73,66 +85,40 @@ void MainMenuLayer::addBackground() {
     this->addChild(background);
 }
 
-void MainMenuLayer::gotoGamePlayLayer(cocos2d::Ref* sender)
+void MainMenuLayer::gotoGamePlayLayer(cocos2d::Ref* sender, StageStat& stage)
 {
-    auto scene = GameLayer::createScene();
+    auto scene = GameLayer::createScene(stage);
     Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }
 
 
-static Size smallResource  = Size(480, 320); // "iphone"
-static Size mediumResource = Size(1024, 768); // "ipad"
-static Size largeResource  = Size(2048, 1536); // "ipadhd"
+static Size smallResource  = Size(480, 320); // "small"
+static Size mediumResource = Size(1024, 768); // "mid"
+static Size largeResource  = Size(2048, 1536); // "big"
 static Size designResolution = Size(480, 320);
 
-void MainMenuLayer::menuSelectFrance(cocos2d::Ref* sender) {
-    selectLevel("france");
-    gotoGamePlayLayer(this);
+void MainMenuLayer::menuSelectSgate(cocos2d::Ref* sender, StageStat& stage) {
+    selectLevel(stage.getName());
+    gotoGamePlayLayer(this, stage);
 }
 
-void MainMenuLayer::menuSelectEngland(cocos2d::Ref* sender) {
-    selectLevel("england");
-    gotoGamePlayLayer(this);
-}
-
-void MainMenuLayer::menuSelectSpain(cocos2d::Ref* sender) {
-    selectLevel("spain");
-    gotoGamePlayLayer(this);
-}
-
-void MainMenuLayer::menuSelectItaly(cocos2d::Ref* sender) {
-    selectLevel("italy");
-    gotoGamePlayLayer(this);
-}
-
-void MainMenuLayer::menuSelectGermany(cocos2d::Ref *sender) {
-    selectLevel("germany");
-    gotoGamePlayLayer(this);
-}
-
-void MainMenuLayer::menuSelectNetherlands(cocos2d::Ref *sender) {
-    selectLevel("netherlands");
-    gotoGamePlayLayer(this);
-}
-
-void MainMenuLayer::selectLevel(std::string level) {
+void MainMenuLayer::selectLevel(std::string stage) {
     Size screenSize = Director::getInstance()->getOpenGLView()->getFrameSize();
     std::vector<std::string> searchPaths;
     
     if (screenSize.height > mediumResource.height) {
         searchPaths.push_back("resource_hd2");
-        searchPaths.push_back("resource_hd2/" + level);
+        searchPaths.push_back("resource_hd2/" + stage);
     }
     else if (screenSize.width > smallResource.width) {
         searchPaths.push_back("resource_hd");
-        searchPaths.push_back("resource_hd/" + level);
+        searchPaths.push_back("resource_hd/" + stage);
     }
     else {
         searchPaths.push_back("resource_sd");
-        searchPaths.push_back("resource_sd/" + level);
+        searchPaths.push_back("resource_sd/" + stage);
     }
-    auto fileUtils = FileUtils::getInstance();
-    fileUtils->setSearchPaths(searchPaths);
+    FileUtils::getInstance()->setSearchPaths(searchPaths);
     
 }
 
