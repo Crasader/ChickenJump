@@ -1,7 +1,7 @@
 #ifndef __FILE_OPERATION__
 #define __FILE_OPERATION__
 
-#include "StageStat.h"
+class StageStat;
 
 class FileOperation 
 {

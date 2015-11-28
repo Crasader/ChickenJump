@@ -2,6 +2,7 @@
 
 #include "cocos2d.h"
 #include "FileOperation.h"
+#include "StageStat.h"
 
 using namespace cocos2d;
 
@@ -10,7 +11,7 @@ void FileOperation::saveFile(StageStat const& stage)
     try {
         std::vector<StageStat> stages = readFile();
         
-        for (uint8_t i = 0; i < stages.size(); ++i) {
+        for (int i = 0; i < stages.size(); ++i) {
             if (stages.at(i).getName() == stage.getName()) {
                 stages[i] = stage;
             }
@@ -27,20 +28,21 @@ void FileOperation::saveFile(std::vector<StageStat> stages)
 {
     try {
         std::string path = getFilePath();
-        FILE *fp = fopen(path.c_str(), "wb");
+        FILE* fw = fopen(path.c_str(), "wb");
         
-        if (not fp) {
+        if (not fw) {
             CCLOG("can not create file %s", path.c_str());
             return;
         }
         
-        uint8_t size = stages.size();
-        fwrite(&size, sizeof(uint8_t), 1, fp);
-        for (uint8_t i = 0; i < size; ++i) {
-            fwrite(&stages.at(i), sizeof(StageStat), 1, fp);
+        int count = stages.size();
+        fwrite(&count, sizeof(int), 1, fw);
+
+        for (int i = 0; i < count; ++i) {
+            fwrite(&stages.at(i), sizeof(StageStat), 1, fw);
         }
         
-        fclose(fp);
+        fclose(fw);
         
     } catch (...) {
         CCLOG("Exception::FileOperation: during %lu stages write", stages.size());
@@ -52,24 +54,24 @@ std::vector<StageStat> FileOperation::readFile()
     std::vector<StageStat> stages;
 
     try {
-        std::string path = getFilePath();
-        FILE *fp = fopen(path.c_str(), "rb");
+        std::string filePath = getFilePath();
+        FILE* fr = fopen(filePath.c_str(), "rb");
         
-        if (not fp) {
-            CCLOG("can not open file %s", path.c_str());
+        if (not fr) {
+            CCLOG("can not open file %s", filePath.c_str());
             return stages;
         }
         
-        uint8_t count;
-        fread(&count, sizeof(uint8_t), 1, fp);
-
+        int count;
+        fread(&count, sizeof(int), 1, fr);
+        
         StageStat ss;
-        for(uint8_t i = 0; i < count; i++) {
-            fread(&ss, sizeof(StageStat), 1, fp);
+        for(int i = 0; i < count; i++) {
+            fread(&ss, sizeof(StageStat), 1, fr);
             stages.push_back(ss);
         }
         
-        fclose(fp);
+        fclose(fr);
         
     } catch (...) {
         CCLOG("Exception::FileOperation: during file read");
@@ -79,7 +81,13 @@ std::vector<StageStat> FileOperation::readFile()
 
 std::string FileOperation::getFilePath()
 {
-    std::string path = FileUtils::getInstance()->getWritablePath() + "stagestatus.txt";
-    return path;
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+    std::string path = "/storage/sdcard0/Android/data/com.sixeyes.chickenjump";
+    FileUtils::getInstance()->createDirectory(path);
+    return path + "/stagestat.txt";
+#elif (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+    return FileUtils::getInstance()->getWritablePath() + "stagestat.txt";
+#endif
+    return "";
 }
 

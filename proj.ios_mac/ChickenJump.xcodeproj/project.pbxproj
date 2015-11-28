@@ -369,12 +369,12 @@
 				D52BDA0E1B8676250049A538 /* Constants.h */,
 				D5BDF2E61B850E6A002A11C2 /* Sprite */,
 				D5BDF2E51B850DD6002A11C2 /* Scene */,
-				46880B8419C43A87006E1F66 /* AppDelegate.cpp */,
 				46880B8519C43A87006E1F66 /* AppDelegate.h */,
+				46880B8419C43A87006E1F66 /* AppDelegate.cpp */,
 				D536C9EB1C03BF5B0046C82B /* FileOperation.h */,
 				D536C9EC1C03BF660046C82B /* FileOperation.cpp */,
-				D536C9E71C02E81A0046C82B /* StageStat.cpp */,
 				D536C9E81C02E81A0046C82B /* StageStat.h */,
+				D536C9E71C02E81A0046C82B /* StageStat.cpp */,
 			);
 			name = Classes;
 			path = ../Classes;
