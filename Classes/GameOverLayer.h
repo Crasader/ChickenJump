@@ -5,12 +5,12 @@
 
 using namespace cocos2d;
 
-class StageStat;
+class Stage;
 
 class GameOverLayer : public cocos2d::Layer
 {
 public:
-    static cocos2d::Scene* createScene(unsigned int score, StageStat& stage, bool isStageClear);
+    static cocos2d::Scene* createScene(unsigned int score, Stage& stage, bool isStageClear);
 
     virtual bool init();
     

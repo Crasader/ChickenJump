@@ -1,8 +1,7 @@
 #include "HomeLayer.h"
 #include "Constants.h"
 #include "MainMenuLayer.h"
-#include "FileOperation.h"
-#include "StageStat.h"
+#include "StageStatus.h"
 
 using namespace cocos2d;
 
@@ -36,29 +35,11 @@ bool HomeLayer::init()
     
     UserDefault* ud = UserDefault::getInstance();
     if (ud->getBoolForKey(FIRST_TIME, true)) {
-        writeFreshStageStats();
+        StageStatus::createFreshStages();
 
         // Set default value FIRST_TIME to false
         ud->setBoolForKey(FIRST_TIME, false);
         ud->flush();
-    }
-
-    {   // TEST TO SEE FILE WRITE IN ANDROID
-        FileOperation fo;
-        Label* label1 = Label::createWithTTF(fo.getFilePath(), font, _visibleSize.height * 0.04);
-        if (label1) {
-            label1->setColor(Color3B::WHITE);
-            label1->setPosition(_visibleSize.width * 0.5, 20);
-            this->addChild(label1, BackgroundLayer::layerChicken);
-        }
-        
-        Label* label2 = Label::createWithTTF(StringUtils::format("===== %lu", fo.readFile().size()), font, _visibleSize.height * 0.04);
-        if (label2) {
-            label2->setColor(Color3B::WHITE);
-            label2->setPosition(_visibleSize.width * 0.5, 40);
-            this->addChild(label2, BackgroundLayer::layerChicken);
-        }
-        
     }
 
     return true;
@@ -87,25 +68,6 @@ void HomeLayer::addPlayMenu() {
     menu->setPosition(Point::ZERO);
     this->addChild(menu, BackgroundLayer::layerChicken);
     
-}
-
-void HomeLayer::writeFreshStageStats() {
-    try {
-        CCLOG("Writing fresh stage stats");
-        std::vector<StageStat> stageStats = { StageStat("france", "france.png", 0, 0, true),
-            StageStat("germany", "germany.png", 0, 0, true),
-            StageStat("england", "england.png", 0, 0, true),
-            StageStat("italy", "italy.png", 0, 0, true),
-            StageStat("spain", "spain.png", 0, 0, true),
-            StageStat("netherlands", "netherlands.png", 0, 0, true) };
-        
-        // Save fresh StageStats
-        FileOperation fo;
-        fo.saveFile(stageStats);
-    }
-    catch(...) {
-        CCLOG("Error while writing fresh stage stats");
-    }
 }
 
 void HomeLayer::gotoMainMenuLayer(cocos2d::Ref* sender)

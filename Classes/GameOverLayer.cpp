@@ -2,16 +2,16 @@
 
 #include "Constants.h"
 #include "MainMenuLayer.h"
-#include "StageStat.h"
-#include "FileOperation.h"
+#include "Stage.h"
+#include "StageStatus.h"
 
 using namespace cocos2d;
 
 unsigned int _score = 0;
 bool _isStageClear = false;
-StageStat _stage;
+Stage _stage;
 
-Scene* GameOverLayer::createScene(unsigned int score, StageStat& stage, bool isStageClear)
+Scene* GameOverLayer::createScene(unsigned int score, Stage& stage, bool isStageClear)
 {
     _stage = stage;
     _score = score;
@@ -79,7 +79,7 @@ bool GameOverLayer::init()
     // Retry Menu Item
     {
         auto retryItem = MenuItemImage::create("retry.png", "retryclicked.png",
-                                              CC_CALLBACK_1(GameOverLayer::gotoMainMenuLayer, this));
+                                               CC_CALLBACK_1(GameOverLayer::gotoMainMenuLayer, this));
         if (not retryItem) { retain(); }
         retryItem->setPosition(Point(_visibleSize.width / 2 + _origin.x, _visibleSize.height * 0.42 + _origin.y));
         auto menu = Menu::create(retryItem, NULL);
@@ -87,15 +87,15 @@ bool GameOverLayer::init()
         this->addChild(menu);
     }
     
-    // Save StageStat
+    // Save StageStat and unlock next stage
     {
         try {
-            StageStat ss(_stage.getName(), _stage.getImageFile(), _stage.getScore(), _stage.getStar(), not _isStageClear);
-            FileOperation fo;
-            fo.saveFile(ss);
+            Stage ss(_stage.getName(), _stage.getImageFile(), _stage.getScore(), _stage.getStar(), _stage.isUnlocked(), _stage.isPlayed());
+            StageStatus::saveStage(ss);
+            if (_isStageClear) { StageStatus::unlockNextStage(ss); }
         }
         catch(...) {
-            CCLOG("Coulnd't write stage info from GameOver");
+            CCLOG("Coulnd't store stage info from GameOver");
         }
     }
 

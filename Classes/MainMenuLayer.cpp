@@ -2,7 +2,8 @@
 
 #include "Constants.h"
 #include "GameLayer.h"
-#include "FileOperation.h"
+#include "Stage.h"
+#include "StageStatus.h"
 
 using namespace cocos2d;
 
@@ -44,15 +45,15 @@ bool MainMenuLayer::init()
     
     // Select Levels
     {
-        FileOperation fo;
-        std::vector<StageStat> stageStats = fo.readFile();
+        std::vector<Stage> stages = StageStatus::getStage();
         
         Vector<MenuItem*> menuItems;
-        for (uint8_t i = 0; i < stageStats.size(); ++i) {
-            auto menuItem = MenuItemImage::create(stageStats.at(i).getImageFile(), stageStats.at(i).getImageFile(),
-                                                  CC_CALLBACK_1(MainMenuLayer::menuSelectSgate, this, stageStats.at(i)));
-            if (stageStats.at(i).isLocked()) {
+        for (uint8_t i = 0; i < stages.size(); ++i) {
+            auto menuItem = MenuItemImage::create(stages.at(i).getImageFile(), stages.at(i).getImageFile(),
+                                                  CC_CALLBACK_1(MainMenuLayer::menuSelectSgate, this, stages.at(i)));
+            if (not stages.at(i).isUnlocked()) {
                 menuItem->setOpacity(90);
+                menuItem->setEnabled(false);
             }
             menuItems.pushBack(menuItem);
         }
@@ -60,19 +61,6 @@ bool MainMenuLayer::init()
         Menu* menu = Menu::createWithArray(menuItems);
         menu->alignItemsInColumns(3, 3, NULL);
         this->addChild(menu);
-
-        
-//        {   // DUBUG
-//            Label* l1 = Label::createWithTTF(StringUtils::format("path: %s", fo.getFilePath().c_str()), font, _visibleSize.height * 0.04);
-//            l1->setColor(Color3B::BLUE);
-//            l1->setPosition(10, 10);
-//            this->addChild(l1, BackgroundLayer::layerGround);
-//            
-//            Label* l2 = Label::createWithTTF(StringUtils::format("vsize: %lu", stageStats.size()), font, _visibleSize.height * 0.04);
-//            l2->setColor(Color3B::BLUE);
-//            l2->setPosition(10, 40);
-//            this->addChild(l2, BackgroundLayer::layerGround);
-//        }
     }
 
     return true;
@@ -85,7 +73,7 @@ void MainMenuLayer::addBackground() {
     this->addChild(background);
 }
 
-void MainMenuLayer::gotoGamePlayLayer(cocos2d::Ref* sender, StageStat& stage)
+void MainMenuLayer::gotoGamePlayLayer(cocos2d::Ref* sender, Stage& stage)
 {
     auto scene = GameLayer::createScene(stage);
     Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
@@ -97,7 +85,7 @@ static Size mediumResource = Size(1024, 768); // "mid"
 static Size largeResource  = Size(2048, 1536); // "big"
 static Size designResolution = Size(480, 320);
 
-void MainMenuLayer::menuSelectSgate(cocos2d::Ref* sender, StageStat& stage) {
+void MainMenuLayer::menuSelectSgate(cocos2d::Ref* sender, Stage& stage) {
     selectLevel(stage.getName());
     gotoGamePlayLayer(this, stage);
 }

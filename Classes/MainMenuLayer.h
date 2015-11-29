@@ -5,7 +5,7 @@
 
 using namespace cocos2d;
 
-class StageStat;
+class Stage;
 
 class MainMenuLayer : public cocos2d::Layer
 {
@@ -18,8 +18,8 @@ public:
     
 private:
     void addBackground();
-    void gotoGamePlayLayer(cocos2d::Ref* sender, StageStat& stage);
-    void menuSelectSgate(cocos2d::Ref* sender, StageStat& stage);
+    void gotoGamePlayLayer(cocos2d::Ref* sender, Stage& stage);
+    void menuSelectSgate(cocos2d::Ref* sender, Stage& stage);
     void selectLevel(std::string level);
     bool _countryFrance;
     

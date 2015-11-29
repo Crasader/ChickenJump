@@ -6,8 +6,7 @@
 #include "GameOverLayer.h"
 #include "ScoreLayer.h"
 #include "SimpleAudioEngine.h"
-#include "StageStat.h"
-#include "FileOperation.h"
+#include "Stage.h"
 
 using namespace cocos2d;
 
@@ -23,9 +22,9 @@ static const std::vector<int> collectableSpawnPattern(spawnPattern, spawnPattern
 static int currentPatternIndex = 0;
 
 GameLayer* GameLayer::_instance = 0;
-StageStat _st;
+Stage _st;
 
-Scene* GameLayer::createScene(StageStat& stage)
+Scene* GameLayer::createScene(Stage& stage)
 {
     // 'scene' is an autorelease object
     auto scene = Scene::createWithPhysics();
@@ -42,6 +41,7 @@ Scene* GameLayer::createScene(StageStat& stage)
 
     // hold the stage
     _st = stage;
+    _st.setAsPlayed();
     
     // add the Pause HUD Layer
     {
