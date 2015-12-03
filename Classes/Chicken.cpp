@@ -36,19 +36,13 @@ void Chicken::createChicken(cocos2d::Layer *layer) {
     addPhysicsBody();
     
     // initial speed, weight and state
-    _vector.x = 1.0;
-    _vector.y = 0.0;
-    _state = PlayerState::falling;
+    _vector = Vec2(1.0, 0.0);
+    setState(PlayerState::falling);
     _weight = 1.0;
     _scale = 1.0;
     
     // initial position
     _chicken->setPosition(_visibleSize.width * 0.30 + _origin.x, _visibleSize.height * 0.9 + _origin.y);
-    
-    // TODO: remove this adjusting
-    // Adjusting big png
-//    auto scaleTo = ScaleTo::create(0.75f, 0.75f);
-//    _chicken->runAction(scaleTo);
     
     // Flapping wings animation
     setAnimation();
@@ -108,27 +102,11 @@ void Chicken::increaseWeight() {
     if (_weight + SCALE_FACTOR <= MAX_WEIGHT) {
         _weight += SCALE_FACTOR;
     }
-    CCLOG("+++++ %f", _weight);
 }
-
-//void Chicken::moveToFinishingPosition() {
-//    if (not _chicken) { return; }
-//    
-//    auto action = MoveTo::create(1, Point(_chicken->getPosition().x, _visibleSize.height * 0.60));
-//    _chicken->runAction(action);
-//}
-
-//void Chicken::runFinishingMove() {
-//    if (not _chicken) { return; }
-//    
-//    auto action = MoveTo::create(1, Point(_visibleSize.width + _chicken->getContentSize().width * 1.5, _visibleSize.height * 0.60));
-//    _chicken->runAction(action);
-//}
 
 void Chicken::resetSizeAndWeight() {
     _scale = MIN_SCALE;
     _weight = MIN_WEIGHT;
-    CCLOG("+++++ RESET %f", _weight);
 }
 
 void Chicken::setAnimation() {
@@ -158,6 +136,7 @@ void Chicken::setState(PlayerState state) {
 
 void Chicken::update(float speed) {
     if (not _chicken) { return; }
+    if (_state == PlayerState::dying) { return; }
     
     switch (_state) {
         case start:
@@ -180,15 +159,14 @@ void Chicken::update(float speed) {
             break;
     }
 
-    // jumping
-    if (_state != PlayerState::dying) {
-        _chicken->setPositionY(_chicken->getPositionY() + _vector.y);
-    }
+    // jumping. no need to check if (_state != PlayerState::dying), coz already passed that
+    _chicken->setPositionY(_chicken->getPositionY() + _vector.y);
     
     // Die
     if (_chicken->getPositionY() < -_chicken->getContentSize().height * 0.5 or
         _chicken->getPositionX() < -_chicken->getContentSize().width * 1.5) {
         _state = PlayerState::dying;
+        CCLOG("Player DEAD. PLEASE RESET");
     }
 }
 

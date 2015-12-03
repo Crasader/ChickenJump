@@ -49,10 +49,11 @@ bool MainMenuLayer::init()
         
         Vector<MenuItem*> menuItems;
         for (uint8_t i = 0; i < stages.size(); ++i) {
-            auto menuItem = MenuItemImage::create(stages.at(i).getImageFile(), stages.at(i).getImageFile(),
+            auto menuItem = MenuItemImage::create(stages.at(i).getImageFile(), stages.at(i).getClickedImageFile(),
                                                   CC_CALLBACK_1(MainMenuLayer::menuSelectSgate, this, stages.at(i)));
             if (not stages.at(i).isUnlocked()) {
-                menuItem->setOpacity(90);
+                Sprite* lockedImage = Sprite::create(stages.at(i).getLockedImageFile());
+                menuItem->setNormalImage(lockedImage);
                 menuItem->setEnabled(false);
             }
             menuItems.pushBack(menuItem);

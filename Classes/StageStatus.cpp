@@ -5,21 +5,21 @@
 
 using namespace cocos2d;
 
-static const std::string france = "FRANCE";
-static const std::string germany = "GERMANY";
-static const std::string england = "ENGLAND";
-static const std::string spain = "SPAIN";
-static const std::string italy = "ITALY";
-static const std::string netherlands = "NETHERLANDS";
+static const std::string france = "FR";
+static const std::string germany = "DE";
+static const std::string england = "UK";
+static const std::string spain = "SP";
+static const std::string italy = "IT";
+static const std::string netherlands = "NL";
 
 void StageStatus::createFreshStages() {
     // name, imagefile, score, star, isunlocked, isPlayed
-    saveStage(Stage(france, "france.png", 0, 0, true, false));
-    saveStage(Stage(germany, "germany.png", 0, 0, false, false));
-    saveStage(Stage(england, "england.png", 0, 0, false, false));
-    saveStage(Stage(spain, "spain.png", 0, 0, false, false));
-    saveStage(Stage(italy, "italy.png", 0, 0, false, false));
-    saveStage(Stage(netherlands, "netherlands.png", 0, 0, false, false));
+    saveStage(Stage(france, "FR.png", "FR_clicked.png", "FR_locked.png", 0, 0, true, false));
+    saveStage(Stage(germany, "DE.png", "DE_clicked.png", "DE_locked.png", 0, 0, false, false));
+    saveStage(Stage(england, "UK.png", "UK_clicked.png", "UK_locked.png", 0, 0, false, false));
+    saveStage(Stage(spain, "SP.png", "SP_clicked.png", "SP_locked.png", 0, 0, false, false));
+    saveStage(Stage(italy, "IT.png", "IT_clicked.png", "IT_locked.png", 0, 0, false, false));
+    saveStage(Stage(netherlands, "NL.png", "NL_clicked.png", "NL_locked.png", 0, 0, false, false));
 }
 
 Stage StageStatus::getStage(std::string const& name) {
@@ -27,12 +27,12 @@ Stage StageStatus::getStage(std::string const& name) {
     std::stringstream ss(stage);
     if (ss.rdbuf()->in_avail() == 0) return Stage();
     
-    std::string stageName, imageFile;
+    std::string stageName, imageFile, clickedImageFile, lockedImageFile;
     int score, star;
     bool isUnlocked, isPlayed;
-    ss >> stageName >> imageFile >> score >> star >> isUnlocked >> isPlayed;
+    ss >> stageName >> imageFile >> clickedImageFile >> lockedImageFile >> score >> star >> isUnlocked >> isPlayed;
     
-    return Stage(stageName, imageFile, score, star, isUnlocked, isPlayed);
+    return Stage(stageName, imageFile, clickedImageFile, lockedImageFile, score, star, isUnlocked, isPlayed);
 }
 
 std::vector<Stage> StageStatus::getStage(void) {
@@ -48,8 +48,15 @@ std::vector<Stage> StageStatus::getStage(void) {
 }
 
 void StageStatus::saveStage(Stage const& stage) {
-    std::string status = StringUtils::format("%s %s %d %d %d %d",
-                                             stage.getName().c_str(), stage.getImageFile().c_str(), stage.getScore(), stage.getStar(), stage.isUnlocked(), stage.isPlayed());
+    std::string status = StringUtils::format("%s %s %s %s %d %d %d %d",
+                                             stage.getName().c_str(),
+                                             stage.getImageFile().c_str(),
+                                             stage.getClickedImageFile().c_str(),
+                                             stage.getLockedImageFile().c_str(),
+                                             stage.getScore(),
+                                             stage.getStar(),
+                                             stage.isUnlocked(),
+                                             stage.isPlayed());
     UserDefault::getInstance()->setStringForKey(stage.getName().c_str(), status);
 
     UserDefault::getInstance()->flush();

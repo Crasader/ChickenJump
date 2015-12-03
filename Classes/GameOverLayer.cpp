@@ -90,7 +90,15 @@ bool GameOverLayer::init()
     // Save StageStat and unlock next stage
     {
         try {
-            Stage ss(_stage.getName(), _stage.getImageFile(), _stage.getScore(), _stage.getStar(), _stage.isUnlocked(), _stage.isPlayed());
+            Stage ss(_stage.getName(),
+                     _stage.getImageFile(),
+                     _stage.getClickedImageFile(),
+                     _stage.getLockedImageFile(),
+                     _stage.getScore(),
+                     _stage.getStar(),
+                     _stage.isUnlocked(),
+                     _stage.isPlayed());
+            
             StageStatus::saveStage(ss);
             if (_isStageClear) { StageStatus::unlockNextStage(ss); }
         }

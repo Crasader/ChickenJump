@@ -27,7 +27,8 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
                    ../../Classes/ScoreLayer.cpp \
                    ../../Classes/HomeLayer.cpp \
                    ../../Classes/Stage.cpp \
-                   ../../Classes/StageStatus.cpp
+                   ../../Classes/StageStatus.cpp \
+                   ../../Classes/FloatingChicken.cpp
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes
 

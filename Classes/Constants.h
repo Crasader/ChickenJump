@@ -16,10 +16,12 @@ typedef enum
     layerBackground,
     layerTwo,
     layerGround,
-    layerFour,
-    layerChicken
+    layerChicken,
+    layerTouch
     
 } BackgroundLayer;
+
+#define STAGE_LENGTH                    20
 
 #define FIRST_TIME                      "FIRST_TIME"
 #define HIGHSCORE                       "HIGHSCORE"
@@ -53,8 +55,11 @@ typedef enum
 //#define TERMINAL_VELOCITY               70
 
 // CHICKEN JUMP
-#define VELOCITY_Y_MAX                  0.013    // 0.008  // ScreenHeight x .008 | .031 = 2.16 | 3.51 (Bigger = Higher)
+#define VELOCITY_Y_MAX                  0.0130   // 0.008  // ScreenHeight x .008 | .031 = 2.16 | 3.51 (Bigger = Higher)
 #define VELOCITY_Y_DECREASE_RATE        0.0003   // 0.0001 // ScreenHeight x .0001 | .0003 = 0.027 | .081 (Bigger = More)
+
+#define FLYING_Y_MAX                    0.01000  // 0.008  // ScreenHeight x .008 | .031 = 2.16 | 3.51 (Bigger = Higher)
+#define FLYING_Y_DECREASE_RATE          0.00015  // 0.0001 // ScreenHeight x .0001 | .0003 = 0.027 | .081 (Bigger = More)
 
 // COLLISION BITMASKS
 #define CATEGORY_BITMASK_CHICKEN        0x0001

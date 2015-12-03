@@ -33,13 +33,13 @@ Scene* GameLayer::createScene(Stage& stage)
     // 'layer' is an autorelease object
     GameLayer *layer = GameLayer::create();
     if (not layer) { return nullptr; }
-    layer->setPhysicsWorld(scene->getPhysicsWorld());
+    
     _instance = layer;
 
     // add layer as a child to scene
     scene->addChild(layer);
 
-    // hold the stage
+    // hold the stage and set it as played
     _st = stage;
     _st.setAsPlayed();
     
@@ -86,7 +86,7 @@ bool GameLayer::init()
     _state = GameState::init;
     Trampoline::isDrawingOngoing = false;   // new trampoline drawing can begin
     
-    _stageLength = _visibleSize.width * 5;  // _visibleSize.width: 480.000
+    _stageLength = _visibleSize.width * STAGE_LENGTH;  // _visibleSize.width: 480.000
     // _elapsedStage = 0;
     _elapsedStage = _visibleSize.width * 0.50; // moving ahead collectable spwaning
     
@@ -214,13 +214,13 @@ void GameLayer::endOfStage() {
         auto delay = DelayTime::create(1);
         
         auto chickenTakePosition = MoveTo::create(1.0, Point(_chicken->getPosition().x, _visibleSize.height * 0.60));
-        auto chickenAchieveEnergy = MoveTo::create(1.0, Point(_chicken->getChicken()->getContentSize().width, _visibleSize.height * 0.60));
         auto flagAction = MoveTo::create(1.0, Point(_visibleSize.width - _flag->getContentSize().width, _visibleSize.height * 0.5));
+        auto chickenAchieveEnergy = MoveTo::create(1.0, Point(_chicken->getChicken()->getContentSize().width, _visibleSize.height * 0.60));
         auto chickenRunThrough = MoveTo::create(1.0, Point(_visibleSize.width + _chicken->getChicken()->getContentSize().width, _visibleSize.height * 0.60));
     
         TargetedAction* acChickenMove1 = TargetedAction::create(_chicken->getChicken(), chickenTakePosition);
-        TargetedAction* acChickenMove2 = TargetedAction::create(_chicken->getChicken(), chickenAchieveEnergy);
         TargetedAction* acFlagMove = TargetedAction::create(_flag, flagAction);
+        TargetedAction* acChickenMove2 = TargetedAction::create(_chicken->getChicken(), chickenAchieveEnergy);
         TargetedAction* acChickenMoveToFinish = TargetedAction::create(_chicken->getChicken(), chickenRunThrough);
         
         // last two delays are to finish chicken's move b4 going to finished state
@@ -353,7 +353,7 @@ void GameLayer::spawnEndOfStageItem() {
     if (not _flag) { return; }
     
     _flag->setPosition(_visibleSize.width + _flag->getContentSize().width * 1.5, _visibleSize.height * 0.5);
-    this->addChild(_flag, BackgroundLayer::layerFour);
+    this->addChild(_flag, BackgroundLayer::layerTouch);
 }
 
 void GameLayer::spawnCloud(float dt) {

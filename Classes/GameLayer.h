@@ -68,7 +68,6 @@ private:
     void jump(float trampolinePositionY);
     void releaseTouch();
     void removeCollectable(Sprite* collectable);
-    inline void setPhysicsWorld(cocos2d::PhysicsWorld *world) { _sceneWorld = world; }
     void spawnCloud(float dt);
     void spawnCollectable();
     void spawnEndOfStageItem();
@@ -78,7 +77,6 @@ private:
     void updateStageComplesion(float speed);
     
     static GameLayer* _instance;
-    cocos2d::PhysicsWorld *_sceneWorld;
     
     Background* _background;
     LayerTwo* _layerTow;

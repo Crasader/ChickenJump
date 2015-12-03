@@ -4,8 +4,8 @@
 
 
 // 1:egg 2:pizza 3:bomb
-//static const int pattern[] = {1, 2, 3, 1, 1, 2, 3, 3, 1, 2, 1, 2, 3, 1, 1, 2, 3, 1, 3, 2};
-static const int pattern[] = {2, 3, 2, 3};
+static const int pattern[] = {1, 2, 3, 1, 1, 1, 3, 2, 1, 3, 1, 1, 3, 1, 1, 2, 3, 1, 3, 1};
+//static const int pattern[] = {2, 3, 2, 3};
 static const std::vector<int> collectablePattern(pattern, pattern + sizeof(pattern) / sizeof(int));
 static int currentPatternIndex = 0;
 
@@ -17,8 +17,6 @@ Collectable::Collectable(void){
 void Collectable::spawn(cocos2d::Layer* layer, std::vector<Sprite*>& collectables, int pattern) {
     if (not layer) { return; }
     
-    const float distanceBetweenCollectables = 0.001;
-    int numberOfCollectable = 0;
     int degree = 0;
     float radius = 0.0;
     
@@ -26,17 +24,14 @@ void Collectable::spawn(cocos2d::Layer* layer, std::vector<Sprite*>& collectable
         case 0:
             return;
         case 1:
-            numberOfCollectable = 5;
             degree = 45;
             radius = 0.075;
             break;
         case 2:
-            numberOfCollectable = 7;
             degree = 30;
             radius = 0.15;
             break;
         case 3:
-            numberOfCollectable = 3;
             degree = 90;
             radius = 0.05;
             break;
@@ -44,6 +39,7 @@ void Collectable::spawn(cocos2d::Layer* layer, std::vector<Sprite*>& collectable
         default:
             return;
     }
+    int numberOfCollectable = 180 / degree + 1; // 180 = half 360
     
     int collectableType = collectablePattern.at(currentPatternIndex++ % collectablePattern.size());
     
@@ -57,7 +53,7 @@ void Collectable::spawn(cocos2d::Layer* layer, std::vector<Sprite*>& collectable
         Sprite* collectable = Sprite::create(String::createWithFormat("egg%i.png", collectableType)->getCString());
         collectable->setTag(collectableType); // used as CollectableType:: 1:egg 2:pizza 3:bomb
         
-        positionX += _visibleSize.width * distanceBetweenCollectables; // distance between collectables
+        positionX += collectable->getContentSize().width * 1.5; // distance must be atleast 1.5 collectable width
         positionY = (_visibleSize.width * radius) * sin(degree2radian(i * degree)); // y = radius * sin(angle) // bigger radius = higher parabola
         collectable->setPosition(Vec2(positionX, minPosY + positionY));
         
@@ -70,8 +66,6 @@ void Collectable::spawn(cocos2d::Layer* layer, std::vector<Sprite*>& collectable
         
         layer->addChild(collectable, BackgroundLayer::layerChicken);
         collectables.push_back(collectable);
-        
-        positionX += collectable->getContentSize().width * 1.5; // distance must be atleast 1.5 collectable width
     }
 }
 
