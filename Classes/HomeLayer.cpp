@@ -27,6 +27,9 @@ bool HomeLayer::init()
     // Background
     addBackground();
     
+    // Logo
+    addLogo();
+    
     // Ground
     addGround();
     
@@ -69,19 +72,26 @@ void HomeLayer::addFlyingChickens() {
 void HomeLayer::addGround() {
     auto ground = Sprite::create("home_ground.png");
     if (not ground) { return; }
-    ground->setPosition(Point(_visibleSize.width / 2 + _origin.x, _visibleSize.height / 2 + _origin.y));
+    ground->setPosition(Point(_visibleSize.width * 0.5 + _origin.x, _visibleSize.height * 0.5 + _origin.y));
     this->addChild(ground, BackgroundLayer::layerTouch);
+}
+
+void HomeLayer::addLogo() {
+    auto logo = Sprite::create("logo.png");
+    if (not logo) { return; }
+    logo->setColor(Color3B(255, 208, 66));
+    logo->setPosition(Point(_visibleSize.width * 0.5 + _origin.x, _visibleSize.height * 0.7 + _origin.y));
+    this->addChild(logo, BackgroundLayer::layerTouch);
 }
 
 void HomeLayer::addPlayMenu() {
     auto playItem = MenuItemImage::create("btn_play.png", "btn_playclicked.png",
                                           CC_CALLBACK_1(HomeLayer::gotoMainMenuLayer, this));
     if (not playItem) { return; }
-    playItem->setPosition(Point(_visibleSize.width / 2 + _origin.x, _visibleSize.height * 0.42 + _origin.y));
+    playItem->setPosition(Point(_visibleSize.width / 2 + _origin.x, _visibleSize.height * 0.30 + _origin.y));
     auto menu = Menu::create(playItem, NULL);
     menu->setPosition(Point::ZERO);
-    this->addChild(menu, BackgroundLayer::layerChicken);
-    
+    this->addChild(menu, BackgroundLayer::layerTouch);
 }
 
 void HomeLayer::gotoMainMenuLayer(cocos2d::Ref* sender)

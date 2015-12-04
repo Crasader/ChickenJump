@@ -18,13 +18,13 @@ private:
     void addBackground();
     void addFlyingChickens();
     void addGround();
+    void addLogo();
     void addPlayMenu();
     void gotoMainMenuLayer(cocos2d::Ref* sender);
     void initStage();
     
     FloatingChicken* _flyingChicken1;
     FloatingChicken* _flyingChicken2;
-    FloatingChicken* _flyingChicken3;
     FloatingChicken* _flyingChicken4;
     
     Vec2 _origin;
