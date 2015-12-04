@@ -5,14 +5,14 @@
 
 using namespace cocos2d;
 
-typedef enum { high, mid, flat } ParabolaSize;
+typedef enum { fly_lefttoright_high, fly_lefttoright_mid, fly_lefttoright_low, fly_righttoleft_mid } AnimationType;
 typedef enum { jumping, falling } FloatingChickenState;
 
 /* This class is for HomeLayer's Floating Chicken */
 class FloatingChicken {
 public:
     FloatingChicken(void);
-    void createFloatingChicken(cocos2d::Layer* layer, Vec2 initialPosition, int direction, ParabolaSize parabolaSize); // direction = left->right OR right->left
+    void createFloatingChicken(cocos2d::Layer* layer, Vec2 initialPosition, AnimationType animationType); // direction = left->right OR right->left
     
     void gotoInitialPosition(Vec2 position);
     Sprite* getFloatingChicken() { return _chicken; }

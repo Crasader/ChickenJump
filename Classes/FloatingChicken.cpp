@@ -8,43 +8,45 @@ FloatingChicken::FloatingChicken(void){
     _visibleSize = Director::getInstance()->getVisibleSize();
 }
 
-void FloatingChicken::createFloatingChicken(cocos2d::Layer *layer, Vec2 initialPosition, int direction, ParabolaSize parabolaSize) {
+void FloatingChicken::createFloatingChicken(cocos2d::Layer *layer, Vec2 initialPosition, AnimationType animationType) {
     if (not layer) { return; }
 
     _chicken = Sprite::create(_imageFile);
     if (! _chicken) { return; }
     _chicken->setAnchorPoint(Vec2(0, 0));
     _initialPosition = initialPosition;
-    _direction = direction;
     gotoInitialPosition(_initialPosition);
-    setAnimation();
     layer->addChild(_chicken, BackgroundLayer::layerBackground);
-
-//    {   // have a random delay to appear flying chicken in the screen in different time
-//        Sequence* sequence = Sequence::create(DelayTime::create(RandomHelper::random_int(0, 2)), NULL);
-//        _chicken->runAction(sequence);
-//    }
 
     // set speed into x axis, y axis is set and updated with FLYING_Y_DECREASE_RATE
     _vector = Vec2(3.5, 0.0);
     setState(FloatingChickenState::jumping);
 
-    // set parabola parameters
+    // set flying direction and flying height
     {
-        switch (parabolaSize) {
-            case high:
+        switch (animationType) {
+            case fly_lefttoright_high:
+                _direction = 1;
                 _parabolaHeight = 0.50;
                 break;
-            case mid:
+            case fly_righttoleft_mid:
+                _direction = 1;
                 _parabolaHeight = 0.60;
                 break;
-            case flat:
+            case fly_lefttoright_low:
+                _direction = 1;
                 _parabolaHeight = 0.70;
+                break;
+            case fly_lefttoright_mid:
+                _direction = -1;
+                _parabolaHeight = 0.60;
                 break;
             default:
                 break;
         }
     }
+
+    setAnimation();
 }
 
 void FloatingChicken::gotoInitialPosition(Vec2 position) {

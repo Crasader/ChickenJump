@@ -55,18 +55,15 @@ void HomeLayer::addBackground() {
 void HomeLayer::addFlyingChickens() {
     _flyingChicken1 = new FloatingChicken();
     _flyingChicken2 = new FloatingChicken();
-    _flyingChicken3 = new FloatingChicken();
     _flyingChicken4 = new FloatingChicken();
     
     Vec2 initialPosition1 = Vec2(_visibleSize.width * -0.20, 0.0);
     Vec2 initialPosition2 = Vec2(_visibleSize.width * 0.60, 0.0);
-    Vec2 initialPosition3 = Vec2(_visibleSize.width * 0.30, 0.0);
     Vec2 initialPosition4 = Vec2(_visibleSize.width * 0.70, 0.0);
 
-    _flyingChicken1->createFloatingChicken(this, initialPosition1, 1, ParabolaSize::high);
-    _flyingChicken2->createFloatingChicken(this, initialPosition2, 1, ParabolaSize::mid);
-    _flyingChicken3->createFloatingChicken(this, initialPosition3, 1, ParabolaSize::flat);
-    _flyingChicken4->createFloatingChicken(this, initialPosition4, -1, ParabolaSize::mid);
+    _flyingChicken1->createFloatingChicken(this, initialPosition1, AnimationType::fly_lefttoright_high);
+    _flyingChicken2->createFloatingChicken(this, initialPosition2, AnimationType::fly_lefttoright_mid);
+    _flyingChicken4->createFloatingChicken(this, initialPosition4, AnimationType::fly_righttoleft_mid);
 }
 
 void HomeLayer::addGround() {
@@ -107,7 +104,6 @@ void HomeLayer::initStage() {
 void HomeLayer::update(float dt) {
     if (_flyingChicken1) { _flyingChicken1->update(dt); }
     if (_flyingChicken2) { _flyingChicken2->update(dt); }
-    if (_flyingChicken3) { _flyingChicken3->update(dt); }
     if (_flyingChicken4) { _flyingChicken4->update(dt); }
 }
 
