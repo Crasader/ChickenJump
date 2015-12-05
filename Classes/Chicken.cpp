@@ -38,10 +38,10 @@ void Chicken::createChicken(cocos2d::Layer *layer) {
     addPhysicsBody();
     
     // initial speed, weight and state
+    _scale = 1.0;
+    _weight = 1.0;
     _vector = Vec2(1.0, 0.0);
     setState(PlayerState::falling);
-    _weight = 1.0;
-    _scale = 1.0;
     
     // initial position
     _chicken->setPosition(_visibleSize.width * 0.30 + _origin.x, _visibleSize.height * 0.9 + _origin.y);
@@ -50,6 +50,12 @@ void Chicken::createChicken(cocos2d::Layer *layer) {
     setAnimation();
     
     layer->addChild(_chicken, BackgroundLayer::layerChicken);
+}
+
+void Chicken::decreaseLife() {
+    if (_state == PlayerState::dying) { return; }
+
+    --_lives;
 }
 
 void Chicken::decreaseSpriteSize() {
@@ -83,6 +89,12 @@ float Chicken::getVectorX() {
     return _vector.x;
 }
 
+void Chicken::increaseLife() {
+    if (_state == PlayerState::dying) { return; }
+    
+    ++_lives;
+}
+
 void Chicken::increaseSpriteSize() {
     if (_scale + SCALE_FACTOR <= MAX_SCALE) {
         auto scaleTo = ScaleTo::create(0.1f, _scale += SCALE_FACTOR);
@@ -103,6 +115,8 @@ void Chicken::resetSizeAndWeight() {
 }
 
 void Chicken::setAnimation() {
+    if (not _chicken) { return; }
+    
     Animation* animation = Animation::create();
     animation->addSpriteFrameWithFile("playerfly_1.png");
     animation->addSpriteFrameWithFile("playerfly_2.png");
@@ -114,6 +128,13 @@ void Chicken::setAnimation() {
     Action* action = Animate::create(animation);
     _chicken->runAction(action);
 }
+
+void Chicken::setLives(int numberOfLives) {
+    if (_state == PlayerState::dying) { return; }
+
+    _lives = numberOfLives;
+}
+
 
 void Chicken::setState(PlayerState state) {
     if (not _chicken) { return; }

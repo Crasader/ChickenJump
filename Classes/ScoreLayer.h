@@ -11,13 +11,18 @@ public:
     virtual bool init();
     CREATE_FUNC(ScoreLayer);
     
+    void initLifeSprites(int lives);
+    void updateLife(int lives);
     void updateScore(int score);
     
 private:
     Vec2 _origin;
     Size _visibleSize;
+    
     std::string imageScore = "score.png";
+    std::string imageLife = "life.png";
     Label* _scoreLabel;
+    std::vector<Sprite*> _lifeSprites;
 };
 
 

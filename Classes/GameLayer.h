@@ -66,6 +66,7 @@ private:
     void endOfStage();
     void focusOnCharacter();
     void handleSpecialCollectableConsumption(Sprite* collectable);
+    void initScoreHUDLives();
     void jump(float trampolinePositionY);
     void releaseTouch();
     void removeCollectable(Sprite* collectable);

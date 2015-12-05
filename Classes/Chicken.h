@@ -22,16 +22,20 @@ public:
     void addPhysicsBody();
     void applySpeedX(float speed);
     void createChicken(cocos2d::Layer* layer);
+    void decreaseLife();
     void decreaseSpriteSize();
     void decreaseVectorX();
     Sprite* getChicken() { return _chicken; }
+    int getLives() { return _lives; }
     Vec2 getPosition() { return _chicken->getPosition(); }
     PlayerState getState();
     float getVectorX();
     Vec2* getVector() { return &_vector; }
+    void increaseLife();
     void increaseSpriteSize();
     void resetSizeAndWeight();
     void setAnimation();
+    void setLives(int numberOfLives);
     void setState(PlayerState state);
     void setVector(Vec2 vector) { _vector = vector; }
     void update(float dt);
@@ -44,6 +48,8 @@ private:
     Vec2 _vector;
     float _weight;
     float _scale;
+    
+    unsigned int _lives;
     
     void decreaseWeight();
     void increaseWeight();

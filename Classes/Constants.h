@@ -21,6 +21,9 @@ typedef enum
     
 } BackgroundLayer;
 
+// Number of lives
+#define CHICKEN_LIVES                   3
+
 #define STAGE_LENGTH                    20
 
 #define FIRST_TIME                      "FIRST_TIME"

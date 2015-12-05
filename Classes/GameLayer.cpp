@@ -23,7 +23,7 @@ static const std::vector<int> collectableSpawnPattern(spawnPattern, spawnPattern
 static int currentPatternIndex = 0;
 
 GameLayer* GameLayer::_instance = 0;
-Stage _st;
+Stage _st;  // To pass which stage we are playing now.
 
 Scene* GameLayer::createScene(Stage& stage)
 {
@@ -35,6 +35,7 @@ Scene* GameLayer::createScene(Stage& stage)
     GameLayer *layer = GameLayer::create();
     if (not layer) { return nullptr; }
     
+    // Singletone Instance
     _instance = layer;
 
     // add layer as a child to scene
@@ -52,13 +53,13 @@ Scene* GameLayer::createScene(Stage& stage)
         layer->_pauseHUD = pauseLayer;
     }
     
-    // add score HUD
+    // add Score HUD
     {
         ScoreLayer* scoreLayer = ScoreLayer::create();
         scene->addChild(scoreLayer);
         layer->_scoreHUD = scoreLayer;
     }
-
+    
     // return the scene
     return scene;
 }
@@ -81,8 +82,8 @@ bool GameLayer::init()
     // 2. Origin & window size
     _origin = Director::getInstance()->getVisibleOrigin();
     _visibleSize = Director::getInstance()->getVisibleSize();
-    CCLOG("GameLayer _visibleSize width-height (%dx%d)", (int)_visibleSize.width, (int)_visibleSize.height);
-    CCLOG("GameLayer _origin (x, y) (%f, %f)", _origin.x, _origin.y);
+    // CCLOG("GameLayer _visibleSize width-height (%dx%d)", (int)_visibleSize.width, (int)_visibleSize.height);
+    // CCLOG("GameLayer _origin (x, y) (%f, %f)", _origin.x, _origin.y);
 
     _state = GameState::init;
     Trampoline::isDrawingOngoing = false;   // new trampoline drawing can begin
@@ -112,6 +113,9 @@ bool GameLayer::init()
     // Tutorial
     addTutorial();
     
+    // init score HUD's lives
+//    initScoreHUDLives();
+    
 
     // Spawn cloud
     this->schedule(schedule_selector(GameLayer::spawnCloud), CLOUD_SPAWN_FREQUENCY * _visibleSize.width);
@@ -139,6 +143,7 @@ void GameLayer::addBG() {
 void GameLayer::addChicken() {
     _chicken = new Chicken();
     _chicken->createChicken(this);
+    _chicken->setLives(CHICKEN_LIVES);
 }
 
 void GameLayer::addContactListners() {
@@ -294,6 +299,8 @@ void GameLayer::handleSpecialCollectableConsumption(Sprite* collectable) {
             }
             
             _chicken->setState(PlayerState::newBorn);
+            _chicken->decreaseLife();
+            _scoreHUD->updateLife(_chicken->getLives());
             
             break;
         }
@@ -301,6 +308,11 @@ void GameLayer::handleSpecialCollectableConsumption(Sprite* collectable) {
     
     // remove the object the chicken collided with
     removeCollectable(collectable);
+}
+
+// Set scoreHUD lives with Chicken's lives
+void GameLayer::initScoreHUDLives() {
+    _scoreHUD->initLifeSprites(_chicken->getLives());
 }
 
 void GameLayer::jump(float trampolinePositionY) {
