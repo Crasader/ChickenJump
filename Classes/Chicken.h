@@ -30,7 +30,6 @@ public:
     float getVectorX();
     Vec2* getVector() { return &_vector; }
     void increaseSpriteSize();
-    void increaseVectorX();
     void resetSizeAndWeight();
     void setAnimation();
     void setState(PlayerState state);

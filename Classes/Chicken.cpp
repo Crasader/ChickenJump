@@ -17,6 +17,8 @@ void Chicken::addPhysicsBody() {
 }
 
 void Chicken::applySpeedX(float speed) {
+    if (_state == PlayerState::dying) { return; }
+
     _vector.x += speed;
     if (_vector.x <= 1) {
         _vector.x = 1; // minimum speed
@@ -86,15 +88,6 @@ void Chicken::increaseSpriteSize() {
         auto scaleTo = ScaleTo::create(0.1f, _scale += SCALE_FACTOR);
         _chicken->runAction(scaleTo);
         increaseWeight();
-    }
-}
-
-void Chicken::increaseVectorX() {
-    if (_state == PlayerState::dying) { return; }
-    
-    _vector.x *= ACCELERATION_DEFAULT;   // increase speed by 1.5
-    if (_vector.x >= MAX_SPEED_X) {
-        _vector.x = MAX_SPEED_X;
     }
 }
 
