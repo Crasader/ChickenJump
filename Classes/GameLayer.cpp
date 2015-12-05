@@ -278,20 +278,25 @@ void GameLayer::handleSpecialCollectableConsumption(Sprite* collectable) {
             // play food sound
             CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(soundCollectCollectable.c_str());
             break;
-        case 3:
-            ParticleExplosion* explosion = ParticleExplosion::createWithTotalParticles(200);
-            explosion->setTexture(TextureCache::getInstance()->addImage("star.png"));
-            explosion->setStartColor(Color4F::YELLOW);
-            explosion->setEndColor(Color4F::YELLOW);
-            explosion->setPosition(_chicken->getPosition());
-            this->addChild(explosion, BackgroundLayer::layerTouch);
+        case 3: {
+            _chicken->getChicken()->setVisible(false);
+            CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(soundExplosion.c_str());    // play bomb sound
+
+            {   // Explosion Effect
+                ParticleExplosion* explosion = ParticleExplosion::createWithTotalParticles(100);
+                explosion->setTexture(TextureCache::getInstance()->addImage("star.png"));
+                explosion->setStartColor(Color4F::YELLOW);
+                explosion->setEndColor(Color4F::YELLOW);
+                explosion->setScale(0.75f);
+                explosion->setSpeed(5);
+                explosion->setPosition(_chicken->getPosition());
+                this->addChild(explosion, BackgroundLayer::layerTouch);
+            }
             
-            _chicken->setState(PlayerState::exploded);
+            _chicken->setState(PlayerState::newBorn);
             
-            // play bomb sound
-            CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(soundExplosion.c_str());
-            removeCollectable(_chicken->getChicken());
             break;
+        }
     }
     
     // remove the object the chicken collided with
@@ -313,6 +318,7 @@ void GameLayer::pauseGame(cocos2d::Ref* sender) {
     if (_state == GameState::started) {
         Director::getInstance()->pause();
         _state = GameState::paused;
+        
         _pauseHUD->setVisible(true);
         _pauseMenu->setVisible(false);
     }
@@ -516,7 +522,6 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
 void GameLayer::update(float dt) {
     if (_state == GameState::init or _state == GameState::paused) { return; }
     if (not _chicken) { return; }
-    if (_chicken->getState() == PlayerState::exploded) { return; }
     
     if (_state == GameState::finished and _chicken->getPosition().x >= _visibleSize.width) {
         cleanStage();
@@ -560,7 +565,6 @@ void GameLayer::update(float dt) {
         
         // stage about to finish
         if (_state == GameState::finishing and not _collectables.size()) {
-//            CCLOG("Chicken Speed X %f", _chicken->getVectorX());
             _pauseMenu->setEnabled(false);
             
             _chicken->setState(PlayerState::start);

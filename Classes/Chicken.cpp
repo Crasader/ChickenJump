@@ -126,11 +126,52 @@ void Chicken::setState(PlayerState state) {
     if (not _chicken) { return; }
     
     _state = state;
-    if (state == PlayerState::jumping) {
-        _vector.y = _visibleSize.height * VELOCITY_Y_MAX;
-    }
-    else if (state == PlayerState::falling) {
-        _vector.y = -_visibleSize.height * VELOCITY_Y_DECREASE_RATE;
+    switch (_state) {
+        case start:
+            _vector.y = 0;
+            break;
+        case newBorn: {
+            // stop falling down, stop scrolling as well.
+            _vector = Vec2(0, 0);
+            
+            auto callbackShowChicken = CallFunc::create([this](){
+                _chicken->setVisible(true);
+            });
+
+            auto callbackHideChicken = CallFunc::create([this](){
+                _chicken->setVisible(false);
+            });
+
+            auto callbackStateFalling = CallFunc::create([this](){
+                _state = PlayerState::falling;
+            });
+            
+            auto timeToReborn = DelayTime::create(3.0);
+            auto delay = DelayTime::create(0.2);
+
+            Sequence* blink = Sequence::create(timeToReborn,
+                                               callbackHideChicken, delay, callbackShowChicken, delay,
+                                               callbackHideChicken, delay, callbackShowChicken, delay,
+                                               callbackHideChicken, delay, callbackShowChicken, delay,
+                                               callbackHideChicken, delay, callbackShowChicken, delay,
+                                               callbackHideChicken, delay, callbackShowChicken, delay,
+                                               callbackHideChicken, delay, callbackShowChicken, delay,
+                                               callbackHideChicken, delay, callbackShowChicken, delay,
+                                               callbackHideChicken, delay, callbackShowChicken, delay,
+                                               callbackHideChicken, delay, callbackShowChicken, delay,
+                                               callbackHideChicken, delay, callbackShowChicken, delay,
+                                               callbackStateFalling, NULL);
+            _chicken->runAction(blink);
+            break;
+        }
+        case jumping:
+            _vector.y = _visibleSize.height * VELOCITY_Y_MAX;
+            break;
+        case falling:
+            _vector.y = -_visibleSize.height * VELOCITY_Y_DECREASE_RATE;
+            break;
+        case dying:
+            break;
     }
 }
 
@@ -140,7 +181,8 @@ void Chicken::update(float speed) {
     
     switch (_state) {
         case start:
-            _vector.y = 0;
+            break;
+        case newBorn:
             break;
         case jumping:
             _vector.y -= _visibleSize.height * VELOCITY_Y_DECREASE_RATE * _weight;
@@ -154,17 +196,13 @@ void Chicken::update(float speed) {
         case dying:
             CCLOG("Player DEAD. PLEASE RESET");
             break;
-        case exploded:
-            CCLOG("Player Exploded");
-            _vector.x = 0;
-            break;
         default:
             CCLOG("Program Should Not Hit This Point");
             break;
     }
 
-    // jumping. no need to check if (_state != PlayerState::dying), coz already passed that
-    _chicken->setPositionY(_chicken->getPositionY() + _vector.y);
+    // already in jumping state. no need to check if (_state != PlayerState::dying)
+    _chicken->setPosition(Vec2(_chicken->getPositionX(), _chicken->getPositionY() + _vector.y));
     
     // Die
     if (_chicken->getPositionY() < -_chicken->getContentSize().height * 0.5 or

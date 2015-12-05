@@ -38,17 +38,19 @@ void Cloud::spawn(cocos2d::Layer* layer) {
     auto action = MoveTo::create(CLOUD_SPEED * _visibleSize.width,
                                  Point(-_cloud->getContentSize().width * ((maxDelayWidth + 1) - randDelayWidth), _cloud->getPositionY()));
 
-    auto callback = CallFunc::create([this]() {
-        // release the cloud once it has done its job
-        _layer->removeChild(_cloud);
-    } );
-    
-    auto delay = DelayTime::create(0.5);
-    
-    Sequence* sequence = Sequence::create(action,
-                                          delay,
-                                          callback,
-                                          NULL);
-    _cloud->runAction(sequence);
+    // release the cloud once it has done its job
+    {
+        auto callback = CallFunc::create([this]() {
+            _layer->removeChild(_cloud);
+        } );
+        
+        auto delay = DelayTime::create(0.5);
+        
+        Sequence* sequence = Sequence::create(action,
+                                              delay,
+                                              callback,
+                                              NULL);
+        _cloud->runAction(sequence);
+    }
 
 }

@@ -8,10 +8,10 @@ using namespace cocos2d;
 typedef enum
 {
     start,
+    newBorn,
     jumping,
     falling,
-    dying,
-    exploded
+    dying
 
 } PlayerState;
 
