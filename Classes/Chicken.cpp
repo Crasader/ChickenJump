@@ -154,6 +154,10 @@ void Chicken::update(float speed) {
         case dying:
             CCLOG("Player DEAD. PLEASE RESET");
             break;
+        case exploded:
+            CCLOG("Player Exploded");
+            _vector.x = 0;
+            break;
         default:
             CCLOG("Program Should Not Hit This Point");
             break;

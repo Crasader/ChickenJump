@@ -61,10 +61,11 @@ private:
     void addSecondLayer();
     void addTouchListners();
     void addTutorial();
+    void cleanStage();
     void drawNewTrampoline();
     void endOfStage();
     void focusOnCharacter();
-    void handleCollectableConsumption(Sprite* collectable);
+    void handleSpecialCollectableConsumption(Sprite* collectable);
     void jump(float trampolinePositionY);
     void releaseTouch();
     void removeCollectable(Sprite* collectable);

@@ -16,6 +16,7 @@ static const std::string imageResume = "resume.png";
 static const std::string imageFinger = "finger.png";
 static const std::string soundJump = "jump.wav";
 static const std::string soundCollectCollectable = "pickup_coin.wav";
+static const std::string soundExplosion = "explosion.wav";
 
 static const int spawnPattern[] = {1, 2, 3, 0, 1, 2, 0, 3, 1, 0, 1, 2, 0, 1, 1, 0, 3, 1, 3, 0};
 static const std::vector<int> collectableSpawnPattern(spawnPattern, spawnPattern + sizeof(spawnPattern) / sizeof(int));
@@ -197,6 +198,15 @@ void GameLayer::addTutorial() {
     _finger->runAction(tutorial);
 }
 
+void GameLayer::cleanStage() {
+    // Cleanup
+    if (this->getScene()) {
+        this->getScene()->onExit();
+        this->getScene()->cleanup();
+        TextureCache::getInstance()->removeUnusedTextures();
+    }
+}
+
 void GameLayer::drawNewTrampoline() {
     _trampoline = new Trampoline();
     if (not _trampoline) { return; }
@@ -238,10 +248,14 @@ void GameLayer::focusOnCharacter() {
     }
 }
 
-void GameLayer::handleCollectableConsumption(Sprite* collectable) {
-    //  1:egg; 2:pizza; 3:bomb
+void GameLayer::handleSpecialCollectableConsumption(Sprite* collectable) {
+    // 1:egg; 2:pizza; 3:bomb
     switch (collectable->getTag()) {
         case 1:
+            // Egg collection is the basic goal of the game.
+            
+            // play collection sound
+            CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(soundCollectCollectable.c_str());
             break;
         case 2:
             _chicken->increaseSpriteSize();
@@ -260,13 +274,27 @@ void GameLayer::handleCollectableConsumption(Sprite* collectable) {
                                              NULL);
                 _chicken->getChicken()->runAction(_sequence);
             }
+            
+            // play food sound
+            CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(soundCollectCollectable.c_str());
             break;
         case 3:
-            break;
+            ParticleExplosion* explosion = ParticleExplosion::createWithTotalParticles(200);
+            explosion->setTexture(TextureCache::getInstance()->addImage("star.png"));
+            explosion->setStartColor(Color4F::YELLOW);
+            explosion->setEndColor(Color4F::YELLOW);
+            explosion->setPosition(_chicken->getPosition());
+            this->addChild(explosion, BackgroundLayer::layerTouch);
             
-        default:
+            _chicken->setState(PlayerState::exploded);
+            
+            // play bomb sound
+            CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(soundExplosion.c_str());
+            removeCollectable(_chicken->getChicken());
             break;
     }
+    
+    // remove the object the chicken collided with
     removeCollectable(collectable);
 }
 
@@ -329,10 +357,12 @@ void GameLayer::resumeGame(cocos2d::Ref* sender) {
 }
 
 void GameLayer::removeCollectable(cocos2d::Sprite *collectable) {
+    // cleanup
     this->removeChild(collectable);
+    
     if (std::find(_collectables.begin(), _collectables.end(), collectable) != _collectables.end()) {
+        // remove the item from _collectables list
         _collectables.erase(std::find(_collectables.begin(), _collectables.end(), collectable));
-        CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(soundCollectCollectable.c_str());
     }
 }
 
@@ -463,7 +493,7 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
         // Remove colided collectables
         auto collectable = (Sprite*)contact.getShapeB()->getBody()->getNode();
         if (collectable) {
-            handleCollectableConsumption(collectable);
+            handleSpecialCollectableConsumption(collectable);
         }
     }
     // collision between collectables and chicken
@@ -474,26 +504,31 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
         // Remove colided collectable
         auto collectable = (Sprite*)contact.getShapeA()->getBody()->getNode();
         if (collectable) {
-            handleCollectableConsumption(collectable);
+            handleSpecialCollectableConsumption(collectable);
         }
     }
     
     return true;
 }
 
-
 // ########## UPDATE ########## //
 #pragma mark Update
 void GameLayer::update(float dt) {
     if (_state == GameState::init or _state == GameState::paused) { return; }
+    if (not _chicken) { return; }
+    if (_chicken->getState() == PlayerState::exploded) { return; }
     
     if (_state == GameState::finished and _chicken->getPosition().x >= _visibleSize.width) {
+        cleanStage();
+
         // goto game over scene with state: stage cleared
         auto gameOver = GameOverLayer::createScene(_score, _st, true);
         Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, gameOver));
     }
     
     if (_chicken->getState() == PlayerState::dying) {
+        cleanStage();
+
         // goto game over scene with state: stage not cleared
         auto gameOver = GameOverLayer::createScene(_score, _st, false);
         Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, gameOver));

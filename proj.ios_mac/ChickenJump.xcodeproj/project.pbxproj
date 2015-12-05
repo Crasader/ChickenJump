@@ -87,6 +87,8 @@
 		D53DBECB1BA89FC4001A812F /* resource_sd in Resources */ = {isa = PBXBuildFile; fileRef = D53DBEC81BA89FC4001A812F /* resource_sd */; };
 		D5548C1A1C0CEAA000C1C86C /* FloatingChicken.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5548C181C0CEAA000C1C86C /* FloatingChicken.cpp */; };
 		D5548C1B1C0CEAA000C1C86C /* FloatingChicken.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5548C181C0CEAA000C1C86C /* FloatingChicken.cpp */; };
+		D5548C1D1C13003900C1C86C /* explosion.wav in Resources */ = {isa = PBXBuildFile; fileRef = D5548C1C1C13003900C1C86C /* explosion.wav */; };
+		D5548C1E1C13003900C1C86C /* explosion.wav in Resources */ = {isa = PBXBuildFile; fileRef = D5548C1C1C13003900C1C86C /* explosion.wav */; };
 		D575D0F51B94DD0D0082D427 /* Trampoline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D575D0F31B94DD0D0082D427 /* Trampoline.cpp */; };
 		D575D0F61B94DD0D0082D427 /* Trampoline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D575D0F31B94DD0D0082D427 /* Trampoline.cpp */; };
 		D57CF0301B996DA400987F3E /* pickup_coin.wav in Resources */ = {isa = PBXBuildFile; fileRef = D57CF02F1B996DA400987F3E /* pickup_coin.wav */; };
@@ -218,6 +220,7 @@
 		D53DBEC81BA89FC4001A812F /* resource_sd */ = {isa = PBXFileReference; lastKnownFileType = folder; path = resource_sd; sourceTree = "<group>"; };
 		D5548C181C0CEAA000C1C86C /* FloatingChicken.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FloatingChicken.cpp; sourceTree = "<group>"; };
 		D5548C191C0CEAA000C1C86C /* FloatingChicken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FloatingChicken.h; sourceTree = "<group>"; };
+		D5548C1C1C13003900C1C86C /* explosion.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = explosion.wav; sourceTree = "<group>"; };
 		D575D0F31B94DD0D0082D427 /* Trampoline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Trampoline.cpp; sourceTree = "<group>"; };
 		D575D0F41B94DD0D0082D427 /* Trampoline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Trampoline.h; sourceTree = "<group>"; };
 		D57CF02F1B996DA400987F3E /* pickup_coin.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = pickup_coin.wav; sourceTree = "<group>"; };
@@ -353,6 +356,7 @@
 			isa = PBXGroup;
 			children = (
 				D5DBF5F31B9C9F1B004BEC38 /* bump.wav */,
+				D5548C1C1C13003900C1C86C /* explosion.wav */,
 				D57CF0321B996DD600987F3E /* jump.wav */,
 				D5AB92AC1B9E34C600FEA024 /* lost.wav */,
 				D57CF02F1B996DA400987F3E /* pickup_coin.wav */,
@@ -598,6 +602,7 @@
 				5087E78217EB970100C73F5D /* Icon-144.png in Resources */,
 				D57CF0301B996DA400987F3E /* pickup_coin.wav in Resources */,
 				3EACC98F19EE6D4300EB3C5E /* res in Resources */,
+				D5548C1D1C13003900C1C86C /* explosion.wav in Resources */,
 				50EF629817ECD46A001EB2F8 /* Icon-80.png in Resources */,
 				5087E78417EB970100C73F5D /* Icon-57.png in Resources */,
 				5087E77E17EB970100C73F5D /* Default.png in Resources */,
@@ -612,6 +617,7 @@
 			files = (
 				D5DBF5F51B9C9F1B004BEC38 /* bump.wav in Resources */,
 				D57CF0341B996DD600987F3E /* jump.wav in Resources */,
+				D5548C1E1C13003900C1C86C /* explosion.wav in Resources */,
 				503AE0F817EB97AB00D1A890 /* Icon.icns in Resources */,
 				D57CF0311B996DA400987F3E /* pickup_coin.wav in Resources */,
 				3EACC99019EE6D4300EB3C5E /* res in Resources */,

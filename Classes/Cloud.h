@@ -11,9 +11,11 @@ public:
     void spawn(cocos2d::Layer* layer);
     
 private:
+    Sprite* _cloud;
+    Layer* _layer;
+    
     Vec2 _origin;
     Size _visibleSize;
-    Sprite* _cloud;
     
 //    std::string const _spriteImage = "tree_br.png";
 };
