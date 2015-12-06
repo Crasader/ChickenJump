@@ -1,5 +1,8 @@
 #include "GameLayer.h"
 
+#include <algorithm>
+#include <random>
+
 #include "Cloud.h"
 #include "Constants.h"
 #include "Collectable.h"
@@ -21,8 +24,10 @@ static const std::string soundExplosion = "explosion.wav";
 static const std::string soundJump = "jump.wav";
 static const std::string soundLifeUp = "lifeup.wav";
 
+// Pattern to describe how many elements should appear
+// 1:3, 2:5, 3:7, 0:None
 static const int spawnPattern[] = {1, 2, 3, 0, 1, 2, 0, 3, 1, 0, 1, 2, 0, 1, 1, 0, 3, 1, 3, 0};
-static const std::vector<int> collectableSpawnPattern(spawnPattern, spawnPattern + sizeof(spawnPattern) / sizeof(int));
+static std::vector<int> collectableSpawnPattern(spawnPattern, spawnPattern + sizeof(spawnPattern) / sizeof(int));
 static int currentPatternIndex = 0;
 
 GameLayer* GameLayer::_instance = 0;
@@ -32,7 +37,7 @@ Scene* GameLayer::createScene(Stage& stage)
 {
     // 'scene' is an autorelease object
     auto scene = Scene::createWithPhysics();
-//    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+    // scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
     
     // 'layer' is an autorelease object
     GameLayer *layer = GameLayer::create();
@@ -85,6 +90,9 @@ bool GameLayer::init()
     _visibleSize = Director::getInstance()->getVisibleSize();
      CCLOG("===== GameLayer _visibleSize width-height (%dx%d)", (int)_visibleSize.width, (int)_visibleSize.height);
     // CCLOG("GameLayer _origin (x, y) (%f, %f)", _origin.x, _origin.y);
+    
+    // Shuffle our spawn pattern
+     random_shuffle(collectableSpawnPattern.begin(), collectableSpawnPattern.end());
 
     _state = GameState::init;
     Trampoline::isDrawingOngoing = false;   // new trampoline drawing can begin
@@ -216,15 +224,6 @@ void GameLayer::addTutorial() {
     auto seq = Sequence::create(draw, delay, reset, delay, NULL);
     auto tutorial = RepeatForever::create((ActionInterval*)seq);
     _finger->runAction(tutorial);
-}
-
-void GameLayer::cleanStage() {
-    // Cleanup
-    if (this->getScene()) {
-        this->getScene()->onExit();
-        this->getScene()->cleanup();
-        TextureCache::getInstance()->removeUnusedTextures();
-    }
 }
 
 void GameLayer::drawNewTrampoline() {
@@ -527,7 +526,9 @@ bool GameLayer::onTouchBegan(Touch* touch, Event* event) {
     // Remove old trampoline
     if (_trampoline) {
         this->removeChild(_trampoline->getTrampoline());
+        Trampoline* temp = _trampoline;
         _trampoline = nullptr;
+        delete temp;
     }
     
     return true;
@@ -543,7 +544,9 @@ void GameLayer::onTouchMoved(Touch* touch, Event* event) {
     // Remove old trampoline
     if (_trampoline) {
         this->removeChild(_trampoline->getTrampoline());
+        Trampoline* temp = _trampoline;
         _trampoline = nullptr;
+        delete temp;
     }
     
     // don't draw trampoline above the screen height
@@ -615,16 +618,12 @@ void GameLayer::update(float dt) {
     if (not _chicken) { return; }
     
     if (_state == GameState::finished and _chicken->getPosition().x >= _visibleSize.width) {
-        cleanStage();
-
         // goto game over scene with state: stage cleared
         auto gameOver = GameOverLayer::createScene(_score, _st, true);
         Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, gameOver));
     }
     
     if (_chicken->getState() == PlayerState::dying) {
-        cleanStage();
-
         // goto game over scene with state: stage not cleared
         auto gameOver = GameOverLayer::createScene(_score, _st, false);
         Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, gameOver));
@@ -643,7 +642,9 @@ void GameLayer::update(float dt) {
         // if you start to draw trampoline, then don't move your finger
         if (_trampoline and Trampoline::isDrawingOngoing) {
             this->removeChild(_trampoline->getTrampoline());
+            Trampoline* temp = _trampoline;
             _trampoline = nullptr;
+            delete temp;
             
             drawNewTrampoline();
             // Trampoline drawing is finished once we reach the max length of trampoline.
@@ -664,7 +665,9 @@ void GameLayer::update(float dt) {
             // remove the last trampoline alive
             if (_trampoline) {
                 this->removeChild(_trampoline->getTrampoline());
+                Trampoline* temp = _trampoline;
                 _trampoline = nullptr;
+                delete temp;
             }
 
             // slow down in 2% decrease reate
@@ -683,7 +686,7 @@ void GameLayer::updateSpecialCollectables(float playerSpeed) {
         if (not *i) { continue; }
         
         Vec2 currentPosition = (*i)->getPosition();
-        (*i)->setPosition(Vec2(currentPosition.x - COLLECTABLE_SPEED * _visibleSize.width,
+        (*i)->setPosition(Vec2(currentPosition.x - COLLECTABLE_SPEED * _visibleSize.width * playerSpeed * 0.30,
                                currentPosition.y - COLLECTABLE_FALLING_SPEED * _visibleSize.height));
         
         if (currentPosition.y < -(*i)->getContentSize().height) {

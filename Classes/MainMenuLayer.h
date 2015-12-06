@@ -16,6 +16,13 @@ public:
     
     CREATE_FUNC(MainMenuLayer);
     
+    virtual void onExit() {
+        // Cleanup
+        Layer::onExit();
+        Layer::cleanup();
+        TextureCache::getInstance()->removeUnusedTextures();
+    }
+
 private:
     void addBackground();
     void gotoGamePlayLayer(cocos2d::Ref* sender, Stage& stage);

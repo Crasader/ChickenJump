@@ -38,13 +38,6 @@ bool SplashScreenLayer::init()
 
 void SplashScreenLayer::gotoHomeLayer(float dt)
 {
-    // Cleanup
-    if (this->getScene()) {
-        this->getScene()->onExit();
-        this->getScene()->cleanup();
-        TextureCache::getInstance()->removeUnusedTextures();
-    }
-    
     auto scene = HomeLayer::createScene();
     Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }

@@ -76,13 +76,6 @@ void MainMenuLayer::addBackground() {
 
 void MainMenuLayer::gotoGamePlayLayer(cocos2d::Ref* sender, Stage& stage)
 {
-    // Cleanup
-    if (this->getScene()) {
-        this->getScene()->onExit();
-        this->getScene()->cleanup();
-        TextureCache::getInstance()->removeUnusedTextures();
-    }
-
     auto scene = GameLayer::createScene(stage);
     Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }

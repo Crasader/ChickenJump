@@ -52,6 +52,20 @@ public:
     virtual void onTouchMoved(Touch* touch, Event* event);
     
     void update(float dt);
+
+    virtual void onExit() {
+        // Cleanup
+        Layer::onExit();
+        Layer::cleanup();
+        TextureCache::getInstance()->removeUnusedTextures();
+
+        delete _background;
+        delete _layerTow;
+        delete _layerGround;
+        delete _chicken;
+        delete _trampoline;
+    }
+
 private:
     void addBG();
     void addChicken();
@@ -63,7 +77,6 @@ private:
     void addSecondLayer();
     void addTouchListners();
     void addTutorial();
-    void cleanStage();
     void drawNewTrampoline();
     void endOfStage();
     void focusOnCharacter();

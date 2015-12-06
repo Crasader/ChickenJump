@@ -8,10 +8,8 @@ using namespace cocos2d;
 class SpecialCollectable {
 public:
     SpecialCollectable(void);
-    ~SpecialCollectable(void);
     void spawn(cocos2d::Layer* layer, std::vector<Sprite*>& specialCollectables);
     
-//    void update(float speed);
 private:
     Vec2 _origin;
     Size _visibleSize;

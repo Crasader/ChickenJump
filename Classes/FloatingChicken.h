@@ -19,7 +19,6 @@ public:
     Vec2 getPosition() { return _chicken->getPosition(); }
     void setPosition(Vec2 const& position) { _chicken->setPosition(position); }
     void setState(FloatingChickenState state);
-//    void setAnimationPositions();
     
     void update(float dt);
 private:

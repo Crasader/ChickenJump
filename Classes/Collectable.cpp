@@ -4,7 +4,7 @@
 
 
 // 1:egg 2:pizza 3:bomb
-static const int pattern[] = {1, 2, 3, 1, 1, 1, 3, 2, 1, 3, 1, 1, 3, 1, 1, 2, 3, 1, 3, 1};
+static const int pattern[] = {1, 2, 1, 1, 1, 3, 1, 1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1};
 //static const int pattern[] = {2, 3, 2, 3};
 static const std::vector<int> collectablePattern(pattern, pattern + sizeof(pattern) / sizeof(int));
 static int currentPatternIndex = 0;
@@ -12,10 +12,8 @@ static int currentPatternIndex = 0;
 Collectable::Collectable(void){
     _origin = Director::getInstance()->getVisibleOrigin();
     _visibleSize = Director::getInstance()->getVisibleSize();
-}
-
-Collectable::~Collectable() {
-    CCLOG("===== Cleanup Collectable");
+    
+//    std::random_shuffle (collectablePattern.begin(), collectablePattern.end(), collectablePattern);
 }
 
 void Collectable::spawn(cocos2d::Layer* layer, std::vector<Sprite*>& collectables, int pattern) {

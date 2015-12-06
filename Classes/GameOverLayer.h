@@ -16,6 +16,13 @@ public:
     
     CREATE_FUNC(GameOverLayer);
     
+    virtual void onExit() {
+        // Cleanup
+        Layer::onExit();
+        Layer::cleanup();
+        TextureCache::getInstance()->removeUnusedTextures();
+    }
+
 private:
     void gotoMainMenuLayer(cocos2d::Ref* sender);
     

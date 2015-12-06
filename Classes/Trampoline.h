@@ -10,8 +10,6 @@ public:
     Trampoline(void);
     void createTrampoline(cocos2d::Layer* layer, Vec2 lineStartPoint, Vec2 lineEndPoint);
     Sprite* getTrampoline() const;
-//    inline void setDrawingFinished(bool val) { _isDrawingFinished = val; }
-//    inline bool isDrawingFinished() { return _isDrawingFinished; }
     void update(float speed);
 
     static bool isDrawingOngoing;

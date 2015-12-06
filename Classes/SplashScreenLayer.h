@@ -14,6 +14,13 @@ public:
     
     CREATE_FUNC(SplashScreenLayer);
     
+    virtual void onExit() {
+        // Cleanup
+        Layer::onExit();
+        Layer::cleanup();
+        TextureCache::getInstance()->removeUnusedTextures();
+    }
+    
 private:
     void gotoHomeLayer(float dt);
     

@@ -14,10 +14,6 @@ SpecialCollectable::SpecialCollectable(void){
     _visibleSize = Director::getInstance()->getVisibleSize();
 }
 
-SpecialCollectable::~SpecialCollectable(void){
-    CCLOG("===== Cleanup SpecialCollectable");
-}
-
 void SpecialCollectable::spawn(cocos2d::Layer* layer, std::vector<Sprite*>& specialCollectables) {
     if (not layer) { return; }
     
@@ -29,7 +25,7 @@ void SpecialCollectable::spawn(cocos2d::Layer* layer, std::vector<Sprite*>& spec
     bonusCollectable->setAnchorPoint(Vec2(0.5f, 1.0f));
     bonusCollectable->setTag(collectableType); // used as CollectableType:: 1:egg 2:pizza 3:bomb 4:life
     
-    int positionX = RandomHelper::random_int((int)(_visibleSize.width * 0.55), (int)(_visibleSize.width * 0.75));
+    int positionX = RandomHelper::random_int((int)(_visibleSize.width * 0.65), (int)(_visibleSize.width * 0.80));
     int positionY = _visibleSize.height + bonusCollectable->getContentSize().height;
     bonusCollectable->setPosition(Vec2(positionX, positionY));
     

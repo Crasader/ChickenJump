@@ -14,6 +14,13 @@ public:
     CREATE_FUNC(HomeLayer);
 
     void update(float dt);
+    
+    virtual void onExit() {
+        // Cleanup
+        Layer::onExit();
+        Layer::cleanup();
+        TextureCache::getInstance()->removeUnusedTextures();
+    }
 private:
     void addBackground();
     void addFlyingChickens();

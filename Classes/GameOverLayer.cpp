@@ -112,13 +112,6 @@ bool GameOverLayer::init()
 
 void GameOverLayer::gotoMainMenuLayer(cocos2d::Ref* sender)
 {
-    // Cleanup
-    if (this->getScene()) {
-        this->getScene()->onExit();
-        this->getScene()->cleanup();
-        TextureCache::getInstance()->removeUnusedTextures();
-    }
-
     auto scene = MainMenuLayer::createScene();
     Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }
