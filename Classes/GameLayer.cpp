@@ -299,6 +299,8 @@ void GameLayer::handleSpecialCollectableConsumption(Sprite* collectable) {
             }
             
             _chicken->decreaseLife();
+            _scoreHUD->updateLife(_chicken->getLives());
+
             if (not _chicken->getLives()) {
                 // chicken dead. game over.
                 auto callbackStopMovement = CallFunc::create([this](){
@@ -315,7 +317,6 @@ void GameLayer::handleSpecialCollectableConsumption(Sprite* collectable) {
             else {
                 // have more lives
                 _chicken->setState(PlayerState::newBorn);
-                _scoreHUD->updateLife(_chicken->getLives());
             }
             
             break;
