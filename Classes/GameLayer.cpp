@@ -306,6 +306,26 @@ void GameLayer::handleCollectableConsumption(Sprite* collectable) {
             removeCollectable(collectable);
             break;
         }
+        case 3: {   // scrolling bomb
+            _chicken->getChicken()->setVisible(false);
+
+            addExplosionEffect();
+
+            _chicken->decreaseLife();
+            _scoreHUD->updateLife(_chicken->getLives());
+
+            if (not _chicken->getLives()) {
+                lastLifeExploded();
+            }
+            else {
+                // have more lives
+                _chicken->setState(PlayerState::newBorn);
+            }
+
+            // remove the object the chicken collided with
+            removeCollectable(collectable);
+            break;
+        }
         case 4: {   // falling bomb
             _chicken->getChicken()->setVisible(false);
             
@@ -323,26 +343,6 @@ void GameLayer::handleCollectableConsumption(Sprite* collectable) {
                 _chicken->setState(PlayerState::newBorn);
             }
             
-            // remove the object the chicken collided with
-            removeCollectable(collectable);
-            break;
-        }
-        case 3: {   // scrolling bomb
-            _chicken->getChicken()->setVisible(false);
-
-            addExplosionEffect();
-
-            _chicken->decreaseLife();
-            _scoreHUD->updateLife(_chicken->getLives());
-
-            if (not _chicken->getLives()) {
-                lastLifeExploded();
-            }
-            else {
-                // have more lives
-                _chicken->setState(PlayerState::newBorn);
-            }
-
             // remove the object the chicken collided with
             removeCollectable(collectable);
             break;
