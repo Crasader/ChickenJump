@@ -14,6 +14,7 @@ static const std::string imageScore = "score.png";
 static const std::string imagePause = "pause.png";
 static const std::string imageResume = "resume.png";
 static const std::string imageFinger = "finger.png";
+static const std::string imageExplosion = "explosion.png";
 static const std::string soundJump = "jump.wav";
 static const std::string soundCollectCollectable = "pickup_coin.wav";
 static const std::string soundExplosion = "explosion.wav";
@@ -289,7 +290,7 @@ void GameLayer::handleSpecialCollectableConsumption(Sprite* collectable) {
 
             {   // Explosion Effect
                 ParticleExplosion* explosion = ParticleExplosion::createWithTotalParticles(100);
-                explosion->setTexture(TextureCache::getInstance()->addImage("star.png"));
+                explosion->setTexture(TextureCache::getInstance()->addImage(imageExplosion));
                 explosion->setStartColor(Color4F::YELLOW);
                 explosion->setEndColor(Color4F::YELLOW);
                 explosion->setScale(0.75f);
