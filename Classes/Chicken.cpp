@@ -142,7 +142,7 @@ void Chicken::setState(PlayerState state) {
     _state = state;
     switch (_state) {
         case start:
-            _vector.y = 0;
+            _vector = Vec2(0, 0);
             break;
         case newBorn: {
             // stop falling down, stop scrolling as well.
@@ -164,6 +164,7 @@ void Chicken::setState(PlayerState state) {
             auto delay = DelayTime::create(0.2);
 
             Sequence* blink = Sequence::create(timeToReborn,
+                                               callbackHideChicken, delay, callbackShowChicken, delay,
                                                callbackHideChicken, delay, callbackShowChicken, delay,
                                                callbackHideChicken, delay, callbackShowChicken, delay,
                                                callbackHideChicken, delay, callbackShowChicken, delay,

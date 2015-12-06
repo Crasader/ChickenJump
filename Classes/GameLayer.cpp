@@ -298,9 +298,25 @@ void GameLayer::handleSpecialCollectableConsumption(Sprite* collectable) {
                 this->addChild(explosion, BackgroundLayer::layerTouch);
             }
             
-            _chicken->setState(PlayerState::newBorn);
             _chicken->decreaseLife();
-            _scoreHUD->updateLife(_chicken->getLives());
+            if (not _chicken->getLives()) {
+                // chicken dead. game over.
+                auto callbackStopMovement = CallFunc::create([this](){
+                    _chicken->setState(PlayerState::start);
+                });
+                auto callbackChickenDead = CallFunc::create([this](){
+                    _chicken->setState(PlayerState::dying);
+                });
+                
+                Sequence* action = Sequence::create(callbackStopMovement, DelayTime::create(3.0), callbackChickenDead, NULL);
+                this->runAction(action);
+
+            }
+            else {
+                // have more lives
+                _chicken->setState(PlayerState::newBorn);
+                _scoreHUD->updateLife(_chicken->getLives());
+            }
             
             break;
         }
