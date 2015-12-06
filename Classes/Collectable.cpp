@@ -14,6 +14,10 @@ Collectable::Collectable(void){
     _visibleSize = Director::getInstance()->getVisibleSize();
 }
 
+Collectable::~Collectable() {
+    CCLOG("===== Cleanup Collectable");
+}
+
 void Collectable::spawn(cocos2d::Layer* layer, std::vector<Sprite*>& collectables, int pattern) {
     if (not layer) { return; }
     
@@ -51,6 +55,8 @@ void Collectable::spawn(cocos2d::Layer* layer, std::vector<Sprite*>& collectable
     float positionY;
     for (int i = 0; i < numberOfCollectable; ++i) {
         Sprite* collectable = Sprite::create(String::createWithFormat("egg%i.png", collectableType)->getCString());
+        if (not collectable) { continue; }
+        
         collectable->setTag(collectableType); // used as CollectableType:: 1:egg 2:pizza 3:bomb
         
         positionX += collectable->getContentSize().width * 1.5; // distance must be atleast 1.5 collectable width

@@ -5,12 +5,10 @@
 
 using namespace cocos2d;
 
-
-class Collectable;
-
 class Collectable {
 public:
     Collectable(void);
+    ~Collectable(void);
     void spawn(cocos2d::Layer* layer, std::vector<Sprite*>& collectables, int pattern);
     
 private:

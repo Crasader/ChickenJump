@@ -22,6 +22,7 @@ typedef enum
 } BackgroundLayer;
 
 // Number of lives
+#define CHICKEN_LIVES_MAX               5
 #define CHICKEN_LIVES                   3
 
 #define STAGE_LENGTH                    20
@@ -73,9 +74,9 @@ typedef enum
 
 
 // COLLECTABLE
-#define COLLECTABLE_SPAWN_FREQUENCY             0.001
-#define COLLECTABLE_SPEED                       LAYER_TWO_SPEED
-
+#define COLLECTABLE_SPAWN_FREQUENCY     0.001
+#define COLLECTABLE_SPEED               LAYER_TWO_SPEED
+#define COLLECTABLE_FALLING_SPEED       0.003
 // SCORE LABEL
 #define SCORE_FONT_SIZE                 0.085
 

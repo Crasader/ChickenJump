@@ -10,6 +10,7 @@
 #include "LayerTwo.h"
 #include "PauseLayer.h"
 #include "ScoreLayer.h"
+#include "SpecialCollectable.h"
 #include "Trampoline.h"
 #include "Stage.h"
 
@@ -55,6 +56,7 @@ private:
     void addBG();
     void addChicken();
     void addContactListners();
+    void addExplosionEffect();
     void addFirstLayer();
     void addGroundLayer();
     void addPauseMenu();
@@ -65,16 +67,20 @@ private:
     void drawNewTrampoline();
     void endOfStage();
     void focusOnCharacter();
-    void handleSpecialCollectableConsumption(Sprite* collectable);
+    void handleCollectableConsumption(Sprite* collectable);
     void initScoreHUDLives();
     void jump(float trampolinePositionY);
+    void lastLifeExploded();
     void releaseTouch();
     void removeCollectable(Sprite* collectable);
+    void removeSpecialCollectable(Sprite* collectable);
     void spawnCloud(float dt);
     void spawnCollectable();
     void spawnEndOfStageItem();
+    void spawnSpecialObject();
     void speedUp();
     void updateCollectables(float speed);
+    void updateSpecialCollectables(float speed);
     void updateScoreLabel();
     void updateStageComplesion(float speed);
     
@@ -86,6 +92,7 @@ private:
     Chicken* _chicken;
     Trampoline* _trampoline;
     std::vector<Sprite*> _collectables;
+    std::vector<Sprite*> _specialCollectables;
     GameState _state;
     Sequence* _sequence;
 
@@ -97,7 +104,9 @@ private:
     unsigned int _score;
     
     float _stageLength;
-    float _elapsedStage;
+    float _stageRemaining;
+    float _distanceForNewCollectables;
+    float _distanceForNewSpecialObject;
 
     Vec2 _lineStartPoint;
     Vec2 _lineEndPoint;

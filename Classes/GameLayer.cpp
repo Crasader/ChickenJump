@@ -15,9 +15,11 @@ static const std::string imagePause = "pause.png";
 static const std::string imageResume = "resume.png";
 static const std::string imageFinger = "finger.png";
 static const std::string imageExplosion = "explosion.png";
-static const std::string soundJump = "jump.wav";
+
 static const std::string soundCollectCollectable = "pickup_coin.wav";
 static const std::string soundExplosion = "explosion.wav";
+static const std::string soundJump = "jump.wav";
+static const std::string soundLifeUp = "lifeup.wav";
 
 static const int spawnPattern[] = {1, 2, 3, 0, 1, 2, 0, 3, 1, 0, 1, 2, 0, 1, 1, 0, 3, 1, 3, 0};
 static const std::vector<int> collectableSpawnPattern(spawnPattern, spawnPattern + sizeof(spawnPattern) / sizeof(int));
@@ -38,11 +40,9 @@ Scene* GameLayer::createScene(Stage& stage)
     
     // Singletone Instance
     _instance = layer;
-
-    // add layer as a child to scene
     scene->addChild(layer);
 
-    // hold the stage and set it as played
+    // hold the stage and set it as played and pass that to MainMenuLayer through GameOverLayer
     _st = stage;
     _st.setAsPlayed();
     
@@ -83,15 +83,18 @@ bool GameLayer::init()
     // 2. Origin & window size
     _origin = Director::getInstance()->getVisibleOrigin();
     _visibleSize = Director::getInstance()->getVisibleSize();
-    // CCLOG("GameLayer _visibleSize width-height (%dx%d)", (int)_visibleSize.width, (int)_visibleSize.height);
+     CCLOG("===== GameLayer _visibleSize width-height (%dx%d)", (int)_visibleSize.width, (int)_visibleSize.height);
     // CCLOG("GameLayer _origin (x, y) (%f, %f)", _origin.x, _origin.y);
 
     _state = GameState::init;
     Trampoline::isDrawingOngoing = false;   // new trampoline drawing can begin
     
-    _stageLength = _visibleSize.width * STAGE_LENGTH;  // _visibleSize.width: 480.000
-    // _elapsedStage = 0;
-    _elapsedStage = _visibleSize.width * 0.50; // moving ahead collectable spwaning
+    _stageLength = _stageRemaining = _visibleSize.width * STAGE_LENGTH;  // _visibleSize.width: 480.000
+    // _distanceForNewCollectables = 0;
+    _distanceForNewCollectables = _visibleSize.width * 0.50; // moving ahead first collectable spwaning
+    
+    // this determines when to make a bomb/life fall.
+    _distanceForNewSpecialObject = _visibleSize.width * 1.50;
     
     // add static background
 //    addBG();
@@ -113,9 +116,6 @@ bool GameLayer::init()
     
     // Tutorial
     addTutorial();
-    
-    // init score HUD's lives
-//    initScoreHUDLives();
     
 
     // Spawn cloud
@@ -153,6 +153,20 @@ void GameLayer::addContactListners() {
     
     contactListener->onContactBegin = CC_CALLBACK_1(GameLayer::onContactBegin, this);
     Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, this);
+}
+
+void GameLayer::addExplosionEffect() {
+    // Explosion Effect
+    ParticleExplosion* explosion = ParticleExplosion::createWithTotalParticles(100);
+    explosion->setTexture(TextureCache::getInstance()->addImage(imageExplosion));
+    explosion->setStartColor(Color4F::YELLOW);
+    explosion->setEndColor(Color4F::YELLOW);
+    explosion->setScale(0.75f);
+    explosion->setSpeed(5);
+    explosion->setPosition(_chicken->getPosition());
+    this->addChild(explosion, BackgroundLayer::layerTouch);
+    
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(soundExplosion.c_str());    // play bomb sound
 }
 
 void GameLayer::addFirstLayer() {
@@ -254,16 +268,20 @@ void GameLayer::focusOnCharacter() {
     }
 }
 
-void GameLayer::handleSpecialCollectableConsumption(Sprite* collectable) {
+void GameLayer::handleCollectableConsumption(Sprite* collectable) {
     // 1:egg; 2:pizza; 3:bomb
     switch (collectable->getTag()) {
-        case 1:
+        case 1: {     // scrolling egg
             // Egg collection is the basic goal of the game.
             
             // play collection sound
             CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(soundCollectCollectable.c_str());
+            
+            // remove the object the chicken collided with
+            removeCollectable(collectable);
             break;
-        case 2:
+        }
+        case 2: {    // scrolling pizza
             _chicken->increaseSpriteSize();
             
             {// delay + decreaseSize + delay + decreaseSize + delay + decreaseSizeToNormal
@@ -283,49 +301,61 @@ void GameLayer::handleSpecialCollectableConsumption(Sprite* collectable) {
             
             // play food sound
             CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(soundCollectCollectable.c_str());
-            break;
-        case 3: {
-            _chicken->getChicken()->setVisible(false);
-            CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(soundExplosion.c_str());    // play bomb sound
 
-            {   // Explosion Effect
-                ParticleExplosion* explosion = ParticleExplosion::createWithTotalParticles(100);
-                explosion->setTexture(TextureCache::getInstance()->addImage(imageExplosion));
-                explosion->setStartColor(Color4F::YELLOW);
-                explosion->setEndColor(Color4F::YELLOW);
-                explosion->setScale(0.75f);
-                explosion->setSpeed(5);
-                explosion->setPosition(_chicken->getPosition());
-                this->addChild(explosion, BackgroundLayer::layerTouch);
-            }
+            // remove the object the chicken collided with
+            removeCollectable(collectable);
+            break;
+        }
+        case 4: {   // falling bomb
+            _chicken->getChicken()->setVisible(false);
+            
+            addExplosionEffect();
+            removeSpecialCollectable(collectable);
             
             _chicken->decreaseLife();
             _scoreHUD->updateLife(_chicken->getLives());
-
+            
             if (not _chicken->getLives()) {
-                // chicken dead. game over.
-                auto callbackStopMovement = CallFunc::create([this](){
-                    _chicken->setState(PlayerState::start);
-                });
-                auto callbackChickenDead = CallFunc::create([this](){
-                    _chicken->setState(PlayerState::dying);
-                });
-                
-                Sequence* action = Sequence::create(callbackStopMovement, DelayTime::create(3.0), callbackChickenDead, NULL);
-                this->runAction(action);
-
+                lastLifeExploded();
             }
             else {
                 // have more lives
                 _chicken->setState(PlayerState::newBorn);
             }
             
+            // remove the object the chicken collided with
+            removeCollectable(collectable);
+            break;
+        }
+        case 3: {   // scrolling bomb
+            _chicken->getChicken()->setVisible(false);
+
+            addExplosionEffect();
+
+            _chicken->decreaseLife();
+            _scoreHUD->updateLife(_chicken->getLives());
+
+            if (not _chicken->getLives()) {
+                lastLifeExploded();
+            }
+            else {
+                // have more lives
+                _chicken->setState(PlayerState::newBorn);
+            }
+
+            // remove the object the chicken collided with
+            removeCollectable(collectable);
+            break;
+        }
+        case 5: {    // bonus life
+            _chicken->increaseLife();
+            _scoreHUD->updateLife(_chicken->getLives());
+            removeSpecialCollectable(collectable);
+            
+            CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(soundLifeUp.c_str());
             break;
         }
     }
-    
-    // remove the object the chicken collided with
-    removeCollectable(collectable);
 }
 
 // Set scoreHUD lives with Chicken's lives
@@ -342,6 +372,19 @@ void GameLayer::jump(float trampolinePositionY) {
         speedUp();
         // releaseTouch(); // finish trampoline drawing
     }
+}
+
+void GameLayer::lastLifeExploded() {
+    // chicken dead. game over.
+    auto callbackStopMovement = CallFunc::create([this](){
+        _chicken->setState(PlayerState::start);
+    });
+    auto callbackChickenDead = CallFunc::create([this](){
+        _chicken->setState(PlayerState::dying);
+    });
+    
+    Sequence* action = Sequence::create(callbackStopMovement, DelayTime::create(3.0), callbackChickenDead, NULL);
+    this->runAction(action);
 }
 
 void GameLayer::pauseGame(cocos2d::Ref* sender) {
@@ -402,6 +445,16 @@ void GameLayer::removeCollectable(cocos2d::Sprite *collectable) {
     }
 }
 
+void GameLayer::removeSpecialCollectable(cocos2d::Sprite *collectable) {
+    // cleanup
+    this->removeChild(collectable);
+    
+    if (std::find(_specialCollectables.begin(), _specialCollectables.end(), collectable) != _specialCollectables.end()) {
+        // remove the item from _collectables list
+        _specialCollectables.erase(std::find(_specialCollectables.begin(), _specialCollectables.end(), collectable));
+    }
+}
+
 void GameLayer::releaseTouch() {
     if (_trampoline) { Trampoline::isDrawingOngoing = false; }
     _lineStartPoint = _lineEndPoint;
@@ -411,6 +464,7 @@ void GameLayer::spawnCollectable() {
     if (_state == GameState::started) {
         Collectable* collectable = new Collectable();
         collectable->spawn(this, _collectables, collectableSpawnPattern.at(currentPatternIndex++ % collectableSpawnPattern.size()));
+        delete collectable;
     }
 }
 
@@ -420,6 +474,13 @@ void GameLayer::spawnEndOfStageItem() {
     
     _flag->setPosition(_visibleSize.width + _flag->getContentSize().width * 1.5, _visibleSize.height * 0.5);
     this->addChild(_flag, BackgroundLayer::layerTouch);
+}
+
+void GameLayer::spawnSpecialObject() {
+    if (_state == GameState::started) {
+        SpecialCollectable* bonusObj = new SpecialCollectable();
+        bonusObj->spawn(this, _specialCollectables);
+    }
 }
 
 void GameLayer::spawnCloud(float dt) {
@@ -529,7 +590,7 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
         // Remove colided collectables
         auto collectable = (Sprite*)contact.getShapeB()->getBody()->getNode();
         if (collectable) {
-            handleSpecialCollectableConsumption(collectable);
+            handleCollectableConsumption(collectable);
         }
     }
     // collision between collectables and chicken
@@ -540,7 +601,7 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
         // Remove colided collectable
         auto collectable = (Sprite*)contact.getShapeA()->getBody()->getNode();
         if (collectable) {
-            handleSpecialCollectableConsumption(collectable);
+            handleCollectableConsumption(collectable);
         }
     }
     
@@ -589,6 +650,7 @@ void GameLayer::update(float dt) {
         }
         
         updateCollectables(_chicken->getVectorX());
+        updateSpecialCollectables(_chicken->getVectorX());
         
         // keep the camera on the player
 //        focusOnCharacter();
@@ -615,13 +677,32 @@ void GameLayer::update(float dt) {
     }
 }
 
+void GameLayer::updateSpecialCollectables(float playerSpeed) {
+    for (auto i = _specialCollectables.begin(); i != _specialCollectables.end(); ++i) {
+
+        if (not *i) { continue; }
+        
+        Vec2 currentPosition = (*i)->getPosition();
+        (*i)->setPosition(Vec2(currentPosition.x - COLLECTABLE_SPEED * _visibleSize.width,
+                               currentPosition.y - COLLECTABLE_FALLING_SPEED * _visibleSize.height));
+        
+        if (currentPosition.y < -(*i)->getContentSize().height) {
+            this->removeChild(*i);
+            _specialCollectables.erase(i);
+            --i; // handle new number one's position in next iteration
+        }
+    }    
+}
+
 void GameLayer::updateCollectables(float playerSpeed) {
     for (int i = 0; i < _collectables.size(); ++i) {
-        Sprite* e = _collectables.at(i);
-        e->setPositionX(e->getPosition().x - COLLECTABLE_SPEED * _visibleSize.width * playerSpeed);
+        Sprite* s = _collectables.at(i);
+        if (not s) { continue; }
         
-        if (e->getPositionX() < -e->getContentSize().width) {
-            this->removeChild(e);
+        s->setPositionX(s->getPosition().x - COLLECTABLE_SPEED * _visibleSize.width * playerSpeed);
+        
+        if (s->getPositionX() < -s->getContentSize().width) {
+            this->removeChild(s);
             _collectables.erase(_collectables.begin() + i);
             
             --i; // handle new number one's position in next iteration
@@ -636,20 +717,29 @@ void GameLayer::updateScoreLabel() {
 }
 
 void GameLayer::updateStageComplesion(float speed) {
-    _elapsedStage += speed * LAYER_TWO_SPEED * _visibleSize.width;
-    if (_elapsedStage > _visibleSize.width * 0.5) {
-        _stageLength -= _elapsedStage;
-        CCLOG("Stage Remaining: %f", _stageLength);
-        _elapsedStage = 0;
+    _distanceForNewCollectables += speed * LAYER_TWO_SPEED * _visibleSize.width;
+    _distanceForNewSpecialObject += speed * LAYER_TWO_SPEED * _visibleSize.width;
+    
+    if (_distanceForNewCollectables > _visibleSize.width * 0.5) {
+        _stageRemaining -= _distanceForNewCollectables;
+        CCLOG("Stage Remaining: %f", _stageRemaining);
+        _distanceForNewCollectables = 0;
         
         // spawn collectables based on scrolled length
         spawnCollectable();
         
-        if (_stageLength <= 0) {
+        // FINISH THE STAGE
+        if (_stageRemaining <= 0) {
             _state = GameState::finishing;
         }
-        // BASED ON NUMBER OF THIS ELAPSING, FINISH THE STAGE
     }
+
+    if (_distanceForNewSpecialObject > _visibleSize.width * 2) {
+        _distanceForNewSpecialObject = 0;
+        
+        spawnSpecialObject();
+    }
+    
 }
 
 

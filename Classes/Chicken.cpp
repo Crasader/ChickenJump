@@ -1,6 +1,9 @@
 #include "Chicken.h"
 
 #include "Constants.h"
+#include "SimpleAudioEngine.h"
+
+static const std::string soundDead = "dead.wav";
 
 Chicken::Chicken(void){
     _origin = Director::getInstance()->getVisibleOrigin();
@@ -91,8 +94,9 @@ float Chicken::getVectorX() {
 
 void Chicken::increaseLife() {
     if (_state == PlayerState::dying) { return; }
-    
-    ++_lives;
+    if (_lives +1 <= CHICKEN_LIVES_MAX) {
+        ++_lives;
+    }
 }
 
 void Chicken::increaseSpriteSize() {
@@ -223,7 +227,8 @@ void Chicken::update(float speed) {
     if (_chicken->getPositionY() < -_chicken->getContentSize().height * 0.5 or
         _chicken->getPositionX() < -_chicken->getContentSize().width * 1.5) {
         _state = PlayerState::dying;
-        CCLOG("Player DEAD. PLEASE RESET");
+        
+        CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(soundDead.c_str());
     }
 }
 
