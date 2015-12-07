@@ -47,7 +47,7 @@ void Chicken::createChicken(cocos2d::Layer *layer) {
     setState(PlayerState::falling);
     
     // initial position
-    _chicken->setPosition(_visibleSize.width * 0.30 + _origin.x, _visibleSize.height * 0.9 + _origin.y);
+    _chicken->setPosition(_visibleSize.width * 0.30, _visibleSize.height * 0.9);
     
     // Flapping wings animation
     setAnimation();
@@ -152,6 +152,14 @@ void Chicken::setState(PlayerState state) {
             // stop falling down, stop scrolling as well.
             _vector = Vec2(0, 0);
             
+            auto callbackResetChicken = CallFunc::create([this](){
+                // reset size & weight; move to a stable position; remove collide power
+                resetSizeAndWeight();
+                _chicken->setPosition(_visibleSize.width * 0.30, _visibleSize.height * 0.60);
+                _chicken->getPhysicsBody()->setContactTestBitmask(CONTACTTEST_BITMASK_CHICKEN_NON);
+
+            });
+            
             auto callbackShowChicken = CallFunc::create([this](){
                 _chicken->setVisible(true);
             });
@@ -162,14 +170,15 @@ void Chicken::setState(PlayerState state) {
 
             auto callbackStateFalling = CallFunc::create([this](){
                 _state = PlayerState::falling;
+
+                // get the collide power back
+                _chicken->getPhysicsBody()->setContactTestBitmask(CONTACTTEST_BITMASK_CHICKEN_ALL);
             });
             
             auto timeToReborn = DelayTime::create(3.0);
             auto delay = DelayTime::create(0.2);
 
-            Sequence* blink = Sequence::create(timeToReborn,
-                                               callbackHideChicken, delay, callbackShowChicken, delay,
-                                               callbackHideChicken, delay, callbackShowChicken, delay,
+            Sequence* blink = Sequence::create(timeToReborn, callbackResetChicken,
                                                callbackHideChicken, delay, callbackShowChicken, delay,
                                                callbackHideChicken, delay, callbackShowChicken, delay,
                                                callbackHideChicken, delay, callbackShowChicken, delay,

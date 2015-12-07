@@ -22,11 +22,12 @@ typedef enum
 } BackgroundLayer;
 
 // Number of lives
-#define CHICKEN_LIVES_MAX               5
+#define CHICKEN_LIVES_MAX               3
 #define CHICKEN_LIVES                   3
 
 #define STAGE_LENGTH                    20
 
+// Highscore UserDefault String
 #define FIRST_TIME                      "FIRST_TIME"
 #define HIGHSCORE                       "HIGHSCORE"
 
@@ -42,6 +43,9 @@ typedef enum
 // CLOUD
 #define CLOUD_SPAWN_FREQUENCY           0.005   // How frequently spawn function will be called (Bigger = Less Frequently)
 #define CLOUD_SPEED                     0.030   // Amount of time the cloud gets to cross the screen (Bigger = Slow)
+
+// Special Collectable spawn frequency
+#define SPECIAL_OBJ_SPAWN_DISTANCE      3       // after this value * screen width new special collectable will spawn
 
 // CHICKEN
 #define SPEED_CHANGE_FREQUENCY          0.01
@@ -71,6 +75,7 @@ typedef enum
 #define CATEGORY_BITMASK_COLLECTABLE    0x0004
 #define CONTACTTEST_BITMASK_CHICKEN_EGG 0x0004
 #define CONTACTTEST_BITMASK_CHICKEN_ALL 0x0006
+#define CONTACTTEST_BITMASK_CHICKEN_NON 0x0000
 
 
 // COLLECTABLE

@@ -68,7 +68,7 @@ void Collectable::spawn(cocos2d::Layer* layer, std::vector<Sprite*>& collectable
         body->setDynamic(false);
         collectable->setPhysicsBody(body);
         
-        layer->addChild(collectable, BackgroundLayer::layerChicken);
+        layer->addChild(collectable, BackgroundLayer::layerGround);
         collectables.push_back(collectable);
     }
 }

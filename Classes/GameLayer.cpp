@@ -737,7 +737,7 @@ void GameLayer::updateStageComplesion(float speed) {
         }
     }
 
-    if (_distanceForNewSpecialObject > _visibleSize.width * 2) {
+    if (_distanceForNewSpecialObject > _visibleSize.width * SPECIAL_OBJ_SPAWN_DISTANCE) {
         _distanceForNewSpecialObject = 0;
         
         spawnSpecialObject();

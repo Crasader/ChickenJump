@@ -63,7 +63,7 @@ void Trampoline::createTrampoline(cocos2d::Layer* layer, Vec2 lineStartPoint, Ve
 
     }
     
-    layer->addChild(_trampoline, BackgroundLayer::layerChicken);
+    layer->addChild(_trampoline, BackgroundLayer::layerGround);
 }
 
 void Trampoline::update(float speed) {
