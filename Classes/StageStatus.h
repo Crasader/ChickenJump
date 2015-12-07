@@ -15,6 +15,13 @@ public:
     static void saveStage(std::vector<Stage> const& stages);
     static void unlockStage(Stage& name);
     static void unlockNextStage(const Stage& currentStage);
+    
+    static const std::string france;
+    static const std::string germany;
+    static const std::string england;
+    static const std::string spain;
+    static const std::string italy;
+    static const std::string netherlands;
 };
 
 #endif /* #define(__STAGE_STATUS__) */

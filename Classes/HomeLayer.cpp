@@ -42,6 +42,14 @@ bool HomeLayer::init()
     // Add flying chickens
     addFlyingChickens();
     
+    {
+        // Snow Effect
+        ParticleSnow* explosion = ParticleSnow::create();
+        explosion->setTexture(TextureCache::getInstance()->addImage("snowflake.png"));
+        explosion->setPosition(_visibleSize.width * 0.5, _visibleSize.height);
+        this->addChild(explosion, BackgroundLayer::layerTouch);
+    }
+    
 
     this->scheduleUpdate();
 

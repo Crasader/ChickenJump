@@ -5,12 +5,12 @@
 
 using namespace cocos2d;
 
-static const std::string france = "FR";
-static const std::string germany = "DE";
-static const std::string england = "UK";
-static const std::string spain = "SP";
-static const std::string italy = "IT";
-static const std::string netherlands = "NL";
+const std::string StageStatus::france = "FR";
+const std::string StageStatus::germany = "DE";
+const std::string StageStatus::england = "UK";
+const std::string StageStatus::spain = "SP";
+const std::string StageStatus::italy = "IT";
+const std::string StageStatus::netherlands = "NL";
 
 void StageStatus::createFreshStages() {
     // name, imagefile, score, star, isunlocked, isPlayed
