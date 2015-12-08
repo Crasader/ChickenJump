@@ -29,6 +29,7 @@ private:
     void addPlayMenu();
     void gotoMainMenuLayer(cocos2d::Ref* sender);
     void initStage();
+    void toggleSound(Ref* ref);
     
     FloatingChicken* _flyingChicken1;
     FloatingChicken* _flyingChicken2;
