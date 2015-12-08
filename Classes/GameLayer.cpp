@@ -9,7 +9,7 @@
 #include "GameOverLayer.h"
 #include "ScoreLayer.h"
 #include "SimpleAudioEngine.h"
-#include "Stage.h"
+#include "StageStatus.h"
 
 using namespace cocos2d;
 
@@ -563,6 +563,21 @@ void GameLayer::onTouchMoved(Touch* touch, Event* event) {
 
 void GameLayer::onTouchEnded(Touch* touch, Event* event) {
     Trampoline::isDrawingOngoing = false;
+}
+
+void GameLayer::onEnterTransitionDidFinish() {
+    if (_st.getName() == StageStatus::germany) {
+        ParticleSnow* effect = ParticleSnow::create();
+        effect->setTexture(TextureCache::getInstance()->addImage("snowflake.png"));
+        effect->setPosition(_visibleSize.width * 0.5, _visibleSize.height);
+        this->addChild(effect, BackgroundLayer::layerTouch);
+    }
+    else if (_st.getName() == StageStatus::england) {
+        ParticleRain* effect = ParticleRain::create();
+        effect->setTexture(TextureCache::getInstance()->addImage("raindrop.png"));
+        effect->setPosition(_visibleSize.width * 0.5, _visibleSize.height);
+        this->addChild(effect, BackgroundLayer::layerTouch);
+    }
 }
 
 
