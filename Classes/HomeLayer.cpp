@@ -12,6 +12,12 @@ Scene* HomeLayer::createScene()
     auto layer = HomeLayer::create();
     scene->addChild(layer);
 
+    {   // Settings HUD
+        SettingsMenuLayer* settingsHUD = SettingsMenuLayer::create();
+        scene->addChild(settingsHUD);
+        layer->_settingsHUD = settingsHUD;
+    }
+
     return scene;
 }
 
@@ -52,16 +58,16 @@ bool HomeLayer::init()
     }
     
     {
-        float currentSoundSettings = UserDefault::getInstance()->getFloatForKey(VOLUME, 1.0f);
-        MenuItem* mute = MenuItemImage::create("mute.png", "mute.png");
-        MenuItem* unmute = MenuItemImage::create("unmute.png", "unmute.png");
-        MenuItemToggle* muteToggleItem = MenuItemToggle::createWithCallback(CC_CALLBACK_1(HomeLayer::toggleSound, this), mute, unmute, NULL);
-        Menu* muteToggleMenu = Menu::create(muteToggleItem, NULL);
-        muteToggleMenu->setPosition(_visibleSize.width * 0.5, mute->getContentSize().height * 0.5);
-        muteToggleItem->setSelectedIndex(currentSoundSettings);
-
-        this->addChild(muteToggleMenu, BackgroundLayer::layerTouch);
-        CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(currentSoundSettings);
+//        float currentSoundSettings = UserDefault::getInstance()->getFloatForKey(VOLUME, 1.0f);
+//        MenuItem* mute = MenuItemImage::create("btn_mute.png", "btn_mute.png");
+//        MenuItem* unmute = MenuItemImage::create("btn_unmute.png", "btn_unmute.png");
+//        MenuItemToggle* muteToggleItem = MenuItemToggle::createWithCallback(CC_CALLBACK_1(HomeLayer::toggleSound, this), mute, unmute, NULL);
+//        Menu* muteToggleMenu = Menu::create(muteToggleItem, NULL);
+//        muteToggleMenu->setPosition(_visibleSize.width * 0.5, mute->getContentSize().height * 0.5);
+//        muteToggleItem->setSelectedIndex(currentSoundSettings);
+//
+//        this->addChild(muteToggleMenu, BackgroundLayer::layerTouch);
+//        CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(currentSoundSettings);
     }
 
     this->scheduleUpdate();

@@ -97,6 +97,8 @@
 		D5548C301C147E2900C1C86C /* dead.wav in Resources */ = {isa = PBXBuildFile; fileRef = D5548C2E1C147E2900C1C86C /* dead.wav */; };
 		D5548C321C1481FA00C1C86C /* pickup_coin.wav in Resources */ = {isa = PBXBuildFile; fileRef = D5548C311C1481FA00C1C86C /* pickup_coin.wav */; };
 		D5548C331C1481FA00C1C86C /* pickup_coin.wav in Resources */ = {isa = PBXBuildFile; fileRef = D5548C311C1481FA00C1C86C /* pickup_coin.wav */; };
+		D5548C361C17765D00C1C86C /* SettingsMenuLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5548C341C17765D00C1C86C /* SettingsMenuLayer.cpp */; };
+		D5548C371C17765D00C1C86C /* SettingsMenuLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5548C341C17765D00C1C86C /* SettingsMenuLayer.cpp */; };
 		D575D0F51B94DD0D0082D427 /* Trampoline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D575D0F31B94DD0D0082D427 /* Trampoline.cpp */; };
 		D575D0F61B94DD0D0082D427 /* Trampoline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D575D0F31B94DD0D0082D427 /* Trampoline.cpp */; };
 		D57CF0331B996DD600987F3E /* jump.wav in Resources */ = {isa = PBXBuildFile; fileRef = D57CF0321B996DD600987F3E /* jump.wav */; };
@@ -229,6 +231,8 @@
 		D5548C2B1C147BD900C1C86C /* lifeup.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = lifeup.wav; sourceTree = "<group>"; };
 		D5548C2E1C147E2900C1C86C /* dead.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = dead.wav; sourceTree = "<group>"; };
 		D5548C311C1481FA00C1C86C /* pickup_coin.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = pickup_coin.wav; sourceTree = "<group>"; };
+		D5548C341C17765D00C1C86C /* SettingsMenuLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SettingsMenuLayer.cpp; sourceTree = "<group>"; };
+		D5548C351C17765D00C1C86C /* SettingsMenuLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsMenuLayer.h; sourceTree = "<group>"; };
 		D575D0F31B94DD0D0082D427 /* Trampoline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Trampoline.cpp; sourceTree = "<group>"; };
 		D575D0F41B94DD0D0082D427 /* Trampoline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Trampoline.h; sourceTree = "<group>"; };
 		D57CF0321B996DD600987F3E /* jump.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = jump.wav; sourceTree = "<group>"; };
@@ -453,6 +457,8 @@
 				D5BDF2E81B8647EF002A11C2 /* MainMenuLayer.cpp */,
 				D52C3BBC1BAF550E001F0205 /* PauseLayer.h */,
 				D52C3BBB1BAF550E001F0205 /* PauseLayer.cpp */,
+				D5548C351C17765D00C1C86C /* SettingsMenuLayer.h */,
+				D5548C341C17765D00C1C86C /* SettingsMenuLayer.cpp */,
 				D51B37841BB2095D005A5976 /* ScoreLayer.h */,
 				D51B37831BB2095D005A5976 /* ScoreLayer.cpp */,
 				D52BDA031B864CBE0049A538 /* SplashScreenLayer.h */,
@@ -642,6 +648,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */,
+				D5548C361C17765D00C1C86C /* SettingsMenuLayer.cpp in Sources */,
 				D59103D71B8BC1A5005E5CD9 /* Cloud.cpp in Sources */,
 				D536C9E91C02E81A0046C82B /* Stage.cpp in Sources */,
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
@@ -676,6 +683,7 @@
 				46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */,
 				D5BDFD191B8FCAC70031AE1B /* LayerGround.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
+				D5548C371C17765D00C1C86C /* SettingsMenuLayer.cpp in Sources */,
 				D536C9EE1C03BF660046C82B /* StageStatus.cpp in Sources */,
 				D536C9E61C024E970046C82B /* HomeLayer.cpp in Sources */,
 				D52BDA091B864E8E0049A538 /* GameLayer.cpp in Sources */,

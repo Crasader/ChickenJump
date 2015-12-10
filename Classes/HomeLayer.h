@@ -2,7 +2,9 @@
 #define __HOMELAYER_H__
 
 #include "cocos2d.h"
+
 #include "FloatingChicken.h"
+#include "SettingsMenuLayer.h"
 
 using namespace cocos2d;
 
@@ -34,6 +36,8 @@ private:
     FloatingChicken* _flyingChicken1;
     FloatingChicken* _flyingChicken2;
     FloatingChicken* _flyingChicken4;
+    
+    SettingsMenuLayer* _settingsHUD;
     
     Vec2 _origin;
     Size _visibleSize;
