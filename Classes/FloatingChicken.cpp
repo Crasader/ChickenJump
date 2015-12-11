@@ -20,7 +20,7 @@ void FloatingChicken::createFloatingChicken(cocos2d::Layer *layer, Vec2 initialP
 
     // set speed into x axis, y axis is set and updated with FLYING_Y_DECREASE_RATE
     _vector = Vec2(3.5, 0.0);
-    setState(FloatingChickenState::jumping);
+    setState(FloatingChickenState::state_jumping);
 
     // set flying direction and flying height
     {
@@ -83,10 +83,10 @@ void FloatingChicken::setState(FloatingChickenState state) {
     if (not _chicken) { return; }
     
     _state = state;
-    if (state == FloatingChickenState::jumping) {
+    if (state == FloatingChickenState::state_jumping) {
         _vector.y = _visibleSize.height * FLYING_Y_MAX;
     }
-    else if (state == FloatingChickenState::falling) {
+    else if (state == FloatingChickenState::state_falling) {
         _vector.y = -_visibleSize.height * FLYING_Y_DECREASE_RATE;
     }
 }
@@ -95,13 +95,13 @@ void FloatingChicken::update(float dt) {
     if (not _chicken) { return; }
     
     switch (_state) {
-        case jumping:
+        case state_jumping:
             _vector.y -= _visibleSize.height * FLYING_Y_DECREASE_RATE * _parabolaHeight;
             if (_vector.y <= 0) {
-                _state = FloatingChickenState::falling;
+                _state = FloatingChickenState::state_falling;
             }
             break;
-        case falling:
+        case state_falling:
             _vector.y -= _visibleSize.height * FLYING_Y_DECREASE_RATE * _parabolaHeight;
             break;
         default:
@@ -117,7 +117,7 @@ void FloatingChicken::update(float dt) {
 
         // re-born
         auto callback = CallFunc::create([this]() {
-            setState(FloatingChickenState::jumping);
+            setState(FloatingChickenState::state_jumping);
             gotoInitialPosition(_initialPosition);
         } );
         

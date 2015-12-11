@@ -6,7 +6,7 @@
 using namespace cocos2d;
 
 typedef enum { fly_lefttoright_high, fly_lefttoright_mid, fly_lefttoright_low, fly_righttoleft_mid } AnimationType;
-typedef enum { jumping, falling } FloatingChickenState;
+typedef enum { state_jumping, state_falling } FloatingChickenState;
 
 /* This class is for HomeLayer's Floating Chicken */
 class FloatingChicken {

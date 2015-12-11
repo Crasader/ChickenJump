@@ -33,9 +33,9 @@ bool MainMenuLayer::init()
     // Add background
     addBackground();
     
-    // Play Menu Item
+    // Select Stage Label
     {
-        Label* selectLevel = Label::createWithTTF("Select Level", font, _visibleSize.height * SCORE_FONT_SIZE);
+        Label* selectLevel = Label::createWithTTF("Select Stage", font, _visibleSize.height * SCORE_FONT_SIZE);
         if (selectLevel) {
             selectLevel->setColor(Color3B::WHITE);
             selectLevel->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.85);
@@ -43,7 +43,7 @@ bool MainMenuLayer::init()
         }
     }
     
-    // Select Levels
+    // Stages
     {
         std::vector<Stage> stages = StageStatus::getStage();
         
@@ -62,6 +62,13 @@ bool MainMenuLayer::init()
         Menu* menu = Menu::createWithArray(menuItems);
         menu->alignItemsInColumns(3, 3, NULL);
         this->addChild(menu);
+    }
+    
+    {
+        _backButton = new BackButton<HomeLayer>();
+        _backButton->createBackButton(this);
+        // _backButton->setPosition(Vec2(_backButton->getContentSize().width * 0.6, _backButton->getContentSize().height * 0.85));
+        _backButton->setPosition(Vec2(_visibleSize.width * 0.04, _visibleSize.height * 0.1));
     }
 
     return true;

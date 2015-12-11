@@ -3,6 +3,9 @@
 
 #include <cocos2d.h>
 
+#include "BackButton.h"
+#include "HomeLayer.h"
+
 using namespace cocos2d;
 
 class Stage;
@@ -29,6 +32,7 @@ private:
     void menuSelectSgate(cocos2d::Ref* sender, Stage& stage);
     void selectLevel(std::string level);
     bool _countryFrance;
+    BackButton<HomeLayer>* _backButton;
     
     Vec2 _origin;
     Size _visibleSize;

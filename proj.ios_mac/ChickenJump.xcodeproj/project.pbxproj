@@ -99,6 +99,8 @@
 		D5548C331C1481FA00C1C86C /* pickup_coin.wav in Resources */ = {isa = PBXBuildFile; fileRef = D5548C311C1481FA00C1C86C /* pickup_coin.wav */; };
 		D5548C361C17765D00C1C86C /* SettingsMenuLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5548C341C17765D00C1C86C /* SettingsMenuLayer.cpp */; };
 		D5548C371C17765D00C1C86C /* SettingsMenuLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5548C341C17765D00C1C86C /* SettingsMenuLayer.cpp */; };
+		D5548C3A1C1B7CF600C1C86C /* BackButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5548C381C1B7CF600C1C86C /* BackButton.cpp */; };
+		D5548C3B1C1B7CF600C1C86C /* BackButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5548C381C1B7CF600C1C86C /* BackButton.cpp */; };
 		D575D0F51B94DD0D0082D427 /* Trampoline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D575D0F31B94DD0D0082D427 /* Trampoline.cpp */; };
 		D575D0F61B94DD0D0082D427 /* Trampoline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D575D0F31B94DD0D0082D427 /* Trampoline.cpp */; };
 		D57CF0331B996DD600987F3E /* jump.wav in Resources */ = {isa = PBXBuildFile; fileRef = D57CF0321B996DD600987F3E /* jump.wav */; };
@@ -233,6 +235,8 @@
 		D5548C311C1481FA00C1C86C /* pickup_coin.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = pickup_coin.wav; sourceTree = "<group>"; };
 		D5548C341C17765D00C1C86C /* SettingsMenuLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SettingsMenuLayer.cpp; sourceTree = "<group>"; };
 		D5548C351C17765D00C1C86C /* SettingsMenuLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsMenuLayer.h; sourceTree = "<group>"; };
+		D5548C381C1B7CF600C1C86C /* BackButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BackButton.cpp; sourceTree = "<group>"; };
+		D5548C391C1B7CF600C1C86C /* BackButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackButton.h; sourceTree = "<group>"; };
 		D575D0F31B94DD0D0082D427 /* Trampoline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Trampoline.cpp; sourceTree = "<group>"; };
 		D575D0F41B94DD0D0082D427 /* Trampoline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Trampoline.h; sourceTree = "<group>"; };
 		D57CF0321B996DD600987F3E /* jump.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = jump.wav; sourceTree = "<group>"; };
@@ -470,6 +474,8 @@
 		D5BDF2E61B850E6A002A11C2 /* Sprite */ = {
 			isa = PBXGroup;
 			children = (
+				D5548C391C1B7CF600C1C86C /* BackButton.h */,
+				D5548C381C1B7CF600C1C86C /* BackButton.cpp */,
 				D52BDA421B8A66270049A538 /* Background.h */,
 				D52BDA411B8A66270049A538 /* Background.cpp */,
 				D59103D31B8BA5D5005E5CD9 /* Chicken.h */,
@@ -649,6 +655,7 @@
 			files = (
 				46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */,
 				D5548C361C17765D00C1C86C /* SettingsMenuLayer.cpp in Sources */,
+				D5548C3A1C1B7CF600C1C86C /* BackButton.cpp in Sources */,
 				D59103D71B8BC1A5005E5CD9 /* Cloud.cpp in Sources */,
 				D536C9E91C02E81A0046C82B /* Stage.cpp in Sources */,
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
@@ -695,6 +702,7 @@
 				D52C3BBE1BAF550E001F0205 /* PauseLayer.cpp in Sources */,
 				D52BDA051B864CBE0049A538 /* SplashScreenLayer.cpp in Sources */,
 				D51B37861BB2095D005A5976 /* ScoreLayer.cpp in Sources */,
+				D5548C3B1C1B7CF600C1C86C /* BackButton.cpp in Sources */,
 				D5548C1B1C0CEAA000C1C86C /* FloatingChicken.cpp in Sources */,
 				D536C9EA1C02E81A0046C82B /* Stage.cpp in Sources */,
 				D52BDA441B8A66270049A538 /* Background.cpp in Sources */,
