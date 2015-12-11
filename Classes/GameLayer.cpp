@@ -268,11 +268,13 @@ void GameLayer::focusOnCharacter() {
 }
 
 void GameLayer::handleCollectableConsumption(Sprite* collectable) {
-    // 1:egg; 2:pizza; 3:bomb
+    // 2:egg 4:pizza 8:scrolling_bomb 16:flying_bomb 32:life 64:trampoline
     switch (collectable->getTag()) {
-        case 1: {     // scrolling egg
+        case 2: {     // scrolling egg
             // Egg collection is the basic goal of the game.
-            
+            _score ++;
+            updateScoreLabel();
+
             // play collection sound
             CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(soundCollectCollectable.c_str());
             
@@ -280,7 +282,7 @@ void GameLayer::handleCollectableConsumption(Sprite* collectable) {
             removeCollectable(collectable);
             break;
         }
-        case 2: {    // scrolling pizza
+        case 4: {    // scrolling pizza
             _chicken->increaseSpriteSize();
             
             {// delay + decreaseSize + delay + decreaseSize + delay + decreaseSizeToNormal
@@ -305,7 +307,7 @@ void GameLayer::handleCollectableConsumption(Sprite* collectable) {
             removeCollectable(collectable);
             break;
         }
-        case 3: {   // scrolling bomb
+        case 8: {   // scrolling bomb
             _chicken->getChicken()->setVisible(false);
 
             addExplosionEffect();
@@ -325,7 +327,7 @@ void GameLayer::handleCollectableConsumption(Sprite* collectable) {
             removeCollectable(collectable);
             break;
         }
-        case 4: {   // falling bomb
+        case 16: {   // falling bomb
             _chicken->getChicken()->setVisible(false);
             
             addExplosionEffect();
@@ -346,7 +348,7 @@ void GameLayer::handleCollectableConsumption(Sprite* collectable) {
             removeCollectable(collectable);
             break;
         }
-        case 5: {    // bonus life
+        case 32: {   // bonus life
             _chicken->increaseLife();
             _scoreHUD->updateLife(_chicken->getLives());
             removeSpecialCollectable(collectable);
@@ -354,6 +356,9 @@ void GameLayer::handleCollectableConsumption(Sprite* collectable) {
             CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(soundLifeUp.c_str());
             break;
         }
+        default:
+            CCLOG("GameLayer::handleCollectableConsumption():: Unknown collectable tag");
+            break;
     }
 }
 
@@ -572,36 +577,38 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
     // CCLOG("CONTACT");
     PhysicsBody* a = contact.getShapeA()->getBody();
     PhysicsBody* b = contact.getShapeB()->getBody();
-    
+
     // collision between chicken and trampoline
-    if ((a->getCategoryBitmask() == 1 and b->getCategoryBitmask() == 2)) {
+    if ((a->getCategoryBitmask() == CATEGORY_BITMASK_CHICKEN and b->getCategoryBitmask() == CATEGORY_BITMASK_TRAMPOLINE)) {
         auto trampoline = (Sprite*)contact.getShapeB()->getBody()->getNode();
         jump(trampoline->getPositionY() + _trampoline->getTrampoline()->getPositionY());
     }
     // collision between trampoline and chicken
-    else if ((a->getCategoryBitmask() == 2 and b->getCategoryBitmask() == 1)) {
+    else if ((a->getCategoryBitmask() == CATEGORY_BITMASK_TRAMPOLINE and b->getCategoryBitmask() == CATEGORY_BITMASK_CHICKEN)) {
         auto trampoline = (Sprite*)contact.getShapeA()->getBody()->getNode();
         jump(trampoline->getPositionY() + _trampoline->getTrampoline()->getPositionY());
     }
     
     
     // collision between chicken and collectables
-    if (a->getCategoryBitmask() == 1 and b->getCategoryBitmask() == 4) {
-        _score ++;
-        updateScoreLabel();
-
-        // Remove colided collectables
+    if (a->getCategoryBitmask() == CATEGORY_BITMASK_CHICKEN and (b->getCategoryBitmask() == CATEGORY_BITMASK_COLLECT_EGG or
+                                                                 b->getCategoryBitmask() == CATEGORY_BITMASK_COLLECT_PIZZA or
+                                                                 b->getCategoryBitmask() == CATEGORY_BITMASK_COLLECT_BOMB or
+                                                                 b->getCategoryBitmask() == CATEGORY_BITMASK_COLLECT_F_BOMB or
+                                                                 b->getCategoryBitmask() == CATEGORY_BITMASK_COLLECT_LIFE))
+    {
         auto collectable = (Sprite*)contact.getShapeB()->getBody()->getNode();
         if (collectable) {
             handleCollectableConsumption(collectable);
         }
     }
     // collision between collectables and chicken
-    else if (a->getCategoryBitmask() == 4 and b->getCategoryBitmask() == 1) {
-        _score ++;
-        updateScoreLabel();
-
-        // Remove colided collectable
+    else if (b->getCategoryBitmask() == CATEGORY_BITMASK_CHICKEN and (a->getCategoryBitmask() == CATEGORY_BITMASK_COLLECT_EGG or
+                                                                      a->getCategoryBitmask() == CATEGORY_BITMASK_COLLECT_PIZZA or
+                                                                      a->getCategoryBitmask() == CATEGORY_BITMASK_COLLECT_BOMB or
+                                                                      a->getCategoryBitmask() == CATEGORY_BITMASK_COLLECT_F_BOMB or
+                                                                      a->getCategoryBitmask() == CATEGORY_BITMASK_COLLECT_LIFE))
+    {
         auto collectable = (Sprite*)contact.getShapeA()->getBody()->getNode();
         if (collectable) {
             handleCollectableConsumption(collectable);

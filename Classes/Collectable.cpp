@@ -3,8 +3,8 @@
 #include "Constants.h"
 
 
-// 1:egg 2:pizza 3:bomb
-static const int pattern[] = {1, 2, 1, 1, 1, 3, 1, 1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1};
+// 2:egg 4:pizza 8:bomb
+static const int pattern[] = {2, 4, 2, 2, 2, 8, 2, 2, 4, 2, 2, 2, 8, 2, 4, 2, 2, 4, 2, 2};
 //static const int pattern[] = {2, 3, 2, 3};
 static const std::vector<int> collectablePattern(pattern, pattern + sizeof(pattern) / sizeof(int));
 static int currentPatternIndex = 0;
@@ -45,9 +45,7 @@ void Collectable::spawn(cocos2d::Layer* layer, std::vector<Sprite*>& collectable
     
     int collectableType = collectablePattern.at(currentPatternIndex++ % collectablePattern.size());
     
-    int heightRange = _visibleSize.height * 0.25;
-    int minHeight = (_visibleSize.height * 0.4);
-    int minPosY = CCRANDOM_0_1() * heightRange + minHeight;
+    int minPosY = RandomHelper::random_int(int(_visibleSize.height * 0.4), int(_visibleSize.height * 0.65));
     
     float positionX = _visibleSize.width;
     float positionY;
@@ -55,14 +53,14 @@ void Collectable::spawn(cocos2d::Layer* layer, std::vector<Sprite*>& collectable
         Sprite* collectable = Sprite::create(String::createWithFormat("egg%i.png", collectableType)->getCString());
         if (not collectable) { continue; }
         
-        collectable->setTag(collectableType); // used as CollectableType:: 1:egg 2:pizza 3:bomb
-        
+        collectable->setTag(collectableType); // used as CollectableType:: 2:egg 4:pizza 8:bomb
+
         positionX += collectable->getContentSize().width * 1.5; // distance must be atleast 1.5 collectable width
         positionY = (_visibleSize.width * radius) * sin(degree2radian(i * degree)); // y = radius * sin(angle) // bigger radius = higher parabola
         collectable->setPosition(Vec2(positionX, minPosY + positionY));
         
         auto body = PhysicsBody::createCircle(collectable->getContentSize().width / 2, PhysicsMaterial(0.1f, 1.0f, 0.0f));
-        body->setCategoryBitmask(CATEGORY_BITMASK_COLLECTABLE);
+        body->setCategoryBitmask(collectableType);  // set collectable type as category_bitmask (2:egg 4:pizza 8:scrolling_bomb)
         // body->setCollisionBitmask(1);
         body->setContactTestBitmask(CATEGORY_BITMASK_CHICKEN);
         body->setDynamic(false);

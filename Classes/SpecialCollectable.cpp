@@ -3,15 +3,17 @@
 #include "Constants.h"
 
 
-// 1:egg 2:pizza 3:bomb 4:falling bomb 5:life
-static const int pattern[] = {4, 5, 4, 4, 5, 4, 4, 5, 4, 5, 5, 4, 4, 5, 4, 5, 4, 4, 4, 3};
+// 16:flying_bomb 32:life // 2:egg 4:pizza 8:scrolling_bomb
+static const int pattern[] = {16, 32, 16, 16, 32, 16, 16, 32, 16, 32, 32, 16, 16, 32, 16, 32, 16, 16, 16, 32};
 //static const int pattern[] = {2, 3, 2, 3};
-static const std::vector<int> collectablePattern(pattern, pattern + sizeof(pattern) / sizeof(int));
+static std::vector<int> collectablePattern(pattern, pattern + sizeof(pattern) / sizeof(int));
 static int currentPatternIndex = 0;
 
 SpecialCollectable::SpecialCollectable(void){
     _origin = Director::getInstance()->getVisibleOrigin();
     _visibleSize = Director::getInstance()->getVisibleSize();
+    
+//    std::random_shuffle (collectablePattern.begin(), collectablePattern.end(), collectablePattern);
 }
 
 void SpecialCollectable::spawn(cocos2d::Layer* layer, std::vector<Sprite*>& specialCollectables) {
@@ -30,7 +32,7 @@ void SpecialCollectable::spawn(cocos2d::Layer* layer, std::vector<Sprite*>& spec
     bonusCollectable->setPosition(Vec2(positionX, positionY));
     
     auto body = PhysicsBody::createCircle(bonusCollectable->getContentSize().width / 2, PhysicsMaterial(0.1f, 1.0f, 0.0f));
-    body->setCategoryBitmask(CATEGORY_BITMASK_COLLECTABLE);
+    body->setCategoryBitmask(collectableType); // set collectable type as category_bitmask (16:flying_bomb 32:life)
     // body->setCollisionBitmask(1);
     body->setContactTestBitmask(CATEGORY_BITMASK_CHICKEN);
     body->setDynamic(false);

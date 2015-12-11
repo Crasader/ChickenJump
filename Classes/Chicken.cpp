@@ -156,8 +156,10 @@ void Chicken::setState(PlayerState state) {
                 // reset size & weight; move to a stable position; remove collide power
                 resetSizeAndWeight();
                 _chicken->setPosition(_visibleSize.width * 0.30, _visibleSize.height * 0.60);
+            });
+            
+            auto callbackCollideNone = CallFunc::create([this]() {
                 _chicken->getPhysicsBody()->setContactTestBitmask(CONTACTTEST_BITMASK_CHICKEN_NON);
-
             });
             
             auto callbackShowChicken = CallFunc::create([this](){
@@ -170,15 +172,27 @@ void Chicken::setState(PlayerState state) {
 
             auto callbackStateFalling = CallFunc::create([this](){
                 _state = PlayerState::falling;
+            });
+            
+            auto callbackCollideNoBomb = CallFunc::create([this]() {
+                // get the collide power back
+                _chicken->getPhysicsBody()->setContactTestBitmask(CONTACTTEST_BITMASK_CHICKEN_NO_BOMB);
+            });
 
+            auto callbackCollideAll = CallFunc::create([this]() {
                 // get the collide power back
                 _chicken->getPhysicsBody()->setContactTestBitmask(CONTACTTEST_BITMASK_CHICKEN_ALL);
             });
             
-            auto timeToReborn = DelayTime::create(3.0);
+            auto timeToReborn = DelayTime::create(2.0);
             auto delay = DelayTime::create(0.2);
 
-            Sequence* blink = Sequence::create(timeToReborn, callbackResetChicken,
+            Sequence* blink = Sequence::create(timeToReborn, callbackResetChicken, callbackCollideNone,
+                                               callbackHideChicken, delay, callbackShowChicken, delay,
+                                               callbackHideChicken, delay, callbackShowChicken, delay,
+                                               callbackHideChicken, delay, callbackShowChicken, delay,
+                                               callbackHideChicken, delay, callbackShowChicken, delay,
+                                               callbackStateFalling, callbackCollideNoBomb,
                                                callbackHideChicken, delay, callbackShowChicken, delay,
                                                callbackHideChicken, delay, callbackShowChicken, delay,
                                                callbackHideChicken, delay, callbackShowChicken, delay,
@@ -187,7 +201,10 @@ void Chicken::setState(PlayerState state) {
                                                callbackHideChicken, delay, callbackShowChicken, delay,
                                                callbackHideChicken, delay, callbackShowChicken, delay,
                                                callbackHideChicken, delay, callbackShowChicken, delay,
-                                               callbackStateFalling, NULL);
+                                               callbackHideChicken, delay, callbackShowChicken, delay,
+                                               callbackHideChicken, delay, callbackShowChicken, delay,
+                                               callbackHideChicken, delay, callbackShowChicken, delay,
+                                               callbackCollideAll, NULL);
             _chicken->runAction(blink);
             break;
         }
