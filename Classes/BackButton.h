@@ -35,9 +35,17 @@ public:
         _backMenu->setPosition(position);
     }
     
+    void setNormalizedPosition(Vec2 position) {
+        if (not _backItem) { return; }
+        _backItem->setNormalizedPosition(position);
+    }
+    
     void goBack(Ref* ref) {
         auto scene = T::createScene();
         if (not scene) { return; }
+        if (Director::getInstance()->isPaused()) {
+            Director::getInstance()->resume();
+        }
         Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
     }
     
