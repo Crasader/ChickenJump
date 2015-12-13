@@ -3,7 +3,10 @@
 
 #include "cocos2d.h"
 
+#include <UIWidget.h>
+
 using namespace cocos2d;
+using namespace cocos2d::ui;
 
 class SettingsMenuLayer : public cocos2d::LayerColor
 {
@@ -12,15 +15,13 @@ public:
     CREATE_FUNC(SettingsMenuLayer);
     
 private:
-    void addSettingsAndAllSubMenues();
-    void settingsClicked(Ref* ref);
-    void toggleSound(Ref* ref);
-    void toggleMusic(Ref* ref);
-    
-    Menu* _settingsMenu;
-    Menu* _soundToggleMenu;
-    Menu* _musicToggleMenu;
-    
+    void createMenues();
+    void addSoundButton();
+    void addMusicButton();
+    void settingsClicked(const Ref* ref, const cocos2d::ui::Widget::TouchEventType& eEventType);
+    void toggleSound(const Ref* ref, const cocos2d::ui::Widget::TouchEventType& eEventType);
+    void toggleMusic(const Ref* ref, const cocos2d::ui::Widget::TouchEventType& eEventType);
+        
     bool _isCollapsed;
     
     Vec2 _origin;

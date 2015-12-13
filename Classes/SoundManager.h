@@ -7,6 +7,8 @@ class SoundManager {
 public:
     SoundManager();
     
+    static float IsSoundActive();
+    static float IsMusicActive();
     static void Play(const std::string& sound);
     static void ToggleMusic();
     static void ToggleSound();
@@ -18,10 +20,7 @@ public:
     static std::string soundLifeup;
     static std::string soundExplosion;
     static std::string soundDead;
-    
-private:
-    static bool _isSoundActive;
-    static bool _isMusicActive;
+
 };
 
 #endif // __SOUNDMANAGER__

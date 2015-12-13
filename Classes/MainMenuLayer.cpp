@@ -47,6 +47,7 @@ bool MainMenuLayer::init()
     
     // Stages
     {
+        // TODO: In future when we will have more stages, we will use either "ScrollView" or "PageView"
         std::vector<Stage> stages = StageStatus::getStage();
         
         Vector<MenuItem*> menuItems;
