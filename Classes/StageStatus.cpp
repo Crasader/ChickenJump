@@ -14,9 +14,9 @@ const std::string StageStatus::netherlands = "NL";
 
 void StageStatus::createFreshStages() {
     // name, imagefile, score, star, isunlocked, isPlayed
-    saveStage(Stage(france, "FR.png", "FR_clicked.png", "FR_locked.png", 0, 0, true, false));
+    saveStage(Stage(england, "UK.png", "UK_clicked.png", "UK_locked.png", 0, 0, true, false));
+    saveStage(Stage(france, "FR.png", "FR_clicked.png", "FR_locked.png", 0, 0, false, false));
     saveStage(Stage(germany, "DE.png", "DE_clicked.png", "DE_locked.png", 0, 0, false, false));
-    saveStage(Stage(england, "UK.png", "UK_clicked.png", "UK_locked.png", 0, 0, false, false));
     saveStage(Stage(spain, "SP.png", "SP_clicked.png", "SP_locked.png", 0, 0, false, false));
     saveStage(Stage(italy, "IT.png", "IT_clicked.png", "IT_locked.png", 0, 0, false, false));
     saveStage(Stage(netherlands, "NL.png", "NL_clicked.png", "NL_locked.png", 0, 0, false, false));
