@@ -13,22 +13,22 @@
 
 using namespace cocos2d;
 
-static const std::string imageScore = "score.png";
-static const std::string imagePause = "pause.png";
-static const std::string imageResume = "resume.png";
-static const std::string imageFinger = "finger.png";
-static const std::string imageExplosion = "explosion.png";
+const std::string imageScore = "score.png";
+const std::string imagePause = "btn_pause.png";
+const std::string imageResume = "btn_resume.png";
+const std::string imageFinger = "finger.png";
+const std::string imageExplosion = "explosion.png";
 
-static const std::string soundCollectCollectable = "pickup_coin.wav";
-static const std::string soundExplosion = "explosion.wav";
-static const std::string soundJump = "jump.wav";
-static const std::string soundLifeUp = "lifeup.wav";
+const std::string soundCollectCollectable = "pickup_coin.wav";
+const std::string soundExplosion = "explosion.wav";
+const std::string soundJump = "jump.wav";
+const std::string soundLifeUp = "lifeup.wav";
 
 // Pattern to describe how many elements should appear
 // 1:3, 2:5, 3:7, 0:None
-static const int spawnPattern[] = {1, 2, 3, 0, 1, 2, 0, 3, 1, 0, 1, 2, 0, 1, 1, 0, 3, 1, 3, 0};
-static std::vector<int> collectableSpawnPattern(spawnPattern, spawnPattern + sizeof(spawnPattern) / sizeof(int));
-static int currentPatternIndex = 0;
+const int spawnPattern[] = {1, 2, 3, 0, 1, 2, 0, 3, 1, 0, 1, 2, 0, 1, 1, 0, 3, 1, 3, 0};
+std::vector<int> collectableSpawnPattern(spawnPattern, spawnPattern + sizeof(spawnPattern) / sizeof(int));
+int currentPatternIndex = 0;
 
 GameLayer* GameLayer::_instance = 0;
 Stage _st;  // To pass which stage we are playing now.
@@ -188,7 +188,7 @@ void GameLayer::addGroundLayer() {
 }
 
 void GameLayer::addPauseMenu() {
-    MenuItem* pause = MenuItemImage::create("pause.png", "pause.png", CC_CALLBACK_1(GameLayer::pauseGame, this));
+    MenuItem* pause = MenuItemImage::create(imagePause, imagePause, CC_CALLBACK_1(GameLayer::pauseGame, this));
     _pauseMenu = Menu::create(pause, NULL);
     _pauseMenu->setPosition(Vec2(_visibleSize.width * 0.5, _visibleSize.height * 0.95)); // position updated in update fn
     this->addChild(_pauseMenu, BackgroundLayer::layerChicken);
@@ -237,7 +237,6 @@ void GameLayer::drawNewTrampoline() {
 
 void GameLayer::endOfStage() {
     _chicken->setVector(Vec2(0, 0));
-    spawnEndOfStageItem();
 
     if (_chicken->getChicken() and _flag and _state == GameState::finishing) {
         auto delay = DelayTime::create(1);
@@ -470,14 +469,6 @@ void GameLayer::spawnCollectable() {
         collectable->spawn(this, _collectables, collectableSpawnPattern.at(currentPatternIndex++ % collectableSpawnPattern.size()));
         delete collectable;
     }
-}
-
-void GameLayer::spawnEndOfStageItem() {
-    _flag = Sprite::create("flag.png");
-    if (not _flag) { return; }
-    
-    _flag->setPosition(_visibleSize.width + _flag->getContentSize().width * 1.5, _visibleSize.height * 0.5);
-    this->addChild(_flag, BackgroundLayer::layerTouch);
 }
 
 void GameLayer::spawnSpecialObject() {

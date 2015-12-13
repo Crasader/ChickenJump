@@ -6,6 +6,13 @@
 
 using namespace cocos2d;
 
+const std::string imageHomeBackground = "home_bg.png";
+const std::string imageGroundBackground = "home_ground.png";
+const std::string imageBtnPlay = "btn_play.png";
+const std::string imageBtnPlayClicked = "btn_playclicked.png";
+const std::string imageLogo = "logo.png";
+const std::string imageSnowflake = "snowflake.png";
+
 Scene* HomeLayer::createScene()
 {
     auto scene = Scene::createWithPhysics();
@@ -52,31 +59,18 @@ bool HomeLayer::init()
     {
         // Snow Effect
         ParticleSnow* explosion = ParticleSnow::create();
-        explosion->setTexture(TextureCache::getInstance()->addImage("snowflake.png"));
+        explosion->setTexture(TextureCache::getInstance()->addImage(imageSnowflake));
         explosion->setPosition(_visibleSize.width * 0.5, _visibleSize.height);
         this->addChild(explosion, BackgroundLayer::layerTouch);
     }
     
-    {
-//        float currentSoundSettings = UserDefault::getInstance()->getFloatForKey(VOLUME, 1.0f);
-//        MenuItem* mute = MenuItemImage::create("btn_mute.png", "btn_mute.png");
-//        MenuItem* unmute = MenuItemImage::create("btn_unmute.png", "btn_unmute.png");
-//        MenuItemToggle* muteToggleItem = MenuItemToggle::createWithCallback(CC_CALLBACK_1(HomeLayer::toggleSound, this), mute, unmute, NULL);
-//        Menu* muteToggleMenu = Menu::create(muteToggleItem, NULL);
-//        muteToggleMenu->setPosition(_visibleSize.width * 0.5, mute->getContentSize().height * 0.5);
-//        muteToggleItem->setSelectedIndex(currentSoundSettings);
-//
-//        this->addChild(muteToggleMenu, BackgroundLayer::layerTouch);
-//        CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(currentSoundSettings);
-    }
-
     this->scheduleUpdate();
 
     return true;
 }
 
 void HomeLayer::addBackground() {
-    auto background = Sprite::create("home_bg.png");
+    auto background = Sprite::create(imageHomeBackground);
     if (not background) { retain(); }
     background->setPosition(Point(_visibleSize.width / 2 + _origin.x, _visibleSize.height / 2 + _origin.y));
     this->addChild(background, BackgroundLayer::layerBackground);
@@ -97,14 +91,14 @@ void HomeLayer::addFlyingChickens() {
 }
 
 void HomeLayer::addGround() {
-    auto ground = Sprite::create("home_ground.png");
+    auto ground = Sprite::create(imageGroundBackground);
     if (not ground) { return; }
     ground->setPosition(Point(_visibleSize.width * 0.5 + _origin.x, _visibleSize.height * 0.5 + _origin.y));
     this->addChild(ground, BackgroundLayer::layerTouch);
 }
 
 void HomeLayer::addLogo() {
-    auto logo = Sprite::create("logo.png");
+    auto logo = Sprite::create(imageLogo);
     if (not logo) { return; }
     logo->setColor(Color3B(255, 208, 66));
     logo->setPosition(Point(_visibleSize.width * 0.5 + _origin.x, _visibleSize.height * 0.7 + _origin.y));
@@ -112,7 +106,7 @@ void HomeLayer::addLogo() {
 }
 
 void HomeLayer::addPlayMenu() {
-    auto playItem = MenuItemImage::create("btn_play.png", "btn_playclicked.png",
+    auto playItem = MenuItemImage::create(imageBtnPlay, imageBtnPlayClicked,
                                           CC_CALLBACK_1(HomeLayer::gotoMainMenuLayer, this));
     if (not playItem) { return; }
     playItem->setPosition(Point(_visibleSize.width / 2 + _origin.x, _visibleSize.height * 0.30 + _origin.y));
@@ -136,13 +130,6 @@ void HomeLayer::initStage() {
         ud->setBoolForKey(FIRST_TIME, false);
         ud->flush();
     }
-}
-
-void HomeLayer::toggleSound(Ref* ref) {
-    CocosDenshion::SimpleAudioEngine* audioEngine = CocosDenshion::SimpleAudioEngine::getInstance();
-    
-    audioEngine->setEffectsVolume(not audioEngine->getEffectsVolume());
-    UserDefault::getInstance()->setFloatForKey(VOLUME, audioEngine->getEffectsVolume());
 }
 
 void HomeLayer::update(float dt) {

@@ -6,6 +6,13 @@
 
 using namespace cocos2d;
 
+const std::string imageBtnSettings = "btn_settings.png";
+const std::string imageBtnSettingsClicked = "btn_settingsclicked.png";
+const std::string imageBtnMute = "btn_mute.png";
+const std::string imageBtnUnMute = "btn_unmute.png";
+const std::string imageBtnMuteMusic = "btn_mute_music.png";
+const std::string imageBtnUnMuteMusic = "btn_unmute_music.png";
+
 Vec2 normalizedPosition = Vec2(0.5, 0.1);
 
 bool SettingsMenuLayer::init()
@@ -35,23 +42,23 @@ void SettingsMenuLayer::addSettingsAndAllSubMenues() {
     this->addChild(_settingsMenu, BackgroundLayer::layerTouch);
     
     
-    // add sound button
-    float currentSoundSettings = UserDefault::getInstance()->getFloatForKey(VOLUME, 1.0f);
-    MenuItem* mute = MenuItemImage::create("btn_mute.png", "btn_mute.png");
-    MenuItem* unmute = MenuItemImage::create("btn_unmute.png", "btn_unmute.png");
+    // add sound toggle button
+    float currentSoundSettings = UserDefault::getInstance()->getFloatForKey(SOUND, 1.0f);
+    MenuItem* mute = MenuItemImage::create(imageBtnMute, imageBtnMute);
+    MenuItem* unmute = MenuItemImage::create(imageBtnUnMute, imageBtnUnMute);
     MenuItemToggle* muteToggleItem = MenuItemToggle::createWithCallback(CC_CALLBACK_1(SettingsMenuLayer::toggleSound, this), mute, unmute, NULL);
     muteToggleItem->setSelectedIndex(currentSoundSettings);
-    _muteToggleMenu = Menu::create(muteToggleItem, NULL);
-    _muteToggleMenu->setNormalizedPosition(Vec2(normalizedPosition.x, normalizedPosition.y + (settings->getContentSize().height / _visibleSize.height)));
-    _muteToggleMenu->setVisible(false);  // make it invisible in the beginning
+    _soundToggleMenu = Menu::create(muteToggleItem, NULL);
+    _soundToggleMenu->setNormalizedPosition(Vec2(normalizedPosition.x, normalizedPosition.y + (settings->getContentSize().height / _visibleSize.height)));
+    _soundToggleMenu->setVisible(false);  // make it invisible in the beginning
     
     
-    this->addChild(_muteToggleMenu, BackgroundLayer::layerTouch);
+    this->addChild(_soundToggleMenu, BackgroundLayer::layerTouch);
     CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(currentSoundSettings);
 }
 
 void SettingsMenuLayer::settingsClicked(Ref* ref) {
-    _muteToggleMenu->setVisible(_isCollapsed);
+    _soundToggleMenu->setVisible(_isCollapsed);
     _isCollapsed = not _isCollapsed;
 }
 
@@ -59,7 +66,14 @@ void SettingsMenuLayer::toggleSound(Ref* ref) {
     CocosDenshion::SimpleAudioEngine* audioEngine = CocosDenshion::SimpleAudioEngine::getInstance();
     
     audioEngine->setEffectsVolume(not audioEngine->getEffectsVolume());
-    UserDefault::getInstance()->setFloatForKey(VOLUME, audioEngine->getEffectsVolume());
+    UserDefault::getInstance()->setFloatForKey(SOUND, audioEngine->getEffectsVolume());
+}
+
+void SettingsMenuLayer::toggleMusic(Ref* ref) {
+    CocosDenshion::SimpleAudioEngine* audioEngine = CocosDenshion::SimpleAudioEngine::getInstance();
+    
+    audioEngine->setEffectsVolume(not audioEngine->getEffectsVolume());
+    UserDefault::getInstance()->setFloatForKey(SOUND, audioEngine->getEffectsVolume());
 }
 
 

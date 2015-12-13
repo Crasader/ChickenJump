@@ -6,6 +6,8 @@
 
 using namespace cocos2d;
 
+static const std::string imageResume = "btn_resume.png";
+
 bool PauseLayer::init()
 {
     if ( !LayerColor::initWithColor(Color4B(0, 0, 0, 190)) ) {
@@ -21,7 +23,7 @@ bool PauseLayer::init()
     
     
     // resume menu
-    auto resume = MenuItemImage::create("resume.png", "resume.png", CC_CALLBACK_1(GameLayer::resumeClicked, GameLayer::getInstance()));
+    auto resume = MenuItemImage::create(imageResume, imageResume, CC_CALLBACK_1(GameLayer::resumeClicked, GameLayer::getInstance()));
     auto resumeMenu = Menu::create(resume, nullptr);
     resumeMenu->setNormalizedPosition(Vec2(0.5f,0.1f));
     this->addChild(resumeMenu);

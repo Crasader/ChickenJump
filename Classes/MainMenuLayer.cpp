@@ -7,6 +7,8 @@
 
 using namespace cocos2d;
 
+const std::string imageHomeBackground = "home_bg.png";
+
 Scene* MainMenuLayer::createScene()
 {
     auto scene = Scene::create();
@@ -75,7 +77,7 @@ bool MainMenuLayer::init()
 }
 
 void MainMenuLayer::addBackground() {
-    auto background = Sprite::create("home_bg.png");
+    auto background = Sprite::create(imageHomeBackground);
     if (not background) { return; }
     background->setPosition(Point(_visibleSize.width / 2 + _origin.x, _visibleSize.height / 2 + _origin.y));
     this->addChild(background);

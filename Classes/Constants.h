@@ -30,7 +30,8 @@ typedef enum
 // Highscore UserDefault String
 #define FIRST_TIME                      "FIRST_TIME"
 #define HIGHSCORE                       "HIGHSCORE"
-#define VOLUME                          "VOLUME"
+#define SOUND                           "SOUND"
+#define MUSIC                           "MUSIC"
 
 // SPLASH SCREEN
 #define DISPLAY_TIME_SPLASH_SCREEN      2

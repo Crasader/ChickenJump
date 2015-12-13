@@ -15,21 +15,15 @@ private:
     void addSettingsAndAllSubMenues();
     void settingsClicked(Ref* ref);
     void toggleSound(Ref* ref);
+    void toggleMusic(Ref* ref);
     
     Menu* _settingsMenu;
-    Menu* _muteToggleMenu;
+    Menu* _soundToggleMenu;
     
     bool _isCollapsed;
     
     Vec2 _origin;
-    Size _visibleSize;
-    
-    std::string imageBtnSettings = "btn_settings.png";
-    std::string imageBtnSettingsClicked = "btn_settingsclicked.png";
-    std::string imageBtnMute = "btn_mute.png";
-    std::string imageBtnUnMute = "btn_unmute.png";
-    std::string imageBtnMuteMusic = "btn_mute.png";
-    std::string imageBtnUnMuteMusic = "btn_unmute.png";
+    Size _visibleSize;    
 };
 
 

@@ -89,7 +89,6 @@ private:
     void removeSpecialCollectable(Sprite* collectable);
     void spawnCloud(float dt);
     void spawnCollectable();
-    void spawnEndOfStageItem();
     void spawnSpecialObject();
     void speedUp();
     void updateCollectables(float speed);

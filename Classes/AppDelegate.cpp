@@ -30,9 +30,9 @@ static int register_all_packages()
     return 0; //flag for packages manager
 }
 
-static Size smallResource  = Size(480, 320); // "iphone"
-static Size mediumResource = Size(1024, 768); // "ipad"
-static Size largeResource  = Size(2048, 1536); // "ipadhd"
+static Size smallResource  = Size(640, 480); // "sd"    // previously: 480, 320
+static Size mediumResource = Size(1024, 768); // "hd"
+static Size largeResource  = Size(2048, 1536); // "hd2"
 static Size designResolution = Size(1024, 768);
 
 bool AppDelegate::applicationDidFinishLaunching() {
@@ -79,8 +79,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
     auto audioEngine = CocosDenshion::SimpleAudioEngine::getInstance();
     audioEngine->preloadEffect("jump.wav");
     audioEngine->preloadEffect("pickup_coin.wav");
-    audioEngine->preloadEffect("bump.wav");
-    audioEngine->preloadEffect("lost.wav");
+    audioEngine->preloadEffect("explosion.wav");
+    audioEngine->preloadEffect("lifeup.wav");
+    audioEngine->preloadEffect("dead.wav");
     audioEngine->setEffectsVolume(0.5f);
     
     
