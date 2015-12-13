@@ -19,6 +19,7 @@ private:
     
     Menu* _settingsMenu;
     Menu* _soundToggleMenu;
+    Menu* _musicToggleMenu;
     
     bool _isCollapsed;
     

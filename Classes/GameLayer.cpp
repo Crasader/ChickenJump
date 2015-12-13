@@ -8,8 +8,8 @@
 #include "Collectable.h"
 #include "GameOverLayer.h"
 #include "ScoreLayer.h"
-#include "SimpleAudioEngine.h"
 #include "Stage.h"
+#include "SoundManager.h"
 
 using namespace cocos2d;
 
@@ -19,10 +19,6 @@ const std::string imageResume = "btn_resume.png";
 const std::string imageFinger = "finger.png";
 const std::string imageExplosion = "explosion.png";
 
-const std::string soundCollectCollectable = "pickup_coin.wav";
-const std::string soundExplosion = "explosion.wav";
-const std::string soundJump = "jump.wav";
-const std::string soundLifeUp = "lifeup.wav";
 
 // Pattern to describe how many elements should appear
 // 1:3, 2:5, 3:7, 0:None
@@ -174,7 +170,7 @@ void GameLayer::addExplosionEffect() {
     explosion->setPosition(_chicken->getPosition());
     this->addChild(explosion, BackgroundLayer::layerTouch);
     
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(soundExplosion.c_str());    // play bomb sound
+    SoundManager::Play(SoundManager::soundExplosion);    // play bomb sound
 }
 
 void GameLayer::addFirstLayer() {
@@ -273,7 +269,7 @@ void GameLayer::handleCollectableConsumption(Sprite* collectable) {
             updateScoreLabel();
 
             // play collection sound
-            CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(soundCollectCollectable.c_str());
+            SoundManager::Play(SoundManager::soundPickupCoin);
             
             // remove the object the chicken collided with
             removeCollectable(collectable);
@@ -298,7 +294,7 @@ void GameLayer::handleCollectableConsumption(Sprite* collectable) {
             }
             
             // play food sound
-            CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(soundCollectCollectable.c_str());
+            SoundManager::Play(SoundManager::soundPickupFood);
 
             // remove the object the chicken collided with
             removeCollectable(collectable);
@@ -350,7 +346,7 @@ void GameLayer::handleCollectableConsumption(Sprite* collectable) {
             _scoreHUD->updateLife(_chicken->getLives());
             removeSpecialCollectable(collectable);
             
-            CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(soundLifeUp.c_str());
+            SoundManager::Play(SoundManager::soundLifeup);
             break;
         }
         default:
@@ -369,7 +365,7 @@ void GameLayer::jump(float trampolinePositionY) {
         _chicken->getState() == PlayerState::falling) {
         
         _chicken->setState(PlayerState::jumping);
-        CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(soundJump.c_str());
+        SoundManager::Play(SoundManager::soundJump);
         speedUp();
         // releaseTouch(); // finish trampoline drawing
     }

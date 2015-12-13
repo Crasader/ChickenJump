@@ -113,6 +113,8 @@
 		D5BDFD151B8FB5000031AE1B /* LayerTwo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5BDFD121B8FB5000031AE1B /* LayerTwo.cpp */; };
 		D5BDFD181B8FCAC70031AE1B /* LayerGround.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5BDFD161B8FCAC70031AE1B /* LayerGround.cpp */; };
 		D5BDFD191B8FCAC70031AE1B /* LayerGround.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5BDFD161B8FCAC70031AE1B /* LayerGround.cpp */; };
+		D5F078651C1DDB0800ACB5A1 /* SoundManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5F078631C1DDB0800ACB5A1 /* SoundManager.cpp */; };
+		D5F078661C1DDB0800ACB5A1 /* SoundManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5F078631C1DDB0800ACB5A1 /* SoundManager.cpp */; };
 		D6B0611B1803AB670077942B /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6B0611A1803AB670077942B /* CoreMotion.framework */; };
 /* End PBXBuildFile section */
 
@@ -250,6 +252,8 @@
 		D5BDFD131B8FB5000031AE1B /* LayerTwo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LayerTwo.h; sourceTree = "<group>"; };
 		D5BDFD161B8FCAC70031AE1B /* LayerGround.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LayerGround.cpp; sourceTree = "<group>"; };
 		D5BDFD171B8FCAC70031AE1B /* LayerGround.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LayerGround.h; sourceTree = "<group>"; };
+		D5F078631C1DDB0800ACB5A1 /* SoundManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoundManager.cpp; sourceTree = "<group>"; };
+		D5F078641C1DDB0800ACB5A1 /* SoundManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundManager.h; sourceTree = "<group>"; };
 		D6B0611A1803AB670077942B /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.0.sdk/System/Library/Frameworks/CoreMotion.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
@@ -388,14 +392,16 @@
 			isa = PBXGroup;
 			children = (
 				D52BDA0E1B8676250049A538 /* Constants.h */,
-				D5BDF2E61B850E6A002A11C2 /* Sprite */,
-				D5BDF2E51B850DD6002A11C2 /* Scene */,
-				46880B8519C43A87006E1F66 /* AppDelegate.h */,
-				46880B8419C43A87006E1F66 /* AppDelegate.cpp */,
+				D5F078641C1DDB0800ACB5A1 /* SoundManager.h */,
+				D5F078631C1DDB0800ACB5A1 /* SoundManager.cpp */,
 				D536C9E81C02E81A0046C82B /* Stage.h */,
 				D536C9E71C02E81A0046C82B /* Stage.cpp */,
 				D536C9EB1C03BF5B0046C82B /* StageStatus.h */,
 				D536C9EC1C03BF660046C82B /* StageStatus.cpp */,
+				D5BDF2E61B850E6A002A11C2 /* Sprite */,
+				D5BDF2E51B850DD6002A11C2 /* Scene */,
+				46880B8519C43A87006E1F66 /* AppDelegate.h */,
+				46880B8419C43A87006E1F66 /* AppDelegate.cpp */,
 			);
 			name = Classes;
 			path = ../Classes;
@@ -668,6 +674,7 @@
 				D52C3BBD1BAF550E001F0205 /* PauseLayer.cpp in Sources */,
 				D51B37851BB2095D005A5976 /* ScoreLayer.cpp in Sources */,
 				D536C9ED1C03BF660046C82B /* StageStatus.cpp in Sources */,
+				D5F078651C1DDB0800ACB5A1 /* SoundManager.cpp in Sources */,
 				D536C9E51C024E970046C82B /* HomeLayer.cpp in Sources */,
 				D52BDA431B8A66270049A538 /* Background.cpp in Sources */,
 				D5548C291C143DDA00C1C86C /* SpecialCollectable.cpp in Sources */,
@@ -706,6 +713,7 @@
 				D5548C1B1C0CEAA000C1C86C /* FloatingChicken.cpp in Sources */,
 				D536C9EA1C02E81A0046C82B /* Stage.cpp in Sources */,
 				D52BDA441B8A66270049A538 /* Background.cpp in Sources */,
+				D5F078661C1DDB0800ACB5A1 /* SoundManager.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
