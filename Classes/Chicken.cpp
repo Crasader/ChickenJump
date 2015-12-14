@@ -201,9 +201,6 @@ void Chicken::setState(PlayerState state) {
                                                callbackHideChicken, delay, callbackShowChicken, delay,
                                                callbackHideChicken, delay, callbackShowChicken, delay,
                                                callbackHideChicken, delay, callbackShowChicken, delay,
-                                               callbackHideChicken, delay, callbackShowChicken, delay,
-                                               callbackHideChicken, delay, callbackShowChicken, delay,
-                                               callbackHideChicken, delay, callbackShowChicken, delay,
                                                callbackCollideAll, NULL);
             _chicken->runAction(blink);
             break;
