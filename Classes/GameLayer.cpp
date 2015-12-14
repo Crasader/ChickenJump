@@ -47,19 +47,19 @@ Scene* GameLayer::createScene(Stage& stage)
     _st = stage;
     _st.setAsPlayed();
     
+    // add Score HUD
+    {
+        ScoreLayer* scoreLayer = ScoreLayer::create();
+        scene->addChild(scoreLayer);
+        layer->_scoreHUD = scoreLayer;
+    }
+    
     // add the Pause HUD Layer
     {
         PauseLayer* pauseLayer = PauseLayer::create();
         scene->addChild(pauseLayer);
         pauseLayer->setVisible(false);
         layer->_pauseHUD = pauseLayer;
-    }
-    
-    // add Score HUD
-    {
-        ScoreLayer* scoreLayer = ScoreLayer::create();
-        scene->addChild(scoreLayer);
-        layer->_scoreHUD = scoreLayer;
     }
     
     // return the scene

@@ -36,7 +36,7 @@ bool PauseLayer::init()
     _origin = Director::getInstance()->getVisibleOrigin();
     _visibleSize = Director::getInstance()->getVisibleSize();
 
-    this->setContentSize(Size(_visibleSize.width * 0.08, _visibleSize.height));
+    this->setContentSize(Size(_visibleSize.width, _visibleSize.height));
     this->setPosition(0, 0);
     
     createMenus();
