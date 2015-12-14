@@ -14,6 +14,7 @@ public:
     
 private:
     void createMenus();
+    void createAdLayout();
     void addResumeButton();
     void addRestartButton();
     void addMenuButton();

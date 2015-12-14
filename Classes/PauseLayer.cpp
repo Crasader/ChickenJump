@@ -19,7 +19,7 @@ static const std::string imageBtnSoundOff = "btn_soundoff_big.png";
 static const std::string imageBtnMusicOn = "btn_musicon_big.png";
 static const std::string imageBtnMusicOff = "btn_musicoff_big.png";
 
-static Vec2 normalizedPosition = Vec2(0.1, 0.1);
+//static Vec2 normalizedPosition = Vec2(0.01, 0.1);
 
 static Button* _btnResume;
 static Button* _btnRestart;
@@ -29,7 +29,7 @@ static Button* _btnMusicToggle;
 
 bool PauseLayer::init()
 {
-    if ( !LayerColor::initWithColor(Color4B(0, 0, 0, 190)) ) {
+    if ( !LayerColor::initWithColor(Color4B(0, 0, 0, 128)) ) {
         return false;
     }
 
@@ -40,6 +40,7 @@ bool PauseLayer::init()
     this->setPosition(0, 0);
     
     createMenus();
+    createAdLayout();
 
     return true;
 }
@@ -62,14 +63,25 @@ void PauseLayer::createMenus() {
     lv->setGravity(ui::ListView::Gravity::CENTER_HORIZONTAL);
     lv->setItemsMargin(10);
     lv->setSize(Size(_btnMenu->getContentSize().width,
-                     _btnMenu->getContentSize().height * 6)); // including margin gap
-    
+                     _btnMenu->getContentSize().height * 5 + 40)); // including margin gap (10*4)
     // lv->setBackGroundColorType(ui::Layout::BackGroundColorType::SOLID);
-    // lv->setBackGroundColor(Color3B::GREEN);
-    lv->setNormalizedPosition(normalizedPosition);
+    // lv->setBackGroundColor(Color3B(128, 128, 128));
+    lv->setPosition(Size(_visibleSize.width * 0.01,
+                         (_visibleSize.height - lv->getContentSize().height) * 0.5));
     lv->setBounceEnabled(false);
     this->addChild(lv);
+}
 
+void PauseLayer::createAdLayout() {
+    Layout* l = Layout::create();
+    l->setContentSize(Size(_visibleSize.width * 0.75, _visibleSize.height * 0.75));
+    l->setPosition(Vec2((_visibleSize.width - l->getContentSize().width) * 0.5,
+                        (_visibleSize.height - l->getContentSize().height) * 0.5));
+    l->setBackGroundColorType(cocos2d::ui::Layout::BackGroundColorType::SOLID);
+    l->setBackGroundColor(Color3B::GRAY);
+    l->setBackGroundColorOpacity(128);
+
+    this->addChild(l);
 }
 
 void PauseLayer::addResumeButton() {

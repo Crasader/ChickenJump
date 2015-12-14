@@ -7,6 +7,8 @@
 
 using namespace cocos2d;
 
+static Vec2 normalizedPosition = Vec2(0.1, 0.05);
+
 const std::string imageHomeBackground = "home_bg.png";
 
 Scene* MainMenuLayer::createScene()
@@ -71,7 +73,7 @@ bool MainMenuLayer::init()
         _backButton = new BackButton<HomeLayer>();
         _backButton->createBackButton(this);
         // _backButton->setPosition(Vec2(_backButton->getContentSize().width * 0.6, _backButton->getContentSize().height * 0.85));
-        _backButton->setPosition(Vec2(_visibleSize.width * 0.04, _visibleSize.height * 0.1));
+        _backButton->setPosition(Vec2(_visibleSize.width * 0.04, _visibleSize.height * 0.15));
     }
 
     return true;

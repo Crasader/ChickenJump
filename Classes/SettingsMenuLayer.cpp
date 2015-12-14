@@ -7,18 +7,18 @@
 #include "GameLayer.h"
 #include "SoundManager.h"
 
-const std::string imageBtnSettings = "btn_settings.png";
-const std::string imageBtnSettingsClicked = "btn_settingsclicked.png";
-const std::string imageBtnSoundOn = "btn_soundon.png";
-const std::string imageBtnSoundOff = "btn_soundoff.png";
-const std::string imageBtnMusicOn = "btn_musicon.png";
-const std::string imageBtnMusicOff = "btn_musicoff.png";
+static const std::string imageBtnSettings = "btn_settings.png";
+static const std::string imageBtnSettingsClicked = "btn_settingsclicked.png";
+static const std::string imageBtnSoundOn = "btn_soundon.png";
+static const std::string imageBtnSoundOff = "btn_soundoff.png";
+static const std::string imageBtnMusicOn = "btn_musicon.png";
+static const std::string imageBtnMusicOff = "btn_musicoff.png";
 
-Vec2 normalizedPosition = Vec2(0.1, 0.1);
+static Vec2 normalizedPosition = Vec2(0.1, 0.05);
 
-Button* _btnSettings;
-Button* _btnSoundToggle;
-Button* _btnMusicToggle;
+static Button* _btnSettings;
+static Button* _btnSoundToggle;
+static Button* _btnMusicToggle;
 
 bool SettingsMenuLayer::init()
 {
