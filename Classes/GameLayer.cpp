@@ -6,10 +6,10 @@
 #include "Cloud.h"
 #include "Constants.h"
 #include "Collectable.h"
-#include "GameOverLayer.h"
 #include "ScoreLayer.h"
 #include "Stage.h"
 #include "SoundManager.h"
+#include "SpecialCollectable.h"
 
 using namespace cocos2d;
 
@@ -60,6 +60,14 @@ Scene* GameLayer::createScene(Stage& stage)
         scene->addChild(pauseLayer);
         pauseLayer->setVisible(false);
         layer->_pauseHUD = pauseLayer;
+    }
+    
+    // add GameOver HUD Layer
+    {
+        GameOverLayer* gameOverLayer = GameOverLayer::create();
+        scene->addChild(gameOverLayer);
+        gameOverLayer->setVisible(false);
+        layer->_gameOverHUD = gameOverLayer;
     }
     
     // return the scene
@@ -146,7 +154,7 @@ void GameLayer::addBG() {
 }
 
 void GameLayer::addChicken() {
-    _chicken = new Chicken();
+    _chicken = std::make_shared<Chicken>();
     _chicken->createChicken(this);
     _chicken->setLives(CHICKEN_LIVES);
 }
@@ -220,6 +228,19 @@ void GameLayer::addTutorial() {
     auto seq = Sequence::create(draw, delay, reset, delay, NULL);
     auto tutorial = RepeatForever::create((ActionInterval*)seq);
     _finger->runAction(tutorial);
+}
+
+void GameLayer::cleanSpecialCollectables() {
+//    for (auto i = _specialCollectables.begin(); i != _specialCollectables.end(); ++i) {
+//        this->removeChild(*i);
+//    }
+}
+
+void GameLayer::cleanTrampoline() {
+    this->removeChild(_trampoline->getTrampoline());
+    Trampoline* temp = _trampoline;
+    _trampoline = nullptr;
+    delete temp;
 }
 
 void GameLayer::drawNewTrampoline() {
@@ -515,10 +536,7 @@ bool GameLayer::onTouchBegan(Touch* touch, Event* event) {
 
     // Remove old trampoline
     if (_trampoline) {
-        this->removeChild(_trampoline->getTrampoline());
-        Trampoline* temp = _trampoline;
-        _trampoline = nullptr;
-        delete temp;
+        cleanTrampoline();
     }
     
     return true;
@@ -533,10 +551,7 @@ void GameLayer::onTouchMoved(Touch* touch, Event* event) {
     
     // Remove old trampoline
     if (_trampoline) {
-        this->removeChild(_trampoline->getTrampoline());
-        Trampoline* temp = _trampoline;
-        _trampoline = nullptr;
-        delete temp;
+        cleanTrampoline();
     }
     
     // don't draw trampoline above the screen height
@@ -611,17 +626,25 @@ void GameLayer::update(float dt) {
     
     if (_state == GameState::finished and _chicken->getPosition().x >= _visibleSize.width) {
         // goto game over scene with state: stage cleared
-        auto gameOver = GameOverLayer::createScene(_score, _st, true);
-        Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, gameOver));
+        /////
+//        auto gameOver = GameOverLayer::createScene(_score, _st, true);
+//        Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, gameOver));
+        /////
+        _gameOverHUD->prepare(_score, _st, true);
+        _gameOverHUD->setVisible(true);
     }
     
     if (_chicken->getState() == PlayerState::dying) {
         // goto game over scene with state: stage not cleared
-        auto gameOver = GameOverLayer::createScene(_score, _st, false);
-        Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, gameOver));
+        /////
+//        auto gameOver = GameOverLayer::createScene(_score, _st, false);
+//        Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, gameOver));
+        /////
+        _gameOverHUD->prepare(_score, _st, false);
+        _gameOverHUD->setVisible(true);
     }
     else {
-        // chicken is alive and game state is not finished
+        // chicken is alive and game state is ongoing
         if (_background) { _background->update(_chicken->getVectorX()); }
         if (_layerTow) {
             _layerTow->update(_chicken->getVectorX());
@@ -631,12 +654,9 @@ void GameLayer::update(float dt) {
         if (_trampoline) { _trampoline->update(_chicken->getVectorX()); }
         if (_chicken) { _chicken->update(dt); }
         
-        // if you start to draw trampoline, then don't move your finger
+        // if user tap to start to draw trampoline, and then doesn't move finger: keep drawing
         if (_trampoline and Trampoline::isDrawingOngoing) {
-            this->removeChild(_trampoline->getTrampoline());
-            Trampoline* temp = _trampoline;
-            _trampoline = nullptr;
-            delete temp;
+            cleanTrampoline();
             
             drawNewTrampoline();
             // Trampoline drawing is finished once we reach the max length of trampoline.
@@ -656,15 +676,19 @@ void GameLayer::update(float dt) {
             
             // remove the last trampoline alive
             if (_trampoline) {
-                this->removeChild(_trampoline->getTrampoline());
-                Trampoline* temp = _trampoline;
-                _trampoline = nullptr;
-                delete temp;
+                cleanTrampoline();
             }
+            
+            cleanSpecialCollectables();
 
             // slow down in 2% decrease reate
             _chicken->applySpeedX( - _chicken->getVectorX() * 0.02);
             
+            {
+                // don't collide with anything anymore
+                _chicken->setCollideToNone();
+            }
+
             if (_chicken->getVectorX() <= 1) {
                 endOfStage();
             }

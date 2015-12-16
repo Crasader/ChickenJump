@@ -6,11 +6,11 @@
 #include "Background.h"
 #include "Chicken.h"
 #include "Collectable.h"
+#include "GameOverLayer.h"
 #include "LayerGround.h"
 #include "LayerTwo.h"
 #include "PauseLayer.h"
 #include "ScoreLayer.h"
-#include "SpecialCollectable.h"
 #include "Trampoline.h"
 #include "Stage.h"
 
@@ -28,9 +28,7 @@ typedef enum {
 class GameLayer : public cocos2d::LayerColor
 {
 public:
-    // there's no 'id' in cpp, so we recommend returning the class instance pointer
     static cocos2d::Scene* createScene(Stage& stage);
-
     // Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
     virtual bool init();
     
@@ -62,7 +60,6 @@ public:
         delete _background;
         delete _layerTow;
         delete _layerGround;
-        delete _chicken;
         delete _trampoline;
     }
 
@@ -77,6 +74,8 @@ private:
     void addSecondLayer();
     void addTouchListners();
     void addTutorial();
+    void cleanSpecialCollectables();
+    void cleanTrampoline();
     void drawNewTrampoline();
     void endOfStage();
     void focusOnCharacter();
@@ -101,13 +100,14 @@ private:
     Background* _background;
     LayerTwo* _layerTow;
     LayerGround* _layerGround;
-    Chicken* _chicken;
+    std::shared_ptr<Chicken> _chicken;
     Trampoline* _trampoline;
     std::vector<Sprite*> _collectables;
     std::vector<Sprite*> _specialCollectables;
     GameState _state;
     Sequence* _sequence;
 
+    GameOverLayer* _gameOverHUD;
     PauseLayer* _pauseHUD;
     ScoreLayer* _scoreHUD;
     Sprite* _finger;

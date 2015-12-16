@@ -35,6 +35,8 @@ public:
     void increaseSpriteSize();
     void resetSizeAndWeight();
     void setAnimation();
+    void setCollideToAll();
+    void setCollideToNone();
     void setLives(int numberOfLives);
     void setState(PlayerState state);
     void setVector(Vec2 vector) { _vector = vector; }

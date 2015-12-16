@@ -42,7 +42,7 @@ bool SettingsMenuLayer::init()
 void SettingsMenuLayer::createMenues() {
     ListView* lv = ListView::create();
     
-    _btnSettings = Button::create(imageBtnSettings, "");
+    _btnSettings = Button::create(imageBtnSettings, imageBtnSettingsClicked);
     if (not _btnSettings) { return; }
     
     _btnSettings->addTouchEventListener(CC_CALLBACK_2(SettingsMenuLayer::settingsClicked, this));
@@ -68,10 +68,10 @@ void SettingsMenuLayer::createMenues() {
 
 void SettingsMenuLayer::addSoundButton() {
     if (SoundManager::IsSoundActive()) {
-        _btnSoundToggle = Button::create(imageBtnSoundOn, "");
+        _btnSoundToggle = Button::create(imageBtnSoundOn, imageBtnSoundOn);
     }
     else {
-        _btnSoundToggle = Button::create(imageBtnSoundOff, "");
+        _btnSoundToggle = Button::create(imageBtnSoundOff, imageBtnSoundOff);
     }
     if (not _btnSoundToggle) { return; }
     _btnSoundToggle->addTouchEventListener(CC_CALLBACK_2(SettingsMenuLayer::toggleSound, this));
@@ -80,10 +80,10 @@ void SettingsMenuLayer::addSoundButton() {
 
 void SettingsMenuLayer::addMusicButton() {
     if (SoundManager::IsMusicActive()) {
-        _btnMusicToggle = Button::create(imageBtnMusicOn, "");
+        _btnMusicToggle = Button::create(imageBtnMusicOn, imageBtnMusicOn);
     }
     else {
-        _btnMusicToggle = Button::create(imageBtnMusicOff, "");
+        _btnMusicToggle = Button::create(imageBtnMusicOff, imageBtnMusicOff);
     }
     if (not _btnMusicToggle) { return; }
     _btnMusicToggle->addTouchEventListener(CC_CALLBACK_2(SettingsMenuLayer::toggleMusic, this));
@@ -103,10 +103,10 @@ void SettingsMenuLayer::toggleSound(const Ref* ref, const cocos2d::ui::Widget::T
 
     SoundManager::ToggleSound();
     if (SoundManager::IsSoundActive()) {
-        _btnSoundToggle->loadTextures(imageBtnSoundOn, "");
+        _btnSoundToggle->loadTextures(imageBtnSoundOn, imageBtnSoundOn);
     }
     else {
-        _btnSoundToggle->loadTextures(imageBtnSoundOff, "");
+        _btnSoundToggle->loadTextures(imageBtnSoundOff, imageBtnSoundOff);
     }
 }
 
@@ -115,10 +115,10 @@ void SettingsMenuLayer::toggleMusic(const Ref* ref, const cocos2d::ui::Widget::T
 
     SoundManager::ToggleMusic();
     if (SoundManager::IsMusicActive()) {
-        _btnMusicToggle->loadTextures(imageBtnMusicOn, "");
+        _btnMusicToggle->loadTextures(imageBtnMusicOn, imageBtnMusicOn);
     }
     else {
-        _btnMusicToggle->loadTextures(imageBtnMusicOff, "");
+        _btnMusicToggle->loadTextures(imageBtnMusicOff, imageBtnMusicOff);
     }
 }
 

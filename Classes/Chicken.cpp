@@ -133,6 +133,16 @@ void Chicken::setAnimation() {
     _chicken->runAction(action);
 }
 
+void Chicken::setCollideToAll() {
+    if (not _chicken) { return; }
+    _chicken->getPhysicsBody()->setContactTestBitmask(CONTACTTEST_BITMASK_CHICKEN_ALL);
+}
+
+void Chicken::setCollideToNone() {
+    if (not _chicken) { return; }
+    _chicken->getPhysicsBody()->setContactTestBitmask(CONTACTTEST_BITMASK_CHICKEN_NON);
+}
+
 void Chicken::setLives(int numberOfLives) {
     if (_state == PlayerState::dying) { return; }
 
@@ -159,7 +169,7 @@ void Chicken::setState(PlayerState state) {
             });
             
             auto callbackCollideNone = CallFunc::create([this]() {
-                _chicken->getPhysicsBody()->setContactTestBitmask(CONTACTTEST_BITMASK_CHICKEN_NON);
+                setCollideToNone();
             });
             
             auto callbackShowChicken = CallFunc::create([this](){
@@ -181,7 +191,7 @@ void Chicken::setState(PlayerState state) {
 
             auto callbackCollideAll = CallFunc::create([this]() {
                 // get the collide power back
-                _chicken->getPhysicsBody()->setContactTestBitmask(CONTACTTEST_BITMASK_CHICKEN_ALL);
+                setCollideToAll();
             });
             
             auto timeToReborn = DelayTime::create(2.0);

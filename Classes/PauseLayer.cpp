@@ -85,31 +85,31 @@ void PauseLayer::createAdLayout() {
 }
 
 void PauseLayer::addResumeButton() {
-    _btnResume = Button::create(imageBtnResume, "");
+    _btnResume = Button::create(imageBtnResume, imageBtnResume);
     if (not _btnResume) { return; }
     
     _btnResume->addTouchEventListener(CC_CALLBACK_1(GameLayer::resumeClicked, GameLayer::getInstance()));
 }
 
 void PauseLayer::addRestartButton() {
-    _btnRestart = Button::create(imageBtnRestart, "");
+    _btnRestart = Button::create(imageBtnRestart, imageBtnRestart);
     if (not _btnRestart) { return; }
 
     _btnRestart->addTouchEventListener(CC_CALLBACK_2(PauseLayer::restartClicked, this));
 }
 
 void PauseLayer::addMenuButton() {
-    _btnMenu = Button::create(imageBtnMenu, "");
+    _btnMenu = Button::create(imageBtnMenu, imageBtnMenu);
     if (not _btnMenu) { return; }
     _btnMenu->addTouchEventListener(CC_CALLBACK_2(PauseLayer::menuClicked, this));
 }
 
 void PauseLayer::addSoundButton() {
     if (SoundManager::IsSoundActive()) {
-        _btnSoundToggle = Button::create(imageBtnSoundOn, "");
+        _btnSoundToggle = Button::create(imageBtnSoundOn, imageBtnSoundOn);
     }
     else {
-        _btnSoundToggle = Button::create(imageBtnSoundOff, "");
+        _btnSoundToggle = Button::create(imageBtnSoundOff, imageBtnSoundOff);
     }
     if (not _btnSoundToggle) { return; }
     _btnSoundToggle->addTouchEventListener(CC_CALLBACK_2(PauseLayer::toggleSound, this));
@@ -117,10 +117,10 @@ void PauseLayer::addSoundButton() {
 
 void PauseLayer::addMusicButton() {
     if (SoundManager::IsMusicActive()) {
-        _btnMusicToggle = Button::create(imageBtnMusicOn, "");
+        _btnMusicToggle = Button::create(imageBtnMusicOn, imageBtnMusicOn);
     }
     else {
-        _btnMusicToggle = Button::create(imageBtnMusicOff, "");
+        _btnMusicToggle = Button::create(imageBtnMusicOff, imageBtnMusicOff);
     }
     if (not _btnMusicToggle) { return; }
     _btnMusicToggle->addTouchEventListener(CC_CALLBACK_2(PauseLayer::toggleMusic, this));
@@ -147,10 +147,10 @@ void PauseLayer::toggleSound(const Ref* ref, const cocos2d::ui::Widget::TouchEve
     
     SoundManager::ToggleSound();
     if (SoundManager::IsSoundActive()) {
-        _btnSoundToggle->loadTextures(imageBtnSoundOn, "");
+        _btnSoundToggle->loadTextures(imageBtnSoundOn, imageBtnSoundOn);
     }
     else {
-        _btnSoundToggle->loadTextures(imageBtnSoundOff, "");
+        _btnSoundToggle->loadTextures(imageBtnSoundOff, imageBtnSoundOff);
     }
 }
 
@@ -159,10 +159,10 @@ void PauseLayer::toggleMusic(const Ref* ref, const cocos2d::ui::Widget::TouchEve
     
     SoundManager::ToggleMusic();
     if (SoundManager::IsMusicActive()) {
-        _btnMusicToggle->loadTextures(imageBtnMusicOn, "");
+        _btnMusicToggle->loadTextures(imageBtnMusicOn, imageBtnMusicOn);
     }
     else {
-        _btnMusicToggle->loadTextures(imageBtnMusicOff, "");
+        _btnMusicToggle->loadTextures(imageBtnMusicOff, imageBtnMusicOff);
     }
 }
 

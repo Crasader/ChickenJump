@@ -7,14 +7,14 @@ using namespace cocos2d;
 
 class Stage;
 
-class GameOverLayer : public cocos2d::Layer
+class GameOverLayer : public cocos2d::LayerColor
 {
 public:
-    static cocos2d::Scene* createScene(unsigned int score, Stage& stage, bool isStageClear);
-
+//    static cocos2d::Scene* createScene(unsigned int score, Stage& stage, bool isStageClear);
     virtual bool init();
-    
     CREATE_FUNC(GameOverLayer);
+
+    void prepare(unsigned int score, Stage& stage, bool isStageClear);
     
     virtual void onExit() {
         // Cleanup
@@ -24,6 +24,10 @@ public:
     }
 
 private:
+    void addHighscoreLabel();
+    void addScoreLabel();
+    void addRetryMenu();
+    void saveStatsAndUnlockNextStage();
     void gotoMainMenuLayer(cocos2d::Ref* sender);
     
     Vec2 _origin;
