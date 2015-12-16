@@ -13,7 +13,7 @@ SpecialCollectable::SpecialCollectable(void){
     _origin = Director::getInstance()->getVisibleOrigin();
     _visibleSize = Director::getInstance()->getVisibleSize();
     
-//    std::random_shuffle (collectablePattern.begin(), collectablePattern.end(), collectablePattern);
+    random_shuffle(collectablePattern.begin(), collectablePattern.end());
 }
 
 void SpecialCollectable::spawn(cocos2d::Layer* layer, std::vector<Sprite*>& specialCollectables) {

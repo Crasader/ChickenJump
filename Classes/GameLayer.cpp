@@ -27,7 +27,7 @@ std::vector<int> collectableSpawnPattern(spawnPattern, spawnPattern + sizeof(spa
 int currentPatternIndex = 0;
 
 GameLayer* GameLayer::_instance = 0;
-Stage _st;  // To pass which stage we are playing now.
+static Stage _stage;  // To pass which stage we are playing now.
 
 Scene* GameLayer::createScene(Stage& stage)
 {
@@ -44,8 +44,8 @@ Scene* GameLayer::createScene(Stage& stage)
     scene->addChild(layer);
 
     // hold the stage and set it as played and pass that to MainMenuLayer through GameOverLayer
-    _st = stage;
-    _st.setAsPlayed();
+    _stage = stage;
+    _stage.setAsPlayed();
     
     // add Score HUD
     {
@@ -228,12 +228,6 @@ void GameLayer::addTutorial() {
     auto seq = Sequence::create(draw, delay, reset, delay, NULL);
     auto tutorial = RepeatForever::create((ActionInterval*)seq);
     _finger->runAction(tutorial);
-}
-
-void GameLayer::cleanSpecialCollectables() {
-//    for (auto i = _specialCollectables.begin(); i != _specialCollectables.end(); ++i) {
-//        this->removeChild(*i);
-//    }
 }
 
 void GameLayer::cleanTrampoline() {
@@ -630,7 +624,7 @@ void GameLayer::update(float dt) {
 //        auto gameOver = GameOverLayer::createScene(_score, _st, true);
 //        Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, gameOver));
         /////
-        _gameOverHUD->prepare(_score, _st, true);
+        _gameOverHUD->prepare(_score, _stage, true);
         _gameOverHUD->setVisible(true);
     }
     
@@ -640,7 +634,7 @@ void GameLayer::update(float dt) {
 //        auto gameOver = GameOverLayer::createScene(_score, _st, false);
 //        Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, gameOver));
         /////
-        _gameOverHUD->prepare(_score, _st, false);
+        _gameOverHUD->prepare(_score, _stage, false);
         _gameOverHUD->setVisible(true);
     }
     else {
@@ -678,8 +672,6 @@ void GameLayer::update(float dt) {
             if (_trampoline) {
                 cleanTrampoline();
             }
-            
-            cleanSpecialCollectables();
 
             // slow down in 2% decrease reate
             _chicken->applySpeedX( - _chicken->getVectorX() * 0.02);

@@ -74,7 +74,6 @@ private:
     void addSecondLayer();
     void addTouchListners();
     void addTutorial();
-    void cleanSpecialCollectables();
     void cleanTrampoline();
     void drawNewTrampoline();
     void endOfStage();

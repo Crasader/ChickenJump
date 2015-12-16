@@ -9,7 +9,7 @@ using namespace cocos2d;
 
 unsigned int _score = 0;
 bool _isStageClear = false;
-Stage _stage;
+static Stage _stage;
 
 void GameOverLayer::prepare(unsigned int score, Stage& stage, bool isStageClear)
 {
