@@ -1,7 +1,7 @@
 #include "Chicken.h"
 
 #include "Constants.h"
-#include "SimpleAudioEngine.h"
+#include "SoundManager.h"
 
 static const std::string soundDead = "dead.wav";
 
@@ -260,7 +260,7 @@ void Chicken::update(float speed) {
         _chicken->getPositionX() < -_chicken->getContentSize().width * 1.5) {
         _state = PlayerState::dying;
         
-        CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(soundDead.c_str());
+        SoundManager::Play(SoundManager::soundDead);
     }
 }
 

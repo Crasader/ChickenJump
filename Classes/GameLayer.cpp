@@ -620,20 +620,14 @@ void GameLayer::update(float dt) {
     
     if (_state == GameState::finished and _chicken->getPosition().x >= _visibleSize.width) {
         // goto game over scene with state: stage cleared
-        /////
-//        auto gameOver = GameOverLayer::createScene(_score, _st, true);
-//        Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, gameOver));
-        /////
+
         _gameOverHUD->prepare(_score, _stage, true);
         _gameOverHUD->setVisible(true);
     }
     
     if (_chicken->getState() == PlayerState::dying) {
         // goto game over scene with state: stage not cleared
-        /////
-//        auto gameOver = GameOverLayer::createScene(_score, _st, false);
-//        Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, gameOver));
-        /////
+
         _gameOverHUD->prepare(_score, _stage, false);
         _gameOverHUD->setVisible(true);
     }
