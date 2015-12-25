@@ -34,8 +34,6 @@ bool ScoreLayer::init()
     }
     
     // Initialize number of life sprites
-    // Should have been initialized from GameLayer.
-    // but don't know why initLifeSprites is being called before ScoreLayer::init
     initLifeSprites(CHICKEN_LIVES_MAX);
     updateLife(CHICKEN_LIVES);
 

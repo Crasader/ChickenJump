@@ -11,6 +11,7 @@ const std::string StageStatus::england = "UK";
 const std::string StageStatus::spain = "SP";
 const std::string StageStatus::italy = "IT";
 const std::string StageStatus::netherlands = "NL";
+const std::string StageStatus::infinite = "INFINITE";
 
 void StageStatus::createFreshStages() {
     // name, imagefile, score, star, isunlocked, isPlayed

@@ -11,7 +11,7 @@
 using namespace cocos2d;
 using namespace cocos2d::ui;
 
-static const std::string imageBtnMenu = "btn_menu.png";
+static const std::string imageBtnMainMenu = "btn_menu.png";
 static const std::string imageBtnResume = "btn_resume.png";
 static const std::string imageBtnRestart = "btn_restart.png";
 static const std::string imageBtnSoundOn = "btn_soundon_big.png";
@@ -23,7 +23,7 @@ static const std::string imageBtnMusicOff = "btn_musicoff_big.png";
 
 static Button* _btnResume;
 static Button* _btnRestart;
-static Button* _btnMenu;
+static Button* _btnMainMenu;
 static Button* _btnSoundToggle;
 static Button* _btnMusicToggle;
 
@@ -50,20 +50,20 @@ void PauseLayer::createMenus() {
     
     addResumeButton();
     addRestartButton();
-    addMenuButton();
+    addMainMenuButton();
     addSoundButton();
     addMusicButton();
     
     if (_btnResume) { lv->pushBackCustomItem(_btnResume); }
     if (_btnRestart) { lv->pushBackCustomItem(_btnRestart); }
-    if (_btnMenu) { lv->pushBackCustomItem(_btnMenu); }
+    if (_btnMainMenu) { lv->pushBackCustomItem(_btnMainMenu); }
     if (_btnMusicToggle) { lv->pushBackCustomItem(_btnMusicToggle); }
     if (_btnSoundToggle) { lv->pushBackCustomItem(_btnSoundToggle); }
     
     lv->setGravity(ui::ListView::Gravity::CENTER_HORIZONTAL);
     lv->setItemsMargin(10);
-    lv->setSize(Size(_btnMenu->getContentSize().width,
-                     _btnMenu->getContentSize().height * 5 + 40)); // including margin gap (10*4)
+    lv->setSize(Size(_btnMainMenu->getContentSize().width,
+                     _btnMainMenu->getContentSize().height * 5 + 40)); // including margin gap (10*4)
     // lv->setBackGroundColorType(ui::Layout::BackGroundColorType::SOLID);
     // lv->setBackGroundColor(Color3B(128, 128, 128));
     lv->setPosition(Size(_visibleSize.width * 0.01,
@@ -98,10 +98,10 @@ void PauseLayer::addRestartButton() {
     _btnRestart->addTouchEventListener(CC_CALLBACK_2(PauseLayer::restartClicked, this));
 }
 
-void PauseLayer::addMenuButton() {
-    _btnMenu = Button::create(imageBtnMenu, imageBtnMenu);
-    if (not _btnMenu) { return; }
-    _btnMenu->addTouchEventListener(CC_CALLBACK_2(PauseLayer::menuClicked, this));
+void PauseLayer::addMainMenuButton() {
+    _btnMainMenu = Button::create(imageBtnMainMenu, imageBtnMainMenu);
+    if (not _btnMainMenu) { return; }
+    _btnMainMenu->addTouchEventListener(CC_CALLBACK_2(PauseLayer::mainMenuClicked, this));
 }
 
 void PauseLayer::addSoundButton() {
@@ -127,7 +127,7 @@ void PauseLayer::addMusicButton() {
 }
 
 // Click Events
-void PauseLayer::menuClicked(const Ref* ref, const cocos2d::ui::Widget::TouchEventType& eEventType) {
+void PauseLayer::mainMenuClicked(const Ref* ref, const cocos2d::ui::Widget::TouchEventType& eEventType) {
     if (eEventType != ui::Widget::TouchEventType::ENDED) { return; }
     
     BackButton<MainMenuLayer>* mainMenu = new BackButton<MainMenuLayer>();

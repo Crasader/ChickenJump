@@ -4,12 +4,16 @@
 #include "MainMenuLayer.h"
 #include "Stage.h"
 #include "StageStatus.h"
+#include <UIButton.h>
 
 using namespace cocos2d;
 
-unsigned int _score = 0;
-bool _isStageClear = false;
+static unsigned int _score = 0;
+static bool _isStageClear = false;
 static Stage _stage;
+
+static Button* _btnMainMenu;
+static const std::string imageBtnMainMenu = "btn_menu.png";
 
 void GameOverLayer::prepare(unsigned int score, Stage& stage, bool isStageClear)
 {
@@ -19,33 +23,21 @@ void GameOverLayer::prepare(unsigned int score, Stage& stage, bool isStageClear)
     
     addHighscoreLabel();
     addScoreLabel();
-    addRetryMenu();
+    addMainMenu();
     saveStatsAndUnlockNextStage();
 }
 
-// on "init" you need to initialize your instance
 bool GameOverLayer::init()
 {
     if ( !LayerColor::initWithColor(Color4B(0, 0, 0, 128)) ) {
         return false;
     }
     
-    // 2. origin & window size
     _origin = Director::getInstance()->getVisibleOrigin();
     _visibleSize = Director::getInstance()->getVisibleSize();
     
     this->setContentSize(Size(_visibleSize.width, _visibleSize.height));
     this->setPosition(0, 0);
-
-    // Background
-//    {
-//        auto background = Sprite::create("blank.png");
-//        if (not background) { return false; }
-//        background->setPosition(Point(_visibleSize.width / 2 + _origin.x, _visibleSize.height / 2 + _origin.y));
-//        this->addChild(background);
-//    }
-    
-    // Save StageStat and unlock next stage
 
     return true;
 }
@@ -75,14 +67,12 @@ void GameOverLayer::addScoreLabel() {
     this->addChild(scoreLabel, BackgroundLayer::layerChicken);
 }
 
-void GameOverLayer::addRetryMenu() {
-    auto retryItem = MenuItemImage::create("btn_menu.png", "btn_menu.png",
-                                           CC_CALLBACK_1(GameOverLayer::gotoMainMenuLayer, this));
-    if (not retryItem) { return; }
-    retryItem->setPosition(Point(_visibleSize.width / 2 + _origin.x, _visibleSize.height * 0.42 + _origin.y));
-    auto menu = Menu::create(retryItem, NULL);
-    menu->setPosition(Point::ZERO);
-    this->addChild(menu);
+void GameOverLayer::addMainMenu() {
+    _btnMainMenu = Button::create(imageBtnMainMenu, imageBtnMainMenu);
+    if (not _btnMainMenu) { return; }
+    _btnMainMenu->addTouchEventListener(CC_CALLBACK_2(GameOverLayer::mainMenuClicked, this));
+    _btnMainMenu->setPosition(Point(_visibleSize.width / 2 + _origin.x, _visibleSize.height * 0.42 + _origin.y));
+    this->addChild(_btnMainMenu);
 }
 
 void GameOverLayer::saveStatsAndUnlockNextStage() {
@@ -105,12 +95,20 @@ void GameOverLayer::saveStatsAndUnlockNextStage() {
     }
 }
 
-void GameOverLayer::gotoMainMenuLayer(cocos2d::Ref* sender)
-{
-    auto scene = MainMenuLayer::createScene();
-    Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
-}
+void GameOverLayer::mainMenuClicked(const Ref* ref, const cocos2d::ui::Widget::TouchEventType& eEventType) {
+    if (eEventType != ui::Widget::TouchEventType::ENDED) { return; }
 
+    CCLOG("========");
+    auto d = Director::getInstance();
+    if (d->isPaused()) {
+        CCLOG("========");
+        d->resume();
+    }
+    
+    BackButton<MainMenuLayer>* mainMenu = new BackButton<MainMenuLayer>();
+    if (not mainMenu) { return; }
+    mainMenu->goBack(this);
+}
 
 
 

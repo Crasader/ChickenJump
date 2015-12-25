@@ -5,15 +5,21 @@
 
 using namespace cocos2d;
 
+class ScrollingSprite;
+class Stage;
+
 class LayerTwo {
 public:
     LayerTwo(void);
-    void createLayerTwo(cocos2d::Layer* layer);
+    ~LayerTwo(void);
+    void createLayerTwo(cocos2d::Layer* layer, Stage const& stage);
     void update(float speed);
     
 private:
-    Sprite* _layerTow;
+    std::vector<ScrollingSprite*> _scrollingSprites;
     std::string const _imageFile = "layertwo.png";
+    cocos2d::Layer* _layer;
+    
     Vec2 _origin;
     Size _visibleSize;
 };

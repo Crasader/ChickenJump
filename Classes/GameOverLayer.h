@@ -2,6 +2,7 @@
 #define __GAMEOVER_LAYER_H__
 
 #include <cocos2d.h>
+#include <UIWidget.h>
 
 using namespace cocos2d;
 
@@ -26,9 +27,9 @@ public:
 private:
     void addHighscoreLabel();
     void addScoreLabel();
-    void addRetryMenu();
+    void addMainMenu();
     void saveStatsAndUnlockNextStage();
-    void gotoMainMenuLayer(cocos2d::Ref* sender);
+    void mainMenuClicked(const Ref* ref, const cocos2d::ui::Widget::TouchEventType& eEventType);
     
     Vec2 _origin;
     Size _visibleSize;

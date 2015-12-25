@@ -201,8 +201,8 @@ void GameLayer::addPauseMenu() {
 }
 
 void GameLayer::addSecondLayer() {
-    _layerTow = new LayerTwo();
-    _layerTow->createLayerTwo(this);
+    _layerTwo = new LayerTwo();
+    _layerTwo->createLayerTwo(this, _stage);
 }
 
 void GameLayer::addTouchListners() {
@@ -273,6 +273,13 @@ void GameLayer::focusOnCharacter() {
     } else {
         this->setPositionY(0);
     }
+}
+
+void GameLayer::gameOver(bool hasStageFinished) {
+    _gameOverHUD->prepare(_score, _stage, hasStageFinished);
+    _gameOverHUD->setVisible(true);
+    _pauseMenu->setVisible(false);
+//    Director::getInstance()->pause();
 }
 
 void GameLayer::handleCollectableConsumption(Sprite* collectable) {
@@ -474,16 +481,15 @@ void GameLayer::releaseTouch() {
 
 void GameLayer::spawnCollectable() {
     if (_state == GameState::started) {
-        Collectable* collectable = new Collectable();
-        collectable->spawn(this, _collectables, collectableSpawnPattern.at(currentPatternIndex++ % collectableSpawnPattern.size()));
-        delete collectable;
+        Collectable collectable;
+        collectable.spawn(this, _collectables, collectableSpawnPattern.at(currentPatternIndex++ % collectableSpawnPattern.size()));
     }
 }
 
 void GameLayer::spawnSpecialObject() {
     if (_state == GameState::started) {
-        SpecialCollectable* bonusObj = new SpecialCollectable();
-        bonusObj->spawn(this, _specialCollectables);
+        SpecialCollectable bonusObj;
+        bonusObj.spawn(this, _specialCollectables);
     }
 }
 
@@ -620,22 +626,18 @@ void GameLayer::update(float dt) {
     
     if (_state == GameState::finished and _chicken->getPosition().x >= _visibleSize.width) {
         // goto game over scene with state: stage cleared
-
-        _gameOverHUD->prepare(_score, _stage, true);
-        _gameOverHUD->setVisible(true);
+        gameOver(true);
     }
     
     if (_chicken->getState() == PlayerState::dying) {
         // goto game over scene with state: stage not cleared
-
-        _gameOverHUD->prepare(_score, _stage, false);
-        _gameOverHUD->setVisible(true);
+        gameOver(false);
     }
     else {
         // chicken is alive and game state is ongoing
         if (_background) { _background->update(_chicken->getVectorX()); }
-        if (_layerTow) {
-            _layerTow->update(_chicken->getVectorX());
+        if (_layerTwo) {
+            _layerTwo->update(_chicken->getVectorX());
             updateStageComplesion(_chicken->getVectorX());
         }
         if (_layerGround) { _layerGround->update(_chicken->getVectorX()); }

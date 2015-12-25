@@ -55,12 +55,13 @@ public:
         // Cleanup
         Layer::onExit();
         Layer::cleanup();
-        TextureCache::getInstance()->removeUnusedTextures();
 
         delete _background;
-        delete _layerTow;
+        delete _layerTwo;
         delete _layerGround;
         delete _trampoline;
+
+        TextureCache::getInstance()->removeUnusedTextures();
     }
 
 private:
@@ -78,6 +79,7 @@ private:
     void drawNewTrampoline();
     void endOfStage();
     void focusOnCharacter();
+    void gameOver(bool hasStageFinished);
     void handleCollectableConsumption(Sprite* collectable);
     void initScoreHUDLives();
     void jump(float trampolinePositionY);
@@ -97,7 +99,7 @@ private:
     static GameLayer* _instance;
     
     Background* _background;
-    LayerTwo* _layerTow;
+    LayerTwo* _layerTwo;
     LayerGround* _layerGround;
     std::shared_ptr<Chicken> _chicken;
     Trampoline* _trampoline;

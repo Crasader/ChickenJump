@@ -22,6 +22,7 @@ public:
     static const std::string spain;
     static const std::string italy;
     static const std::string netherlands;
+    static const std::string infinite;
 };
 
 #endif /* #define(__STAGE_STATUS__) */

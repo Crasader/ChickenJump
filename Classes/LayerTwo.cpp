@@ -1,41 +1,78 @@
 #include "LayerTwo.h"
 
 #include "Constants.h"
+#include "ScrollingSprite.h"
+#include "Stage.h"
+#include "StageStatus.h"
+
+static int _start;
+static int _end;
+static int _diffx;
+static int _scrollingWindowSize = 2; // 0 based index
 
 LayerTwo::LayerTwo(void){
     _origin = Director::getInstance()->getVisibleOrigin();
     _visibleSize = Director::getInstance()->getVisibleSize();
 }
 
-void LayerTwo::createLayerTwo(cocos2d::Layer* layer) {
+LayerTwo::~LayerTwo(void) {
+    for (std::vector<ScrollingSprite*>::iterator i = _scrollingSprites.begin(); i != _scrollingSprites.end(); ++i) {
+        delete *i;
+    }
+}
+
+void LayerTwo::createLayerTwo(cocos2d::Layer* layer, Stage const& stage) {
     if (not layer) { return; }
-
-    _layerTow = Sprite::create(_imageFile);
-//    _layerTow->setAnchorPoint(Vec2(0,0));
-    _layerTow->setPosition(Point(_visibleSize.width/2 + _origin.x, _visibleSize.height/2 + _origin.y));
-
-    auto bg2 = Sprite::create(_imageFile);
-    bg2->setAnchorPoint(Vec2(0,0));
-    bg2->setPosition(Point(_layerTow->getContentSize().width, 0));
     
-    auto bg3 = Sprite::create(_imageFile);
-    bg3->setAnchorPoint(Vec2(0,0));
-    bg3->setPosition(Point(_layerTow->getContentSize().width * 2, 0));
-
-    _layerTow->addChild(bg2);
-    _layerTow->addChild(bg3);
+    _layer = layer;
+    _start = 0;
+    _end = _start + _scrollingWindowSize;
     
-    layer->addChild(_layerTow, BackgroundLayer::layerTwo);
+    // Use 3 images to implement scrolling (unless its the infinite stage)
+    int numberOfScrollingSprite = 3;
+    for (int i = 0; i < numberOfScrollingSprite; ++i) {
+        ScrollingSprite* ss = new ScrollingSprite(_imageFile, layer, BackgroundLayer::layerTwo, i);
+        _scrollingSprites.push_back(ss);
+    }
+
+    if (stage.getName() == StageStatus::infinite) {
+        // ADD MORE SPRITES FOR THE INFINITE STAGE
+        numberOfScrollingSprite = 12; // additional sprites for the infinite stage
+        for (int i = 0; i < numberOfScrollingSprite; ++i) {
+            ScrollingSprite* ss = new ScrollingSprite("DE/layertwo.png", layer, BackgroundLayer::layerTwo, _scrollingWindowSize);
+            _scrollingSprites.push_back(ss);
+        }
+    }
+    
 }
 
 void LayerTwo::update(float speed) {
-    if (not _layerTow) { return; }
+    if (_scrollingSprites.empty()) { return; }
     
-    _layerTow->setPositionX(_layerTow->getPosition().x - LAYER_TWO_SPEED * _visibleSize.width * speed);
+    float scrollingSpeed = LAYER_TWO_SPEED * _visibleSize.width * speed;
     
-    float diffx;
-    if (_layerTow->getPositionX() < -_layerTow->getContentSize().width) {
-        diffx = fabs(_layerTow->getPositionX()) - _layerTow->getContentSize().width;
-        _layerTow->setPositionX(-diffx);
+    // scroll
+    for (int i = _start; i <= _end; ++i) {
+        _scrollingSprites.at(i % _scrollingSprites.size())->update(scrollingSpeed);
     }
+    
+    // check if the front scrolling image has scrolled out
+    if (_scrollingSprites.at(_start)->getSprite()->getPositionX() < -_visibleSize.width * 0.5) {
+
+        Sprite* frontSprite = _scrollingSprites.at(_start)->getSprite();
+        if (not frontSprite) { return; }
+
+        Sprite* newAddedSprite = _scrollingSprites.at((_end + 1) % _scrollingSprites.size())->getSprite();
+        if (not newAddedSprite) { return; }
+        
+        // set position for the new commer
+        _diffx = fabs(frontSprite->getPositionX()) - frontSprite->getContentSize().width * 0.5;
+        newAddedSprite->setPositionX((_visibleSize.width * _scrollingWindowSize + (_visibleSize.width * 0.5)) - _diffx);
+
+        // move the window of indexes which will be updated
+        _start = (_start + 1) % _scrollingSprites.size();
+        _end = _start + _scrollingWindowSize;
+        
+    }
+    
 }

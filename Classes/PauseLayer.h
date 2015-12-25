@@ -17,11 +17,11 @@ private:
     void createAdLayout();
     void addResumeButton();
     void addRestartButton();
-    void addMenuButton();
+    void addMainMenuButton();
     void addSoundButton();
     void addMusicButton();
 
-    void menuClicked(const Ref* ref, const cocos2d::ui::Widget::TouchEventType& eEventType);
+    void mainMenuClicked(const Ref* ref, const cocos2d::ui::Widget::TouchEventType& eEventType);
     void restartClicked(const Ref* ref, const cocos2d::ui::Widget::TouchEventType& eEventType);
     void toggleSound(const Ref* ref, const cocos2d::ui::Widget::TouchEventType& eEventType);
     void toggleMusic(const Ref* ref, const cocos2d::ui::Widget::TouchEventType& eEventType);
