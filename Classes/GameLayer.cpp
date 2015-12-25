@@ -279,7 +279,8 @@ void GameLayer::gameOver(bool hasStageFinished) {
     _gameOverHUD->prepare(_score, _stage, hasStageFinished);
     _gameOverHUD->setVisible(true);
     _pauseMenu->setVisible(false);
-//    Director::getInstance()->pause();
+    
+    _state = GameState::terminate; // set gamestate as terminate to return from schedule update
 }
 
 void GameLayer::handleCollectableConsumption(Sprite* collectable) {
@@ -407,13 +408,13 @@ void GameLayer::lastLifeExploded() {
 }
 
 void GameLayer::pauseGame(cocos2d::Ref* sender) {
-    if (_state == GameState::started) {
-        Director::getInstance()->pause();
-        _state = GameState::paused;
-        
-        _pauseHUD->setVisible(true);
-        _pauseMenu->setVisible(false);
-    }
+    if (_state != GameState::started) { return; }
+
+    Director::getInstance()->pause();
+    _state = GameState::paused;
+    
+    _pauseHUD->setVisible(true);
+    _pauseMenu->setVisible(false);
 }
 
 void GameLayer::resumeClicked(cocos2d::Ref* sender) {
@@ -421,37 +422,38 @@ void GameLayer::resumeClicked(cocos2d::Ref* sender) {
     // set resume in Director and show a FadeOut action of "Ready..?" label
     // then a callback to set GameState and others.
     
-    if (_state == GameState::paused) {
-        _pauseHUD->setVisible(false);
-        Director::getInstance()->resume();
+    if (_state != GameState::paused) { return; }
         
-        auto callback = CallFunc::create( [this]() {
-            this->resumeGame(this);
-        });
+    _pauseHUD->setVisible(false);
+    Director::getInstance()->resume();
+    
+    auto callback = CallFunc::create( [this]() {
+        this->resumeGame(this);
+    });
+    
+    auto delay = DelayTime::create(1.5f);
+    
+    auto resumeLabel = Label::createWithTTF("Ready..?", font, _visibleSize.height * SCORE_FONT_SIZE);
+    if (resumeLabel) {
+        resumeLabel->setColor(Color3B::YELLOW);
+        resumeLabel->setAnchorPoint(Vec2(0, 0));
+        resumeLabel->setPosition(_visibleSize.width * 0.5 - resumeLabel->getContentSize().width * 0.5,
+                                 _visibleSize.height * 0.75 - resumeLabel->getContentSize().height * 0.5);
+        this->addChild(resumeLabel, BackgroundLayer::layerChicken);
         
-        auto delay = DelayTime::create(1.5f);
-        
-        auto resumeLabel = Label::createWithTTF("Ready..?", font, _visibleSize.height * SCORE_FONT_SIZE);
-        if (resumeLabel) {
-            resumeLabel->setColor(Color3B::YELLOW);
-            resumeLabel->setAnchorPoint(Vec2(0, 0));
-            resumeLabel->setPosition(_visibleSize.width * 0.5 - resumeLabel->getContentSize().width * 0.5,
-                                     _visibleSize.height * 0.75 - resumeLabel->getContentSize().height * 0.5);
-            this->addChild(resumeLabel, BackgroundLayer::layerChicken);
-            
-            resumeLabel->runAction(Sequence::create(delay,
-                                                    FadeOut::create(1.0),
-                                                    callback,
-                                                    NULL));
-        }
+        resumeLabel->runAction(Sequence::create(delay,
+                                                FadeOut::create(1.0),
+                                                callback,
+                                                NULL));
     }
+
 }
 
 void GameLayer::resumeGame(cocos2d::Ref* sender) {
-    if (_state == GameState::paused) {
-        _state = GameState::started;
-        _pauseMenu->setVisible(true);
-    }
+    if (_state != GameState::paused) { return; }
+
+    _state = GameState::started;
+    _pauseMenu->setVisible(true);
 }
 
 void GameLayer::removeCollectable(cocos2d::Sprite *collectable) {
@@ -480,24 +482,24 @@ void GameLayer::releaseTouch() {
 }
 
 void GameLayer::spawnCollectable() {
-    if (_state == GameState::started) {
-        Collectable collectable;
-        collectable.spawn(this, _collectables, collectableSpawnPattern.at(currentPatternIndex++ % collectableSpawnPattern.size()));
-    }
+    if (_state != GameState::started) { return; }
+
+    Collectable collectable;
+    collectable.spawn(this, _collectables, collectableSpawnPattern.at(currentPatternIndex++ % collectableSpawnPattern.size()));
 }
 
 void GameLayer::spawnSpecialObject() {
-    if (_state == GameState::started) {
-        SpecialCollectable bonusObj;
-        bonusObj.spawn(this, _specialCollectables);
-    }
+    if (_state != GameState::started) { return; }
+
+    SpecialCollectable bonusObj;
+    bonusObj.spawn(this, _specialCollectables);
 }
 
 void GameLayer::spawnCloud(float dt) {
-    if (_state == GameState::started) {
-        Cloud* cloud = new Cloud();
-        cloud->spawn(this);
-    }
+    if (_state != GameState::started) { return; }
+
+    Cloud* cloud = new Cloud();
+    cloud->spawn(this);
 }
 
 void GameLayer::speedUp() {
@@ -621,7 +623,7 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
 // ########## UPDATE ########## //
 #pragma mark Update
 void GameLayer::update(float dt) {
-    if (_state == GameState::init or _state == GameState::paused) { return; }
+    if (_state == GameState::init or _state == GameState::paused or _state == GameState::terminate) { return; }
     if (not _chicken) { return; }
     
     if (_state == GameState::finished and _chicken->getPosition().x >= _visibleSize.width) {

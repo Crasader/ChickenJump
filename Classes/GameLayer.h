@@ -21,7 +21,8 @@ typedef enum {
     started,
     paused,
     finishing,
-    finished
+    finished,
+    terminate
     
 } GameState;
 
