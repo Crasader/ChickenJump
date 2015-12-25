@@ -32,7 +32,8 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
                    ../../Classes/SpecialCollectable.cpp \
                    ../../Classes/SettingsMenuLayer.cpp \
                    ../../Classes/BackButton.cpp \
-                   ../../Classes/SoundManager.cpp
+                   ../../Classes/SoundManager.cpp \
+                   ../../Classes/ScrollingSprite.cpp
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes \
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../cocos2d/cocos/ui
