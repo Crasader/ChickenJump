@@ -29,8 +29,12 @@ int currentPatternIndex = 0;
 GameLayer* GameLayer::_instance = 0;
 static Stage _stage;  // To pass which stage we are playing now.
 
-Scene* GameLayer::createScene(Stage& stage)
+Scene* GameLayer::createScene(Stage stage)
 {
+    // hold the stage and set it as played and pass that to MainMenuLayer through GameOverLayer
+    _stage = stage;
+    _stage.setAsPlayed();
+    
     // 'scene' is an autorelease object
     auto scene = Scene::createWithPhysics();
     // scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
@@ -42,10 +46,6 @@ Scene* GameLayer::createScene(Stage& stage)
     // Singletone Instance
     _instance = layer;
     scene->addChild(layer);
-
-    // hold the stage and set it as played and pass that to MainMenuLayer through GameOverLayer
-    _stage = stage;
-    _stage.setAsPlayed();
     
     // add Score HUD
     {
@@ -182,13 +182,13 @@ void GameLayer::addExplosionEffect() {
 }
 
 void GameLayer::addFirstLayer() {
-    _layerBackground = new LayerBackground();
-    _layerBackground->createLayer(this, _stage);
+    _layerBackground = new LayerBackground(_stage);
+    _layerBackground->createLayer(this);
 }
 
 void GameLayer::addGroundLayer() {
-    _layerGround = new LayerGround();
-    _layerGround->createLayer(this, _stage);
+    _layerGround = new LayerGround(_stage);
+    _layerGround->createLayer(this);
 }
 
 void GameLayer::addPauseMenu() {
@@ -201,8 +201,8 @@ void GameLayer::addPauseMenu() {
 }
 
 void GameLayer::addSecondLayer() {
-    _layerTwo = new LayerTwo();
-    _layerTwo->createLayer(this, _stage);
+    _layerTwo = new LayerTwo(_stage);
+    _layerTwo->createLayer(this);
 }
 
 void GameLayer::addTouchListners() {
@@ -733,8 +733,11 @@ void GameLayer::updateStageComplesion(float speed) {
     _distanceForNewSpecialObject += speed;
     
     if (_distanceForNewCollectables > _visibleSize.width * 0.5) {
-        _stageRemaining -= _distanceForNewCollectables;
-        CCLOG("Stage Remaining: %f", _stageRemaining);
+        if (_stage.getName() != StageStatus::infinite) {
+            _stageRemaining -= _distanceForNewCollectables;
+            CCLOG("Stage Remaining: %f", _stageRemaining);
+        }
+        
         _distanceForNewCollectables = 0;
         
         // spawn collectables based on scrolled length

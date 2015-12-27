@@ -21,10 +21,8 @@ ScrollingLayerBase::~ScrollingLayerBase() {
 
 }
 
-void ScrollingLayerBase::createLayer(cocos2d::Layer *layer, const Stage &stage) {
+void ScrollingLayerBase::createLayer(cocos2d::Layer *layer) {
     if (not layer) { return; }
-    
-    _stage = stage;
     
     // Use 3 images to implement scrolling (unless its the infinite stage)
     int numberOfScrollingSprite = 3;

@@ -29,7 +29,7 @@ typedef enum {
 class GameLayer : public cocos2d::LayerColor
 {
 public:
-    static cocos2d::Scene* createScene(Stage& stage);
+    static cocos2d::Scene* createScene(Stage stage);
     // Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
     virtual bool init();
     

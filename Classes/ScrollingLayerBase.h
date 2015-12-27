@@ -13,7 +13,7 @@ class ScrollingLayerBase {
 public:
     ScrollingLayerBase(void);
     virtual ~ScrollingLayerBase(void);
-    void createLayer(cocos2d::Layer* layer, Stage const& stage);
+    void createLayer(cocos2d::Layer* layer);
     void update(float speed);
 
     cocos2d::Sprite* _root;
@@ -21,6 +21,14 @@ public:
     BackgroundLayer _zOrder;
     std::vector<std::string> _scrollingImages;
     Stage _stage;
+    
+    // images for infinite stage
+    std::string _imageFile1 = "blank.png";
+    std::string _imageFile2 = "blank.png";
+    std::string _imageFile3 = "blank.png";
+    std::string _imageFile4 = "blank.png";
+    std::string _imageFile5 = "blank.png";
+    std::string _imageFile6 = "blank.png";
     
 private:
     std::queue<cocos2d::Sprite*> _scrollingSprites;

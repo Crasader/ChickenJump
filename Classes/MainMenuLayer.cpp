@@ -40,7 +40,7 @@ bool MainMenuLayer::init()
     _visibleSize = Director::getInstance()->getVisibleSize();
     
     // Add background
-//    addBackground();
+    addBackground();
     
     // Select Stage Label
     addHeaderLabel();
@@ -56,7 +56,6 @@ bool MainMenuLayer::init()
 void MainMenuLayer::addBackButton()     {
     _backButton = new BackButton<HomeLayer>();
     _backButton->createBackButton(this);
-    // _backButton->setPosition(Vec2(_backButton->getContentSize().width * 0.6, _backButton->getContentSize().height * 0.85));
     _backButton->setPosition(Vec2(_visibleSize.width * 0.04, _visibleSize.height * 0.15));
 }
 
@@ -77,7 +76,6 @@ void MainMenuLayer::addHeaderLabel()     {
 }
 
 void MainMenuLayer::addStages() {
-    // TODO: In future when we will have more stages, we will use either "ScrollView" or "PageView"
     // Page 1
     std::vector<Stage> stages = StageStatus::getStage();
     
@@ -132,6 +130,7 @@ void MainMenuLayer::addStages() {
         page1menuList->pushBackCustomItem(menuList2);
     }
     
+    // Page 2
     ListView* page2menuList;
     {
         page2menuList = ListView::create();
@@ -145,11 +144,11 @@ void MainMenuLayer::addStages() {
     
     Layout* page1 = Layout::create();
     page1->addChild(page1menuList);
-    page1->setBackGroundImage("home_bg.png");
+//    page1->setBackGroundImage("home_bg.png");
     
     Layout* page2 = Layout::create();
     page2->addChild(page2menuList);
-    page2->setBackGroundImage("home_bg.png");
+//    page2->setBackGroundImage("home_bg.png");
     
     PageView* pageView = PageView::create();
 //    pageView->setBackGroundImage("home_bg.png");

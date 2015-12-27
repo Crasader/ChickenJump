@@ -21,7 +21,7 @@ void StageStatus::createFreshStages() {
     saveStage(Stage(spain, "SP.png", "SP_clicked.png", "SP_locked.png", 0, 0, false, false));
     saveStage(Stage(italy, "IT.png", "IT_clicked.png", "IT_locked.png", 0, 0, false, false));
     saveStage(Stage(netherlands, "NL.png", "NL_clicked.png", "NL_locked.png", 0, 0, false, false));
-    saveStage(Stage(infinite, "DE.png", "DE_clicked.png", "DE_locked.png", 0, 0, true, false));
+    saveStage(Stage(infinite, "INFINITE.png", "INFINITE_clicked.png", "INFINITE_locked.png", 0, 0, true, false));
 }
 
 std::vector<Stage> StageStatus::getStage(void) {

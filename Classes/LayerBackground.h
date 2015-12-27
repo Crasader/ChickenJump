@@ -7,7 +7,7 @@
 
 class LayerBackground : public ScrollingLayerBase {
 public:
-    LayerBackground(void);
+    LayerBackground(Stage& stage);
     virtual ~LayerBackground(void);
 };
 
