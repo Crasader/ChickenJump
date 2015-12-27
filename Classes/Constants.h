@@ -38,7 +38,7 @@ typedef enum
 #define TRANSITION_TIME                 0.5
 
 // LAYERS
-#define LAYER_ONE_SPEED                 0.0006  // (Bigger = Faster)
+#define LAYER_BACKGROUND_SPEED          0.0006  // (Bigger = Faster)
 #define LAYER_TWO_SPEED                 0.002   // (Bigger = Faster)
 #define LAYER_GROUND_SPEED              0.002   // (Bigger = Faster)
 

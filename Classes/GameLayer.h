@@ -3,10 +3,10 @@
 
 #include <cocos2d.h>
 
-#include "Background.h"
 #include "Chicken.h"
 #include "Collectable.h"
 #include "GameOverLayer.h"
+#include "LayerBackground.h"
 #include "LayerGround.h"
 #include "LayerTwo.h"
 #include "PauseLayer.h"
@@ -57,7 +57,7 @@ public:
         Layer::onExit();
         Layer::cleanup();
 
-        delete _background;
+        delete _layerBackground;
         delete _layerTwo;
         delete _layerGround;
         delete _trampoline;
@@ -99,9 +99,9 @@ private:
     
     static GameLayer* _instance;
     
-    Background* _background;
-    LayerTwo* _layerTwo;
+    LayerBackground* _layerBackground;
     LayerGround* _layerGround;
+    LayerTwo* _layerTwo;
     std::shared_ptr<Chicken> _chicken;
     Trampoline* _trampoline;
     std::vector<Sprite*> _collectables;

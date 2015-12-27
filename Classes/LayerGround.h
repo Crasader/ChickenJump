@@ -1,23 +1,16 @@
-#ifndef __LAYER_GROUND_SPRITE__
-#define __LAYER_GROUND_SPRITE__
+#ifndef __LAYER_GROUND__
+#define __LAYER_GROUND__
 
 #include <cocos2d.h>
 
-using namespace cocos2d;
+#include "ScrollingLayerBase.h"
 
-class LayerGround {
+class LayerGround : public ScrollingLayerBase {
 public:
     LayerGround(void);
-    void createLayerGround(cocos2d::Layer* layer);
-    void update(float speed);
-    
-private:
-    Sprite* _layerGround;
-    std::string const _imageFile = "layerground.png";
-    Vec2 _origin;
-    Size _visibleSize;
+    virtual ~LayerGround();
 };
 
 
 
-#endif /* __LAYER_GROUND_SPRITE__ */
+#endif // __LAYER_GROUND__

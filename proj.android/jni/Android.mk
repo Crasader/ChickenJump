@@ -16,12 +16,13 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
                    ../../Classes/MainMenuLayer.cpp \
                    ../../Classes/GameLayer.cpp \
                    ../../Classes/GameOverLayer.cpp \
-                   ../../Classes/Background.cpp \
                    ../../Classes/Collectable.cpp \
                    ../../Classes/Chicken.cpp \
                    ../../Classes/Cloud.cpp \
+                   ../../Classes/LayerBackground.cpp \
                    ../../Classes/LayerGround.cpp \
                    ../../Classes/LayerTwo.cpp \
+                   ../../Classes/ScrollingLayerBase.cpp \
                    ../../Classes/Trampoline.cpp \
                    ../../Classes/PauseLayer.cpp \
                    ../../Classes/ScoreLayer.cpp \
@@ -32,8 +33,7 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
                    ../../Classes/SpecialCollectable.cpp \
                    ../../Classes/SettingsMenuLayer.cpp \
                    ../../Classes/BackButton.cpp \
-                   ../../Classes/SoundManager.cpp \
-                   ../../Classes/ScrollingSprite.cpp
+                   ../../Classes/SoundManager.cpp
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes \
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../cocos2d/cocos/ui

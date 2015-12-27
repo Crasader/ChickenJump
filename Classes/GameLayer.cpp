@@ -182,13 +182,13 @@ void GameLayer::addExplosionEffect() {
 }
 
 void GameLayer::addFirstLayer() {
-    _background = new Background();
-    _background->createBackground(this);
+    _layerBackground = new LayerBackground();
+    _layerBackground->createLayer(this, _stage);
 }
 
 void GameLayer::addGroundLayer() {
     _layerGround = new LayerGround();
-    _layerGround->createLayerGround(this);
+    _layerGround->createLayer(this, _stage);
 }
 
 void GameLayer::addPauseMenu() {
@@ -202,7 +202,7 @@ void GameLayer::addPauseMenu() {
 
 void GameLayer::addSecondLayer() {
     _layerTwo = new LayerTwo();
-    _layerTwo->createLayerTwo(this, _stage);
+    _layerTwo->createLayer(this, _stage);
 }
 
 void GameLayer::addTouchListners() {
@@ -637,12 +637,15 @@ void GameLayer::update(float dt) {
     }
     else {
         // chicken is alive and game state is ongoing
-        if (_background) { _background->update(_chicken->getVectorX()); }
+        if (_layerBackground) { _layerBackground->update(LAYER_BACKGROUND_SPEED * _visibleSize.width * _chicken->getVectorX()); }
         if (_layerTwo) {
-            _layerTwo->update(_chicken->getVectorX());
-            updateStageComplesion(_chicken->getVectorX());
+            float layerTwoSpeed = LAYER_TWO_SPEED * _visibleSize.width * _chicken->getVectorX();
+            _layerTwo->update(layerTwoSpeed);
+            
+            updateStageComplesion(layerTwoSpeed);
         }
-        if (_layerGround) { _layerGround->update(_chicken->getVectorX()); }
+        if (_layerGround) { _layerGround->update(LAYER_GROUND_SPEED * _visibleSize.width * _chicken->getVectorX()); }
+
         if (_trampoline) { _trampoline->update(_chicken->getVectorX()); }
         if (_chicken) { _chicken->update(dt); }
         
@@ -672,7 +675,7 @@ void GameLayer::update(float dt) {
             }
 
             // slow down in 2% decrease reate
-            _chicken->applySpeedX( - _chicken->getVectorX() * 0.02);
+            _chicken->applySpeedX(-_chicken->getVectorX() * 0.02);
             
             {
                 // don't collide with anything anymore
@@ -726,8 +729,8 @@ void GameLayer::updateScoreLabel() {
 }
 
 void GameLayer::updateStageComplesion(float speed) {
-    _distanceForNewCollectables += speed * LAYER_TWO_SPEED * _visibleSize.width;
-    _distanceForNewSpecialObject += speed * LAYER_TWO_SPEED * _visibleSize.width;
+    _distanceForNewCollectables += speed;
+    _distanceForNewSpecialObject += speed;
     
     if (_distanceForNewCollectables > _visibleSize.width * 0.5) {
         _stageRemaining -= _distanceForNewCollectables;

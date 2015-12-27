@@ -1,10 +1,10 @@
-#include "LayerGround.h"
+#include "LayerBackground.h"
 
 #include "Constants.h"
 
-LayerGround::LayerGround(void) {
-    _imageFile = "layerground.png";
-    _zOrder = BackgroundLayer::layerGround;
+LayerBackground::LayerBackground(void){
+    _imageFile = "background.png";
+    _zOrder = BackgroundLayer::layerBackground;
     
     if (_stage.getName() == StageStatus::infinite) {
         // ADD MORE SPRITES FOR THE INFINITE STAGE
@@ -21,6 +21,6 @@ LayerGround::LayerGround(void) {
     }
 }
 
-LayerGround::~LayerGround() {
+LayerBackground::~LayerBackground() {
     
 }
