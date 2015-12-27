@@ -28,6 +28,9 @@ public:
 
 private:
     void addBackground();
+    void addBackButton();
+    void addHeaderLabel();
+    void addStages();
     void gotoGamePlayLayer(cocos2d::Ref* sender, Stage& stage);
     void menuSelectSgate(cocos2d::Ref* sender, Stage& stage);
     void selectLevel(std::string level);

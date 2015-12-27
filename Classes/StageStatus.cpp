@@ -21,6 +21,20 @@ void StageStatus::createFreshStages() {
     saveStage(Stage(spain, "SP.png", "SP_clicked.png", "SP_locked.png", 0, 0, false, false));
     saveStage(Stage(italy, "IT.png", "IT_clicked.png", "IT_locked.png", 0, 0, false, false));
     saveStage(Stage(netherlands, "NL.png", "NL_clicked.png", "NL_locked.png", 0, 0, false, false));
+    saveStage(Stage(infinite, "DE.png", "DE_clicked.png", "DE_locked.png", 0, 0, true, false));
+}
+
+std::vector<Stage> StageStatus::getStage(void) {
+    std::vector<Stage> stages;
+    stages.push_back(getStage(france));
+    stages.push_back(getStage(germany));
+    stages.push_back(getStage(england));
+    stages.push_back(getStage(spain));
+    stages.push_back(getStage(italy));
+    stages.push_back(getStage(netherlands));
+    stages.push_back(getStage(infinite));
+    
+    return stages;
 }
 
 Stage StageStatus::getStage(std::string const& name) {
@@ -34,18 +48,6 @@ Stage StageStatus::getStage(std::string const& name) {
     ss >> stageName >> imageFile >> clickedImageFile >> lockedImageFile >> score >> star >> isUnlocked >> isPlayed;
     
     return Stage(stageName, imageFile, clickedImageFile, lockedImageFile, score, star, isUnlocked, isPlayed);
-}
-
-std::vector<Stage> StageStatus::getStage(void) {
-    std::vector<Stage> stages;
-    stages.push_back(getStage(france));
-    stages.push_back(getStage(germany));
-    stages.push_back(getStage(england));
-    stages.push_back(getStage(spain));
-    stages.push_back(getStage(italy));
-    stages.push_back(getStage(netherlands));
-    
-    return stages;
 }
 
 void StageStatus::saveStage(Stage const& stage) {
