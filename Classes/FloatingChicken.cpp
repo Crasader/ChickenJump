@@ -62,7 +62,7 @@ void FloatingChicken::setAnimation() {
         animation->setDelayPerUnit(0.2f / 1.0f);
         animation->setRestoreOriginalFrame(false);
         animation->setLoops(-1);
-        
+
         Action* action = Animate::create(animation);
         _chicken->runAction(action);
     }
@@ -73,7 +73,7 @@ void FloatingChicken::setAnimation() {
         animation->setDelayPerUnit(0.2f / 1.0f);
         animation->setRestoreOriginalFrame(false);
         animation->setLoops(-1);
-        
+
         Action* action = Animate::create(animation);
         _chicken->runAction(action);
     }
@@ -81,7 +81,7 @@ void FloatingChicken::setAnimation() {
 
 void FloatingChicken::setState(FloatingChickenState state) {
     if (not _chicken) { return; }
-    
+
     _state = state;
     if (state == FloatingChickenState::state_jumping) {
         _vector.y = _visibleSize.height * FLYING_Y_MAX;
@@ -93,7 +93,7 @@ void FloatingChicken::setState(FloatingChickenState state) {
 
 void FloatingChicken::update(float dt) {
     if (not _chicken) { return; }
-    
+
     switch (_state) {
         case state_jumping:
             _vector.y -= _visibleSize.height * FLYING_Y_DECREASE_RATE * _parabolaHeight;
@@ -108,9 +108,9 @@ void FloatingChicken::update(float dt) {
             CCLOG("Program Should Not Hit This Point");
             break;
     }
-    
+
     _chicken->setPosition(_chicken->getPositionX() + _vector.x * _direction, _chicken->getPositionY() + _vector.y);
-    
+
     // Die and Re-born
     if (_chicken->getPositionY() < -_chicken->getContentSize().height or
         _chicken->getPositionX() > _visibleSize.width + _chicken->getContentSize().width) {
@@ -120,20 +120,10 @@ void FloatingChicken::update(float dt) {
             setState(FloatingChickenState::state_jumping);
             gotoInitialPosition(_initialPosition);
         } );
-        
+
         Sequence* sequence = Sequence::create(DelayTime::create(1.5),
                                               callback,
                                               NULL);
         _chicken->runAction(sequence);
     }
 }
-
-
-
-
-
-
-
-
-
-

@@ -34,26 +34,26 @@ Scene* GameLayer::createScene(Stage stage)
     // hold the stage and set it as played and pass that to MainMenuLayer through GameOverLayer
     _stage = stage;
     _stage.setAsPlayed();
-    
+
     // 'scene' is an autorelease object
     auto scene = Scene::createWithPhysics();
     // scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
-    
+
     // 'layer' is an autorelease object
     GameLayer *layer = GameLayer::create();
     if (not layer) { return nullptr; }
-    
+
     // Singletone Instance
     _instance = layer;
     scene->addChild(layer);
-    
+
     // add Score HUD
     {
         ScoreLayer* scoreLayer = ScoreLayer::create();
         scene->addChild(scoreLayer);
         layer->_scoreHUD = scoreLayer;
     }
-    
+
     // add the Pause HUD Layer
     {
         PauseLayer* pauseLayer = PauseLayer::create();
@@ -61,7 +61,7 @@ Scene* GameLayer::createScene(Stage stage)
         pauseLayer->setVisible(false);
         layer->_pauseHUD = pauseLayer;
     }
-    
+
     // add GameOver HUD Layer
     {
         GameOverLayer* gameOverLayer = GameOverLayer::create();
@@ -69,7 +69,7 @@ Scene* GameLayer::createScene(Stage stage)
         gameOverLayer->setVisible(false);
         layer->_gameOverHUD = gameOverLayer;
     }
-    
+
     // return the scene
     return scene;
 }
@@ -88,62 +88,62 @@ bool GameLayer::init()
     if ( !LayerColor::initWithColor(Color4B(255,255,255,255)) ) {
         return false;
     }
-    
+
     // 2. Origin & window size
     _origin = Director::getInstance()->getVisibleOrigin();
     _visibleSize = Director::getInstance()->getVisibleSize();
      CCLOG("===== GameLayer _visibleSize width-height (%dx%d)", (int)_visibleSize.width, (int)_visibleSize.height);
     // CCLOG("GameLayer _origin (x, y) (%f, %f)", _origin.x, _origin.y);
-    
+
     // Shuffle our spawn pattern
      random_shuffle(collectableSpawnPattern.begin(), collectableSpawnPattern.end());
 
     _state = GameState::init;
     Trampoline::isDrawingOngoing = false;   // new trampoline drawing can begin
-    
+
     _stageLength = _stageRemaining = _visibleSize.width * STAGE_LENGTH;  // _visibleSize.width: 480.000
     // _distanceForNewCollectables = 0;
     _distanceForNewCollectables = _visibleSize.width * 0.50; // moving ahead first collectable spwaning
-    
+
     // this determines when to make a bomb/life fall.
     _distanceForNewSpecialObject = _visibleSize.width * 1.50;
-    
+
     // add static background
 //    addBG();
 
     // Add background
     addFirstLayer();
-    
+
     // Add layerTwo. collectable spawns based on this layer.
     addSecondLayer();
-    
+
     // Add layerGround
     addGroundLayer();
-    
+
     // Add chicken
     addChicken();
-    
+
     // Pause/Resume toggle
     addPauseMenu();
-    
+
     // Tutorial
     addTutorial();
-    
+
 
     // Spawn cloud
     this->schedule(schedule_selector(GameLayer::spawnCloud), CLOUD_SPAWN_FREQUENCY * _visibleSize.width);
-    
+
 
     // Listen for touches
     addTouchListners();
-    
+
     // Listen for collision
     addContactListners();
-    
+
 
     // Activate main update loop
     this->scheduleUpdate();
-    
+
     return true;
 }
 
@@ -162,7 +162,7 @@ void GameLayer::addChicken() {
 void GameLayer::addContactListners() {
     auto contactListener = EventListenerPhysicsContact::create();
     if (not contactListener) { return; }
-    
+
     contactListener->onContactBegin = CC_CALLBACK_1(GameLayer::onContactBegin, this);
     Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, this);
 }
@@ -177,7 +177,7 @@ void GameLayer::addExplosionEffect() {
     explosion->setSpeed(5);
     explosion->setPosition(_chicken->getPosition());
     this->addChild(explosion, BackgroundLayer::layerTouch);
-    
+
     SoundManager::Play(SoundManager::soundExplosion);    // play bomb sound
 }
 
@@ -196,7 +196,7 @@ void GameLayer::addPauseMenu() {
     _pauseMenu = Menu::create(pause, NULL);
     _pauseMenu->setPosition(Vec2(_visibleSize.width * 0.5, _visibleSize.height * 0.95)); // position updated in update fn
     this->addChild(_pauseMenu, BackgroundLayer::layerChicken);
-    
+
     _pauseMenu->setEnabled(false); // enable it when _isGameStarted = true
 }
 
@@ -217,11 +217,11 @@ void GameLayer::addTouchListners() {
 void GameLayer::addTutorial() {
     _finger = Sprite::create(imageFinger);
     if (not _finger) { return; }
-    
+
     _finger->setAnchorPoint(Vec2(0, 0));
     _finger->setPosition(_visibleSize.width * 0.20, _visibleSize.height * 0.20);
     this->addChild(_finger, BackgroundLayer::layerChicken);
-    
+
     MoveTo* draw = MoveTo::create(2, Point(_visibleSize.width * 0.5, _finger->getPositionY()));
     MoveTo* reset = MoveTo::create(0, Point(_visibleSize.width * 0.20, _finger->getPositionY()));
     auto delay = DelayTime::create(0.25f);
@@ -240,7 +240,7 @@ void GameLayer::cleanTrampoline() {
 void GameLayer::drawNewTrampoline() {
     _trampoline = new Trampoline();
     if (not _trampoline) { return; }
-    
+
     // trampoline starting point is moving alone with the speedX
     _lineStartPoint.x -= LAYER_TWO_SPEED * _visibleSize.width * _chicken->getVectorX();
     _trampoline->createTrampoline(this, _lineStartPoint, _lineEndPoint);
@@ -251,15 +251,15 @@ void GameLayer::endOfStage() {
 
     if (_chicken->getChicken() and _state == GameState::finishing) {
         auto delay = DelayTime::create(1);
-        
+
         auto chickenTakePosition = MoveTo::create(1.0, Point(_chicken->getPosition().x, _visibleSize.height * 0.60));
         auto chickenAchieveEnergy = MoveTo::create(1.0, Point(_chicken->getChicken()->getContentSize().width, _visibleSize.height * 0.60));
         auto chickenRunThrough = MoveTo::create(1.0, Point(_visibleSize.width + _chicken->getChicken()->getContentSize().width * 2, _visibleSize.height * 0.60));
-    
+
         TargetedAction* acChickenMove1 = TargetedAction::create(_chicken->getChicken(), chickenTakePosition);
         TargetedAction* acChickenMove2 = TargetedAction::create(_chicken->getChicken(), chickenAchieveEnergy);
         TargetedAction* acChickenMoveToFinish = TargetedAction::create(_chicken->getChicken(), chickenRunThrough);
-        
+
         // last two delays are to finish chicken's move b4 going to finished state
         Sequence* finishingActions = Sequence::create(acChickenMove1, delay, delay, delay, acChickenMove2, acChickenMoveToFinish, NULL);
         this->runAction(finishingActions);
@@ -279,7 +279,7 @@ void GameLayer::gameOver(bool hasStageFinished) {
     _gameOverHUD->prepare(_score, _stage, hasStageFinished);
     _gameOverHUD->setVisible(true);
     _pauseMenu->setVisible(false);
-    
+
     _state = GameState::terminate; // set gamestate as terminate to return from schedule update
 }
 
@@ -293,21 +293,21 @@ void GameLayer::handleCollectableConsumption(Sprite* collectable) {
 
             // play collection sound
             SoundManager::Play(SoundManager::soundPickupCoin);
-            
+
             // remove the object the chicken collided with
             removeCollectable(collectable);
             break;
         }
         case 4: {    // scrolling pizza
             _chicken->increaseSpriteSize();
-            
+
             {// delay + decreaseSize + delay + decreaseSize + delay + decreaseSizeToNormal
                 auto callback = CallFunc::create([this]() {
                     _chicken->resetSizeAndWeight();
                 } );
-                
+
                 auto delay = DelayTime::create(3.0f);
-                
+
                 _chicken->getChicken()->stopAction(_sequence);
                 _sequence = Sequence::create(delay,
                                              ScaleTo::create(2.0f, 1.0f),
@@ -315,7 +315,7 @@ void GameLayer::handleCollectableConsumption(Sprite* collectable) {
                                              NULL);
                 _chicken->getChicken()->runAction(_sequence);
             }
-            
+
             // play food sound
             SoundManager::Play(SoundManager::soundPickupFood);
 
@@ -345,13 +345,13 @@ void GameLayer::handleCollectableConsumption(Sprite* collectable) {
         }
         case 16: {   // falling bomb
             _chicken->getChicken()->setVisible(false);
-            
+
             addExplosionEffect();
             removeSpecialCollectable(collectable);
-            
+
             _chicken->decreaseLife();
             _scoreHUD->updateLife(_chicken->getLives());
-            
+
             if (not _chicken->getLives()) {
                 lastLifeExploded();
             }
@@ -359,7 +359,7 @@ void GameLayer::handleCollectableConsumption(Sprite* collectable) {
                 // have more lives
                 _chicken->setState(PlayerState::newBorn);
             }
-            
+
             // remove the object the chicken collided with
             removeCollectable(collectable);
             break;
@@ -368,7 +368,7 @@ void GameLayer::handleCollectableConsumption(Sprite* collectable) {
             _chicken->increaseLife();
             _scoreHUD->updateLife(_chicken->getLives());
             removeSpecialCollectable(collectable);
-            
+
             SoundManager::Play(SoundManager::soundLifeup);
             break;
         }
@@ -386,7 +386,7 @@ void GameLayer::initScoreHUDLives() {
 void GameLayer::jump(float trampolinePositionY) {
     if (_chicken->getPosition().y > trampolinePositionY and
         _chicken->getState() == PlayerState::falling) {
-        
+
         _chicken->setState(PlayerState::jumping);
         SoundManager::Play(SoundManager::soundJump);
         speedUp();
@@ -402,7 +402,7 @@ void GameLayer::lastLifeExploded() {
     auto callbackChickenDead = CallFunc::create([this](){
         _chicken->setState(PlayerState::dying);
     });
-    
+
     Sequence* action = Sequence::create(callbackStopMovement, DelayTime::create(3.0), callbackChickenDead, NULL);
     this->runAction(action);
 }
@@ -412,7 +412,7 @@ void GameLayer::pauseGame(cocos2d::Ref* sender) {
 
     Director::getInstance()->pause();
     _state = GameState::paused;
-    
+
     _pauseHUD->setVisible(true);
     _pauseMenu->setVisible(false);
 }
@@ -421,18 +421,18 @@ void GameLayer::resumeClicked(cocos2d::Ref* sender) {
     // don't change the GameState.
     // set resume in Director and show a FadeOut action of "Ready..?" label
     // then a callback to set GameState and others.
-    
+
     if (_state != GameState::paused) { return; }
-        
+
     _pauseHUD->setVisible(false);
     Director::getInstance()->resume();
-    
+
     auto callback = CallFunc::create( [this]() {
         this->resumeGame(this);
     });
-    
+
     auto delay = DelayTime::create(1.5f);
-    
+
     auto resumeLabel = Label::createWithTTF("Ready..?", font, _visibleSize.height * SCORE_FONT_SIZE);
     if (resumeLabel) {
         resumeLabel->setColor(Color3B::YELLOW);
@@ -440,7 +440,7 @@ void GameLayer::resumeClicked(cocos2d::Ref* sender) {
         resumeLabel->setPosition(_visibleSize.width * 0.5 - resumeLabel->getContentSize().width * 0.5,
                                  _visibleSize.height * 0.75 - resumeLabel->getContentSize().height * 0.5);
         this->addChild(resumeLabel, BackgroundLayer::layerChicken);
-        
+
         resumeLabel->runAction(Sequence::create(delay,
                                                 FadeOut::create(1.0),
                                                 callback,
@@ -459,7 +459,7 @@ void GameLayer::resumeGame(cocos2d::Ref* sender) {
 void GameLayer::removeCollectable(cocos2d::Sprite *collectable) {
     // cleanup
     this->removeChild(collectable);
-    
+
     if (std::find(_collectables.begin(), _collectables.end(), collectable) != _collectables.end()) {
         // remove the item from _collectables list
         _collectables.erase(std::find(_collectables.begin(), _collectables.end(), collectable));
@@ -469,7 +469,7 @@ void GameLayer::removeCollectable(cocos2d::Sprite *collectable) {
 void GameLayer::removeSpecialCollectable(cocos2d::Sprite *collectable) {
     // cleanup
     this->removeChild(collectable);
-    
+
     if (std::find(_specialCollectables.begin(), _specialCollectables.end(), collectable) != _specialCollectables.end()) {
         // remove the item from _collectables list
         _specialCollectables.erase(std::find(_specialCollectables.begin(), _specialCollectables.end(), collectable));
@@ -505,14 +505,14 @@ void GameLayer::spawnCloud(float dt) {
 void GameLayer::speedUp() {
     float xDist = (_lineEndPoint.x - _lineStartPoint.x);
     float yDist = (_lineEndPoint.y - _lineStartPoint.y);
-    
+
     if (_lineStartPoint.x > _lineEndPoint.x) {
         xDist = (_lineStartPoint.x - _lineEndPoint.x);
         yDist = (_lineStartPoint.y - _lineEndPoint.y);
     }
 
     float degree = atan2(yDist, xDist) * 180 / PI;
-    
+
     _chicken->applySpeedX(-degree * CUSTOM_ACCELERATION);
 }
 
@@ -521,13 +521,13 @@ void GameLayer::speedUp() {
 #pragma mark Touch Events
 bool GameLayer::onTouchBegan(Touch* touch, Event* event) {
     if (_state == GameState::finished or _state == GameState::paused or Trampoline::isDrawingOngoing) { return false; }
-    
+
     // disable the tutorial
     if (_state == GameState::init) {
         _state = GameState::started;
         _finger->stopAllActions();
         this->removeChild(_finger);
-        
+
         _pauseMenu->setEnabled(true);
     }
 
@@ -540,7 +540,7 @@ bool GameLayer::onTouchBegan(Touch* touch, Event* event) {
     if (_trampoline) {
         cleanTrampoline();
     }
-    
+
     return true;
 }
 
@@ -550,15 +550,15 @@ void GameLayer::onTouchMoved(Touch* touch, Event* event) {
 
     if (touch->getLocation() == _lineStartPoint) { return; }
     if (touch->getLocation().distance(_lineStartPoint) < 30) { return; } // 30 is just trampoline sprite's twice width
-    
+
     // Remove old trampoline
     if (_trampoline) {
         cleanTrampoline();
     }
-    
+
     // don't draw trampoline above the screen height
     if (_lineStartPoint.y - this->getPositionY() > _visibleSize.height) { return; }
-    
+
     // Draw new trampoline
     _trampoline = new Trampoline();
     if (not _trampoline) { return; }
@@ -590,8 +590,8 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
         auto trampoline = (Sprite*)contact.getShapeA()->getBody()->getNode();
         jump(trampoline->getPositionY() + _trampoline->getTrampoline()->getPositionY());
     }
-    
-    
+
+
     // collision between chicken and collectables
     if (a->getCategoryBitmask() == CATEGORY_BITMASK_CHICKEN and (b->getCategoryBitmask() == CATEGORY_BITMASK_COLLECT_EGG or
                                                                  b->getCategoryBitmask() == CATEGORY_BITMASK_COLLECT_PIZZA or
@@ -616,7 +616,7 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
             handleCollectableConsumption(collectable);
         }
     }
-    
+
     return true;
 }
 
@@ -625,12 +625,12 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
 void GameLayer::update(float dt) {
     if (_state == GameState::init or _state == GameState::paused or _state == GameState::terminate) { return; }
     if (not _chicken) { return; }
-    
+
     if (_state == GameState::finished and _chicken->getPosition().x >= _visibleSize.width) {
         // goto game over scene with state: stage cleared
         gameOver(true);
     }
-    
+
     if (_chicken->getState() == PlayerState::dying) {
         // goto game over scene with state: stage not cleared
         gameOver(false);
@@ -641,34 +641,34 @@ void GameLayer::update(float dt) {
         if (_layerTwo) {
             float layerTwoSpeed = LAYER_TWO_SPEED * _visibleSize.width * _chicken->getVectorX();
             _layerTwo->update(layerTwoSpeed);
-            
+
             updateStageComplesion(layerTwoSpeed);
         }
         if (_layerGround) { _layerGround->update(LAYER_GROUND_SPEED * _visibleSize.width * _chicken->getVectorX()); }
 
         if (_trampoline) { _trampoline->update(_chicken->getVectorX()); }
         if (_chicken) { _chicken->update(dt); }
-        
+
         // if user tap to start to draw trampoline, and then doesn't move finger: keep drawing
         if (_trampoline and Trampoline::isDrawingOngoing) {
             cleanTrampoline();
-            
+
             drawNewTrampoline();
             // Trampoline drawing is finished once we reach the max length of trampoline.
         }
-        
+
         updateCollectables(_chicken->getVectorX());
         updateSpecialCollectables(_chicken->getVectorX());
-        
+
         // keep the camera on the player
 //        focusOnCharacter();
-        
+
         // stage about to finish
         if (_state == GameState::finishing and not _collectables.size()) {
             _pauseMenu->setEnabled(false);
-            
+
             _chicken->setState(PlayerState::start);
-            
+
             // remove the last trampoline alive
             if (_trampoline) {
                 cleanTrampoline();
@@ -676,7 +676,7 @@ void GameLayer::update(float dt) {
 
             // slow down in 2% decrease reate
             _chicken->applySpeedX(-_chicken->getVectorX() * 0.02);
-            
+
             {
                 // don't collide with anything anymore
                 _chicken->setCollideToNone();
@@ -693,30 +693,30 @@ void GameLayer::updateSpecialCollectables(float playerSpeed) {
     for (auto i = _specialCollectables.begin(); i != _specialCollectables.end(); ++i) {
 
         if (not *i) { continue; }
-        
+
         Vec2 currentPosition = (*i)->getPosition();
         (*i)->setPosition(Vec2(currentPosition.x - COLLECTABLE_SPEED * _visibleSize.width * playerSpeed * 0.30,
                                currentPosition.y - COLLECTABLE_FALLING_SPEED * _visibleSize.height));
-        
+
         if (currentPosition.y < -(*i)->getContentSize().height) {
             this->removeChild(*i);
             _specialCollectables.erase(i);
             --i; // handle new number one's position in next iteration
         }
-    }    
+    }
 }
 
 void GameLayer::updateCollectables(float playerSpeed) {
     for (int i = 0; i < _collectables.size(); ++i) {
         Sprite* s = _collectables.at(i);
         if (not s) { continue; }
-        
+
         s->setPositionX(s->getPosition().x - COLLECTABLE_SPEED * _visibleSize.width * playerSpeed);
-        
+
         if (s->getPositionX() < -s->getContentSize().width) {
             this->removeChild(s);
             _collectables.erase(_collectables.begin() + i);
-            
+
             --i; // handle new number one's position in next iteration
         }
     }
@@ -731,18 +731,18 @@ void GameLayer::updateScoreLabel() {
 void GameLayer::updateStageComplesion(float speed) {
     _distanceForNewCollectables += speed;
     _distanceForNewSpecialObject += speed;
-    
+
     if (_distanceForNewCollectables > _visibleSize.width * 0.5) {
         if (_stage.getName() != StageStatus::infinite) {
             _stageRemaining -= _distanceForNewCollectables;
             CCLOG("Stage Remaining: %f", _stageRemaining);
         }
-        
+
         _distanceForNewCollectables = 0;
-        
+
         // spawn collectables based on scrolled length
         spawnCollectable();
-        
+
         // FINISH THE STAGE
         if (_stageRemaining <= 0) {
             _state = GameState::finishing;
@@ -751,21 +751,8 @@ void GameLayer::updateStageComplesion(float speed) {
 
     if (_distanceForNewSpecialObject > _visibleSize.width * SPECIAL_OBJ_SPAWN_DISTANCE) {
         _distanceForNewSpecialObject = 0;
-        
+
         spawnSpecialObject();
     }
-    
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

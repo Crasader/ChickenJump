@@ -18,7 +18,7 @@ typedef enum
     layerGround,
     layerChicken,
     layerTouch
-    
+
 } BackgroundLayer;
 
 // Number of lives
@@ -94,20 +94,3 @@ typedef enum
 
 
 #endif // __CONSTANTS_H__
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

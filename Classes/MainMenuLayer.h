@@ -33,7 +33,10 @@ private:
     void addStages();
     void gotoGamePlayLayer(cocos2d::Ref* sender, Stage& stage);
     void menuSelectSgate(cocos2d::Ref* sender, Stage& stage);
+    void pageScrollClicked(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType);
+    void pageViewEvent(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType);
     void selectLevel(std::string level);
+    
     bool _countryFrance;
     BackButton<HomeLayer>* _backButton;
     

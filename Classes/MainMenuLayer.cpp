@@ -15,8 +15,15 @@
 using namespace cocos2d;
 
 static Vec2 normalizedPosition = Vec2(-0.45, -0.0);
+static Button* btnPageScrollRight;
+static Button* btnPageScrollLeft;
+static bool pageScrolled = false;
 
-const std::string imageHomeBackground = "home_bg.png";
+static PageView* pageView;
+
+static std::string imageBtnArrowLeft = "btn_arrowleft.png";
+static std::string imageBtnArrowRight = "btn_arrowright.png";
+static std::string imageHomeBackground = "home_bg.png";
 
 Scene* MainMenuLayer::createScene()
 {
@@ -50,6 +57,18 @@ bool MainMenuLayer::init()
     
     addBackButton();
     
+    // Page Scroll Button, changes image on click
+    btnPageScrollRight = Button::create(imageBtnArrowRight, imageBtnArrowRight);
+    btnPageScrollRight->setPosition(Vec2(_visibleSize.width * 0.8, _visibleSize.height * 0.5));
+    btnPageScrollRight->addTouchEventListener(CC_CALLBACK_2(MainMenuLayer::pageScrollClicked, this));
+    this->addChild(btnPageScrollRight, BackgroundLayer::layerTouch);
+
+    btnPageScrollLeft = Button::create(imageBtnArrowLeft, imageBtnArrowLeft);
+    btnPageScrollLeft->setPosition(Vec2(_visibleSize.width * 0.2, _visibleSize.height * 0.5));
+    btnPageScrollLeft->addTouchEventListener(CC_CALLBACK_2(MainMenuLayer::pageScrollClicked, this));
+    btnPageScrollLeft->setVisible(false);
+    this->addChild(btnPageScrollLeft, BackgroundLayer::layerTouch);
+    
     return true;
 }
 
@@ -70,7 +89,7 @@ void MainMenuLayer::addHeaderLabel()     {
     Label* selectLavel = Label::createWithTTF("Select Stage", font, _visibleSize.height * SCORE_FONT_SIZE);
     if (selectLavel) {
         selectLavel->setColor(Color3B::WHITE);
-        selectLavel->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.85);
+        selectLavel->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.9);
         this->addChild(selectLavel);
     }
 }
@@ -124,8 +143,10 @@ void MainMenuLayer::addStages() {
         page1menuList->setGravity(ui::ListView::Gravity::CENTER_VERTICAL);
         page1menuList->setDirection(cocos2d::ui::ScrollView::Direction::VERTICAL);
         page1menuList->setItemsMargin(verticalMargin);
-        page1menuList->setSize(Size(menuList1->getContentSize().width, menuList1->getContentSize().height * 2 + verticalMargin));
+        page1menuList->setSize(Size(menuList1->getContentSize().width,
+                                    menuList1->getContentSize().height * 2 + verticalMargin));
         page1menuList->setPosition(Vec2((_visibleSize.width - page1menuList->getContentSize().width) * 0.5, 0));
+        
         page1menuList->pushBackCustomItem(menuList1);
         page1menuList->pushBackCustomItem(menuList2);
     }
@@ -139,7 +160,9 @@ void MainMenuLayer::addStages() {
         page2menuList->setItemsMargin(horizontalMargin);
         page2menuList->setSize(Size(menuItems.at(6)->getContentSize().width * 3 + (horizontalMargin*2), menuItems.at(0)->getContentSize().height * 2 + verticalMargin));
         page2menuList->setPosition(Vec2((_visibleSize.width - page2menuList->getContentSize().width) * 0.5, 0));
+
         page2menuList->pushBackCustomItem(menuItems.at(6));
+        page2menuList->pushBackCustomItem(Button::create("coming_soon.png", "coming_soon.png"));
     }
     
     Layout* page1 = Layout::create();
@@ -150,17 +173,17 @@ void MainMenuLayer::addStages() {
     page2->addChild(page2menuList);
 //    page2->setBackGroundImage("home_bg.png");
     
-    PageView* pageView = PageView::create();
+    pageView = PageView::create();
 //    pageView->setBackGroundImage("home_bg.png");
     pageView->setContentSize(Size(_visibleSize.width, _visibleSize.height * 0.6));
     pageView->setAnchorPoint(Vec2(0.5f, 0.5f));
     pageView->setPosition(Vec2(_visibleSize.width/2, _visibleSize.height/2));
+    
     pageView->insertPage(page1, 0);
     pageView->insertPage(page2, 1);
     
     this->addChild(pageView);
 }
-
 
 
 static Size smallResource  = Size(480, 320); // "small"
@@ -198,5 +221,20 @@ void MainMenuLayer::gotoGamePlayLayer(cocos2d::Ref* sender, Stage& stage)
     auto scene = GameLayer::createScene(stage);
     Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }
+
+void MainMenuLayer::pageScrollClicked(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType) {
+    if (eEventType != ui::Widget::TouchEventType::ENDED) { return; }
+    
+    pageScrolled = not pageScrolled;
+    pageView->scrollToPage(pageScrolled); // we have only two pages: 0 and 1 ;)
+    
+    btnPageScrollRight->setVisible(not pageScrolled);
+    btnPageScrollLeft->setVisible(pageScrolled);
+}
+
+void MainMenuLayer::pageViewEvent(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType) {
+    // intentionally left empty
+}
+
 
 
