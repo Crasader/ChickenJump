@@ -57,22 +57,13 @@ bool MainMenuLayer::init()
     
     addBackButton();
     
-    // Page Scroll Button, changes image on click
-    btnPageScrollRight = Button::create(imageBtnArrowRight, imageBtnArrowRight);
-    btnPageScrollRight->setPosition(Vec2(_visibleSize.width * 0.8, _visibleSize.height * 0.5));
-    btnPageScrollRight->addTouchEventListener(CC_CALLBACK_2(MainMenuLayer::pageScrollClicked, this));
-    this->addChild(btnPageScrollRight, BackgroundLayer::layerTouch);
-
-    btnPageScrollLeft = Button::create(imageBtnArrowLeft, imageBtnArrowLeft);
-    btnPageScrollLeft->setPosition(Vec2(_visibleSize.width * 0.2, _visibleSize.height * 0.5));
-    btnPageScrollLeft->addTouchEventListener(CC_CALLBACK_2(MainMenuLayer::pageScrollClicked, this));
-    btnPageScrollLeft->setVisible(false);
-    this->addChild(btnPageScrollLeft, BackgroundLayer::layerTouch);
+    // Page Scroll Buttons, changes image on click
+    addPageNavigationButtons();
     
     return true;
 }
 
-void MainMenuLayer::addBackButton()     {
+void MainMenuLayer::addBackButton() {
     _backButton = new BackButton<HomeLayer>();
     _backButton->createBackButton(this);
     _backButton->setPosition(Vec2(_visibleSize.width * 0.04, _visibleSize.height * 0.15));
@@ -93,6 +84,27 @@ void MainMenuLayer::addHeaderLabel()     {
         this->addChild(selectLavel);
     }
 }
+
+void MainMenuLayer::addPageNavigationButtons() {
+    // Scroll Right Button
+    btnPageScrollRight = Button::create(imageBtnArrowRight, imageBtnArrowRight);
+    if (not btnPageScrollRight) return;
+    
+    btnPageScrollRight->setPosition(Vec2(_visibleSize.width * 0.95, _visibleSize.height * 0.5));
+    btnPageScrollRight->addTouchEventListener(CC_CALLBACK_2(MainMenuLayer::pageScrollClicked, this));
+    this->addChild(btnPageScrollRight, BackgroundLayer::layerTouch);
+    
+    
+    // Scroll Left Button
+    btnPageScrollLeft = Button::create(imageBtnArrowLeft, imageBtnArrowLeft);
+    if (not btnPageScrollLeft) return;
+    
+    btnPageScrollLeft->setPosition(Vec2(_visibleSize.width * 0.05, _visibleSize.height * 0.5));
+    btnPageScrollLeft->addTouchEventListener(CC_CALLBACK_2(MainMenuLayer::pageScrollClicked, this));
+    btnPageScrollLeft->setVisible(false);
+    this->addChild(btnPageScrollLeft, BackgroundLayer::layerTouch);
+}
+
 
 void MainMenuLayer::addStages() {
     // Page 1

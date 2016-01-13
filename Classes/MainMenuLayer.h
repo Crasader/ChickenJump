@@ -30,6 +30,7 @@ private:
     void addBackground();
     void addBackButton();
     void addHeaderLabel();
+    void addPageNavigationButtons();
     void addStages();
     void gotoGamePlayLayer(cocos2d::Ref* sender, Stage& stage);
     void menuSelectSgate(cocos2d::Ref* sender, Stage& stage);

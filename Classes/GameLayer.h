@@ -3,6 +3,8 @@
 
 #include <cocos2d.h>
 
+#include <UILoadingBar.h>
+
 #include "Chicken.h"
 #include "Collectable.h"
 #include "GameOverLayer.h"
@@ -73,6 +75,7 @@ private:
     void addFirstLayer();
     void addGroundLayer();
     void addPauseMenu();
+    void addProgressBar();
     void addSecondLayer();
     void addTouchListners();
     void addTutorial();
@@ -102,6 +105,7 @@ private:
     LayerBackground* _layerBackground;
     LayerGround* _layerGround;
     LayerTwo* _layerTwo;
+    cocos2d::ui::LoadingBar* _progressBar;
     std::shared_ptr<Chicken> _chicken;
     Trampoline* _trampoline;
     std::vector<Sprite*> _collectables;

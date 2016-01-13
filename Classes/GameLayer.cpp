@@ -18,7 +18,7 @@ const std::string imagePause = "btn_pause.png";
 const std::string imageResume = "btn_resume.png";
 const std::string imageFinger = "finger.png";
 const std::string imageExplosion = "explosion.png";
-
+const std::string imageLoadingBar = "loading.png";
 
 // Pattern to describe how many elements should appear
 // 1:3, 2:5, 3:7, 0:None
@@ -125,7 +125,11 @@ bool GameLayer::init()
 
     // Pause/Resume toggle
     addPauseMenu();
-
+    
+    
+    // LoadingBar
+    addProgressBar();
+    
     // Tutorial
     addTutorial();
 
@@ -197,7 +201,17 @@ void GameLayer::addPauseMenu() {
     _pauseMenu->setPosition(Vec2(_visibleSize.width * 0.5, _visibleSize.height * 0.95)); // position updated in update fn
     this->addChild(_pauseMenu, BackgroundLayer::layerChicken);
 
-    _pauseMenu->setEnabled(false); // enable it when _isGameStarted = true
+    _pauseMenu->setVisible(false); // get visible when we start to play
+}
+
+void GameLayer::addProgressBar() {
+    _progressBar = cocos2d::ui::LoadingBar::create();
+    _progressBar->loadTexture(imageLoadingBar);
+    _progressBar->setColor(Color3B::ORANGE);
+    _progressBar->setPercent(0);
+    
+    _progressBar->setPosition(Point(_visibleSize.width * 0.5, _progressBar->getContentSize().height));
+    this->addChild(_progressBar, BackgroundLayer::layerTouch);
 }
 
 void GameLayer::addSecondLayer() {
@@ -528,7 +542,7 @@ bool GameLayer::onTouchBegan(Touch* touch, Event* event) {
         _finger->stopAllActions();
         this->removeChild(_finger);
 
-        _pauseMenu->setEnabled(true);
+        _pauseMenu->setVisible(true);
     }
 
     // start preparation to draw new trampoline
@@ -665,7 +679,7 @@ void GameLayer::update(float dt) {
 
         // stage about to finish
         if (_state == GameState::finishing and not _collectables.size()) {
-            _pauseMenu->setEnabled(false);
+            _pauseMenu->setVisible(false);
 
             _chicken->setState(PlayerState::start);
 
@@ -736,6 +750,11 @@ void GameLayer::updateStageComplesion(float speed) {
         if (_stage.getName() != StageStatus::infinite) {
             _stageRemaining -= _distanceForNewCollectables;
             CCLOG("Stage Remaining: %f", _stageRemaining);
+            
+            // update progress bar
+            if (_progressBar) {
+                _progressBar->setPercent(((_stageLength - _stageRemaining - _visibleSize.width) / _stageLength) * 100);
+            }
         }
 
         _distanceForNewCollectables = 0;
