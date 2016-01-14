@@ -441,13 +441,27 @@ void GameLayer::resumeClicked(cocos2d::Ref* sender) {
     _pauseHUD->setVisible(false);
     Director::getInstance()->resume();
 
-    auto callback = CallFunc::create( [this]() {
+    auto resumeLabel = Label::createWithTTF("3", font, _visibleSize.height * SCORE_FONT_SIZE);
+
+    auto resume = CallFunc::create([resumeLabel, this]() {
         this->resumeGame(this);
+        resumeLabel->setString("");
     });
 
-    auto delay = DelayTime::create(1.5f);
+    auto two = CallFunc::create([resumeLabel]() {
+        resumeLabel->setString("2");
+    });
 
-    auto resumeLabel = Label::createWithTTF("Ready..?", font, _visibleSize.height * SCORE_FONT_SIZE);
+    auto one = CallFunc::create([resumeLabel]() {
+        resumeLabel->setString("1");
+    });
+    
+    auto go = CallFunc::create([resumeLabel]() {
+        resumeLabel->setString("Go");
+    });
+    
+    auto delay = DelayTime::create(1.0f);
+
     if (resumeLabel) {
         resumeLabel->setColor(Color3B::YELLOW);
         resumeLabel->setAnchorPoint(Vec2(0, 0));
@@ -456,8 +470,13 @@ void GameLayer::resumeClicked(cocos2d::Ref* sender) {
         this->addChild(resumeLabel, BackgroundLayer::layerChicken);
 
         resumeLabel->runAction(Sequence::create(delay,
-                                                FadeOut::create(1.0),
-                                                callback,
+                                                two,
+                                                delay,
+                                                one,
+                                                delay,
+                                                go,
+                                                delay,
+                                                resume,
                                                 NULL));
     }
 
