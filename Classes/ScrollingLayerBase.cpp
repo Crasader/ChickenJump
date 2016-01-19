@@ -69,7 +69,7 @@ void ScrollingLayerBase::update(float speed) {
         
         _newSprite->setAnchorPoint(Vec2(0, 0));
         // _newSprite should go at the 4th position (respecting _root's position and _diffx).
-        // 1st image has passed, 2nd is visible now, 3rd is coming, then comes new(4th)
+        // 1st image has passed, 2nd is visible now, 3rd is coming, then comes new(4th)...for infinite stage it goes up until 7th
         _newSprite->setPosition(_scrolled + (_scrollingWindowSize * _visibleSize.width - _visibleSize.width * 0.5) - _diffx,
                                 -_newSprite->getContentSize().height * 0.5);
         
