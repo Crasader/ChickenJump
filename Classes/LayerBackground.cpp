@@ -15,24 +15,12 @@ LayerBackground::LayerBackground(Stage& stage){
     _imageFile6 = "background6.png";
     
     if (_stage.getName() == StageStatus::infinite) {
-        // ADD MORE SPRITES FOR THE INFINITE STAGE
-        _scrollingImages.push_back(_imageFile1);
-        _scrollingImages.push_back(_imageFile1);
+        // ADD SPRITES FOR THE INFINITE STAGE
         _scrollingImages.push_back(_imageFile1);
         _scrollingImages.push_back(_imageFile2);
-        _scrollingImages.push_back(_imageFile2);
-        _scrollingImages.push_back(_imageFile2);
-        _scrollingImages.push_back(_imageFile3);
-        _scrollingImages.push_back(_imageFile3);
         _scrollingImages.push_back(_imageFile3);
         _scrollingImages.push_back(_imageFile4);
-        _scrollingImages.push_back(_imageFile4);
-        _scrollingImages.push_back(_imageFile4);
         _scrollingImages.push_back(_imageFile5);
-        _scrollingImages.push_back(_imageFile5);
-        _scrollingImages.push_back(_imageFile5);
-        _scrollingImages.push_back(_imageFile6);
-        _scrollingImages.push_back(_imageFile6);
         _scrollingImages.push_back(_imageFile6);
     }
     else {

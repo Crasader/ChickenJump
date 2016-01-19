@@ -23,9 +23,11 @@ ScrollingLayerBase::~ScrollingLayerBase() {
 
 void ScrollingLayerBase::createLayer(cocos2d::Layer *layer) {
     if (not layer) { return; }
+
+    // Use 3 images to implement scrolling (use 6 for infinite stage)
+    int numberOfScrollingSprite = _stage.getName() == StageStatus::infinite ? 6 : 3;
     
-    // Use 3 images to implement scrolling (unless its the infinite stage)
-    int numberOfScrollingSprite = 3;
+    _scrollingWindowSize = numberOfScrollingSprite - 1; // 0 based index
     
     for (int i = 0; i < numberOfScrollingSprite; ++i) {
         Sprite* ss = Sprite::create(_scrollingImages.at(_currentLayerImageIndex % _scrollingImages.size()));//, _root, _zOrder, i);

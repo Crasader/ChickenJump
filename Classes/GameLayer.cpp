@@ -108,8 +108,10 @@ bool GameLayer::init()
     // this determines when to make a bomb/life fall.
     _distanceForNewSpecialObject = _visibleSize.width * 1.50;
 
-    // add static background
-//    addBG();
+    // add static background for the infinite stage
+    if (_stage.getName() == StageStatus::infinite) {
+        addBG();
+    }
 
     // Add background
     addFirstLayer();
@@ -117,8 +119,10 @@ bool GameLayer::init()
     // Add layerTwo. collectable spawns based on this layer.
     addSecondLayer();
 
-    // Add layerGround
-    addGroundLayer();
+    // Ground and layer_two is attached in the infinite stage, so no need to add GroundLayer seperately
+    if (_stage.getName() != StageStatus::infinite) {
+        addGroundLayer();
+    }
 
     // Add chicken
     addChicken();
