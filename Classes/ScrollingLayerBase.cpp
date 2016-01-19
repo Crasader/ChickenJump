@@ -55,7 +55,7 @@ void ScrollingLayerBase::update(float speed) {
     _scrolled = (_visibleSize.width * 0.5) - _root->getPositionX();
     
     // since our _root is in the middle of the _visibleSize and scrollingSprite's ancorpoint is 0,0
-    // we need to scrolled 1.5 image width to the left
+    // we need to scroll 1.5 image width to the left
     if (_checkpoint - _root->getPositionX() > _visibleSize.width) {
         _checkpoint = _checkpoint - _visibleSize.width;
         _diffx = _checkpoint - _root->getPositionX();
