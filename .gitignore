@@ -31,7 +31,6 @@ ChickenJump-debug.apk
 
 cocos2d/cocos/platform/android/java/bin
 
-bin/
 proj.android/bin
 proj.android/libs
 proj.android/obj
