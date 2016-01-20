@@ -97,7 +97,7 @@ bool GameLayer::init()
     // CCLOG("GameLayer _origin (x, y) (%f, %f)", _origin.x, _origin.y);
 
     // Shuffle our spawn pattern
-     random_shuffle(collectableSpawnPattern.begin(), collectableSpawnPattern.end());
+    random_shuffle(collectableSpawnPattern.begin(), collectableSpawnPattern.end());
 
     _state = GameState::init;
     Trampoline::isDrawingOngoing = false;   // new trampoline drawing can begin

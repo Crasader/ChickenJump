@@ -24,8 +24,8 @@ void Cloud::spawn(cocos2d::Layer* layer) {
     _cloud = Sprite::create(String::createWithFormat("cloud%i.png", cloudType)->getCString());
     _cloud->setAnchorPoint(Vec2(0, 0));
     
-    int maxDelayWidth = 3;
-    int randDelayWidth = CCRANDOM_0_1() * maxDelayWidth + 1; // range=1~4
+    int maxDelayWidth = 2;
+    int randDelayWidth = CCRANDOM_0_1() * maxDelayWidth + 1; // range=1~3
     int posX = _visibleSize.width + _cloud->getContentSize().width * randDelayWidth;
 
     int heightRange = _visibleSize.height / 4 - _cloud->getContentSize().height;

@@ -43,8 +43,9 @@ void ScrollingLayerBase::createLayer(cocos2d::Layer *layer) {
 
 void ScrollingLayerBase::addScrollingImages() {
     // one image is already added by "createLayer()", add other images on the right of that image.
+    Sprite* ss;
     for (int i = 1; i <= _scrollingWindowSize; ++i) {
-        Sprite* ss = Sprite::create(_scrollingImages.at(_currentLayerImageIndex % _scrollingImages.size()));
+        ss = Sprite::create(_scrollingImages.at(_currentLayerImageIndex % _scrollingImages.size()));
         ++_currentLayerImageIndex;
         
         if (not ss) { return; }

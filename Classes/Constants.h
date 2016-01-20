@@ -43,7 +43,7 @@ typedef enum
 #define LAYER_GROUND_SPEED              0.002   // (Bigger = Faster)
 
 // CLOUD
-#define CLOUD_SPAWN_FREQUENCY           0.005   // How frequently spawn function will be called (Bigger = Less Frequently)
+#define CLOUD_SPAWN_FREQUENCY           0.007   // How frequently spawn function will be called (Bigger = Less Frequently)
 #define CLOUD_SPEED                     0.030   // Amount of time the cloud gets to cross the screen (Bigger = Slow)
 
 // Special Collectable spawn frequency
