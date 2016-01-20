@@ -18,7 +18,8 @@ const std::string imagePause = "btn_pause.png";
 const std::string imageResume = "btn_resume.png";
 const std::string imageFinger = "finger.png";
 const std::string imageExplosion = "explosion.png";
-const std::string imageLoadingBar = "loading.png";
+const std::string imageProgressBar = "progress.png";
+const std::string imageLoadingWheel = "loading.png";
 
 // Pattern to describe how many elements should appear
 // 1:3, 2:5, 3:7, 0:None
@@ -132,18 +133,21 @@ bool GameLayer::init()
     
     
     // LoadingBar
-    addProgressBar();
+    if (_stage.getName() != StageStatus::infinite) {
+        addProgressBar();
+    }
     
-    // Tutorial
-    addTutorial();
+    // Add tutorial once resource loading is complete
+    
+    // Loading
+    addLoadingWheel();
 
 
     // Spawn cloud
     this->schedule(schedule_selector(GameLayer::spawnCloud), CLOUD_SPAWN_FREQUENCY * _visibleSize.width);
 
 
-    // Listen for touches
-    addTouchListners();
+    // Add touch listners once resource loading is complete
 
     // Listen for collision
     addContactListners();
@@ -155,8 +159,38 @@ bool GameLayer::init()
     return true;
 }
 
+void GameLayer::onEnterTransitionDidFinish() {
+    // Add background's rest of the images
+    if (_layerBackground) {
+        _layerBackground->addScrollingImages();
+    }
+    
+    // Add layerTwo's rest of the images
+    if (_layerTwo) {
+        _layerTwo->addScrollingImages();
+    }
+    
+    // Add layerGround's rest of the images
+    if (_stage.getName() != StageStatus::infinite) {
+        _layerGround->addScrollingImages();
+    }
+    
+    if (_loading) {
+        _loading->stopAllActions();
+        this->removeChild(_loading);
+        
+        // add tutorial
+        addTutorial();
+        
+        // Listen for touches
+        addTouchListners();
+    }
+}
+
 void GameLayer::addBG() {
     auto bg = Sprite::create("bg.png");
+    if (not bg) { return; }
+    
     bg->setPosition(Vec2(_visibleSize.width * 0.5f, _visibleSize.height * 0.5f));
     this->addChild(bg, BackgroundLayer::layerBG);
 }
@@ -191,12 +225,29 @@ void GameLayer::addExplosionEffect() {
 
 void GameLayer::addFirstLayer() {
     _layerBackground = new LayerBackground(_stage);
+    
+    if (not _layerBackground) { return; }
+    
     _layerBackground->createLayer(this);
 }
 
 void GameLayer::addGroundLayer() {
     _layerGround = new LayerGround(_stage);
+
+    if (not _layerGround) { return; }
+    
     _layerGround->createLayer(this);
+}
+
+void GameLayer::addLoadingWheel() {
+    _loading = Sprite::create(imageLoadingWheel);
+    
+    if (not _loading) { return; }
+    _loading->setPosition(Vec2(_visibleSize.width * 0.5, _visibleSize.height * 0.5));
+    this->addChild(_loading, BackgroundLayer::layerTouch);
+
+    auto rotateTo = RotateTo::create(8.0f, 720.0f);
+    _loading->runAction(rotateTo);
 }
 
 void GameLayer::addPauseMenu() {
@@ -210,7 +261,7 @@ void GameLayer::addPauseMenu() {
 
 void GameLayer::addProgressBar() {
     _progressBar = cocos2d::ui::LoadingBar::create();
-    _progressBar->loadTexture(imageLoadingBar);
+    _progressBar->loadTexture(imageProgressBar);
     _progressBar->setColor(Color3B::ORANGE);
     _progressBar->setPercent(0);
     
@@ -220,6 +271,9 @@ void GameLayer::addProgressBar() {
 
 void GameLayer::addSecondLayer() {
     _layerTwo = new LayerTwo(_stage);
+    
+    if (not _layerTwo) { return; }
+    
     _layerTwo->createLayer(this);
 }
 

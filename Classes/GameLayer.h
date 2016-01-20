@@ -53,7 +53,9 @@ public:
     virtual void onTouchMoved(Touch* touch, Event* event);
     
     void update(float dt);
-
+    
+    virtual void onEnterTransitionDidFinish();
+    
     virtual void onExit() {
         // Cleanup
         Layer::onExit();
@@ -74,6 +76,7 @@ private:
     void addExplosionEffect();
     void addFirstLayer();
     void addGroundLayer();
+    void addLoadingWheel();
     void addPauseMenu();
     void addProgressBar();
     void addSecondLayer();
@@ -117,6 +120,7 @@ private:
     PauseLayer* _pauseHUD;
     ScoreLayer* _scoreHUD;
     Sprite* _finger;
+    Sprite* _loading;
     Menu* _pauseMenu;
     unsigned int _score;
     

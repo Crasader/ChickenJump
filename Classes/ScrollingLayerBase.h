@@ -14,6 +14,7 @@ public:
     ScrollingLayerBase(void);
     virtual ~ScrollingLayerBase(void);
     void createLayer(cocos2d::Layer* layer);
+    void addScrollingImages();
     void update(float speed);
 
     cocos2d::Sprite* _root;

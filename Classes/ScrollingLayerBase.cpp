@@ -23,14 +23,28 @@ ScrollingLayerBase::~ScrollingLayerBase() {
 
 void ScrollingLayerBase::createLayer(cocos2d::Layer *layer) {
     if (not layer) { return; }
-
+    
     // Use 3 images to implement scrolling (use 6 for infinite stage)
-    int numberOfScrollingSprite = _stage.getName() == StageStatus::infinite ? 6 : 3;
+    _scrollingWindowSize = _stage.getName() == StageStatus::infinite ? 5 : 2; // 0 based index
     
-    _scrollingWindowSize = numberOfScrollingSprite - 1; // 0 based index
+    Sprite* ss = Sprite::create(_scrollingImages.at(_currentLayerImageIndex % _scrollingImages.size()));
+    ++_currentLayerImageIndex;
     
-    for (int i = 0; i < numberOfScrollingSprite; ++i) {
-        Sprite* ss = Sprite::create(_scrollingImages.at(_currentLayerImageIndex % _scrollingImages.size()));//, _root, _zOrder, i);
+    if (not ss) { return; }
+    ss->setAnchorPoint(Vec2(0, 0));
+    ss->setPosition(- ss->getContentSize().width * 0.5, -ss->getContentSize().height * 0.5);
+    
+    _root->addChild(ss);
+    
+    _scrollingSprites.push(ss);
+    
+    layer->addChild(_root, _zOrder);
+}
+
+void ScrollingLayerBase::addScrollingImages() {
+    // one image is already added by "createLayer()", add other images on the right of that image.
+    for (int i = 1; i <= _scrollingWindowSize; ++i) {
+        Sprite* ss = Sprite::create(_scrollingImages.at(_currentLayerImageIndex % _scrollingImages.size()));
         ++_currentLayerImageIndex;
         
         if (not ss) { return; }
@@ -38,13 +52,10 @@ void ScrollingLayerBase::createLayer(cocos2d::Layer *layer) {
         ss->setPosition(i * ss->getContentSize().width - ss->getContentSize().width * 0.5,
                         -ss->getContentSize().height * 0.5);
         
-        ss->setTag(i);
         _root->addChild(ss);
         
         _scrollingSprites.push(ss);
     }
-    
-    layer->addChild(_root, _zOrder);
 }
 
 void ScrollingLayerBase::update(float speed) {
