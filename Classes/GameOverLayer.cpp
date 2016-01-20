@@ -7,6 +7,7 @@
 #include <UIButton.h>
 
 using namespace cocos2d;
+using namespace ui;
 
 static unsigned int _score = 0;
 static bool _isStageClear = false;
@@ -15,7 +16,7 @@ static Stage _stage;
 static Button* _btnMainMenu;
 static const std::string imageBtnMainMenu = "btn_menu.png";
 
-void GameOverLayer::prepare(unsigned int score, Stage& stage, bool isStageClear)
+void GameOverLayer::prepare(unsigned int score, Stage const& stage, bool isStageClear)
 {
     _stage = stage;
     _score = score;
@@ -98,10 +99,8 @@ void GameOverLayer::saveStatsAndUnlockNextStage() {
 void GameOverLayer::mainMenuClicked(const Ref* ref, const cocos2d::ui::Widget::TouchEventType& eEventType) {
     if (eEventType != ui::Widget::TouchEventType::ENDED) { return; }
 
-    CCLOG("========");
     auto d = Director::getInstance();
     if (d->isPaused()) {
-        CCLOG("========");
         d->resume();
     }
     

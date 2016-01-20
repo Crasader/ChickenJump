@@ -2,6 +2,8 @@
 
 #include "Constants.h"
 
+using namespace cocos2d;
+
 Cloud::Cloud(void){
     _origin = Director::getInstance()->getVisibleOrigin();
     _visibleSize = Director::getInstance()->getVisibleSize();

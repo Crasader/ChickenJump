@@ -3,8 +3,6 @@
 
 #include "cocos2d.h"
 
-using namespace cocos2d;
-
 class ScoreLayer : public cocos2d::LayerColor
 {
 public:
@@ -16,13 +14,13 @@ public:
     void updateScore(int score);
     
 private:
-    Vec2 _origin;
-    Size _visibleSize;
+    cocos2d::Vec2 _origin;
+    cocos2d::Size _visibleSize;
     
     std::string imageScore = "score.png";
     std::string imageLife = "life.png";
-    Label* _scoreLabel;
-    std::vector<Sprite*> _lifeSprites;
+    cocos2d::Label* _scoreLabel;
+    std::vector<cocos2d::Sprite*> _lifeSprites;
 };
 
 

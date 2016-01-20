@@ -115,7 +115,7 @@ void HomeLayer::addPlayMenu() {
     this->addChild(menu, BackgroundLayer::layerTouch);
 }
 
-void HomeLayer::gotoMainMenuLayer(cocos2d::Ref* sender)
+void HomeLayer::gotoMainMenuLayer(cocos2d::Ref const* sender)
 {
     auto scene = MainMenuLayer::createScene();
     Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));

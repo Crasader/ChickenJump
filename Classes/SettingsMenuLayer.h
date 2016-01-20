@@ -5,9 +5,6 @@
 
 #include <UIWidget.h>
 
-using namespace cocos2d;
-using namespace cocos2d::ui;
-
 class SettingsMenuLayer : public cocos2d::LayerColor
 {
 public:
@@ -18,14 +15,14 @@ private:
     void createMenues();
     void addSoundButton();
     void addMusicButton();
-    void settingsClicked(const Ref* ref, const cocos2d::ui::Widget::TouchEventType& eEventType);
-    void toggleSound(const Ref* ref, const cocos2d::ui::Widget::TouchEventType& eEventType);
-    void toggleMusic(const Ref* ref, const cocos2d::ui::Widget::TouchEventType& eEventType);
+    void settingsClicked(cocos2d::Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType);
+    void toggleSound(cocos2d::Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType);
+    void toggleMusic(cocos2d::Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType);
         
     bool _isCollapsed;
     
-    Vec2 _origin;
-    Size _visibleSize;    
+    cocos2d::Vec2 _origin;
+    cocos2d::Size _visibleSize;
 };
 
 

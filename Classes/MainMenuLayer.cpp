@@ -13,6 +13,7 @@
 #include <UIWidget.h>
 
 using namespace cocos2d;
+using namespace ui;
 
 static Vec2 normalizedPosition = Vec2(-0.45, -0.0);
 static Button* btnPageScrollRight;
@@ -203,12 +204,12 @@ static Size mediumResource = Size(1024, 768); // "mid"
 static Size largeResource  = Size(2048, 1536); // "big"
 static Size designResolution = Size(480, 320);
 
-void MainMenuLayer::menuSelectSgate(cocos2d::Ref* sender, Stage& stage) {
+void MainMenuLayer::menuSelectSgate(cocos2d::Ref const* sender, Stage const& stage) {
     selectLevel(stage.getName());
     gotoGamePlayLayer(this, stage);
 }
 
-void MainMenuLayer::selectLevel(std::string stage) {
+void MainMenuLayer::selectLevel(std::string const& stage) {
     Size screenSize = Director::getInstance()->getOpenGLView()->getFrameSize();
     std::vector<std::string> searchPaths;
     
@@ -228,7 +229,7 @@ void MainMenuLayer::selectLevel(std::string stage) {
     
 }
 
-void MainMenuLayer::gotoGamePlayLayer(cocos2d::Ref* sender, Stage& stage)
+void MainMenuLayer::gotoGamePlayLayer(cocos2d::Ref const* sender, Stage const& stage)
 {
     auto scene = GameLayer::createScene(stage);
     Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));

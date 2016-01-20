@@ -6,54 +6,52 @@
 
 #include "Constants.h"
 
-using namespace cocos2d;
-
 template <typename T>
 class BackButton {
 public:
     BackButton(void) {
-        _origin = Director::getInstance()->getVisibleOrigin();
-        _visibleSize = Director::getInstance()->getVisibleSize();
+        _origin = cocos2d::Director::getInstance()->getVisibleOrigin();
+        _visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
     }
     
-    void createBackButton(Layer* layer) {
+    void createBackButton(cocos2d::Layer* layer) {
         if (not layer) { return; }
         
-        _backItem = MenuItemImage::create(_image, _imageClicked, CC_CALLBACK_1(BackButton::goBack, this));
+        _backItem = cocos2d::MenuItemImage::create(_image, _imageClicked, CC_CALLBACK_1(BackButton::goBack, this));
         if (not _backItem) { return; }
-        _backMenu = Menu::create(_backItem, NULL);
+        _backMenu = cocos2d::Menu::create(_backItem, NULL);
         layer->addChild(_backMenu, BackgroundLayer::layerGround);
     }
     
-    Size getContentSize() {
-        if (not _backItem) { return Size(); }
+    cocos2d::Size getContentSize() {
+        if (not _backItem) { return cocos2d::Size(); }
         return _backItem->getContentSize();
     }
     
-    void setPosition(Vec2 position) {
+    void setPosition(cocos2d::Vec2 position) {
         if (not _backMenu) { return; }
         _backMenu->setPosition(position);
     }
     
-    void setNormalizedPosition(Vec2 position) {
+    void setNormalizedPosition(cocos2d::Vec2 position) {
         if (not _backItem) { return; }
         _backItem->setNormalizedPosition(position);
     }
     
-    void goBack(Ref* ref) {
+    void goBack(cocos2d::Ref const* ref) {
         auto scene = T::createScene();
         if (not scene) { return; }
-        if (Director::getInstance()->isPaused()) {
-            Director::getInstance()->resume();
+        if (cocos2d::Director::getInstance()->isPaused()) {
+            cocos2d::Director::getInstance()->resume();
         }
-        Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
+        cocos2d::Director::getInstance()->replaceScene(cocos2d::TransitionFade::create(TRANSITION_TIME, scene));
     }
     
-    Vec2 _origin;
-    Size _visibleSize;
+    cocos2d::Vec2 _origin;
+    cocos2d::Size _visibleSize;
 
-    Menu* _backMenu;
-    MenuItemImage* _backItem;
+    cocos2d::Menu* _backMenu;
+    cocos2d::MenuItemImage* _backItem;
     
     const std::string _image = "btn_back.png";
     const std::string _imageClicked = "btn_backclicked.png";

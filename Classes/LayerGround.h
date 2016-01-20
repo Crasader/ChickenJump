@@ -7,7 +7,7 @@
 
 class LayerGround : public ScrollingLayerBase {
 public:
-    LayerGround(Stage& stage);
+    LayerGround(Stage const& stage);
     virtual ~LayerGround();
 };
 

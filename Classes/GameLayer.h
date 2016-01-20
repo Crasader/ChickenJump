@@ -40,35 +40,22 @@ public:
     
 
     static GameLayer* getInstance();
-    void pauseGame(cocos2d::Ref* sender);
-    void resumeClicked(cocos2d::Ref* sender);
-    void resumeGame(cocos2d::Ref* sender);
+    void pauseGame(cocos2d::Ref const* sender);
+    void resumeClicked(cocos2d::Ref const* sender);
+    void resumeGame(cocos2d::Ref const* sender);
     
     // contact listners
-    bool onContactBegin(cocos2d::PhysicsContact &contact);
+    bool onContactBegin(cocos2d::PhysicsContact const& contact);
     
     // touch listners
-    virtual bool onTouchBegan(Touch* touch, Event* event);
-    virtual void onTouchEnded(Touch* touch, Event* event);
-    virtual void onTouchMoved(Touch* touch, Event* event);
+    virtual bool onTouchBegan(Touch const* touch, Event const* event);
+    virtual void onTouchEnded(Touch const* touch, Event const* event);
+    virtual void onTouchMoved(Touch const* touch, Event const* event);
     
     void update(float dt);
     
     virtual void onEnterTransitionDidFinish();
     
-    virtual void onExit() {
-        // Cleanup
-        Layer::onExit();
-        Layer::cleanup();
-
-        delete _layerBackground;
-        delete _layerTwo;
-        delete _layerGround;
-        delete _trampoline;
-
-        TextureCache::getInstance()->removeUnusedTextures();
-    }
-
 private:
     void addBG();
     void addChicken();

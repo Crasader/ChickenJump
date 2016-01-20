@@ -17,19 +17,13 @@ public:
 
     void update(float dt);
     
-    virtual void onExit() {
-        // Cleanup
-        Layer::onExit();
-        Layer::cleanup();
-        TextureCache::getInstance()->removeUnusedTextures();
-    }
 private:
     void addBackground();
     void addFlyingChickens();
     void addGround();
     void addLogo();
     void addPlayMenu();
-    void gotoMainMenuLayer(cocos2d::Ref* sender);
+    void gotoMainMenuLayer(cocos2d::Ref const* sender);
     void initStage();
     
     FloatingChicken* _flyingChicken1;

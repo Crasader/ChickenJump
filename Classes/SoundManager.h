@@ -9,7 +9,7 @@ public:
     
     static float IsSoundActive();
     static float IsMusicActive();
-    static void Play(const std::string& sound);
+    static void Play(std::string const& sound);
     static void ToggleMusic();
     static void ToggleSound();
 

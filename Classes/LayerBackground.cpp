@@ -2,7 +2,7 @@
 
 #include "Constants.h"
 
-LayerBackground::LayerBackground(Stage& stage){
+LayerBackground::LayerBackground(Stage const& stage){
     _stage = stage;
     _imageFile = "background.png";
     _zOrder = BackgroundLayer::layerBackground;

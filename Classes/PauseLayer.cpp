@@ -127,7 +127,7 @@ void PauseLayer::addMusicButton() {
 }
 
 // Click Events
-void PauseLayer::mainMenuClicked(const Ref* ref, const cocos2d::ui::Widget::TouchEventType& eEventType) {
+void PauseLayer::mainMenuClicked(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType) {
     if (eEventType != ui::Widget::TouchEventType::ENDED) { return; }
     
     BackButton<MainMenuLayer>* mainMenu = new BackButton<MainMenuLayer>();
@@ -135,14 +135,14 @@ void PauseLayer::mainMenuClicked(const Ref* ref, const cocos2d::ui::Widget::Touc
     mainMenu->goBack(this);
 }
 
-void PauseLayer::restartClicked(const Ref* ref, const cocos2d::ui::Widget::TouchEventType& eEventType) {
+void PauseLayer::restartClicked(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType) {
     if (eEventType != ui::Widget::TouchEventType::ENDED) { return; }
 
 //    auto scene = GameLayer::createScene(stage);
 //    Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }
 
-void PauseLayer::toggleSound(const Ref* ref, const cocos2d::ui::Widget::TouchEventType& eEventType) {
+void PauseLayer::toggleSound(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType) {
     if (eEventType != ui::Widget::TouchEventType::ENDED) { return; }
     
     SoundManager::ToggleSound();
@@ -154,7 +154,7 @@ void PauseLayer::toggleSound(const Ref* ref, const cocos2d::ui::Widget::TouchEve
     }
 }
 
-void PauseLayer::toggleMusic(const Ref* ref, const cocos2d::ui::Widget::TouchEventType& eEventType) {
+void PauseLayer::toggleMusic(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType) {
     if (eEventType != ui::Widget::TouchEventType::ENDED) { return; }
     
     SoundManager::ToggleMusic();

@@ -3,19 +3,17 @@
 
 #include <cocos2d.h>
 
-using namespace cocos2d;
-
 class Cloud {
 public:
     Cloud(void);
     void spawn(cocos2d::Layer* layer);
     
 private:
-    Sprite* _cloud;
-    Layer* _layer;
+    cocos2d::Sprite* _cloud;
+    cocos2d::Layer* _layer;
     
-    Vec2 _origin;
-    Size _visibleSize;
+    cocos2d::Vec2 _origin;
+    cocos2d::Size _visibleSize;
     
 //    std::string const _spriteImage = "tree_br.png";
 };

@@ -6,8 +6,6 @@
 #include "BackButton.h"
 #include "HomeLayer.h"
 
-using namespace cocos2d;
-
 class Stage;
 
 class MainMenuLayer : public cocos2d::Layer
@@ -18,13 +16,6 @@ public:
     virtual bool init();
     
     CREATE_FUNC(MainMenuLayer);
-    
-    virtual void onExit() {
-        // Cleanup
-        Layer::onExit();
-        Layer::cleanup();
-        TextureCache::getInstance()->removeUnusedTextures();
-    }
 
 private:
     void addBackground();
@@ -32,11 +23,11 @@ private:
     void addHeaderLabel();
     void addPageNavigationButtons();
     void addStages();
-    void gotoGamePlayLayer(cocos2d::Ref* sender, Stage& stage);
-    void menuSelectSgate(cocos2d::Ref* sender, Stage& stage);
-    void pageScrollClicked(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType);
+    void gotoGamePlayLayer(cocos2d::Ref const* sender, Stage const& stage);
+    void menuSelectSgate(cocos2d::Ref const* sender, Stage const& stage);
+    void pageScrollClicked(cocos2d::Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType);
     void pageViewEvent(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType);
-    void selectLevel(std::string level);
+    void selectLevel(std::string const& level);
     
     bool _countryFrance;
     BackButton<HomeLayer>* _backButton;

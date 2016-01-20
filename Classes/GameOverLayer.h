@@ -15,21 +15,14 @@ public:
     virtual bool init();
     CREATE_FUNC(GameOverLayer);
 
-    void prepare(unsigned int score, Stage& stage, bool isStageClear);
-    
-    virtual void onExit() {
-        // Cleanup
-        Layer::onExit();
-        Layer::cleanup();
-        TextureCache::getInstance()->removeUnusedTextures();
-    }
+    void prepare(unsigned int score, Stage const& stage, bool isStageClear);
 
 private:
     void addHighscoreLabel();
     void addScoreLabel();
     void addMainMenu();
     void saveStatsAndUnlockNextStage();
-    void mainMenuClicked(const Ref* ref, const cocos2d::ui::Widget::TouchEventType& eEventType);
+    void mainMenuClicked(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType);
     
     Vec2 _origin;
     Size _visibleSize;

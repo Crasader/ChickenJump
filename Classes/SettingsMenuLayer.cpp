@@ -7,6 +7,9 @@
 #include "GameLayer.h"
 #include "SoundManager.h"
 
+using namespace cocos2d;
+using namespace ui;
+
 static const std::string imageBtnSettings = "btn_settings.png";
 static const std::string imageBtnSettingsClicked = "btn_settingsclicked.png";
 static const std::string imageBtnSoundOn = "btn_soundon.png";

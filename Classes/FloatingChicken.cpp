@@ -2,13 +2,14 @@
 
 #include "Constants.h"
 
+using namespace cocos2d;
 
 FloatingChicken::FloatingChicken(void){
     _origin = Director::getInstance()->getVisibleOrigin();
     _visibleSize = Director::getInstance()->getVisibleSize();
 }
 
-void FloatingChicken::createFloatingChicken(cocos2d::Layer *layer, Vec2 initialPosition, AnimationType animationType) {
+void FloatingChicken::createFloatingChicken(cocos2d::Layer *layer, Vec2 const& initialPosition, AnimationType const& animationType) {
     if (not layer) { return; }
 
     _chicken = Sprite::create(_imageFile);
@@ -49,7 +50,7 @@ void FloatingChicken::createFloatingChicken(cocos2d::Layer *layer, Vec2 initialP
     setAnimation();
 }
 
-void FloatingChicken::gotoInitialPosition(Vec2 position) {
+void FloatingChicken::gotoInitialPosition(Vec2 const& position) {
     _chicken->setPosition(position);
 }
 

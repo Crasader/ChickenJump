@@ -2,6 +2,7 @@
 
 #include "Constants.h"
 
+using namespace cocos2d;
 
 // 2:egg 4:pizza 8:bomb
 static const int pattern[] = {2, 4, 2, 2, 2, 8, 2, 2, 4, 2, 2, 2, 8, 2, 4, 2, 2, 4, 2, 2};

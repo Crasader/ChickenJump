@@ -8,7 +8,7 @@
 class LayerTwo : public ScrollingLayerBase {
 
 public:
-    LayerTwo(Stage& stage);
+    LayerTwo(Stage const& stage);
     virtual ~LayerTwo(void);
 };
 

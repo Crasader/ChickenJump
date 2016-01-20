@@ -3,8 +3,6 @@
 
 #include <cocos2d.h>
 
-using namespace cocos2d;
-
 typedef enum { fly_lefttoright_high, fly_lefttoright_mid, fly_lefttoright_low, fly_righttoleft_mid } AnimationType;
 typedef enum { state_jumping, state_falling } FloatingChickenState;
 
@@ -12,27 +10,27 @@ typedef enum { state_jumping, state_falling } FloatingChickenState;
 class FloatingChicken {
 public:
     FloatingChicken(void);
-    void createFloatingChicken(cocos2d::Layer* layer, Vec2 initialPosition, AnimationType animationType); // direction = left->right OR right->left
+    void createFloatingChicken(cocos2d::Layer* layer, cocos2d::Vec2 const& initialPosition, AnimationType const& animationType); // direction = left->right OR right->left
     
-    void gotoInitialPosition(Vec2 position);
-    Sprite* getFloatingChicken() { return _chicken; }
-    Vec2 getPosition() { return _chicken->getPosition(); }
-    void setPosition(Vec2 const& position) { _chicken->setPosition(position); }
+    void gotoInitialPosition(cocos2d::Vec2 const& position);
+    cocos2d::Sprite* getFloatingChicken() { return _chicken; }
+    cocos2d::Vec2 getPosition() { return _chicken->getPosition(); }
+    void setPosition(cocos2d::Vec2 const& position) { _chicken->setPosition(position); }
     void setState(FloatingChickenState state);
     
     void update(float dt);
 private:
     void setAnimation();
 
-    Sprite* _chicken;
-    Vec2 _vector;
-    Vec2 _initialPosition;
+    cocos2d::Sprite* _chicken;
+    cocos2d::Vec2 _vector;
+    cocos2d::Vec2 _initialPosition;
     int _direction; // direction = +ve: left->right OR -ve: right->left
     float _parabolaHeight = 1.0;
     FloatingChickenState _state;
     
-    Vec2 _origin;
-    Size _visibleSize;
+    cocos2d::Vec2 _origin;
+    cocos2d::Size _visibleSize;
 
     std::string const _imageFile = "playerfly_1.png";
 };

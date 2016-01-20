@@ -2,6 +2,8 @@
 
 #include "Constants.h"
 
+using namespace cocos2d;
+
 bool Trampoline::isDrawingOngoing = false;
 
 Trampoline::Trampoline(void){

@@ -76,7 +76,7 @@ void StageStatus::unlockStage(Stage& stage) {
     saveStage(stage);
 }
 
-void StageStatus::unlockNextStage(const Stage& currentStage) {
+void StageStatus::unlockNextStage(Stage const& currentStage) {
     std::vector<Stage> stages = getStage();
     for (int i = 0; i < stages.size() - 1; ++i) {
         if (stages.at(i).getName() == currentStage.getName()) {

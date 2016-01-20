@@ -34,7 +34,7 @@ float SoundManager::IsMusicActive() {
     return UserDefault::getInstance()->getFloatForKey(MUSIC, 1.0);
 }
 
-void SoundManager::Play(const std::string &sound) {
+void SoundManager::Play(std::string  const& sound) {
     if (UserDefault::getInstance()->getFloatForKey(SOUND, 1.0)) {
         CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(sound.c_str());
     }

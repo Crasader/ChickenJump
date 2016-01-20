@@ -477,7 +477,7 @@ void GameLayer::lastLifeExploded() {
     this->runAction(action);
 }
 
-void GameLayer::pauseGame(cocos2d::Ref* sender) {
+void GameLayer::pauseGame(cocos2d::Ref const* sender) {
     if (_state != GameState::started) { return; }
 
     Director::getInstance()->pause();
@@ -487,7 +487,7 @@ void GameLayer::pauseGame(cocos2d::Ref* sender) {
     _pauseMenu->setVisible(false);
 }
 
-void GameLayer::resumeClicked(cocos2d::Ref* sender) {
+void GameLayer::resumeClicked(cocos2d::Ref const* sender) {
     // don't change the GameState.
     // set resume in Director and show a FadeOut action of "Ready..?" label
     // then a callback to set GameState and others.
@@ -538,14 +538,14 @@ void GameLayer::resumeClicked(cocos2d::Ref* sender) {
 
 }
 
-void GameLayer::resumeGame(cocos2d::Ref* sender) {
+void GameLayer::resumeGame(cocos2d::Ref const* sender) {
     if (_state != GameState::paused) { return; }
 
     _state = GameState::started;
     _pauseMenu->setVisible(true);
 }
 
-void GameLayer::removeCollectable(cocos2d::Sprite *collectable) {
+void GameLayer::removeCollectable(cocos2d::Sprite* collectable) {
     // cleanup
     this->removeChild(collectable);
 
@@ -555,7 +555,7 @@ void GameLayer::removeCollectable(cocos2d::Sprite *collectable) {
     }
 }
 
-void GameLayer::removeSpecialCollectable(cocos2d::Sprite *collectable) {
+void GameLayer::removeSpecialCollectable(cocos2d::Sprite* collectable) {
     // cleanup
     this->removeChild(collectable);
 
@@ -608,7 +608,7 @@ void GameLayer::speedUp() {
 
 // ########## TOUCH EVENTS ########## //
 #pragma mark Touch Events
-bool GameLayer::onTouchBegan(Touch* touch, Event* event) {
+bool GameLayer::onTouchBegan(Touch const* touch, Event const* event) {
     if (_state == GameState::finished or _state == GameState::paused or Trampoline::isDrawingOngoing) { return false; }
 
     // disable the tutorial
@@ -633,7 +633,7 @@ bool GameLayer::onTouchBegan(Touch* touch, Event* event) {
     return true;
 }
 
-void GameLayer::onTouchMoved(Touch* touch, Event* event) {
+void GameLayer::onTouchMoved(Touch const* touch, Event const* event) {
     // continue only if trampoline drawing is ongoing
     if (_state == GameState::finished or _state == GameState::paused or not Trampoline::isDrawingOngoing) { return; }
 
@@ -657,14 +657,14 @@ void GameLayer::onTouchMoved(Touch* touch, Event* event) {
     // trampoline drawing is finished once we reach the max length of trampoline
 }
 
-void GameLayer::onTouchEnded(Touch* touch, Event* event) {
+void GameLayer::onTouchEnded(Touch const* touch, Event const* event) {
     Trampoline::isDrawingOngoing = false;
 }
 
 
 // ########## COLLISION HANDLING ########## //
 #pragma mark Collision Detection
-bool GameLayer::onContactBegin(cocos2d::PhysicsContact &contact) {
+bool GameLayer::onContactBegin(cocos2d::PhysicsContact const& contact) {
     // CCLOG("CONTACT");
     PhysicsBody* a = contact.getShapeA()->getBody();
     PhysicsBody* b = contact.getShapeB()->getBody();
@@ -733,7 +733,9 @@ void GameLayer::update(float dt) {
 
             updateStageComplesion(layerTwoSpeed);
         }
-        if (_layerGround) { _layerGround->update(LAYER_GROUND_SPEED * _visibleSize.width * _chicken->getVectorX()); }
+        if (_stage.getName() != StageStatus::infinite and _layerGround) {
+            _layerGround->update(LAYER_GROUND_SPEED * _visibleSize.width * _chicken->getVectorX());
+        }
 
         if (_trampoline) { _trampoline->update(_chicken->getVectorX()); }
         if (_chicken) { _chicken->update(dt); }

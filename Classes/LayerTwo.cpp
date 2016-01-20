@@ -2,7 +2,7 @@
 
 #include "Constants.h"
 
-LayerTwo::LayerTwo(Stage& stage){
+LayerTwo::LayerTwo(Stage const& stage){
     _stage = stage;
     _imageFile = "layertwo.png";
     _zOrder = BackgroundLayer::layerTwo;    

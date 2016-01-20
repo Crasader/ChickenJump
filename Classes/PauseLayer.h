@@ -21,10 +21,10 @@ private:
     void addSoundButton();
     void addMusicButton();
 
-    void mainMenuClicked(const Ref* ref, const cocos2d::ui::Widget::TouchEventType& eEventType);
-    void restartClicked(const Ref* ref, const cocos2d::ui::Widget::TouchEventType& eEventType);
-    void toggleSound(const Ref* ref, const cocos2d::ui::Widget::TouchEventType& eEventType);
-    void toggleMusic(const Ref* ref, const cocos2d::ui::Widget::TouchEventType& eEventType);
+    void mainMenuClicked(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType);
+    void restartClicked(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType);
+    void toggleSound(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType);
+    void toggleMusic(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType);
 
 private:
     Vec2 _origin;
