@@ -176,7 +176,6 @@ void GameLayer::onEnterTransitionDidFinish() {
     }
     
     if (_loading) {
-        _loading->stopAllActions();
         this->removeChild(_loading);
         
         // add tutorial
@@ -240,14 +239,13 @@ void GameLayer::addGroundLayer() {
 }
 
 void GameLayer::addLoadingWheel() {
-    _loading = Sprite::create(imageLoadingWheel);
+    _loading = Label::createWithTTF("Loading...", font, _visibleSize.height * SCORE_FONT_SIZE);
     
     if (not _loading) { return; }
+
+    _loading->setColor(Color3B::ORANGE);
     _loading->setPosition(Vec2(_visibleSize.width * 0.5, _visibleSize.height * 0.5));
     this->addChild(_loading, BackgroundLayer::layerTouch);
-
-    auto rotateTo = RotateTo::create(8.0f, 720.0f);
-    _loading->runAction(rotateTo);
 }
 
 void GameLayer::addPauseMenu() {

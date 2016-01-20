@@ -120,7 +120,7 @@ private:
     PauseLayer* _pauseHUD;
     ScoreLayer* _scoreHUD;
     Sprite* _finger;
-    Sprite* _loading;
+    Label* _loading;
     Menu* _pauseMenu;
     unsigned int _score;
     
