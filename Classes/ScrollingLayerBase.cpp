@@ -71,11 +71,8 @@ void ScrollingLayerBase::update(float speed) {
         _checkpoint = _checkpoint - _visibleSize.width;
         _diffx = _checkpoint - _root->getPositionX();
 
-        _root->removeChild(_scrollingSprites.front(), true);
+        _newSprite = _scrollingSprites.front();
         _scrollingSprites.pop();
-        
-        _newSprite = Sprite::create(_scrollingImages.at(_currentLayerImageIndex % _scrollingImages.size()));
-        ++_currentLayerImageIndex;
         if (not _newSprite) { return; }
         
         _newSprite->setAnchorPoint(Vec2(0, 0));
@@ -84,7 +81,6 @@ void ScrollingLayerBase::update(float speed) {
         _newSprite->setPosition(_scrolled + (_scrollingWindowSize * _visibleSize.width - _visibleSize.width * 0.5) - _diffx,
                                 -_newSprite->getContentSize().height * 0.5);
         
-        _root->addChild(_newSprite);
         _scrollingSprites.push(_newSprite);
     }
 
