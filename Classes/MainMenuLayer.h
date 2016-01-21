@@ -2,6 +2,7 @@
 #define __MAINMENU_LAYER_H__
 
 #include <cocos2d.h>
+#include <UIPageView.h>
 
 #include "BackButton.h"
 #include "HomeLayer.h"
@@ -26,7 +27,7 @@ private:
     void gotoGamePlayLayer(cocos2d::Ref const* sender, Stage const& stage);
     void menuSelectSgate(cocos2d::Ref const* sender, Stage const& stage);
     void pageScrollClicked(cocos2d::Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType);
-    void pageViewEvent(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType);
+    void pageViewEvent(cocos2d::Ref const* ref, cocos2d::ui::PageView::EventType const& eEventType);
     void selectLevel(std::string const& level);
     
     bool _countryFrance;

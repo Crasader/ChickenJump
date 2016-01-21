@@ -6,7 +6,6 @@
 #include "StageStatus.h"
 
 #include <UILayout.h>
-#include <UIPageView.h>
 #include <UIListView.h>
 
 #include <UIButton.h>
@@ -24,7 +23,7 @@ static PageView* pageView;
 
 static std::string imageBtnArrowLeft = "btn_arrowleft.png";
 static std::string imageBtnArrowRight = "btn_arrowright.png";
-static std::string imageHomeBackground = "home_bg.png";
+static std::string imageMenuBackground = "menu_bg.png";
 
 Scene* MainMenuLayer::createScene()
 {
@@ -71,7 +70,7 @@ void MainMenuLayer::addBackButton() {
 }
 
 void MainMenuLayer::addBackground() {
-    auto background = Sprite::create(imageHomeBackground);
+    auto background = Sprite::create(imageMenuBackground);
     if (not background) { return; }
     background->setPosition(Point(_visibleSize.width / 2 + _origin.x, _visibleSize.height / 2 + _origin.y));
     this->addChild(background);
@@ -124,73 +123,65 @@ void MainMenuLayer::addStages() {
     }
     
     ListView* page1menuList;
-    ListView* menuList1;
-    ListView* menuList2;
-    int horizontalMargin = 40;
-    int verticalMargin = 20;
+    ListView* row1;
+    ListView* row2;
+    int horizontalMargin = 20;
+    int verticalMargin = 0;
     {
         {
-            menuList1 = ListView::create();
-            menuList1->setGravity(ui::ListView::Gravity::CENTER_HORIZONTAL);
-            menuList1->setDirection(cocos2d::ui::ScrollView::Direction::HORIZONTAL);
-            menuList1->setItemsMargin(horizontalMargin);
-            menuList1->setSize(Size(menuItems.at(0)->getContentSize().width * 3 + (horizontalMargin*2), menuItems.at(0)->getContentSize().height));
+            row1 = ListView::create();
+            row1->setGravity(ui::ListView::Gravity::CENTER_HORIZONTAL);
+            row1->setDirection(cocos2d::ui::ScrollView::Direction::HORIZONTAL);
+            row1->setItemsMargin(horizontalMargin);
+            row1->setSize(Size(menuItems.at(0)->getContentSize().width * 3.5 + (horizontalMargin*2.5),
+                               menuItems.at(0)->getContentSize().height));
             
-            menuList1->pushBackCustomItem(menuItems.at(0));
-            menuList1->pushBackCustomItem(menuItems.at(1));
-            menuList1->pushBackCustomItem(menuItems.at(2));
+            row1->pushBackCustomItem(menuItems.at(0));
+            row1->pushBackCustomItem(menuItems.at(1));
+            row1->pushBackCustomItem(menuItems.at(2));
         }
         {
-            menuList2 = ListView::create();
-            menuList2->setGravity(ui::ListView::Gravity::CENTER_HORIZONTAL);
-            menuList2->setDirection(cocos2d::ui::ScrollView::Direction::HORIZONTAL);
-            menuList2->setItemsMargin(horizontalMargin);
-            menuList2->setSize(Size(menuItems.at(0)->getContentSize().width * 3 + (horizontalMargin*2), menuItems.at(0)->getContentSize().height));
+            row2 = ListView::create();
+            row2->setGravity(ui::ListView::Gravity::CENTER_HORIZONTAL);
+            row2->setDirection(cocos2d::ui::ScrollView::Direction::HORIZONTAL);
+            row2->setItemsMargin(horizontalMargin);
+            row2->setSize(Size(menuItems.at(0)->getContentSize().width * 4 + (horizontalMargin*3),
+                               menuItems.at(0)->getContentSize().height));
             
-            menuList2->pushBackCustomItem(menuItems.at(3));
-            menuList2->pushBackCustomItem(menuItems.at(4));
-            menuList2->pushBackCustomItem(menuItems.at(5));
+            row2->pushBackCustomItem(menuItems.at(3));
+            row2->pushBackCustomItem(menuItems.at(4));
+            row2->pushBackCustomItem(menuItems.at(5));
+            row2->pushBackCustomItem(menuItems.at(6));
         }
 
         page1menuList = ListView::create();
-        page1menuList->setGravity(ui::ListView::Gravity::CENTER_VERTICAL);
+        page1menuList->setGravity(ui::ListView::Gravity::RIGHT);
         page1menuList->setDirection(cocos2d::ui::ScrollView::Direction::VERTICAL);
         page1menuList->setItemsMargin(verticalMargin);
-        page1menuList->setSize(Size(menuList1->getContentSize().width,
-                                    menuList1->getContentSize().height * 2 + verticalMargin));
-        page1menuList->setPosition(Vec2((_visibleSize.width - page1menuList->getContentSize().width) * 0.5, 0));
+        page1menuList->setTouchEnabled(false);
+        page1menuList->setSize(Size(row2->getContentSize().width,
+                                    row2->getContentSize().height * 2));
         
-        page1menuList->pushBackCustomItem(menuList1);
-        page1menuList->pushBackCustomItem(menuList2);
-    }
-    
-    // Page 2
-    ListView* page2menuList;
-    {
-        page2menuList = ListView::create();
-        page2menuList->setGravity(ui::ListView::Gravity::CENTER_HORIZONTAL);
-        page2menuList->setDirection(cocos2d::ui::ScrollView::Direction::HORIZONTAL);
-        page2menuList->setItemsMargin(horizontalMargin);
-        page2menuList->setSize(Size(menuItems.at(6)->getContentSize().width * 3 + (horizontalMargin*2), menuItems.at(0)->getContentSize().height * 2 + verticalMargin));
-        page2menuList->setPosition(Vec2((_visibleSize.width - page2menuList->getContentSize().width) * 0.5, 0));
-
-        page2menuList->pushBackCustomItem(menuItems.at(6));
-        page2menuList->pushBackCustomItem(Button::create("coming_soon.png", "coming_soon.png"));
+        page1menuList->setPosition(Vec2((_visibleSize.width - page1menuList->getContentSize().width) * 0.5,
+                                        (_visibleSize.height - page1menuList->getContentSize().height) * 0.5));
+        
+        page1menuList->pushBackCustomItem(row1);
+        page1menuList->pushBackCustomItem(row2);
     }
     
     Layout* page1 = Layout::create();
     page1->addChild(page1menuList);
-//    page1->setBackGroundImage("home_bg.png");
+    page1->setTouchEnabled(false);
     
     Layout* page2 = Layout::create();
-    page2->addChild(page2menuList);
-//    page2->setBackGroundImage("home_bg.png");
+    page2->setBackGroundImage("coming_soon_bg.png");
+    page2->setTouchEnabled(false);
     
     pageView = PageView::create();
-//    pageView->setBackGroundImage("home_bg.png");
-    pageView->setContentSize(Size(_visibleSize.width, _visibleSize.height * 0.6));
+    pageView->setContentSize(Size(_visibleSize.width, _visibleSize.height));
     pageView->setAnchorPoint(Vec2(0.5f, 0.5f));
-    pageView->setPosition(Vec2(_visibleSize.width/2, _visibleSize.height/2));
+    pageView->setPosition(Vec2(_visibleSize.width * 0.5, _visibleSize.height * 0.5));
+    pageView->setTouchEnabled(false);
     
     pageView->insertPage(page1, 0);
     pageView->insertPage(page2, 1);
@@ -226,7 +217,6 @@ void MainMenuLayer::selectLevel(std::string const& stage) {
         searchPaths.push_back("resource_sd/" + stage);
     }
     FileUtils::getInstance()->setSearchPaths(searchPaths);
-    
 }
 
 void MainMenuLayer::gotoGamePlayLayer(cocos2d::Ref const* sender, Stage const& stage)
@@ -237,7 +227,7 @@ void MainMenuLayer::gotoGamePlayLayer(cocos2d::Ref const* sender, Stage const& s
 
 void MainMenuLayer::pageScrollClicked(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType) {
     if (eEventType != ui::Widget::TouchEventType::ENDED) { return; }
-    
+
     pageScrolled = not pageScrolled;
     pageView->scrollToPage(pageScrolled); // we have only two pages: 0 and 1 ;)
     
@@ -245,9 +235,10 @@ void MainMenuLayer::pageScrollClicked(Ref const* ref, cocos2d::ui::Widget::Touch
     btnPageScrollLeft->setVisible(pageScrolled);
 }
 
-void MainMenuLayer::pageViewEvent(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType) {
-    // intentionally left empty
-}
+
+
+
+
 
 
 
