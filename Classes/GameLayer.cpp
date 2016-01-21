@@ -830,7 +830,7 @@ void GameLayer::updateStageComplesion(float speed) {
             
             // update progress bar
             if (_progressBar) {
-                _progressBar->setPercent(((_stageLength - _stageRemaining - _visibleSize.width) / _stageLength) * 100);
+                _progressBar->setPercent(((_stageLength - _stageRemaining - (_visibleSize.width * 0.5)) / _stageLength) * 100);
             }
         }
 
