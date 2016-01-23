@@ -32,6 +32,7 @@ public:
     PlayerState getState();
     float getVectorX();
     Vec2* getVector() { return &_vector; }
+    bool hasMagnetEffect();
     void increaseLife();
     void increaseSpriteSize();
     void resetSizeAndWeight();
@@ -39,6 +40,7 @@ public:
     void setCollideToAll();
     void setCollideToNoBomb();
     void setCollideToNone();
+    void setMagnetEffect(bool magnetEffect);
     void setLives(int numberOfLives);
     void setState(PlayerState state);
     void setVector(Vec2 vector) { _vector = vector; }
@@ -52,7 +54,7 @@ private:
     Vec2 _vector;
     float _weight;
     float _scale;
-    
+    bool _hasMagnetEffect;
     unsigned int _lives;
     
     void decreaseWeight();

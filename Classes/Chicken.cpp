@@ -45,6 +45,7 @@ void Chicken::createChicken(cocos2d::Layer *layer) {
     _weight = 1.0;
     _vector = Vec2(1.0, 0.0);
     setState(PlayerState::falling);
+    _hasMagnetEffect = false;
     
     // initial position
     _chicken->setPosition(_visibleSize.width * 0.30, _visibleSize.height * 0.9);
@@ -90,6 +91,10 @@ PlayerState Chicken::getState() {
 
 float Chicken::getVectorX() {
     return _vector.x;
+}
+
+bool Chicken::hasMagnetEffect() {
+    return _hasMagnetEffect;
 }
 
 void Chicken::increaseLife() {
@@ -152,6 +157,10 @@ void Chicken::setLives(int numberOfLives) {
     if (_state == PlayerState::dying) { return; }
 
     _lives = numberOfLives;
+}
+
+void Chicken::setMagnetEffect(bool magnetEffect) {
+    _hasMagnetEffect = magnetEffect;
 }
 
 

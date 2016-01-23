@@ -92,7 +92,7 @@ bool GameLayer::init()
     // CCLOG("GameLayer _origin (x, y) (%f, %f)", _origin.x, _origin.y);
     
     {   // HACK::REMOVE ONCE INVISIBILITY CHECK DONE
-        UserDefault::getInstance()->setIntegerForKey(DIFFICULTY, 6);
+        UserDefault::getInstance()->setIntegerForKey(DIFFICULTY, 5);
         UserDefault::getInstance()->flush();
     }
 
@@ -430,6 +430,13 @@ void GameLayer::handleCollectableConsumption(Sprite* collectable) {
             break;
         }
         case 128: {   // magnet effect
+            removeSpecialCollectable(collectable);
+            _chicken->setMagnetEffect(true);
+            SoundManager::Play(SoundManager::soundLifeup);
+            
+            auto disableEffect = CallFunc::create([this](){ _chicken->setMagnetEffect(false); });
+            auto seq = Sequence::create(DelayTime::create(MAGNET_EFFECT_DURATION), disableEffect, NULL);
+            this->runAction(seq);
             break;
         }
         default:
@@ -656,7 +663,7 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact const& contact) {
     // CCLOG("CONTACT");
     PhysicsBody* a = contact.getShapeA()->getBody();
     PhysicsBody* b = contact.getShapeB()->getBody();
-
+    
     // collision between chicken and trampoline
     if ((a->getCategoryBitmask() == CATEGORY_BITMASK_CHICKEN and b->getCategoryBitmask() == CATEGORY_BITMASK_TRAMPOLINE)) {
         auto trampoline = (Sprite*)contact.getShapeB()->getBody()->getNode();
@@ -674,6 +681,7 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact const& contact) {
                                                                  b->getCategoryBitmask() == CATEGORY_BITMASK_COLLECT_PIZZA or
                                                                  b->getCategoryBitmask() == CATEGORY_BITMASK_COLLECT_BOMB or
                                                                  b->getCategoryBitmask() == CATEGORY_BITMASK_INVISIBILITY or
+                                                                 b->getCategoryBitmask() == CATEGORY_BITMASK_MAGNET or
                                                                  b->getCategoryBitmask() == CATEGORY_BITMASK_COLLECT_LIFE))
     {
         auto collectable = (Sprite*)contact.getShapeB()->getBody()->getNode();
@@ -685,7 +693,8 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact const& contact) {
     else if (b->getCategoryBitmask() == CATEGORY_BITMASK_CHICKEN and (a->getCategoryBitmask() == CATEGORY_BITMASK_COLLECT_EGG or
                                                                       a->getCategoryBitmask() == CATEGORY_BITMASK_COLLECT_PIZZA or
                                                                       a->getCategoryBitmask() == CATEGORY_BITMASK_COLLECT_BOMB or
-                                                                      b->getCategoryBitmask() == CATEGORY_BITMASK_INVISIBILITY or
+                                                                      a->getCategoryBitmask() == CATEGORY_BITMASK_INVISIBILITY or
+                                                                      a->getCategoryBitmask() == CATEGORY_BITMASK_MAGNET or
                                                                       a->getCategoryBitmask() == CATEGORY_BITMASK_COLLECT_LIFE))
     {
         auto collectable = (Sprite*)contact.getShapeA()->getBody()->getNode();
@@ -791,8 +800,18 @@ void GameLayer::updateCollectables(float playerSpeed) {
         if (not s) { continue; }
 
         s->setPositionX(s->getPosition().x - COLLECTABLE_SPEED * _visibleSize.width * playerSpeed);
+        
+        if (_chicken->hasMagnetEffect() and s->getTag() == 2 /*Eggs*/
+            and s->getPosition().getDistance(_chicken->getPosition()) < _visibleSize.width * 0.3) {
+            
+            auto magnetEffect = MoveTo::create(1.0, _chicken->getPosition());
+            s->runAction(magnetEffect);
+        }
 
-        if (s->getPositionX() < -s->getContentSize().width) {
+        if (s->getPositionX() < -s->getContentSize().width /* left boundary */or
+            s->getPositionY() > _visibleSize.height + s->getContentSize().height /* top boundary */ or
+            s->getPositionY() < -s->getContentSize().height /* bottom boundary */) {
+            
             this->removeChild(s);
             _collectables.erase(_collectables.begin() + i);
 
