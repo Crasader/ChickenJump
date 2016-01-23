@@ -90,9 +90,11 @@ bool GameLayer::init()
     _visibleSize = Director::getInstance()->getVisibleSize();
      CCLOG("===== GameLayer _visibleSize width-height (%dx%d)", (int)_visibleSize.width, (int)_visibleSize.height);
     // CCLOG("GameLayer _origin (x, y) (%f, %f)", _origin.x, _origin.y);
-
-    // Shuffle our spawn pattern
-//    random_shuffle(collectableSpawnPattern.begin(), collectableSpawnPattern.end());
+    
+    {   // HACK::REMOVE ONCE INVISIBILITY CHECK DONE
+        UserDefault::getInstance()->setIntegerForKey(DIFFICULTY, 6);
+        UserDefault::getInstance()->flush();
+    }
 
     _state = GameState::init;
     Trampoline::isDrawingOngoing = false;   // new trampoline drawing can begin
@@ -418,13 +420,16 @@ void GameLayer::handleCollectableConsumption(Sprite* collectable) {
             SoundManager::Play(SoundManager::soundLifeup);
             break;
         }
-        case 32: {    // coming soon
+        case 32: {    // invisibility
+            removeSpecialCollectable(collectable);
+            _chicken->setState(PlayerState::invisible);
+            SoundManager::Play(SoundManager::soundLifeup);
             break;
         }
         case 64: {    // Trampoline, so no action here.
             break;
         }
-        case 128: {   // coming soon
+        case 128: {   // magnet effect
             break;
         }
         default:
@@ -668,6 +673,7 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact const& contact) {
     if (a->getCategoryBitmask() == CATEGORY_BITMASK_CHICKEN and (b->getCategoryBitmask() == CATEGORY_BITMASK_COLLECT_EGG or
                                                                  b->getCategoryBitmask() == CATEGORY_BITMASK_COLLECT_PIZZA or
                                                                  b->getCategoryBitmask() == CATEGORY_BITMASK_COLLECT_BOMB or
+                                                                 b->getCategoryBitmask() == CATEGORY_BITMASK_INVISIBILITY or
                                                                  b->getCategoryBitmask() == CATEGORY_BITMASK_COLLECT_LIFE))
     {
         auto collectable = (Sprite*)contact.getShapeB()->getBody()->getNode();
@@ -679,6 +685,7 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact const& contact) {
     else if (b->getCategoryBitmask() == CATEGORY_BITMASK_CHICKEN and (a->getCategoryBitmask() == CATEGORY_BITMASK_COLLECT_EGG or
                                                                       a->getCategoryBitmask() == CATEGORY_BITMASK_COLLECT_PIZZA or
                                                                       a->getCategoryBitmask() == CATEGORY_BITMASK_COLLECT_BOMB or
+                                                                      b->getCategoryBitmask() == CATEGORY_BITMASK_INVISIBILITY or
                                                                       a->getCategoryBitmask() == CATEGORY_BITMASK_COLLECT_LIFE))
     {
         auto collectable = (Sprite*)contact.getShapeA()->getBody()->getNode();

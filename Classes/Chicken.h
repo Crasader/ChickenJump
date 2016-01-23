@@ -9,6 +9,7 @@ typedef enum
 {
     start,
     newBorn,
+    invisible,
     jumping,
     falling,
     dying
@@ -36,6 +37,7 @@ public:
     void resetSizeAndWeight();
     void setAnimation();
     void setCollideToAll();
+    void setCollideToNoBomb();
     void setCollideToNone();
     void setLives(int numberOfLives);
     void setState(PlayerState state);

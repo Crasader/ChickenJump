@@ -52,7 +52,7 @@ void SpecialCollectable::initPatterns(int difficultyLevel) {
             populatePatterns(difficultyLevel, totalNumberOfCollectables * 0.5, totalNumberOfCollectables * 0.5, 0, 0);
             break;
         case 5:    // life(33%) + floating bomb(33%) + invisibility(0) + magnet effect(33%)
-            populatePatterns(difficultyLevel, totalNumberOfCollectables * 0.33, totalNumberOfCollectables * 0.33, 0, totalNumberOfCollectables * 0.33);
+            populatePatterns(difficultyLevel, totalNumberOfCollectables * 0.33, totalNumberOfCollectables * 0.33, 0, totalNumberOfCollectables * 0.33);            
             break;
         case 6:   // life(33%) + floating bomb(33%) + invisibility(33%) + magnet effect(0)
             populatePatterns(difficultyLevel, totalNumberOfCollectables * 0.33, totalNumberOfCollectables * 0.33, totalNumberOfCollectables * 0.33, 0);

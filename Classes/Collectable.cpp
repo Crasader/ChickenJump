@@ -30,7 +30,7 @@ void Collectable::populatePatterns(int difficultyLevel, int eggs, int pizzas, in
     
     // Bombs: 8
     for (int i = 0; i < bombs; ++i) {
-        _patterns.push_back(std::make_pair(8, difficultyLevel > 3 ? RandomHelper::random_int(1, 3) : RandomHelper::random_int(2, 3)));
+        _patterns.push_back(std::make_pair(8, RandomHelper::random_int(2, 3)));
     }
 }
 
@@ -49,14 +49,14 @@ void Collectable::initPatterns(int difficultyLevel) {
         case 4:    // eggs(45%), pizza(30%), bomb(25%)
             populatePatterns(difficultyLevel, totalNumberOfPatterns * 0.45, totalNumberOfPatterns * 0.3, totalNumberOfPatterns * 0.25);
             break;
-        case 5:    // eggs(35%), pizza(35%), bomb(30%)
+        case 5:    // eggs(40%), pizza(30%), bomb(30%)
+            populatePatterns(difficultyLevel, totalNumberOfPatterns * 0.4, totalNumberOfPatterns * 0.3, totalNumberOfPatterns * 0.3);
+            break;
+        case 6:    // eggs(35%), pizza(35%), bomb(30%) // invisibility introduced
             populatePatterns(difficultyLevel, totalNumberOfPatterns * 0.35, totalNumberOfPatterns * 0.35, totalNumberOfPatterns * 0.3);
             break;
-        case 6:    // eggs(30%), pizza(30%), bomb(40%) // invisibility introduced
-            populatePatterns(difficultyLevel, totalNumberOfPatterns * 0.3, totalNumberOfPatterns * 0.3, totalNumberOfPatterns * 0.4);
-            break;
-        case 7:    // Infinite Stage (eggs(30%), pizza(30%), bomb(40%))
-            populatePatterns(difficultyLevel, totalNumberOfPatterns * 0.3, totalNumberOfPatterns * 0.3, totalNumberOfPatterns * 0.4);
+        case 7:    // Infinite Stage (eggs(35%), pizza(35%), bomb(30%))
+            populatePatterns(difficultyLevel, totalNumberOfPatterns * 0.35, totalNumberOfPatterns * 0.35, totalNumberOfPatterns * 0.3);
             break;
         default:
             break;

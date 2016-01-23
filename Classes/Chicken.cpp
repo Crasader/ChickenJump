@@ -138,6 +138,11 @@ void Chicken::setCollideToAll() {
     _chicken->getPhysicsBody()->setContactTestBitmask(CONTACTTEST_BITMASK_CHICKEN_ALL);
 }
 
+void Chicken::setCollideToNoBomb(){
+    if (not _chicken) { return; }
+    _chicken->getPhysicsBody()->setContactTestBitmask(CONTACTTEST_BITMASK_CHICKEN_NO_BOMB);
+}
+
 void Chicken::setCollideToNone() {
     if (not _chicken) { return; }
     _chicken->getPhysicsBody()->setContactTestBitmask(CONTACTTEST_BITMASK_CHICKEN_NON);
@@ -162,34 +167,34 @@ void Chicken::setState(PlayerState state) {
             // stop falling down, stop scrolling as well.
             _vector = Vec2(0, 0);
             
-            auto callbackResetChicken = CallFunc::create([this](){
+            auto resetChicken = CallFunc::create([this](){
                 // reset size & weight; move to a stable position; remove collide power
                 resetSizeAndWeight();
                 _chicken->setPosition(_visibleSize.width * 0.30, _visibleSize.height * 0.60);
             });
             
-            auto callbackCollideNone = CallFunc::create([this]() {
+            auto collideNone = CallFunc::create([this]() {
                 setCollideToNone();
             });
             
-            auto callbackShowChicken = CallFunc::create([this](){
+            auto showChicken = CallFunc::create([this](){
                 _chicken->setVisible(true);
             });
 
-            auto callbackHideChicken = CallFunc::create([this](){
+            auto hideChicken = CallFunc::create([this](){
                 _chicken->setVisible(false);
             });
 
-            auto callbackStateFalling = CallFunc::create([this](){
+            auto stateFalling = CallFunc::create([this](){
                 _state = PlayerState::falling;
             });
             
-            auto callbackCollideNoBomb = CallFunc::create([this]() {
+            auto collideNoBomb = CallFunc::create([this]() {
                 // get the collide power back
-                _chicken->getPhysicsBody()->setContactTestBitmask(CONTACTTEST_BITMASK_CHICKEN_NO_BOMB);
+                setCollideToNoBomb();
             });
 
-            auto callbackCollideAll = CallFunc::create([this]() {
+            auto collideAll = CallFunc::create([this]() {
                 // get the collide power back
                 setCollideToAll();
             });
@@ -197,24 +202,80 @@ void Chicken::setState(PlayerState state) {
             auto timeToReborn = DelayTime::create(2.0);
             auto delay = DelayTime::create(0.2);
 
-            Sequence* blink = Sequence::create(timeToReborn, callbackResetChicken, callbackCollideNone,
-                                               callbackHideChicken, delay, callbackShowChicken, delay,
-                                               callbackHideChicken, delay, callbackShowChicken, delay,
-                                               callbackHideChicken, delay, callbackShowChicken, delay,
-                                               callbackHideChicken, delay, callbackShowChicken, delay,
-                                               callbackStateFalling, callbackCollideNoBomb,
-                                               callbackHideChicken, delay, callbackShowChicken, delay,
-                                               callbackHideChicken, delay, callbackShowChicken, delay,
-                                               callbackHideChicken, delay, callbackShowChicken, delay,
-                                               callbackHideChicken, delay, callbackShowChicken, delay,
-                                               callbackHideChicken, delay, callbackShowChicken, delay,
-                                               callbackHideChicken, delay, callbackShowChicken, delay,
-                                               callbackHideChicken, delay, callbackShowChicken, delay,
-                                               callbackHideChicken, delay, callbackShowChicken, delay,
-                                               callbackCollideAll, NULL);
+            Sequence* blink = Sequence::create(timeToReborn, resetChicken, collideNone,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               stateFalling, collideNoBomb,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               collideAll, NULL);
             _chicken->runAction(blink);
             break;
         }
+        case invisible:{
+            auto showChicken = CallFunc::create([this](){
+                _chicken->setVisible(true);
+            });
+            
+            auto hideChicken = CallFunc::create([this](){
+                _chicken->setVisible(false);
+            });
+            
+            auto stateFalling = CallFunc::create([this](){
+                _state = PlayerState::falling;
+            });
+            
+            auto collideNoBomb = CallFunc::create([this]() {
+                // get the collide power back
+                setCollideToNoBomb();
+            });
+            
+            auto collideAll = CallFunc::create([this]() {
+                // get the collide power back
+                setCollideToAll();
+            });
+            
+            auto delay = DelayTime::create(0.2);
+            
+            // occupy 5 seconds
+            Sequence* blink = Sequence::create(collideNoBomb, stateFalling,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               collideAll, NULL);
+            _chicken->runAction(blink);
+        }
+            break;
         case jumping:
             _vector.y = _visibleSize.height * VELOCITY_Y_MAX;
             break;
@@ -234,6 +295,8 @@ void Chicken::update(float speed) {
         case start:
             break;
         case newBorn:
+            break;
+        case invisible:
             break;
         case jumping:
             _vector.y -= _visibleSize.height * VELOCITY_Y_DECREASE_RATE * _weight;
