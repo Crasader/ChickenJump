@@ -393,7 +393,7 @@ void GameLayer::handleCollectableConsumption(Sprite* collectable) {
             removeCollectable(collectable);
             break;
         }
-        case 8: {   // scrolling bomb
+        case 8: {    // scrolling bomb
             _chicken->getChicken()->setVisible(false);
 
             addExplosionEffect();
@@ -411,35 +411,24 @@ void GameLayer::handleCollectableConsumption(Sprite* collectable) {
 
             // remove the object the chicken collided with
             removeCollectable(collectable);
-            break;
-        }
-        case 16: {   // falling bomb
-            _chicken->getChicken()->setVisible(false);
-
-            addExplosionEffect();
             removeSpecialCollectable(collectable);
-
-            _chicken->decreaseLife();
-            _scoreHUD->updateLife(_chicken->getLives());
-
-            if (not _chicken->getLives()) {
-                lastLifeExploded();
-            }
-            else {
-                // have more lives
-                _chicken->setState(PlayerState::newBorn);
-            }
-
-            // remove the object the chicken collided with
-            removeCollectable(collectable);
             break;
         }
-        case 32: {   // bonus life
+        case 16: {    // bonus life
             _chicken->increaseLife();
             _scoreHUD->updateLife(_chicken->getLives());
             removeSpecialCollectable(collectable);
-
+            
             SoundManager::Play(SoundManager::soundLifeup);
+            break;
+        }
+        case 32: {    // coming soon
+            break;
+        }
+        case 64: {    // Trampoline, so no action here.
+            break;
+        }
+        case 128: {   // coming soon
             break;
         }
         default:
@@ -685,7 +674,6 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact const& contact) {
     if (a->getCategoryBitmask() == CATEGORY_BITMASK_CHICKEN and (b->getCategoryBitmask() == CATEGORY_BITMASK_COLLECT_EGG or
                                                                  b->getCategoryBitmask() == CATEGORY_BITMASK_COLLECT_PIZZA or
                                                                  b->getCategoryBitmask() == CATEGORY_BITMASK_COLLECT_BOMB or
-                                                                 b->getCategoryBitmask() == CATEGORY_BITMASK_COLLECT_F_BOMB or
                                                                  b->getCategoryBitmask() == CATEGORY_BITMASK_COLLECT_LIFE))
     {
         auto collectable = (Sprite*)contact.getShapeB()->getBody()->getNode();
@@ -697,7 +685,6 @@ bool GameLayer::onContactBegin(cocos2d::PhysicsContact const& contact) {
     else if (b->getCategoryBitmask() == CATEGORY_BITMASK_CHICKEN and (a->getCategoryBitmask() == CATEGORY_BITMASK_COLLECT_EGG or
                                                                       a->getCategoryBitmask() == CATEGORY_BITMASK_COLLECT_PIZZA or
                                                                       a->getCategoryBitmask() == CATEGORY_BITMASK_COLLECT_BOMB or
-                                                                      a->getCategoryBitmask() == CATEGORY_BITMASK_COLLECT_F_BOMB or
                                                                       a->getCategoryBitmask() == CATEGORY_BITMASK_COLLECT_LIFE))
     {
         auto collectable = (Sprite*)contact.getShapeA()->getBody()->getNode();
