@@ -6,13 +6,20 @@
 class Collectable {
 public:
     Collectable(void);
-    void spawn(cocos2d::Layer* layer, std::vector<cocos2d::Sprite*>& collectables, int pattern);
+    void spawn(cocos2d::Layer* layer, std::vector<cocos2d::Sprite*>& collectables);
     
 private:
-    cocos2d::Vec2 _origin;
-    cocos2d::Size _visibleSize;
+    void initPatterns(int difficultyLevle);
+    void populatePatterns(int eggs, int pizzas, int bombs, int difficultyLevel);
+    
+    // pair < collectable_type, display_pattern >
+    typedef std::pair<int, int> Pattern;
+    std::vector<Pattern> _patterns;
     
     std::string const _imageFile = "egg1.png";
+    
+    cocos2d::Vec2 _origin;
+    cocos2d::Size _visibleSize;
 };
 
 

@@ -21,11 +21,6 @@ const std::string imageExplosion = "explosion.png";
 const std::string imageProgressBar = "progress.png";
 const std::string imageLoadingWheel = "loading.png";
 
-// Pattern to describe how many elements should appear
-// 1:3, 2:5, 3:7, 0:None
-const int spawnPattern[] = {1, 2, 3, 0, 1, 2, 0, 3, 1, 0, 1, 2, 0, 1, 1, 0, 3, 1, 3, 0};
-std::vector<int> collectableSpawnPattern(spawnPattern, spawnPattern + sizeof(spawnPattern) / sizeof(int));
-int currentPatternIndex = 0;
 
 GameLayer* GameLayer::_instance = 0;
 static Stage _stage;  // To pass which stage we are playing now.
@@ -97,7 +92,7 @@ bool GameLayer::init()
     // CCLOG("GameLayer _origin (x, y) (%f, %f)", _origin.x, _origin.y);
 
     // Shuffle our spawn pattern
-    random_shuffle(collectableSpawnPattern.begin(), collectableSpawnPattern.end());
+//    random_shuffle(collectableSpawnPattern.begin(), collectableSpawnPattern.end());
 
     _state = GameState::init;
     Trampoline::isDrawingOngoing = false;   // new trampoline drawing can begin
@@ -562,15 +557,13 @@ void GameLayer::releaseTouch() {
 void GameLayer::spawnCollectable() {
     if (_state != GameState::started) { return; }
 
-    Collectable collectable;
-    collectable.spawn(this, _collectables, collectableSpawnPattern.at(currentPatternIndex++ % collectableSpawnPattern.size()));
+    _collectable.spawn(this, _collectables);
 }
 
 void GameLayer::spawnSpecialObject() {
     if (_state != GameState::started) { return; }
 
-    SpecialCollectable bonusObj;
-    bonusObj.spawn(this, _specialCollectables);
+    _bonusObj.spawn(this, _specialCollectables);
 }
 
 void GameLayer::spawnCloud(float dt) {

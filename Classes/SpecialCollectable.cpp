@@ -6,7 +6,6 @@ using namespace cocos2d;
 
 // 8:flying_bomb 16:life // 2:egg 4:pizza 8:scrolling_bomb
 static const int pattern[] = {8, 16, 8, 8, 16, 8, 8, 16, 8, 16, 16, 8, 8, 16, 8, 16, 8, 8, 8, 16};
-//static const int pattern[] = {2, 3, 2, 3};
 static std::vector<int> collectableType(pattern, pattern + sizeof(pattern) / sizeof(int));
 static int currentTypeIndex = 0;
 

@@ -13,8 +13,9 @@
 #include "LayerTwo.h"
 #include "PauseLayer.h"
 #include "ScoreLayer.h"
-#include "Trampoline.h"
+#include "SpecialCollectable.h"
 #include "Stage.h"
+#include "Trampoline.h"
 
 using namespace cocos2d;
 
@@ -106,6 +107,9 @@ private:
     GameOverLayer* _gameOverHUD;
     PauseLayer* _pauseHUD;
     ScoreLayer* _scoreHUD;
+    Collectable _collectable;
+    SpecialCollectable _bonusObj;
+
     Sprite* _finger;
     Label* _loading;
     Menu* _pauseMenu;
