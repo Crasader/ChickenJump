@@ -239,7 +239,7 @@ void GameLayer::addLoadingWheel() {
     if (not _loading) { return; }
 
     _loading->setColor(Color3B::ORANGE);
-    _loading->setPosition(Vec2(_visibleSize.width * 0.5, _visibleSize.height * 0.5));
+    _loading->setPosition(Vec2(_visibleSize.width * 0.5, _visibleSize.height * 0.75));
     this->addChild(_loading, BackgroundLayer::layerTouch);
 }
 
@@ -341,11 +341,12 @@ void GameLayer::focusOnCharacter() {
 }
 
 void GameLayer::gameOver(bool hasStageFinished) {
+    _state = GameState::terminate; // set gamestate as terminate to stop schedule update
+    
+    // Game over score and others
     _gameOverHUD->prepare(_score, _stage, hasStageFinished);
     _gameOverHUD->setVisible(true);
     _pauseMenu->setVisible(false);
-
-    _state = GameState::terminate; // set gamestate as terminate to return from schedule update
 }
 
 void GameLayer::handleCollectableConsumption(Sprite* collectable) {

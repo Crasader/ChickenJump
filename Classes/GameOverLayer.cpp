@@ -26,6 +26,9 @@ void GameOverLayer::prepare(unsigned int score, Stage const& stage, bool isStage
     addScoreLabel();
     addMainMenu();
     saveStatsAndUnlockNextStage();
+    if (isStageClear) {
+        updateDifficultyLevel();
+    }
 }
 
 bool GameOverLayer::init()
@@ -108,6 +111,15 @@ void GameOverLayer::mainMenuClicked(const Ref* ref, const cocos2d::ui::Widget::T
     if (not mainMenu) { return; }
     mainMenu->goBack(this);
 }
+
+void GameOverLayer::updateDifficultyLevel() {
+    int currentDifficulty = UserDefault::getInstance()->getIntegerForKey(DIFFICULTY, 1);
+    if (currentDifficulty + 1 <= DIFFICULTY_MAX) {
+        UserDefault::getInstance()->setIntegerForKey(DIFFICULTY, currentDifficulty + 1);
+        UserDefault::getInstance()->flush();
+    }
+}
+
 
 
 

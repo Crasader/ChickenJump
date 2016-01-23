@@ -10,7 +10,7 @@ public:
     
 private:
     void initPatterns(int difficultyLevle);
-    void populatePatterns(int eggs, int pizzas, int bombs, int difficultyLevel);
+    void populatePatterns(int difficultyLevel, int eggs, int pizzas, int bombs);
     
     // pair < collectable_type, display_pattern >
     typedef std::pair<int, int> Pattern;

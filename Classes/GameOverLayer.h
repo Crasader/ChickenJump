@@ -22,6 +22,7 @@ private:
     void addScoreLabel();
     void addMainMenu();
     void saveStatsAndUnlockNextStage();
+    void updateDifficultyLevel();
     void mainMenuClicked(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType);
     
     Vec2 _origin;

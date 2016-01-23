@@ -4,22 +4,72 @@
 
 using namespace cocos2d;
 
-// 8:flying_bomb 16:life // 2:egg 4:pizza 8:scrolling_bomb
-static const int pattern[] = {8, 16, 8, 8, 16, 8, 8, 16, 8, 16, 16, 8, 8, 16, 8, 16, 8, 8, 8, 16};
-static std::vector<int> collectableType(pattern, pattern + sizeof(pattern) / sizeof(int));
-static int currentTypeIndex = 0;
+static int totalNumberOfCollectables = 20;
+static int currentCollectableIndex = 0;
 
 SpecialCollectable::SpecialCollectable(void){
     _origin = Director::getInstance()->getVisibleOrigin();
     _visibleSize = Director::getInstance()->getVisibleSize();
     
-    random_shuffle(collectableType.begin(), collectableType.end());
+    int diffifulty = UserDefault::getInstance()->getIntegerForKey(DIFFICULTY, DIFFICULTY_DEFAULT);
+    initPatterns(diffifulty);
+    random_shuffle(_specialCollectableTypes.begin(), _specialCollectableTypes.end());
+}
+
+void SpecialCollectable::populatePatterns(int difficultyLevel, int life, int floatingBomb, int invisibility, int magnetEffect) {
+    // Life: 8
+    for (int i = 0; i < floatingBomb; ++i) {
+        _specialCollectableTypes.push_back(8);
+    }
+    
+    // Floating Bomb: 16
+    for (int i = 0; i < life; ++i) {
+        _specialCollectableTypes.push_back(16);
+    }
+    
+    // Invisibility: 32
+    for (int i = 0; i < invisibility; ++i) {
+        _specialCollectableTypes.push_back(32);
+    }
+    
+    // Magnet Effect: 128
+    for (int i = 0; i < magnetEffect; ++i) {
+        _specialCollectableTypes.push_back(128);
+    }
+}
+
+void SpecialCollectable::initPatterns(int difficultyLevel) {
+    CCLOG("===== Difficulty level(special_collectables): %d", difficultyLevel);
+    switch (difficultyLevel) {
+        case 1:    // no special collectables
+            break;
+        case 2:    // no special collectables
+            break;
+        case 3:    // introducint "life"
+            populatePatterns(difficultyLevel, totalNumberOfCollectables * 1.0, 0, 0, 0);
+            break;
+        case 4:    // life + floating bomb (50% each)
+            populatePatterns(difficultyLevel, totalNumberOfCollectables * 0.5, totalNumberOfCollectables * 0.5, 0, 0);
+            break;
+        case 5:    // life(33%) + floating bomb(33%) + invisibility(0) + magnet effect(33%)
+            populatePatterns(difficultyLevel, totalNumberOfCollectables * 0.33, totalNumberOfCollectables * 0.33, 0, totalNumberOfCollectables * 0.33);
+            break;
+        case 6:   // life(33%) + floating bomb(33%) + invisibility(33%) + magnet effect(0)
+            populatePatterns(difficultyLevel, totalNumberOfCollectables * 0.33, totalNumberOfCollectables * 0.33, totalNumberOfCollectables * 0.33, 0);
+            break;
+        case 7:    // Infinite Stage (life + floating bomb + invisibility + magnet effect (25% each))
+            populatePatterns(difficultyLevel, totalNumberOfCollectables * 0.25, totalNumberOfCollectables * 0.25, totalNumberOfCollectables * 0.25, totalNumberOfCollectables * 0.25);
+            break;
+        default:
+            break;
+    }
 }
 
 void SpecialCollectable::spawn(cocos2d::Layer* layer, std::vector<Sprite*>& specialCollectables) {
     if (not layer) { return; }
+    if (_specialCollectableTypes.empty()) { return; }
     
-    int type = collectableType.at(currentTypeIndex++ % collectableType.size());
+    int type = _specialCollectableTypes.at(currentCollectableIndex++ % _specialCollectableTypes.size());
 
     Sprite* bonusCollectable = Sprite::create(String::createWithFormat("specialcollectable%i.png", type)->getCString());
     if (not bonusCollectable) { return; }

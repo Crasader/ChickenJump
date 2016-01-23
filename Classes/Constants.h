@@ -27,11 +27,14 @@ typedef enum
 
 #define STAGE_LENGTH                    20
 
-// Highscore UserDefault String
+// UserDefault Strings
 #define FIRST_TIME                      "FIRST_TIME"
 #define HIGHSCORE                       "HIGHSCORE"
 #define SOUND                           "SOUND"
 #define MUSIC                           "MUSIC"
+#define DIFFICULTY                      "DIFFICULTY"
+#define DIFFICULTY_DEFAULT              1
+#define DIFFICULTY_MAX                  7
 
 // SPLASH SCREEN
 #define DISPLAY_TIME_SPLASH_SCREEN      2
@@ -71,15 +74,15 @@ typedef enum
 #define FLYING_Y_MAX                    0.01000  // 0.008  // ScreenHeight x .008 | .031 = 2.16 | 3.51 (Bigger = Higher)
 #define FLYING_Y_DECREASE_RATE          0.00015  // 0.0001 // ScreenHeight x .0001 | .0003 = 0.027 | .081 (Bigger = More)
 
-// COLLISION BITMASKS // 1:chicken; 2:egg 4:pizza 8:scrolling_bomb 16:flying_bomb 32:life 64:trampoline
+// COLLISION BITMASKS // 1:chicken; 2:egg 4:pizza 8:bomb(static & floating) 16:life 32:invisibility 64:trampoline 128:magnet effect
 #define CATEGORY_BITMASK_CHICKEN        0x0001   // (1)   0000 0001
 #define CATEGORY_BITMASK_COLLECT_EGG    0x0002   // (2)   0000 0010
 #define CATEGORY_BITMASK_COLLECT_PIZZA  0x0004   // (4)   0000 0100
 #define CATEGORY_BITMASK_COLLECT_BOMB   0x0008   // (8)   0000 1000
 #define CATEGORY_BITMASK_COLLECT_LIFE   0x0010   // (16)  0001 0000
-#define CATEGORY_BITMASK_SOMETHING_1    0x0020   // (32)  0010 0000
+#define CATEGORY_BITMASK_INVISIBILITY   0x0020   // (32)  0010 0000
 #define CATEGORY_BITMASK_TRAMPOLINE     0x0040   // (64)  0100 0000
-#define CATEGORY_BITMASK_SOMETHING_2    0x0080   // (128) 1000 0000
+#define CATEGORY_BITMASK_MAGNET         0x0080   // (128) 1000 0000
 
 #define CONTACTTEST_BITMASK_CHICKEN_ALL 0x007E   //       0111 1110
 #define CONTACTTEST_BITMASK_CHICKEN_NO_BOMB 0x0066   //   0101 0110

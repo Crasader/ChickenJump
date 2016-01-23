@@ -9,6 +9,11 @@ public:
     void spawn(cocos2d::Layer* layer, std::vector<cocos2d::Sprite*>& specialCollectables);
     
 private:
+    void populatePatterns(int difficultyLevel, int life, int floatingBomb, int invisibility, int magnetEffect);
+    void initPatterns(int difficultyLevel);
+    
+    std::vector<int> _specialCollectableTypes;
+    
     cocos2d::Vec2 _origin;
     cocos2d::Size _visibleSize;
     
