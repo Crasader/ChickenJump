@@ -66,6 +66,11 @@ bool HomeLayer::init()
     
     loadMenuCache();
     
+//    {   // TODO::HACK::REMOVE ONCE INVISIBILITY CHECK DONE
+//        UserDefault::getInstance()->setIntegerForKey(DIFFICULTY, 6);
+//        UserDefault::getInstance()->flush();
+//    }
+    
     this->scheduleUpdate();
 
     return true;
@@ -100,11 +105,11 @@ void HomeLayer::addGround() {
 }
 
 void HomeLayer::addLogo() {
-    auto logo = Sprite::create(imageLogo);
-    if (not logo) { return; }
-    logo->setColor(Color3B(255, 208, 66));
-    logo->setPosition(Point(_visibleSize.width * 0.5 + _origin.x, _visibleSize.height * 0.7 + _origin.y));
-    this->addChild(logo, BackgroundLayer::layerTouch);
+    _logo = Sprite::create(imageLogo);
+    if (not _logo) { return; }
+    _logo->setColor(Color3B(255, 208, 66));
+    _logo->setPosition(Point(_visibleSize.width * 0.5 + _origin.x, _visibleSize.height * 0.7 + _origin.y));
+    this->addChild(_logo, BackgroundLayer::layerTouch);
 }
 
 void HomeLayer::addPlayMenu() {

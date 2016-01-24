@@ -27,6 +27,8 @@ private:
     void initStage();
     void loadMenuCache();
     
+    Sprite* _logo;
+    
     FloatingChicken* _flyingChicken1;
     FloatingChicken* _flyingChicken2;
     FloatingChicken* _flyingChicken4;

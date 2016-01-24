@@ -25,7 +25,7 @@ void Collectable::populatePatterns(int difficultyLevel, int eggs, int pizzas, in
     
     // Pizzas: 4
     for (int i = 0; i < pizzas; ++i) {
-        _patterns.push_back(std::make_pair(4, difficultyLevel > 3 ? RandomHelper::random_int(1, 3) : RandomHelper::random_int(2, 3)));
+        _patterns.push_back(std::make_pair(4, RandomHelper::random_int(2, 3)));
     }
     
     // Bombs: 8

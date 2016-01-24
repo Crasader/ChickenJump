@@ -21,6 +21,7 @@ const std::string imageExplosion = "explosion.png";
 const std::string imageProgressBar = "progress.png";
 const std::string imageLoadingWheel = "loading.png";
 
+const std::string magnetized = "magnetized";
 
 GameLayer* GameLayer::_instance = 0;
 static Stage _stage;  // To pass which stage we are playing now.
@@ -90,11 +91,7 @@ bool GameLayer::init()
     _visibleSize = Director::getInstance()->getVisibleSize();
      CCLOG("===== GameLayer _visibleSize width-height (%dx%d)", (int)_visibleSize.width, (int)_visibleSize.height);
     // CCLOG("GameLayer _origin (x, y) (%f, %f)", _origin.x, _origin.y);
-    
-    {   // HACK::REMOVE ONCE INVISIBILITY CHECK DONE
-        UserDefault::getInstance()->setIntegerForKey(DIFFICULTY, 5);
-        UserDefault::getInstance()->flush();
-    }
+
 
     _state = GameState::init;
     Trampoline::isDrawingOngoing = false;   // new trampoline drawing can begin
@@ -799,19 +796,44 @@ void GameLayer::updateCollectables(float playerSpeed) {
         Sprite* s = _collectables.at(i);
         if (not s) { continue; }
 
-        s->setPositionX(s->getPosition().x - COLLECTABLE_SPEED * _visibleSize.width * playerSpeed);
-        
-        if (_chicken->hasMagnetEffect() and s->getTag() == 2 /*Eggs*/
-            and s->getPosition().getDistance(_chicken->getPosition()) < _visibleSize.width * 0.3) {
-            
-            auto magnetEffect = MoveTo::create(1.0, _chicken->getPosition());
-            s->runAction(magnetEffect);
+        // Scroll
+        if (s->getName() != magnetized) {
+            s->setPositionX(s->getPosition().x - COLLECTABLE_SPEED * _visibleSize.width * playerSpeed);
         }
+        
+        // Calculation for Magnet Effect
+        Vec2 endPoint = _chicken->getPosition();
+        float distance = endPoint.getDistance(s->getPosition());
 
-        if (s->getPositionX() < -s->getContentSize().width /* left boundary */or
-            s->getPositionY() > _visibleSize.height + s->getContentSize().height /* top boundary */ or
-            s->getPositionY() < -s->getContentSize().height /* bottom boundary */) {
+        float xDist = (endPoint.x - s->getPositionX());
+        float yDist = (endPoint.y - s->getPositionY());
+
+        int numberOfStepsNeeded = distance / _chicken->getChicken()->getContentSize().width;
+        
+        if ((_chicken->hasMagnetEffect() and
+             s->getTag() == 2 /* Eggs only */
+             and distance < _visibleSize.width * 0.3) or
+             s->getName() == magnetized) {
             
+            // set unique name to be excluded from scrolling
+            s->setName(magnetized);
+            
+            if (not s->getActionByTag(1)) {
+                auto magnetEffect = MoveTo::create(1.0, Vec2(endPoint.x + xDist/numberOfStepsNeeded, endPoint.y + yDist/numberOfStepsNeeded));
+                magnetEffect->setTag(1);
+                
+                auto stop = [=](){ s->stopActionByTag(1); };
+                
+                auto seq = Sequence::create(magnetEffect, stop, NULL);
+
+                s->runAction(seq);
+            }
+            
+//            continue; // this Sprite will be captured by the magnet. no need to check if its out of the screen anymore.
+            
+        } // Magnet Effect work ends
+
+        if (s->getPositionX() < -s->getContentSize().width) {
             this->removeChild(s);
             _collectables.erase(_collectables.begin() + i);
 
