@@ -804,14 +804,9 @@ void GameLayer::updateCollectables(float playerSpeed) {
         // Calculation for Magnet Effect
         Vec2 endPoint = _chicken->getPosition();
         float distance = endPoint.getDistance(s->getPosition());
-
-        float xDist = (endPoint.x - s->getPositionX());
-        float yDist = (endPoint.y - s->getPositionY());
-
-        int numberOfStepsNeeded = distance / _chicken->getChicken()->getContentSize().width;
         
         if ((_chicken->hasMagnetEffect() and
-             s->getTag() == 2 /* Eggs only */
+             s->getTag() == CATEGORY_BITMASK_COLLECT_EGG /* Eggs only */
              and distance < _visibleSize.width * 0.3) or
              s->getName() == magnetized) {
             
@@ -819,7 +814,7 @@ void GameLayer::updateCollectables(float playerSpeed) {
             s->setName(magnetized);
             
             if (not s->getActionByTag(1)) {
-                auto magnetEffect = MoveTo::create(1.0, Vec2(endPoint.x + xDist/numberOfStepsNeeded, endPoint.y + yDist/numberOfStepsNeeded));
+                auto magnetEffect = MoveTo::create(1.0, endPoint);
                 magnetEffect->setTag(1);
                 
                 auto stop = [=](){ s->stopActionByTag(1); };
@@ -829,7 +824,8 @@ void GameLayer::updateCollectables(float playerSpeed) {
                 s->runAction(seq);
             }
             
-//            continue; // this Sprite will be captured by the magnet. no need to check if its out of the screen anymore.
+            //  continue; // this Sprite will be captured by the magnet. no need to check if its out of the screen anymore.
+            //  aaa what the hell... let it be captured by the boundary. once the sprite is over the left boundary...its erased
             
         } // Magnet Effect work ends
 
