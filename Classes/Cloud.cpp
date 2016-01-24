@@ -19,7 +19,7 @@ void Cloud::spawn(cocos2d::Layer* layer) {
     int cloudType = RandomHelper::random_int(1, 2);
     
     _cloud = Sprite::create(String::createWithFormat("cloud%i.png", cloudType)->getCString());
-    _cloud->setAnchorPoint(Vec2(0, 0));
+    if (not _cloud) { return; }
     
     int maxDelayWidth = 2;
     int randDelayWidth = CCRANDOM_0_1() * maxDelayWidth + 1; // range=1~3
@@ -28,6 +28,7 @@ void Cloud::spawn(cocos2d::Layer* layer) {
     int heightRange = _visibleSize.height / 4 - _cloud->getContentSize().height;
     int minHeight = (_visibleSize.height / 4) * 3;
     int posY = CCRANDOM_0_1() * heightRange + minHeight;
+    _cloud->setAnchorPoint(Vec2(0, 0));
     _cloud->setPosition(Vec2(posX,  posY));
     _layer->addChild(_cloud, BackgroundLayer::layerBackground);
 
