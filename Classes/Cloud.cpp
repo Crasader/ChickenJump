@@ -16,10 +16,7 @@ void Cloud::spawn(cocos2d::Layer* layer) {
     /* Make CLOUD_SPAWN_FREQUENCY a bit bigger,
        So that we get some space to move our spawaning position */
 
-    int cloudType = CCRANDOM_0_1() * 3 + 1;
-    if (cloudType == 3) {
-        cloudType = 1;  // handle boundary condition
-    }
+    int cloudType = RandomHelper::random_int(1, 2);
     
     _cloud = Sprite::create(String::createWithFormat("cloud%i.png", cloudType)->getCString());
     _cloud->setAnchorPoint(Vec2(0, 0));
