@@ -15,22 +15,22 @@ const std::string StageStatus::infinite = "INFINITE";
 
 void StageStatus::createFreshStages() {
     // name, imagefile, score, star, isunlocked, isPlayed
-    saveStage(Stage(france, "FR.png", "FR_clicked.png", "FR_locked.png", 0, 0, true, false));
-    saveStage(Stage(england, "UK.png", "UK_clicked.png", "UK_locked.png", 0, 0, false, false));
-    saveStage(Stage(germany, "DE.png", "DE_clicked.png", "DE_locked.png", 0, 0, false, false));
-    saveStage(Stage(spain, "SP.png", "SP_clicked.png", "SP_locked.png", 0, 0, false, false));
-    saveStage(Stage(italy, "IT.png", "IT_clicked.png", "IT_locked.png", 0, 0, false, false));
-    saveStage(Stage(netherlands, "NL.png", "NL_clicked.png", "NL_locked.png", 0, 0, false, false));
-    saveStage(Stage(infinite, "INFINITE.png", "INFINITE_clicked.png", "INFINITE_locked.png", 0, 0, true, false));
+    saveStage(Stage(france, "FR.png", "FR_clicked.png", "FR_locked.png", 1, 0, 0, true, false));
+    saveStage(Stage(italy, "IT.png", "IT_clicked.png", "IT_locked.png", 2, 0, 0, false, false));
+    saveStage(Stage(england, "UK.png", "UK_clicked.png", "UK_locked.png", 3, 0, 0, false, false));
+    saveStage(Stage(germany, "DE.png", "DE_clicked.png", "DE_locked.png", 4, 0, 0, false, false));
+    saveStage(Stage(spain, "SP.png", "SP_clicked.png", "SP_locked.png", 5, 0, 0, false, false));
+    saveStage(Stage(netherlands, "NL.png", "NL_clicked.png", "NL_locked.png", 6, 0, 0, false, false));
+    saveStage(Stage(infinite, "INFINITE.png", "INFINITE_clicked.png", "INFINITE_locked.png", 7, 0, 0, true, false));
 }
 
 std::vector<Stage> StageStatus::getStage(void) {
     std::vector<Stage> stages;
     stages.push_back(getStage(france));
+    stages.push_back(getStage(italy));
     stages.push_back(getStage(germany));
     stages.push_back(getStage(england));
     stages.push_back(getStage(spain));
-    stages.push_back(getStage(italy));
     stages.push_back(getStage(netherlands));
     stages.push_back(getStage(infinite));
     
@@ -43,19 +43,20 @@ Stage StageStatus::getStage(std::string const& name) {
     if (ss.rdbuf()->in_avail() == 0) return Stage();
     
     std::string stageName, imageFile, clickedImageFile, lockedImageFile;
-    int score, star;
+    int difficulty, score, star;
     bool isUnlocked, isPlayed;
-    ss >> stageName >> imageFile >> clickedImageFile >> lockedImageFile >> score >> star >> isUnlocked >> isPlayed;
+    ss >> stageName >> imageFile >> clickedImageFile >> lockedImageFile >> difficulty >> score >> star >> isUnlocked >> isPlayed;
     
-    return Stage(stageName, imageFile, clickedImageFile, lockedImageFile, score, star, isUnlocked, isPlayed);
+    return Stage(stageName, imageFile, clickedImageFile, lockedImageFile, difficulty, score, star, isUnlocked, isPlayed);
 }
 
 void StageStatus::saveStage(Stage const& stage) {
-    std::string status = StringUtils::format("%s %s %s %s %d %d %d %d",
+    std::string status = StringUtils::format("%s %s %s %s %d %d %d %d %d",
                                              stage.getName().c_str(),
                                              stage.getImageFile().c_str(),
                                              stage.getClickedImageFile().c_str(),
                                              stage.getLockedImageFile().c_str(),
+                                             stage.getDifficulty(),
                                              stage.getScore(),
                                              stage.getStar(),
                                              stage.isUnlocked(),

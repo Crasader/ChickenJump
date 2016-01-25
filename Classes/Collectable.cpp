@@ -1,18 +1,18 @@
 #include "Collectable.h"
 
 #include "Constants.h"
+#include "Stage.h"
 
 using namespace cocos2d;
 
 static int totalNumberOfPatterns = 20;
 static int currentPatternIndex = 0;
 
-Collectable::Collectable(void){
+Collectable::Collectable(Stage const& stage) {
     _origin = Director::getInstance()->getVisibleOrigin();
     _visibleSize = Director::getInstance()->getVisibleSize();
     
-    int diffifulty = UserDefault::getInstance()->getIntegerForKey(DIFFICULTY, DIFFICULTY_DEFAULT);
-    initPatterns(diffifulty);
+    initPatterns(stage.getDifficulty());
     std::random_shuffle(_patterns.begin(), _patterns.end());
 }
 

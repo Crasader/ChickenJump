@@ -93,12 +93,12 @@ private:
     
     static GameLayer* _instance;
     
-    LayerBackground* _layerBackground;
-    LayerGround* _layerGround;
-    LayerTwo* _layerTwo;
-    cocos2d::ui::LoadingBar* _progressBar;
-    std::shared_ptr<Chicken> _chicken;
+    std::shared_ptr<LayerBackground> _layerBackground;
+    std::shared_ptr<LayerGround> _layerGround;
+    std::shared_ptr<LayerTwo> _layerTwo;
     Trampoline* _trampoline;
+    std::shared_ptr<Chicken> _chicken;
+    cocos2d::ui::LoadingBar* _progressBar;
     std::vector<Sprite*> _collectables;
     std::vector<Sprite*> _specialCollectables;
     GameState _state;
@@ -107,8 +107,8 @@ private:
     GameOverLayer* _gameOverHUD;
     PauseLayer* _pauseHUD;
     ScoreLayer* _scoreHUD;
-    Collectable _collectable;
-    SpecialCollectable _bonusObj;
+    std::shared_ptr<Collectable> _collectable;
+    std::shared_ptr<SpecialCollectable> _specialCollectable;
 
     Sprite* _finger;
     Label* _loading;

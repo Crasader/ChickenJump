@@ -32,9 +32,6 @@ typedef enum
 #define HIGHSCORE                       "HIGHSCORE"
 #define SOUND                           "SOUND"
 #define MUSIC                           "MUSIC"
-#define DIFFICULTY                      "DIFFICULTY"
-#define DIFFICULTY_DEFAULT              1
-#define DIFFICULTY_MAX                  7
 #define MAGNET_EFFECT_DURATION          100 // TODO::make it resonable may be 15 sec
 
 // SPLASH SCREEN

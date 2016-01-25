@@ -3,9 +3,11 @@
 
 #include <cocos2d.h>
 
+class Stage;
+
 class Collectable {
 public:
-    Collectable(void);
+    Collectable(Stage const& st);
     void spawn(cocos2d::Layer* layer, std::vector<cocos2d::Sprite*>& collectables);
     
 private:

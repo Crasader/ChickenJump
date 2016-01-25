@@ -125,7 +125,6 @@ bool GameLayer::init()
     // Pause/Resume toggle
     addPauseMenu();
     
-    
     // LoadingBar
     if (_stage.getName() != StageStatus::infinite) {
         addProgressBar();
@@ -135,11 +134,14 @@ bool GameLayer::init()
     
     // Loading
     addLoadingWheel();
+    
+    // create pointers
+    _collectable = std::make_shared<Collectable>(_stage);
+    _specialCollectable = std::make_shared<SpecialCollectable>(_stage);
 
 
     // Spawn cloud
     this->schedule(schedule_selector(GameLayer::spawnCloud), CLOUD_SPAWN_FREQUENCY * _visibleSize.width);
-
 
     // Add touch listners once resource loading is complete
 
@@ -217,7 +219,7 @@ void GameLayer::addExplosionEffect() {
 }
 
 void GameLayer::addFirstLayer() {
-    _layerBackground = new LayerBackground(_stage);
+    _layerBackground = std::make_shared<LayerBackground>(_stage);
     
     if (not _layerBackground) { return; }
     
@@ -225,7 +227,7 @@ void GameLayer::addFirstLayer() {
 }
 
 void GameLayer::addGroundLayer() {
-    _layerGround = new LayerGround(_stage);
+    _layerGround = std::make_shared<LayerGround>(_stage);
 
     if (not _layerGround) { return; }
     
@@ -262,7 +264,7 @@ void GameLayer::addProgressBar() {
 }
 
 void GameLayer::addSecondLayer() {
-    _layerTwo = new LayerTwo(_stage);
+    _layerTwo = std::make_shared<LayerTwo>(_stage);
     
     if (not _layerTwo) { return; }
     
@@ -567,13 +569,15 @@ void GameLayer::releaseTouch() {
 void GameLayer::spawnCollectable() {
     if (_state != GameState::started) { return; }
 
-    _collectable.spawn(this, _collectables);
+    if (not _collectable) { return; }
+    _collectable->spawn(this, _collectables);
 }
 
 void GameLayer::spawnSpecialObject() {
     if (_state != GameState::started) { return; }
 
-    _bonusObj.spawn(this, _specialCollectables);
+    if (not _specialCollectable) { return; }
+    _specialCollectable->spawn(this, _specialCollectables);
 }
 
 void GameLayer::spawnCloud(float dt) {

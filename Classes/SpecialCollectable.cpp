@@ -1,18 +1,18 @@
 #include "SpecialCollectable.h"
 
 #include "Constants.h"
+#include "Stage.h"
 
 using namespace cocos2d;
 
 static int totalNumberOfCollectables = 20;
 static int currentCollectableIndex = 0;
 
-SpecialCollectable::SpecialCollectable(void){
+SpecialCollectable::SpecialCollectable(Stage const& stage){
     _origin = Director::getInstance()->getVisibleOrigin();
     _visibleSize = Director::getInstance()->getVisibleSize();
     
-    int diffifulty = UserDefault::getInstance()->getIntegerForKey(DIFFICULTY, DIFFICULTY_DEFAULT);
-    initPatterns(diffifulty);
+    initPatterns(stage.getDifficulty());
     random_shuffle(_specialCollectableTypes.begin(), _specialCollectableTypes.end());
 }
 
