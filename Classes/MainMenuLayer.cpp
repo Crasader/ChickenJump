@@ -14,7 +14,6 @@
 using namespace cocos2d;
 using namespace ui;
 
-static Vec2 normalizedPosition = Vec2(-0.45, -0.0);
 static Button* btnPageScrollRight;
 static Button* btnPageScrollLeft;
 static bool pageScrolled = false;
@@ -24,6 +23,7 @@ static PageView* pageView;
 static std::string imageBtnArrowLeft = "btn_arrowleft.png";
 static std::string imageBtnArrowRight = "btn_arrowright.png";
 static std::string imageMenuBackground = "menu_bg.png";
+static std::string imageComingSoon = "coming_soon_bg.png";
 
 Scene* MainMenuLayer::createScene()
 {
@@ -126,7 +126,7 @@ void MainMenuLayer::addStages() {
     ListView* row1;
     ListView* row2;
     int horizontalMargin = 20;
-    int verticalMargin = 0;
+    int verticalMargin = 10;
     {
         {
             row1 = ListView::create();
@@ -160,7 +160,7 @@ void MainMenuLayer::addStages() {
         page1menuList->setItemsMargin(verticalMargin);
         page1menuList->setTouchEnabled(false);
         page1menuList->setSize(Size(row2->getContentSize().width,
-                                    row2->getContentSize().height * 2));
+                                    row2->getContentSize().height * 2 + verticalMargin));
         
         page1menuList->setPosition(Vec2((_visibleSize.width - page1menuList->getContentSize().width) * 0.5,
                                         (_visibleSize.height - page1menuList->getContentSize().height) * 0.5));
@@ -174,7 +174,7 @@ void MainMenuLayer::addStages() {
     page1->setTouchEnabled(false);
     
     Layout* page2 = Layout::create();
-    page2->setBackGroundImage("coming_soon_bg.png");
+    page2->setBackGroundImage(imageComingSoon);
     page2->setTouchEnabled(false);
     
     pageView = PageView::create();
