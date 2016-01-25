@@ -206,8 +206,8 @@ void GameLayer::addContactListners() {
 
 void GameLayer::addExplosionEffect() {
     // Explosion Effect
-    ParticleExplosion* explosion = ParticleExplosion::createWithTotalParticles(100);
-    explosion->setTexture(TextureCache::getInstance()->addImage(imageExplosion));
+    ParticleExplosion* explosion = ParticleExplosion::createWithTotalParticles(66);
+    explosion->setTexture(Director::getInstance()->getTextureCache()->addImage(imageExplosion));
     explosion->setStartColor(Color4F::YELLOW);
     explosion->setEndColor(Color4F::YELLOW);
     explosion->setScale(0.75f);
