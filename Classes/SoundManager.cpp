@@ -12,6 +12,7 @@ std::string SoundManager::soundPickupFood = "pickup_coin.wav";
 std::string SoundManager::soundLifeup = "lifeup.wav";
 std::string SoundManager::soundExplosion = "explosion.wav";
 std::string SoundManager::soundDead = "dead.wav";
+std::string SoundManager::soundWin = "win.wav";
 
 SoundManager::SoundManager() {
     // Cache

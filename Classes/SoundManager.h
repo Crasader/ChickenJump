@@ -20,7 +20,7 @@ public:
     static std::string soundLifeup;
     static std::string soundExplosion;
     static std::string soundDead;
-
+    static std::string soundWin;
 };
 
 #endif // __SOUNDMANAGER__

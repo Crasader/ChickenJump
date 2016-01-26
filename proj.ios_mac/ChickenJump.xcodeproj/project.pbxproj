@@ -101,6 +101,8 @@
 		D5548C371C17765D00C1C86C /* SettingsMenuLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5548C341C17765D00C1C86C /* SettingsMenuLayer.cpp */; };
 		D5548C3A1C1B7CF600C1C86C /* BackButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5548C381C1B7CF600C1C86C /* BackButton.cpp */; };
 		D5548C3B1C1B7CF600C1C86C /* BackButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5548C381C1B7CF600C1C86C /* BackButton.cpp */; };
+		D575334B1C583A7500E4C350 /* win.wav in Resources */ = {isa = PBXBuildFile; fileRef = D575334A1C583A7500E4C350 /* win.wav */; };
+		D575334C1C583A7500E4C350 /* win.wav in Resources */ = {isa = PBXBuildFile; fileRef = D575334A1C583A7500E4C350 /* win.wav */; };
 		D575D0F51B94DD0D0082D427 /* Trampoline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D575D0F31B94DD0D0082D427 /* Trampoline.cpp */; };
 		D575D0F61B94DD0D0082D427 /* Trampoline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D575D0F31B94DD0D0082D427 /* Trampoline.cpp */; };
 		D57CF0331B996DD600987F3E /* jump.wav in Resources */ = {isa = PBXBuildFile; fileRef = D57CF0321B996DD600987F3E /* jump.wav */; };
@@ -241,6 +243,7 @@
 		D5548C351C17765D00C1C86C /* SettingsMenuLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsMenuLayer.h; sourceTree = "<group>"; };
 		D5548C381C1B7CF600C1C86C /* BackButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BackButton.cpp; sourceTree = "<group>"; };
 		D5548C391C1B7CF600C1C86C /* BackButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackButton.h; sourceTree = "<group>"; };
+		D575334A1C583A7500E4C350 /* win.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = win.wav; sourceTree = "<group>"; };
 		D575D0F31B94DD0D0082D427 /* Trampoline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Trampoline.cpp; sourceTree = "<group>"; };
 		D575D0F41B94DD0D0082D427 /* Trampoline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Trampoline.h; sourceTree = "<group>"; };
 		D57CF0321B996DD600987F3E /* jump.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = jump.wav; sourceTree = "<group>"; };
@@ -381,6 +384,7 @@
 				D57CF0321B996DD600987F3E /* jump.wav */,
 				D5548C2B1C147BD900C1C86C /* lifeup.wav */,
 				D5548C311C1481FA00C1C86C /* pickup_coin.wav */,
+				D575334A1C583A7500E4C350 /* win.wav */,
 				D5253ABA1B088B0500AFC291 /* blank.png */,
 				521A8EA819F11F5000D177D7 /* fonts */,
 				3EACC98E19EE6D4300EB3C5E /* res */,
@@ -613,6 +617,7 @@
 				D53DBEC91BA89FC4001A812F /* resource_hd in Resources */,
 				D5548C2C1C147BD900C1C86C /* lifeup.wav in Resources */,
 				D57CF0331B996DD600987F3E /* jump.wav in Resources */,
+				D575334B1C583A7500E4C350 /* win.wav in Resources */,
 				5087E78117EB970100C73F5D /* Icon-120.png in Resources */,
 				5087E78617EB970100C73F5D /* Icon-76.png in Resources */,
 				5087E77F17EB970100C73F5D /* Default@2x.png in Resources */,
@@ -649,6 +654,7 @@
 				D5548C331C1481FA00C1C86C /* pickup_coin.wav in Resources */,
 				D57CF0341B996DD600987F3E /* jump.wav in Resources */,
 				D5548C1E1C13003900C1C86C /* explosion.wav in Resources */,
+				D575334C1C583A7500E4C350 /* win.wav in Resources */,
 				D5548C301C147E2900C1C86C /* dead.wav in Resources */,
 				503AE0F817EB97AB00D1A890 /* Icon.icns in Resources */,
 				3EACC99019EE6D4300EB3C5E /* res in Resources */,
