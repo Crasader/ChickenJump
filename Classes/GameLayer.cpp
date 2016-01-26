@@ -345,7 +345,7 @@ void GameLayer::gameOver(bool hasStageFinished) {
     _state = GameState::terminate; // set gamestate as terminate to stop schedule update
     
     // Game over score and others
-    _gameOverHUD->prepare(_score, _stage, hasStageFinished);
+    _gameOverHUD->setup(_score, _stage, hasStageFinished);
     _gameOverHUD->setVisible(true);
     _pauseMenu->setVisible(false);
 }
