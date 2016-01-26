@@ -4,6 +4,7 @@
 #include "MainMenuLayer.h"
 #include "Stage.h"
 #include "StageStatus.h"
+#include "SoundManager.h"
 
 using namespace cocos2d;
 using namespace ui;
@@ -58,6 +59,7 @@ void GameOverLayer::addMainMenu() {
     if (not _btnMainMenu) { return; }
     _btnMainMenu->addTouchEventListener(CC_CALLBACK_2(GameOverLayer::mainMenuClicked, this));
     _btnMainMenu->setPosition(Point(_visibleSize.width / 2 + _origin.x, _visibleSize.height * 0.3 + _origin.y));
+    _btnMainMenu->setTouchEnabled(false); // Will be active after Star's appearance
     this->addChild(_btnMainMenu, BackgroundLayer::layerChicken);
 }
 
@@ -121,9 +123,19 @@ void GameOverLayer::prepare() {
         int star = RandomHelper::random_int(1, 3);
         int i = 0;
         for (auto s: _stars) {
-            s->setVisible(true);
             if (i++ < star) s->setTexture("star.png");
         }
+    }
+    {
+        Vector<FiniteTimeAction*> actions;
+        for (auto s: _stars) {
+            actions.pushBack(DelayTime::create(1.0));
+            actions.pushBack(CallFunc::create([=](){ s->setVisible(true); /* TODO:: SOUND EFFECT */ }));
+        }
+        actions.pushBack(CallFunc::create([=](){ _btnMainMenu->setTouchEnabled(true); }));
+        
+        auto seq = Sequence::create(actions);
+        this->runAction(seq);
     }
 }
 
