@@ -73,6 +73,7 @@ void GameOverLayer::addStars() {
     _star1 = Sprite::create("star_empty.png");
     if (_star1) {
         _star1->setPosition(_visibleSize.width * 0.5 - _star1->getContentSize().width * 1.5, _visibleSize.height * 0.65);
+        _star1->setVisible(false);
         this->addChild(_star1, BackgroundLayer::layerChicken);
         _stars.push_back(_star1);
     }
@@ -80,6 +81,7 @@ void GameOverLayer::addStars() {
     _star2 = Sprite::create("star_empty.png");
     if (_star2) {
         _star2->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.7);
+        _star2->setVisible(false);
         this->addChild(_star2, BackgroundLayer::layerChicken);
         _stars.push_back(_star2);
     }
@@ -87,6 +89,7 @@ void GameOverLayer::addStars() {
     _star3 = Sprite::create("star_empty.png");
     if (_star3) {
         _star3->setPosition(_visibleSize.width * 0.5 + _star1->getContentSize().width * 1.5, _visibleSize.height * 0.65);
+        _star3->setVisible(false);
         this->addChild(_star3, BackgroundLayer::layerChicken);
         _stars.push_back(_star3);
     }
@@ -115,9 +118,12 @@ void GameOverLayer::prepare() {
     
     // STAR
     if (_stage.getName() != StageStatus::infinite) {
-        int star = 2;
+        int star = RandomHelper::random_int(1, 3);
         int i = 0;
-        for_each (_stars.begin(), _stars.end(), [&](Sprite* s){ if (i++ < star) s->setTexture("star.png"); });
+        for (auto s: _stars) {
+            s->setVisible(true);
+            if (i++ < star) s->setTexture("star.png");
+        }
     }
 }
 
