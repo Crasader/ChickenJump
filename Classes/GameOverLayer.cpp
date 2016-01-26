@@ -115,10 +115,9 @@ void GameOverLayer::prepare() {
     
     // STAR
     if (_stage.getName() != StageStatus::infinite) {
-        int star = RandomHelper::random_int(1, 3);
-        for (int i = 0; i < star; ++i) {
-            _stars.at(i)->setTexture("star.png");
-        }
+        int star = 2;
+        int i = 0;
+        for_each (_stars.begin(), _stars.end(), [&](Sprite* s){ if (i++ < star) s->setTexture("star.png"); });
     }
 }
 
