@@ -29,7 +29,6 @@ typedef enum
 
 // UserDefault Strings
 #define FIRST_TIME                      "FIRST_TIME"
-#define HIGHSCORE                       "HIGHSCORE"
 #define SOUND                           "SOUND"
 #define MUSIC                           "MUSIC"
 #define MAGNET_EFFECT_DURATION          100 // TODO::make it resonable may be 15 sec

@@ -26,11 +26,10 @@ const std::string magnetized = "magnetized";
 GameLayer* GameLayer::_instance = 0;
 static Stage _stage;  // To pass which stage we are playing now.
 
-Scene* GameLayer::createScene(Stage stage)
+Scene* GameLayer::createScene(Stage const& stage)
 {
     // hold the stage and set it as played and pass that to MainMenuLayer through GameOverLayer
     _stage = stage;
-    _stage.setAsPlayed();
 
     // 'scene' is an autorelease object
     auto scene = Scene::createWithPhysics();
@@ -345,7 +344,7 @@ void GameLayer::gameOver(bool hasStageFinished) {
     _state = GameState::terminate; // set gamestate as terminate to stop schedule update
     
     // Game over score and others
-    _gameOverHUD->setup(_score, _stage, hasStageFinished);
+    _gameOverHUD->setup(_stage, _score, hasStageFinished);
     _gameOverHUD->setVisible(true);
     _pauseMenu->setVisible(false);
 }

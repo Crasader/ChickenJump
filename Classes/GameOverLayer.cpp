@@ -9,16 +9,18 @@
 using namespace cocos2d;
 using namespace ui;
 
-static unsigned int _score = 0;
 static Stage _stage;
 
 static const std::string imageBtnMainMenu = "btn_menu.png";
 static const std::string imageScoreBoard = "scoreboard.png";
 
-void GameOverLayer::setup(unsigned int score, Stage const& stage, bool isStageClear)
+void GameOverLayer::setup(Stage const& stage, unsigned int score, bool isStageClear)
 {
     _stage = stage;
-    _score = score;
+    _stage.setScore(score);
+    // CALCULATE THE STAR //
+    _stage.setStar(2);
+    
     _isStageClear = isStageClear;
     
     prepare();
@@ -52,7 +54,7 @@ void GameOverLayer::addHighscoreLabel() {
     _highScoreLabel = Label::createWithTTF("", font, _visibleSize.height * SCORE_FONT_SIZE);
     if (not _highScoreLabel) { return; }
     _highScoreLabel->setColor(Color3B::WHITE);
-    _highScoreLabel->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.65);
+    _highScoreLabel->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.55);
     this->addChild(_highScoreLabel, BackgroundLayer::layerChicken);
 }
 
@@ -60,7 +62,7 @@ void GameOverLayer::addMainMenu() {
     _btnMainMenu = Button::create(imageBtnMainMenu, imageBtnMainMenu);
     if (not _btnMainMenu) { return; }
     _btnMainMenu->addTouchEventListener(CC_CALLBACK_2(GameOverLayer::mainMenuClicked, this));
-    _btnMainMenu->setPosition(Point(_visibleSize.width / 2 + _origin.x, _visibleSize.height * 0.3 + _origin.y));
+    _btnMainMenu->setPosition(Point(_visibleSize.width * 0.5, _visibleSize.height * 0.25));
     _btnMainMenu->setTouchEnabled(false); // Will be active after Star's appearance
     this->addChild(_btnMainMenu, BackgroundLayer::layerChicken);
 }
@@ -76,7 +78,7 @@ void GameOverLayer::addScoreLabel() {
     _scoreLabel = Label::createWithTTF("", font, _visibleSize.height * SCORE_FONT_SIZE);
     if (not _scoreLabel) { return; }
     _scoreLabel->setColor(Color3B::WHITE);
-    _scoreLabel->setPosition(_visibleSize.width / 2 + _origin.x, _visibleSize.height * 0.5 + _origin.y);
+    _scoreLabel->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.4);
     this->addChild(_scoreLabel, BackgroundLayer::layerChicken);
 }
 
@@ -105,30 +107,21 @@ void GameOverLayer::addStars() {
 
 void GameOverLayer::prepare() {
     // HIGHSCORE
-    if (_stage.getName() == StageStatus::infinite and _highScoreLabel) {
-        UserDefault* d = UserDefault::getInstance();
-        auto highScore = d->getIntegerForKey(HIGHSCORE, 0);
-        if (_score > highScore) {
-            highScore = _score;
-            d->setIntegerForKey(HIGHSCORE, highScore);
-            d->flush();
-        }
-        
-        std::string highScoreStr = String::createWithFormat("HighScore: %d", highScore)->getCString();
+    if (_highScoreLabel) {
+        std::string highScoreStr = String::createWithFormat("HighScore: %d", _stage.getHighScore())->getCString();
         _highScoreLabel->setString(highScoreStr);
     }
 
     // SCORE
     if (_scoreLabel) {
-        std::string scoreStr = String::createWithFormat("Score: %d", _score)->getCString();
+        std::string scoreStr = String::createWithFormat("Score: %d", _stage.getScore())->getCString();
         _scoreLabel->setString(scoreStr);
     }
     
     // STAR
     if (_stage.getName() != StageStatus::infinite) {
         Vector<FiniteTimeAction*> actions;
-        int star = 2;
-        for (int i = 0; i < star and i < _stars.size(); ++i) {
+        for (int i = 0; i < _stage.getStar() and i < _stars.size(); ++i) {
             actions.pushBack(DelayTime::create(1.0));
             actions.pushBack(CallFunc::create([&, i](){ _stars.at(i)->setTexture("star.png"); /* TODO:: SOUND EFFECT */ }));
         }

@@ -13,7 +13,7 @@ public:
     virtual bool init();
     CREATE_FUNC(GameOverLayer);
 
-    void setup(unsigned int score, Stage const& stage, bool isStageClear);
+    void setup(Stage const& stage, unsigned int score, bool isStageClear);
 
 private:
     void addHighscoreLabel();
