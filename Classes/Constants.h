@@ -92,6 +92,7 @@ typedef enum
 #define COLLECTABLE_FALLING_SPEED       0.003
 // SCORE LABEL
 #define SCORE_FONT_SIZE                 0.085
+#define GO_FONT_SIZE                 0.1
 
 
 #endif // __CONSTANTS_H__

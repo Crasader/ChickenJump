@@ -492,7 +492,7 @@ void GameLayer::resumeClicked(cocos2d::Ref const* sender) {
     _pauseHUD->setVisible(false);
     Director::getInstance()->resume();
 
-    auto resumeLabel = Label::createWithTTF("3", font, _visibleSize.height * SCORE_FONT_SIZE);
+    auto resumeLabel = Label::createWithTTF("3", font, _visibleSize.height * GO_FONT_SIZE);
 
     auto resume = CallFunc::create([resumeLabel, this]() {
         this->resumeGame(this);

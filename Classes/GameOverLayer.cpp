@@ -17,8 +17,11 @@ static const std::string imageScoreBoard = "scoreboard.png";
 void GameOverLayer::setup(Stage const& stage, unsigned int score, bool isStageClear)
 {
     _stage = stage;
+    
+    // TODO::CALCULATE THE SCORE //
     _stage.setScore(score);
-    // CALCULATE THE STAR //
+    
+    // TODO::CALCULATE THE STAR //
     _stage.setStar(2);
     
     _isStageClear = isStageClear;
@@ -129,6 +132,10 @@ void GameOverLayer::prepare() {
         
         auto seq = Sequence::create(actions);
         this->runAction(seq);
+    }
+    else {
+        // TODO:: WHAT TO DO WITH EMPTY STARS IN INFINITE STAGE ???
+        _btnMainMenu->setTouchEnabled(true);
     }
 }
 
