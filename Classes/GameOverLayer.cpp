@@ -13,6 +13,7 @@ static unsigned int _score = 0;
 static Stage _stage;
 
 static const std::string imageBtnMainMenu = "btn_menu.png";
+static const std::string imageScoreBoard = "scoreboard.png";
 
 void GameOverLayer::setup(unsigned int score, Stage const& stage, bool isStageClear)
 {
@@ -26,7 +27,7 @@ void GameOverLayer::setup(unsigned int score, Stage const& stage, bool isStageCl
 
 bool GameOverLayer::init()
 {
-    if ( !LayerColor::initWithColor(Color4B(0, 0, 0, 128)) ) {
+    if ( !LayerColor::initWithColor(Color4B(0, 0, 0, 0)) ) {
         return false;
     }
     
@@ -38,6 +39,7 @@ bool GameOverLayer::init()
     this->setContentSize(Size(_visibleSize.width, _visibleSize.height));
     this->setPosition(0, 0);
     
+    addScoreBoard();
     addHighscoreLabel();
     addScoreLabel();
     addMainMenu();
@@ -63,6 +65,13 @@ void GameOverLayer::addMainMenu() {
     this->addChild(_btnMainMenu, BackgroundLayer::layerChicken);
 }
 
+void GameOverLayer::addScoreBoard() {
+    _scoreBoard = Sprite::create(imageScoreBoard);
+    if (not _scoreBoard) { return; }
+    _scoreBoard->setPosition(Vec2(_visibleSize.width * 0.5, _visibleSize.height * 0.5));
+    this->addChild(_scoreBoard, BackgroundLayer::layerBackground);
+}
+
 void GameOverLayer::addScoreLabel() {
     _scoreLabel = Label::createWithTTF("", font, _visibleSize.height * SCORE_FONT_SIZE);
     if (not _scoreLabel) { return; }
@@ -74,21 +83,21 @@ void GameOverLayer::addScoreLabel() {
 void GameOverLayer::addStars() {
     _star1 = Sprite::create("star_empty.png");
     if (_star1) {
-        _star1->setPosition(_visibleSize.width * 0.5 - _star1->getContentSize().width * 1.5, _visibleSize.height * 0.65);
+        _star1->setPosition(_visibleSize.width * 0.5 - _star1->getContentSize().width * 1.25, _visibleSize.height * 0.75);
         this->addChild(_star1, BackgroundLayer::layerChicken);
         _stars.push_back(_star1);
     }
 
     _star2 = Sprite::create("star_empty.png");
     if (_star2) {
-        _star2->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.7);
+        _star2->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.8);
         this->addChild(_star2, BackgroundLayer::layerChicken);
         _stars.push_back(_star2);
     }
 
     _star3 = Sprite::create("star_empty.png");
     if (_star3) {
-        _star3->setPosition(_visibleSize.width * 0.5 + _star1->getContentSize().width * 1.5, _visibleSize.height * 0.65);
+        _star3->setPosition(_visibleSize.width * 0.5 + _star1->getContentSize().width * 1.25, _visibleSize.height * 0.75);
         this->addChild(_star3, BackgroundLayer::layerChicken);
         _stars.push_back(_star3);
     }
