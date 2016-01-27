@@ -147,6 +147,7 @@ void GameOverLayer::saveStatsAndUnlockNextStage() {
                  _stage.getLockedImageFile(),
                  _stage.getDifficulty(),
                  _stage.getScore(),
+                 _stage.getHighScore(),
                  _stage.getStar(),
                  _stage.isUnlocked(),
                  _stage.isPlayed());
