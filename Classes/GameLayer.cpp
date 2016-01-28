@@ -104,9 +104,6 @@ bool GameLayer::init()
 
     // this determines when to make a bomb/life fall.
     _distanceForNewSpecialObject = _visibleSize.width * 1.5;
-
-    // Disable Touch; Will be added once resource loading is complete
-    Director::getInstance()->getEventDispatcher()->removeAllEventListeners();
     
     // add static background for the infinite stage
     if (_stage.getName() == StageStatus::infinite) {
@@ -151,7 +148,9 @@ bool GameLayer::init()
 
     // Listen for collision
     addContactListners();
-
+    
+    // Listen for touches
+    addTouchListners();
 
     // Activate main update loop
     this->scheduleUpdate();
@@ -180,9 +179,6 @@ void GameLayer::onEnterTransitionDidFinish() {
         
         // add tutorial
         addTutorial();
-        
-        // Listen for touches
-        addTouchListners();
     }
 }
 
