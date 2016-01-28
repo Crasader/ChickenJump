@@ -17,24 +17,24 @@ SpecialCollectable::SpecialCollectable(Stage const& stage){
 }
 
 void SpecialCollectable::populatePatterns(int difficultyLevel, int life, int floatingBomb, int invisibility, int magnetEffect) {
-    // Life: 8
+    // Floating Bomb: 8
     for (int i = 0; i < floatingBomb; ++i) {
-        _specialCollectableTypes.push_back(8);
+        _specialCollectableTypes.push_back(CATEGORY_BITMASK_COLLECT_BOMB);
     }
     
-    // Floating Bomb: 16
+    // Life: 16
     for (int i = 0; i < life; ++i) {
-        _specialCollectableTypes.push_back(16);
+        _specialCollectableTypes.push_back(CATEGORY_BITMASK_COLLECT_LIFE);
     }
     
     // Invisibility: 32
     for (int i = 0; i < invisibility; ++i) {
-        _specialCollectableTypes.push_back(32);
+        _specialCollectableTypes.push_back(CATEGORY_BITMASK_INVISIBILITY);
     }
     
     // Magnet Effect: 128
     for (int i = 0; i < magnetEffect; ++i) {
-        _specialCollectableTypes.push_back(128);
+        _specialCollectableTypes.push_back(CATEGORY_BITMASK_MAGNET);
     }
 }
 
@@ -81,11 +81,15 @@ void SpecialCollectable::spawn(cocos2d::Layer* layer, std::vector<Sprite*>& spec
     int positionY = _visibleSize.height + bonusCollectable->getContentSize().height;
     bonusCollectable->setPosition(Vec2(positionX, positionY));
     
-    auto body = PhysicsBody::createCircle(bonusCollectable->getContentSize().width / 2, PhysicsMaterial(0.1f, 1.0f, 0.0f));
+    auto body = PhysicsBody::createCircle(bonusCollectable->getContentSize().width * 0.5, PhysicsMaterial(0.1, 1.0, 0.0));
     body->setCategoryBitmask(type); // set collectable type as category_bitmask (8:flying_bomb 16:life)
     // body->setCollisionBitmask(1);
     body->setContactTestBitmask(CATEGORY_BITMASK_CHICKEN);
     body->setDynamic(false);
+    if (type == CATEGORY_BITMASK_COLLECT_LIFE) {
+        // push up the p_body for floating balloon (life) with tail
+        body->setPositionOffset(Vec2(0, bonusCollectable->getContentSize().height * 0.25));
+    }
     bonusCollectable->setPhysicsBody(body);
     
     layer->addChild(bonusCollectable, BackgroundLayer::layerChicken);
