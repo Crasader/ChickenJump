@@ -1,7 +1,6 @@
 #include "PauseLayer.h"
 
 #include <UIListView.h>
-#include <UIButton.h>
 
 #include "GameLayer.h"
 #include "BackButton.h"
@@ -18,14 +17,6 @@ static const std::string imageBtnSoundOn = "btn_soundon_big.png";
 static const std::string imageBtnSoundOff = "btn_soundoff_big.png";
 static const std::string imageBtnMusicOn = "btn_musicon_big.png";
 static const std::string imageBtnMusicOff = "btn_musicoff_big.png";
-
-//static Vec2 normalizedPosition = Vec2(0.01, 0.1);
-
-static Button* _btnResume;
-static Button* _btnRestart;
-static Button* _btnMainMenu;
-static Button* _btnSoundToggle;
-static Button* _btnMusicToggle;
 
 bool PauseLayer::init()
 {
@@ -73,15 +64,15 @@ void PauseLayer::createMenus() {
 }
 
 void PauseLayer::createAdLayout() {
-    Layout* l = Layout::create();
-    l->setContentSize(Size(_visibleSize.width * 0.75, _visibleSize.height * 0.75));
-    l->setPosition(Vec2((_visibleSize.width - l->getContentSize().width) * 0.5,
-                        (_visibleSize.height - l->getContentSize().height) * 0.5));
-    l->setBackGroundColorType(cocos2d::ui::Layout::BackGroundColorType::SOLID);
-    l->setBackGroundColor(Color3B::GRAY);
-    l->setBackGroundColorOpacity(128);
+    _ad = Layout::create();
+    _ad->setContentSize(Size(_visibleSize.width * 0.75, _visibleSize.height * 0.75));
+    _ad->setPosition(Vec2((_visibleSize.width - _ad->getContentSize().width) * 0.5,
+                        (_visibleSize.height - _ad->getContentSize().height) * 0.5));
+    _ad->setBackGroundColorType(cocos2d::ui::Layout::BackGroundColorType::SOLID);
+    _ad->setBackGroundColor(Color3B::GRAY);
+    _ad->setBackGroundColorOpacity(128);
 
-    this->addChild(l);
+    this->addChild(_ad);
 }
 
 void PauseLayer::addResumeButton() {
@@ -137,9 +128,13 @@ void PauseLayer::mainMenuClicked(Ref const* ref, cocos2d::ui::Widget::TouchEvent
 
 void PauseLayer::restartClicked(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType) {
     if (eEventType != ui::Widget::TouchEventType::ENDED) { return; }
-
-//    auto scene = GameLayer::createScene(stage);
-//    Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
+    
+    auto scene = GameLayer::createScene(GameLayer::getInstance()->getStage());
+    if (not scene) {
+        return;
+    }
+    Director::getInstance()->resume();
+    Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }
 
 void PauseLayer::toggleSound(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType) {

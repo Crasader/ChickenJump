@@ -41,6 +41,7 @@ public:
     
 
     static GameLayer* getInstance();
+    Stage getStage();
     void pauseGame(cocos2d::Ref const* sender);
     void resumeClicked(cocos2d::Ref const* sender);
     void resumeGame(cocos2d::Ref const* sender);

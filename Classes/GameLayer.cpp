@@ -77,6 +77,10 @@ GameLayer* GameLayer::getInstance() {
     return _instance;
 }
 
+Stage GameLayer::getStage() {
+    return _stage;
+}
+
 // on "init" you need to initialize your instance
 bool GameLayer::init()
 {
@@ -96,12 +100,14 @@ bool GameLayer::init()
     Trampoline::isDrawingOngoing = false;   // new trampoline drawing can begin
 
     _stageLength = _stageRemaining = _visibleSize.width * STAGE_LENGTH;  // _visibleSize.width: 480.000
-    // _distanceForNewCollectables = 0;
-    _distanceForNewCollectables = _visibleSize.width * 0.50; // moving ahead first collectable spwaning
+    _distanceForNewCollectables = _visibleSize.width * 0.5; // moving ahead first collectable spwaning
 
     // this determines when to make a bomb/life fall.
-    _distanceForNewSpecialObject = _visibleSize.width * 1.50;
+    _distanceForNewSpecialObject = _visibleSize.width * 1.5;
 
+    // Disable Touch; Will be added once resource loading is complete
+    Director::getInstance()->getEventDispatcher()->removeAllEventListeners();
+    
     // add static background for the infinite stage
     if (_stage.getName() == StageStatus::infinite) {
         addBG();
@@ -131,6 +137,7 @@ bool GameLayer::init()
     
     // Add tutorial once resource loading is complete
     
+    
     // Loading
     addLoadingWheel();
     
@@ -141,8 +148,6 @@ bool GameLayer::init()
 
     // Spawn cloud
     this->schedule(schedule_selector(GameLayer::spawnCloud), CLOUD_SPAWN_FREQUENCY * _visibleSize.width);
-
-    // Add touch listners once resource loading is complete
 
     // Listen for collision
     addContactListners();
@@ -185,7 +190,7 @@ void GameLayer::addBG() {
     auto bg = Sprite::create("bg.png");
     if (not bg) { return; }
     
-    bg->setPosition(Vec2(_visibleSize.width * 0.5f, _visibleSize.height * 0.5f));
+    bg->setPosition(Vec2(_visibleSize.width * 0.5, _visibleSize.height * 0.5));
     this->addChild(bg, BackgroundLayer::layerBG);
 }
 
@@ -209,7 +214,7 @@ void GameLayer::addExplosionEffect() {
     explosion->setTexture(Director::getInstance()->getTextureCache()->addImage(imageExplosion));
     explosion->setStartColor(Color4F::YELLOW);
     explosion->setEndColor(Color4F::YELLOW);
-    explosion->setScale(0.75f);
+    explosion->setScale(0.75);
     explosion->setSpeed(5);
     explosion->setPosition(_chicken->getPosition());
     this->addChild(explosion, BackgroundLayer::layerTouch);
@@ -604,7 +609,14 @@ void GameLayer::speedUp() {
 // ########## TOUCH EVENTS ########## //
 #pragma mark Touch Events
 bool GameLayer::onTouchBegan(Touch const* touch, Event const* event) {
-    if (_state == GameState::finished or _state == GameState::paused or Trampoline::isDrawingOngoing) { return false; }
+
+    if (_state == GameState::finished or
+        _state == GameState::paused or
+        _state == GameState::terminate or
+        Trampoline::isDrawingOngoing) {
+    
+        return false;
+    }
 
     // disable the tutorial
     if (_state == GameState::init) {

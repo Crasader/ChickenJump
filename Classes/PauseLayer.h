@@ -2,9 +2,8 @@
 #define __PAUSELAYER_H__
 
 #include "cocos2d.h"
-#include <UIWidget.h>
-
-using namespace cocos2d;
+#include <UILayout.h>
+#include <UIButton.h>
 
 class PauseLayer : public cocos2d::LayerColor
 {
@@ -21,14 +20,21 @@ private:
     void addSoundButton();
     void addMusicButton();
 
-    void mainMenuClicked(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType);
-    void restartClicked(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType);
-    void toggleSound(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType);
-    void toggleMusic(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType);
+    void mainMenuClicked(cocos2d::Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType);
+    void restartClicked(cocos2d::Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType);
+    void toggleSound(cocos2d::Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType);
+    void toggleMusic(cocos2d::Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType);
 
 private:
-    Vec2 _origin;
-    Size _visibleSize;
+    cocos2d::ui::Button* _btnResume;
+    cocos2d::ui::Button* _btnRestart;
+    cocos2d::ui::Button* _btnMainMenu;
+    cocos2d::ui::Button* _btnSoundToggle;
+    cocos2d::ui::Button* _btnMusicToggle;
+    cocos2d::ui::Layout* _ad;
+    
+    cocos2d::Vec2 _origin;
+    cocos2d::Size _visibleSize;
 };
 
 
