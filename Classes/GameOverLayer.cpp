@@ -52,7 +52,7 @@ bool GameOverLayer::init()
     addMainMenu();
     addRestartButton();
     addStars();
-
+    
     return true;
 }
 
@@ -68,7 +68,7 @@ void GameOverLayer::addMainMenu() {
     _btnMainMenu = Button::create(imageBtnMainMenu, imageBtnMainMenu);
     if (not _btnMainMenu) { return; }
     _btnMainMenu->addTouchEventListener(CC_CALLBACK_2(GameOverLayer::mainMenuClicked, this));
-    _btnMainMenu->setPosition(Point(_visibleSize.width * 0.5 - _btnMainMenu->getContentSize().width * 0.6,
+    _btnMainMenu->setPosition(Point(_visibleSize.width * 0.5 - _btnMainMenu->getContentSize().width * 0.75,
                                     _visibleSize.height * 0.25));
     _btnMainMenu->setTouchEnabled(false); // Will be active after Star's appearance
     this->addChild(_btnMainMenu, BackgroundLayer::layerChicken);
@@ -78,7 +78,7 @@ void GameOverLayer::addRestartButton() {
     _btnRestart = Button::create(imageBtnRestart, imageBtnRestart);
     if (not _btnRestart) { return; }
     _btnRestart->addTouchEventListener(CC_CALLBACK_2(GameOverLayer::restartClicked, this));
-    _btnRestart->setPosition(Vec2(_visibleSize.width * 0.5 + _btnRestart->getContentSize().width * 0.6,
+    _btnRestart->setPosition(Vec2(_visibleSize.width * 0.5 + _btnRestart->getContentSize().width * 0.75,
                                   _visibleSize.height * 0.25));
     _btnRestart->setTouchEnabled(false); // Will be active after Star's appearance
     this->addChild(_btnRestart, BackgroundLayer::layerChicken);
@@ -151,9 +151,22 @@ void GameOverLayer::prepare() {
         this->runAction(seq);
     }
     else {
-        // TODO:: WHAT TO DO WITH EMPTY STARS IN INFINITE STAGE ???
         if(_btnMainMenu) _btnMainMenu->setTouchEnabled(true);
         if(_btnRestart) _btnRestart->setTouchEnabled(true);
+
+        // Empty stars are gone ;)
+        for (auto s: _stars) {
+            s->setVisible(false);
+        }
+        
+        // Replacement for Stars
+        Sprite* chicken = Sprite::create("playerfly_1_red.png");
+        chicken->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.8);
+        
+        auto scaleBy = ScaleBy::create(0.0, 2.0);
+        chicken->runAction(scaleBy);
+
+        this->addChild(chicken, BackgroundLayer::layerChicken);
     }
 }
 
