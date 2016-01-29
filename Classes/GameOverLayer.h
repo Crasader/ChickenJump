@@ -18,6 +18,7 @@ public:
 private:
     void addHighscoreLabel();
     void addMainMenu();
+    void addRestartButton();
     void addScoreBoard();
     void addScoreLabel();
     void addStars();
@@ -25,11 +26,13 @@ private:
     void prepare();
     void saveStatsAndUnlockNextStage();
     void mainMenuClicked(cocos2d::Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType);
+    void restartClicked(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType);
     
     cocos2d::Sprite* _scoreBoard;
     cocos2d::Label* _highScoreLabel;
     cocos2d::Label* _scoreLabel;
     cocos2d::ui::Button* _btnMainMenu;
+    cocos2d::ui::Button* _btnRestart;
     cocos2d::Sprite* _star1;
     cocos2d::Sprite* _star2;
     cocos2d::Sprite* _star3;

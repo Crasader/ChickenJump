@@ -133,8 +133,12 @@ void PauseLayer::restartClicked(Ref const* ref, cocos2d::ui::Widget::TouchEventT
     if (not scene) {
         return;
     }
-    Director::getInstance()->resume();
-    Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
+    
+    auto d = Director::getInstance();
+    if (d->isPaused()) {
+        d->resume();
+    }
+    d->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }
 
 void PauseLayer::toggleSound(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType) {

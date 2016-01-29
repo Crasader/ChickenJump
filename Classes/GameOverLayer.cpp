@@ -1,10 +1,11 @@
 #include "GameOverLayer.h"
 
 #include "Constants.h"
+#include "GameLayer.h"
 #include "MainMenuLayer.h"
+#include "SoundManager.h"
 #include "Stage.h"
 #include "StageStatus.h"
-#include "SoundManager.h"
 
 using namespace cocos2d;
 using namespace ui;
@@ -12,6 +13,7 @@ using namespace ui;
 static Stage _stage;
 
 static const std::string imageBtnMainMenu = "btn_menu.png";
+static const std::string imageBtnRestart = "btn_restart.png";
 static const std::string imageScoreBoard = "scoreboard.png";
 
 void GameOverLayer::setup(Stage const& stage, unsigned int score, bool isStageClear)
@@ -48,6 +50,7 @@ bool GameOverLayer::init()
     addHighscoreLabel();
     addScoreLabel();
     addMainMenu();
+    addRestartButton();
     addStars();
 
     return true;
@@ -65,9 +68,20 @@ void GameOverLayer::addMainMenu() {
     _btnMainMenu = Button::create(imageBtnMainMenu, imageBtnMainMenu);
     if (not _btnMainMenu) { return; }
     _btnMainMenu->addTouchEventListener(CC_CALLBACK_2(GameOverLayer::mainMenuClicked, this));
-    _btnMainMenu->setPosition(Point(_visibleSize.width * 0.5, _visibleSize.height * 0.25));
+    _btnMainMenu->setPosition(Point(_visibleSize.width * 0.5 - _btnMainMenu->getContentSize().width * 0.6,
+                                    _visibleSize.height * 0.25));
     _btnMainMenu->setTouchEnabled(false); // Will be active after Star's appearance
     this->addChild(_btnMainMenu, BackgroundLayer::layerChicken);
+}
+
+void GameOverLayer::addRestartButton() {
+    _btnRestart = Button::create(imageBtnRestart, imageBtnRestart);
+    if (not _btnRestart) { return; }
+    _btnRestart->addTouchEventListener(CC_CALLBACK_2(GameOverLayer::restartClicked, this));
+    _btnRestart->setPosition(Vec2(_visibleSize.width * 0.5 + _btnRestart->getContentSize().width * 0.6,
+                                  _visibleSize.height * 0.25));
+    _btnRestart->setTouchEnabled(false); // Will be active after Star's appearance
+    this->addChild(_btnRestart, BackgroundLayer::layerChicken);
 }
 
 void GameOverLayer::addScoreBoard() {
@@ -128,14 +142,18 @@ void GameOverLayer::prepare() {
             actions.pushBack(DelayTime::create(1.0));
             actions.pushBack(CallFunc::create([&, i](){ _stars.at(i)->setTexture("star.png"); /* TODO:: SOUND EFFECT */ }));
         }
-        actions.pushBack(CallFunc::create([=](){ _btnMainMenu->setTouchEnabled(true); }));
+        actions.pushBack(CallFunc::create([=](){
+            if(_btnMainMenu) _btnMainMenu->setTouchEnabled(true);
+            if(_btnRestart) _btnRestart->setTouchEnabled(true);
+        }));
         
         auto seq = Sequence::create(actions);
         this->runAction(seq);
     }
     else {
         // TODO:: WHAT TO DO WITH EMPTY STARS IN INFINITE STAGE ???
-        _btnMainMenu->setTouchEnabled(true);
+        if(_btnMainMenu) _btnMainMenu->setTouchEnabled(true);
+        if(_btnRestart) _btnRestart->setTouchEnabled(true);
     }
 }
 
@@ -161,7 +179,7 @@ void GameOverLayer::saveStatsAndUnlockNextStage() {
     }
 }
 
-void GameOverLayer::mainMenuClicked(const Ref* ref, const cocos2d::ui::Widget::TouchEventType& eEventType) {
+void GameOverLayer::mainMenuClicked(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType) {
     if (eEventType != ui::Widget::TouchEventType::ENDED) { return; }
 
     auto d = Director::getInstance();
@@ -172,6 +190,22 @@ void GameOverLayer::mainMenuClicked(const Ref* ref, const cocos2d::ui::Widget::T
     BackButton<MainMenuLayer>* mainMenu = new BackButton<MainMenuLayer>();
     if (not mainMenu) { return; }
     mainMenu->goBack(this);
+}
+
+void GameOverLayer::restartClicked(const Ref* ref, const cocos2d::ui::Widget::TouchEventType& eEventType) {
+    if (eEventType != ui::Widget::TouchEventType::ENDED) { return; }
+
+    auto scene = GameLayer::createScene(GameLayer::getInstance()->getStage());
+    if (not scene) {
+        return;
+    }
+    
+    auto d = Director::getInstance();
+    if (d->isPaused()) {
+        d->resume();
+    }
+    Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
+
 }
 
 
