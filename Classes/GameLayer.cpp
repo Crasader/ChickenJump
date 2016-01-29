@@ -180,6 +180,11 @@ void GameLayer::onEnterTransitionDidFinish() {
         // add tutorial
         addTutorial();
     }
+    
+    // Make the lives invisible for first two stages. no bombs, no lives
+    if (_stage.getDifficulty() < 3) {
+        _scoreHUD->updateLife(0);
+    }
 }
 
 void GameLayer::addBG() {
