@@ -33,9 +33,12 @@ bool ScoreLayer::init()
         this->addChild(_scoreLabel);
     }
     
-    // Initialize number of life sprites
-    initLifeSprites(CHICKEN_LIVES_MAX);
-    updateLife(CHICKEN_LIVES);
+    // Initialize number of life sprites only in stages where life matters
+    updateLife(0);
+    if (GameLayer::getInstance()->getStage().getDifficulty() > 2) {
+        initLifeSprites(CHICKEN_LIVES_MAX);
+        updateLife(CHICKEN_LIVES);
+    }
 
     return true;
 }
