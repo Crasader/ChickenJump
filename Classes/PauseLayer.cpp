@@ -52,9 +52,9 @@ void PauseLayer::createMenus() {
     if (_btnSoundToggle) { lv->pushBackCustomItem(_btnSoundToggle); }
     
     lv->setGravity(ui::ListView::Gravity::CENTER_HORIZONTAL);
-    lv->setItemsMargin(10);
+    lv->setItemsMargin(20);
     lv->setSize(Size(_btnMainMenu->getContentSize().width,
-                     _btnMainMenu->getContentSize().height * 5 + 40)); // including margin gap (10*4)
+                     _btnMainMenu->getContentSize().height * 5 + 80)); // including margin gap (20*4)
     // lv->setBackGroundColorType(ui::Layout::BackGroundColorType::SOLID);
     // lv->setBackGroundColor(Color3B(128, 128, 128));
     lv->setPosition(Size(_visibleSize.width * 0.01,
