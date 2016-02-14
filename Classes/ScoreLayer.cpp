@@ -1,9 +1,14 @@
 #include "ScoreLayer.h"
 
+#include <UIListView.h>
+
 #include "Constants.h"
 #include "GameLayer.h"
 
 using namespace cocos2d;
+using namespace ui;
+
+static const std::string imageSandwatchMagnet = "sandwatch_magnet.png";
 
 bool ScoreLayer::init()
 {
@@ -19,19 +24,14 @@ bool ScoreLayer::init()
     this->setPosition(0, _visibleSize.height - this->getContentSize().height);
     
     // add score icon
-    auto icon = Sprite::create(imageScore);
-    if (icon) {
-        icon->setPosition(Vec2(_visibleSize.width - icon->getContentSize().width * 2.5, this->getContentSize().height * 0.5));
-        this->addChild(icon);
-    }
+    addScoreIcon();
 
     // add score(text)
-    _scoreLabel = Label::createWithTTF("0", font, _visibleSize.height * SCORE_FONT_SIZE);
-    if (_scoreLabel) {
-        _scoreLabel->setColor(Color3B::WHITE);
-        _scoreLabel->setPosition(Vec2(_visibleSize.width - icon->getContentSize().width, this->getContentSize().height * 0.44));
-        this->addChild(_scoreLabel);
-    }
+    addScore();
+    
+    // sandwatches
+    addMagnetStopwatch();
+    addInvisibilityStopwatch();
     
     // Initialize number of life sprites only in stages where life matters
     updateLife(0);
@@ -39,8 +39,79 @@ bool ScoreLayer::init()
         initLifeSprites(CHICKEN_LIVES_MAX);
         updateLife(CHICKEN_LIVES);
     }
-
+    
     return true;
+}
+
+void ScoreLayer::addMagnetStopwatch() {
+    _magnetStopwatch = cocos2d::ui::LoadingBar::create();
+    if (not _magnetStopwatch) { return; }
+    
+    _magnetStopwatch->loadTexture(imageSandwatchMagnet);
+    _magnetStopwatch->setColor(Color3B::ORANGE);
+    _magnetStopwatch->setPercent(0);
+    _magnetStopwatch->setPosition(Vec2(this->getContentSize().width * 0.6, this->getContentSize().height * 0.5));
+    this->addChild(_magnetStopwatch, BackgroundLayer::layerTouch);
+}
+
+void ScoreLayer::addInvisibilityStopwatch() {
+    _invisibilityStopwatch = cocos2d::ui::LoadingBar::create();
+    if (not _invisibilityStopwatch) { return; }
+    
+    _invisibilityStopwatch->loadTexture(imageSandwatchMagnet);
+    _invisibilityStopwatch->setColor(Color3B::YELLOW);
+    _invisibilityStopwatch->setPercent(0);
+    _invisibilityStopwatch->setPosition(Vec2(this->getContentSize().width * 0.75, this->getContentSize().height * 0.5));
+    this->addChild(_invisibilityStopwatch, BackgroundLayer::layerTouch);
+}
+
+// 1:Magnet 2:Invisibility
+void ScoreLayer::startStopwatch(int type) {
+    switch (type) {
+        case 1:
+            if (not _magnetStopwatch) { return; }
+            _magnetStopwatch->setPercent(100);
+            break;
+        case 2:
+            if (not _invisibilityStopwatch) { return; }
+            _invisibilityStopwatch->setPercent(100);
+            break;
+        default:
+            break;
+    }
+}
+
+// 1:Magnet 2:Invisibility
+void ScoreLayer::tick(int type) {
+    // magnet_effect -= 5; means: 100/5 = 20 seconds
+    switch (type) {
+        case 1:
+            if (not _magnetStopwatch) { return; }
+            _magnetStopwatch->setPercent(_magnetStopwatch->getPercent() - 100/EFFECT_DURATION);
+            break;
+        case 2:
+            if (not _invisibilityStopwatch) { return; }
+            _invisibilityStopwatch->setPercent(_invisibilityStopwatch->getPercent() - 100/EFFECT_DURATION);
+            break;
+        default:
+            break;
+    }
+}
+
+void ScoreLayer::addScore() {
+    _scoreLabel = Label::createWithTTF("0", font, _visibleSize.height * SCORE_FONT_SIZE);
+    if (not _scoreLabel) { return; }
+
+    _scoreLabel->setColor(Color3B::WHITE);
+    _scoreLabel->setPosition(Vec2(_visibleSize.width - _scoreIcon->getContentSize().width, this->getContentSize().height * 0.44));
+    this->addChild(_scoreLabel);
+}
+
+void ScoreLayer::addScoreIcon(){
+    _scoreIcon = Sprite::create(imageScore);
+    if (not _scoreIcon) { return; }
+    _scoreIcon->setPosition(Vec2(_visibleSize.width - _scoreIcon->getContentSize().width * 2.5, this->getContentSize().height * 0.5));
+    this->addChild(_scoreIcon);
 }
 
 void ScoreLayer::initLifeSprites(int lives) {

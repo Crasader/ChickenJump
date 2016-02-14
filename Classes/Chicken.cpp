@@ -46,12 +46,13 @@ void Chicken::createChicken(cocos2d::Layer *layer) {
     _vector = Vec2(1.0, 0.0);
     setState(PlayerState::falling);
     _hasMagnetEffect = false;
+    _isInvisible = false;
     
     // initial position
     _chicken->setPosition(_visibleSize.width * 0.30, _visibleSize.height * 0.9);
     
     // Flapping wings animation
-    setAnimation();
+    setDefaultAnimation();
     
     layer->addChild(_chicken, BackgroundLayer::layerChicken);
 }
@@ -118,18 +119,47 @@ void Chicken::increaseWeight() {
     }
 }
 
+void Chicken::makeInvisible() {
+    _isInvisible = true;
+    setInvisibilityAnimation();
+}
+
+void Chicken::makeVisible() {
+    _isInvisible = false;
+    setDefaultAnimation();
+}
+
 void Chicken::resetSizeAndWeight() {
     _scale = MIN_SCALE;
     _weight = MIN_WEIGHT;
 }
 
-void Chicken::setAnimation() {
+void Chicken::setDefaultAnimation() {
     if (not _chicken) { return; }
+    
+    _chicken->stopAllActions();
     
     Animation* animation = Animation::create();
     animation->addSpriteFrameWithFile("playerfly_1.png");
     animation->addSpriteFrameWithFile("playerfly_2.png");
     animation->addSpriteFrameWithFile("playerfly_3.png");
+    animation->setDelayPerUnit(0.2f / 1.0f);
+    animation->setRestoreOriginalFrame(false);
+    animation->setLoops(-1);
+    
+    Action* action = Animate::create(animation);
+    _chicken->runAction(action);
+}
+
+void Chicken::setInvisibilityAnimation() {
+    if (not _chicken) { return; }
+    
+    _chicken->stopAllActions();
+    
+    Animation* animation = Animation::create();
+    animation->addSpriteFrameWithFile("playerfly_1_invisible.png");
+    animation->addSpriteFrameWithFile("playerfly_2_invisible.png");
+    animation->addSpriteFrameWithFile("playerfly_3_invisible.png");
     animation->setDelayPerUnit(0.2f / 1.0f);
     animation->setRestoreOriginalFrame(false);
     animation->setLoops(-1);
@@ -229,62 +259,6 @@ void Chicken::setState(PlayerState state) {
             _chicken->runAction(blink);
             break;
         }
-        case invisible:{
-            auto showChicken = CallFunc::create([this](){
-                _chicken->setVisible(true);
-            });
-            
-            auto hideChicken = CallFunc::create([this](){
-                _chicken->setVisible(false);
-            });
-            
-            auto stateFalling = CallFunc::create([this](){
-                _state = PlayerState::falling;
-            });
-            
-            auto collideNoBomb = CallFunc::create([this]() {
-                // get the collide power back
-                setCollideToNoBomb();
-            });
-            
-            auto collideAll = CallFunc::create([this]() {
-                // get the collide power back
-                setCollideToAll();
-            });
-            
-            auto delay = DelayTime::create(0.2);
-            
-            // occupy 5 seconds
-            Sequence* blink = Sequence::create(collideNoBomb, stateFalling,
-                                               hideChicken, delay, showChicken, delay,
-                                               hideChicken, delay, showChicken, delay,
-                                               hideChicken, delay, showChicken, delay,
-                                               hideChicken, delay, showChicken, delay,
-                                               hideChicken, delay, showChicken, delay,
-                                               hideChicken, delay, showChicken, delay,
-                                               hideChicken, delay, showChicken, delay,
-                                               hideChicken, delay, showChicken, delay,
-                                               hideChicken, delay, showChicken, delay,
-                                               hideChicken, delay, showChicken, delay,
-                                               hideChicken, delay, showChicken, delay,
-                                               hideChicken, delay, showChicken, delay,
-                                               hideChicken, delay, showChicken, delay,
-                                               hideChicken, delay, showChicken, delay,
-                                               hideChicken, delay, showChicken, delay,
-                                               hideChicken, delay, showChicken, delay,
-                                               hideChicken, delay, showChicken, delay,
-                                               hideChicken, delay, showChicken, delay,
-                                               hideChicken, delay, showChicken, delay,
-                                               hideChicken, delay, showChicken, delay,
-                                               hideChicken, delay, showChicken, delay,
-                                               hideChicken, delay, showChicken, delay,
-                                               hideChicken, delay, showChicken, delay,
-                                               hideChicken, delay, showChicken, delay,
-                                               hideChicken, delay, showChicken, delay,
-                                               collideAll, NULL);
-            _chicken->runAction(blink);
-        }
-            break;
         case jumping:
             _vector.y = _visibleSize.height * VELOCITY_Y_MAX;
             break;
@@ -304,8 +278,6 @@ void Chicken::update(float speed) {
         case start:
             break;
         case newBorn:
-            break;
-        case invisible:
             break;
         case jumping:
             _vector.y -= _visibleSize.height * VELOCITY_Y_DECREASE_RATE * _weight;

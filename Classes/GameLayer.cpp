@@ -145,6 +145,9 @@ bool GameLayer::init()
 
     // Spawn cloud
     this->schedule(schedule_selector(GameLayer::spawnCloud), CLOUD_SPAWN_FREQUENCY * _visibleSize.width);
+    
+    this->schedule(schedule_selector(GameLayer::updateInvisibilityStopwatch), 1);
+    this->schedule(schedule_selector(GameLayer::updateMagnetStopwatch), 1);
 
     // Listen for collision
     addContactListners();
@@ -351,7 +354,7 @@ void GameLayer::gameOver(bool hasStageFinished) {
 }
 
 void GameLayer::handleCollectableConsumption(Sprite* collectable) {
-    // 2:egg 4:pizza 8:scrolling_bomb 16:flying_bomb 32:life 64:trampoline
+    // 2:egg 4:pizza 8:all_type_of_bombs 16:life 32:invisibility 64:trampoline 128:magnet_effect
     switch (collectable->getTag()) {
         case 2: {     // scrolling egg
             // Egg collection is the basic goal of the game.
@@ -390,7 +393,9 @@ void GameLayer::handleCollectableConsumption(Sprite* collectable) {
             removeCollectable(collectable);
             break;
         }
-        case 8: {    // scrolling bomb
+        case 8: {    // all_type_of_bombs
+            if (_chicken->isInvisible()) { break; }
+            
             _chicken->getChicken()->setVisible(false);
 
             addExplosionEffect();
@@ -421,8 +426,16 @@ void GameLayer::handleCollectableConsumption(Sprite* collectable) {
         }
         case 32: {    // invisibility
             removeSpecialCollectable(collectable);
-            _chicken->setState(PlayerState::invisible);
+            _chicken->makeInvisible();
             SoundManager::Play(SoundManager::soundLifeup);
+            _scoreHUD->startStopwatch(2);
+            
+            this->stopActionByTag(2); // reset
+            auto makeVisible = CallFunc::create([this](){ _chicken->makeVisible(); });
+            auto seq = Sequence::create(DelayTime::create(EFFECT_DURATION + 1), makeVisible, NULL);
+            seq->setTag(2); // invisibility tag: 2
+            this->runAction(seq);
+            
             break;
         }
         case 64: {    // Trampoline, so no action here.
@@ -432,10 +445,14 @@ void GameLayer::handleCollectableConsumption(Sprite* collectable) {
             removeSpecialCollectable(collectable);
             _chicken->setMagnetEffect(true);
             SoundManager::Play(SoundManager::soundLifeup);
+            _scoreHUD->startStopwatch(1);
             
+            this->stopActionByTag(1); // reset
             auto disableEffect = CallFunc::create([this](){ _chicken->setMagnetEffect(false); });
-            auto seq = Sequence::create(DelayTime::create(MAGNET_EFFECT_DURATION), disableEffect, NULL);
+            auto seq = Sequence::create(DelayTime::create(EFFECT_DURATION + 1), disableEffect, NULL);
+            seq->setTag(1); // magnet_effect tag: 1
             this->runAction(seq);
+            
             break;
         }
         default:
@@ -526,7 +543,7 @@ void GameLayer::resumeClicked(cocos2d::Ref const* sender) {
                                                 delay,
                                                 one,
                                                 delay,
-                                                go,
+                                                //go,
                                                 delay,
                                                 resume,
                                                 NULL));
@@ -886,5 +903,14 @@ void GameLayer::updateStageComplesion(float speed) {
 
         spawnSpecialObject();
     }
+}
 
+void GameLayer::updateInvisibilityStopwatch(float dt) {
+    if (not _chicken->isInvisible()) { return; }
+    _scoreHUD->tick(2);
+}
+
+void GameLayer::updateMagnetStopwatch(float dt) {
+    if (not _chicken->hasMagnetEffect()) { return; }
+    _scoreHUD->tick(1);
 }

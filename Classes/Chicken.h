@@ -9,7 +9,6 @@ typedef enum
 {
     start,
     newBorn,
-    invisible,
     jumping,
     falling,
     dying
@@ -33,10 +32,14 @@ public:
     float getVectorX();
     Vec2* getVector() { return &_vector; }
     bool hasMagnetEffect();
+    bool isInvisible() { return _isInvisible; }
     void increaseLife();
     void increaseSpriteSize();
+    void makeInvisible();
+    void makeVisible();
     void resetSizeAndWeight();
-    void setAnimation();
+    void setDefaultAnimation();
+    void setInvisibilityAnimation();
     void setCollideToAll();
     void setCollideToNoBomb();
     void setCollideToNone();
@@ -55,6 +58,7 @@ private:
     float _weight;
     float _scale;
     bool _hasMagnetEffect;
+    bool _isInvisible;
     unsigned int _lives;
     
     void decreaseWeight();

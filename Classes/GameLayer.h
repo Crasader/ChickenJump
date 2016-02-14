@@ -88,6 +88,8 @@ private:
     void spawnSpecialObject();
     void speedUp();
     void updateCollectables(float speed);
+    void updateInvisibilityStopwatch(float dt);
+    void updateMagnetStopwatch(float dt);
     void updateSpecialCollectables(float speed);
     void updateScoreLabel();
     void updateStageComplesion(float speed);

@@ -79,7 +79,7 @@ bool HomeLayer::init()
 void HomeLayer::addBackground() {
     auto background = Sprite::create(imageHomeBackground);
     if (not background) { retain(); }
-    background->setPosition(Point(_visibleSize.width / 2 + _origin.x, _visibleSize.height / 2 + _origin.y));
+    background->setPosition(Point(_visibleSize.width / 2, _visibleSize.height / 2));
     this->addChild(background, BackgroundLayer::layerBackground);
 }
 
@@ -100,7 +100,7 @@ void HomeLayer::addFlyingChickens() {
 void HomeLayer::addGround() {
     auto ground = Sprite::create(imageGroundBackground);
     if (not ground) { return; }
-    ground->setPosition(Point(_visibleSize.width * 0.5 + _origin.x, _visibleSize.height * 0.5 + _origin.y));
+    ground->setPosition(Point(_visibleSize.width * 0.5, _visibleSize.height * 0.5));
     this->addChild(ground, BackgroundLayer::layerTouch);
 }
 
@@ -108,7 +108,7 @@ void HomeLayer::addLogo() {
     _logo = Sprite::create(imageLogo);
     if (not _logo) { return; }
     _logo->setColor(Color3B(255, 208, 66));
-    _logo->setPosition(Point(_visibleSize.width * 0.5 + _origin.x, _visibleSize.height * 0.7 + _origin.y));
+    _logo->setPosition(Point(_visibleSize.width * 0.5, _visibleSize.height * 0.85));
     this->addChild(_logo, BackgroundLayer::layerTouch);
 }
 
@@ -116,7 +116,7 @@ void HomeLayer::addPlayMenu() {
     auto playItem = MenuItemImage::create(imageBtnPlay, imageBtnPlayClicked,
                                           CC_CALLBACK_1(HomeLayer::gotoMainMenuLayer, this));
     if (not playItem) { return; }
-    playItem->setPosition(Point(_visibleSize.width / 2 + _origin.x, _visibleSize.height * 0.30 + _origin.y));
+    playItem->setPosition(Point(_visibleSize.width / 2, _visibleSize.height * 0.4));
     auto menu = Menu::create(playItem, NULL);
     menu->setPosition(Point::ZERO);
     this->addChild(menu, BackgroundLayer::layerTouch);

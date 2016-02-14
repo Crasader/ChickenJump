@@ -31,7 +31,7 @@ typedef enum
 #define FIRST_TIME                      "FIRST_TIME"
 #define SOUND                           "SOUND"
 #define MUSIC                           "MUSIC"
-#define MAGNET_EFFECT_DURATION          100 // TODO::make it resonable may be 15 sec
+#define EFFECT_DURATION                 20 // TODO::make it resonable may be 15 sec
 
 // SPLASH SCREEN
 #define DISPLAY_TIME_SPLASH_SCREEN      2
