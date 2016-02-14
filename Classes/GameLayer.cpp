@@ -525,10 +525,6 @@ void GameLayer::resumeClicked(cocos2d::Ref const* sender) {
         resumeLabel->setString("1");
     });
     
-    auto go = CallFunc::create([resumeLabel]() {
-        resumeLabel->setString("Go");
-    });
-    
     auto delay = DelayTime::create(1.0f);
 
     if (resumeLabel) {
@@ -542,8 +538,6 @@ void GameLayer::resumeClicked(cocos2d::Ref const* sender) {
                                                 two,
                                                 delay,
                                                 one,
-                                                delay,
-                                                //go,
                                                 delay,
                                                 resume,
                                                 NULL));
