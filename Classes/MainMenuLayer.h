@@ -2,8 +2,12 @@
 #define __MAINMENU_LAYER_H__
 
 #include <cocos2d.h>
+#include <UIPageView.h>
 
-using namespace cocos2d;
+#include "BackButton.h"
+#include "HomeLayer.h"
+
+class Stage;
 
 class MainMenuLayer : public cocos2d::Layer
 {
@@ -13,18 +17,21 @@ public:
     virtual bool init();
     
     CREATE_FUNC(MainMenuLayer);
-    
+
 private:
-    void gotoGamePlayLayer(cocos2d::Ref* sender);
-    void menuSelectFrance(cocos2d::Ref* sender);
-    void menuSelectEngland(cocos2d::Ref* sender);
-    void menuSelectSpain(cocos2d::Ref* sender);
-    void menuSelectItaly(cocos2d::Ref* sender);
-    void menuSelectItaly2(cocos2d::Ref* sender); //////// remove later
-    void menuSelectGermany(cocos2d::Ref* sender);
-    void menuSelectNetherlands(cocos2d::Ref* sender);
-    void selectLevel(std::string level);
+    void addBackground();
+    void addBackButton();
+    void addHeaderLabel();
+    void addPageNavigationButtons();
+    void addStages();
+    void gotoGamePlayLayer(cocos2d::Ref const* sender, Stage const& stage);
+    void menuSelectSgate(cocos2d::Ref const* sender, Stage const& stage);
+    void pageScrollClicked(cocos2d::Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType);
+    void pageViewEvent(cocos2d::Ref const* ref, cocos2d::ui::PageView::EventType const& eEventType);
+    void selectLevel(std::string const& level);
+    
     bool _countryFrance;
+    BackButton<HomeLayer>* _backButton;
     
     Vec2 _origin;
     Size _visibleSize;

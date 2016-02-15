@@ -27,8 +27,6 @@
 *.out
 *.app
 
-ChickenJump-debug.apk
-
 cocos2d/cocos/platform/android/java/bin
 
 proj.android/bin

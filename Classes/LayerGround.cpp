@@ -1,41 +1,22 @@
 #include "LayerGround.h"
 
-#include "Chicken.h"
 #include "Constants.h"
 
-LayerGround::LayerGround(void){
-    _origin = Director::getInstance()->getVisibleOrigin();
-    _visibleSize = Director::getInstance()->getVisibleSize();
-}
-
-void LayerGround::createLayerGround(cocos2d::Layer* layer) {
-    if (not layer) { return; }
-
-    _layerGround = Sprite::create(_imageFile);
-//    _layerGround->setAnchorPoint(Vec2(0,0));
-    _layerGround->setPosition(Point(_visibleSize.width/2 + _origin.x, _visibleSize.height/2 + _origin.y));
-
-    auto bg2 = Sprite::create(_imageFile);
-    bg2->setAnchorPoint(Vec2(0,0));
-    bg2->setPosition(Point(_layerGround->getContentSize().width, 0));
+LayerGround::LayerGround(Stage const& stage) {
+    _stage = stage;
+    _imageFile = "layerground.png";
+    _zOrder = BackgroundLayer::layerGround;
     
-    auto bg3 = Sprite::create(_imageFile);
-    bg3->setAnchorPoint(Vec2(0,0));
-    bg3->setPosition(Point(_layerGround->getContentSize().width * 2, 0));
-
-    _layerGround->addChild(bg2);
-    _layerGround->addChild(bg3);
-    
-    layer->addChild(_layerGround, BackgroundLayer::layerGround);
-}
-
-void LayerGround::update(float speed) {
-    if (not _layerGround) { return; }
-    _layerGround->setPositionX(_layerGround->getPosition().x - LAYER_GROUND_SPEED * _visibleSize.width * speed);
-    
-    float diffx;
-    if (_layerGround->getPositionX() < -_layerGround->getContentSize().width) {
-        diffx = fabs(_layerGround->getPositionX()) - _layerGround->getContentSize().width;
-        _layerGround->setPositionX(-diffx);
+    if (_stage.getName() == StageStatus::infinite) {
+        // ADD SPRITES FOR THE INFINITE STAGE
     }
+    else {
+        _scrollingImages.push_back(_imageFile);
+        _scrollingImages.push_back(_imageFile);
+        _scrollingImages.push_back(_imageFile);
+    }
+}
+
+LayerGround::~LayerGround() {
+    
 }

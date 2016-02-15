@@ -3,22 +3,25 @@
 
 #include <cocos2d.h>
 
-using namespace cocos2d;
-
-
-class Collectable;
+class Stage;
 
 class Collectable {
 public:
-    Collectable(void);
-    void spawn(cocos2d::Layer* layer, std::vector<Sprite*>& collectables, int pattern);
+    Collectable(Stage const& st);
+    void spawn(cocos2d::Layer* layer, std::vector<cocos2d::Sprite*>& collectables);
     
 private:
-    Vec2 _origin;
-    Size _visibleSize;
-    Sprite* _collectable;
+    void initPatterns(int difficultyLevle);
+    void populatePatterns(int difficultyLevel, int eggs, int pizzas, int bombs);
+    
+    // pair < collectable_type, display_pattern >
+    typedef std::pair<int, int> Pattern;
+    std::vector<Pattern> _patterns;
     
     std::string const _imageFile = "egg1.png";
+    
+    cocos2d::Vec2 _origin;
+    cocos2d::Size _visibleSize;
 };
 
 

@@ -6,7 +6,8 @@
 #define degree2radian(a)                (a * 0.017453292519)
 
 // FONT
-#define fontMarkerFelt                  "Marker Felt.ttf"
+#define font                            "Marker Felt.ttf"
+//#define font                            "ALBAS.TTF"
 
 // LAYER
 typedef enum
@@ -15,23 +16,38 @@ typedef enum
     layerBackground,
     layerTwo,
     layerGround,
-    layerFour,
-    layerChicken
-    
+    layerChicken,
+    layerTouch
+
 } BackgroundLayer;
+
+// Number of lives
+#define CHICKEN_LIVES_MAX               3
+#define CHICKEN_LIVES                   3
+
+#define STAGE_LENGTH                    20
+
+// UserDefault Strings
+#define FIRST_TIME                      "FIRST_TIME"
+#define SOUND                           "SOUND"
+#define MUSIC                           "MUSIC"
+#define EFFECT_DURATION                 20 // TODO::make it resonable may be 15 sec
 
 // SPLASH SCREEN
 #define DISPLAY_TIME_SPLASH_SCREEN      2
 #define TRANSITION_TIME                 0.5
 
 // LAYERS
-#define LAYER_ONE_SPEED                 0.0006  // (Bigger = Faster)
+#define LAYER_BACKGROUND_SPEED          0.0006  // (Bigger = Faster)
 #define LAYER_TWO_SPEED                 0.002   // (Bigger = Faster)
 #define LAYER_GROUND_SPEED              0.002   // (Bigger = Faster)
 
 // CLOUD
-#define CLOUD_SPAWN_FREQUENCY           0.005   // How frequently spawn function will be called (Bigger = Less Frequently)
+#define CLOUD_SPAWN_FREQUENCY           0.007   // How frequently spawn function will be called (Bigger = Less Frequently)
 #define CLOUD_SPEED                     0.030   // Amount of time the cloud gets to cross the screen (Bigger = Slow)
+
+// Special Collectable spawn frequency
+#define SPECIAL_OBJ_SPAWN_DISTANCE      3       // after this value * screen width new special collectable will spawn
 
 // CHICKEN
 #define SPEED_CHANGE_FREQUENCY          0.01
@@ -49,40 +65,34 @@ typedef enum
 //#define TERMINAL_VELOCITY               70
 
 // CHICKEN JUMP
-#define VELOCITY_Y_MAX                  0.013    // 0.008  // ScreenHeight x .008 | .031 = 2.16 | 3.51 (Bigger = Higher)
+#define VELOCITY_Y_MAX                  0.0130   // 0.008  // ScreenHeight x .008 | .031 = 2.16 | 3.51 (Bigger = Higher)
 #define VELOCITY_Y_DECREASE_RATE        0.0003   // 0.0001 // ScreenHeight x .0001 | .0003 = 0.027 | .081 (Bigger = More)
 
-// COLLISION BITMASKS
-#define CATEGORY_BITMASK_CHICKEN        0x0001
-#define CATEGORY_BITMASK_TRAMPOLINE     0x0002
-#define CATEGORY_BITMASK_COLLECTABLE    0x0004
-#define CONTACTTEST_BITMASK_CHICKEN_EGG 0x0004
-#define CONTACTTEST_BITMASK_CHICKEN_ALL 0x0006
+#define FLYING_Y_MAX                    0.01000  // 0.008  // ScreenHeight x .008 | .031 = 2.16 | 3.51 (Bigger = Higher)
+#define FLYING_Y_DECREASE_RATE          0.00015  // 0.0001 // ScreenHeight x .0001 | .0003 = 0.027 | .081 (Bigger = More)
+
+// COLLISION BITMASKS // 1:chicken; 2:egg 4:pizza 8:bomb(static & floating) 16:life 32:invisibility 64:trampoline 128:magnet effect
+#define CATEGORY_BITMASK_CHICKEN        0x0001   // (1)   0000 0001
+#define CATEGORY_BITMASK_COLLECT_EGG    0x0002   // (2)   0000 0010
+#define CATEGORY_BITMASK_COLLECT_PIZZA  0x0004   // (4)   0000 0100
+#define CATEGORY_BITMASK_COLLECT_BOMB   0x0008   // (8)   0000 1000
+#define CATEGORY_BITMASK_COLLECT_LIFE   0x0010   // (16)  0001 0000
+#define CATEGORY_BITMASK_INVISIBILITY   0x0020   // (32)  0010 0000
+#define CATEGORY_BITMASK_TRAMPOLINE     0x0040   // (64)  0100 0000
+#define CATEGORY_BITMASK_MAGNET         0x0080   // (128) 1000 0000
+
+#define CONTACTTEST_BITMASK_CHICKEN_ALL 0x00FE   //       1111 1110
+#define CONTACTTEST_BITMASK_CHICKEN_NO_BOMB 0x00F6   //   1111 0110
+#define CONTACTTEST_BITMASK_CHICKEN_NON 0x0000   //       0000 0000
 
 
 // COLLECTABLE
-#define COLLECTABLE_SPAWN_FREQUENCY             0.001
-#define COLLECTABLE_SPEED                       LAYER_TWO_SPEED
-
+#define COLLECTABLE_SPAWN_FREQUENCY     0.001
+#define COLLECTABLE_SPEED               LAYER_TWO_SPEED
+#define COLLECTABLE_FALLING_SPEED       0.003
 // SCORE LABEL
 #define SCORE_FONT_SIZE                 0.085
+#define GO_FONT_SIZE                 0.1
 
 
 #endif // __CONSTANTS_H__
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

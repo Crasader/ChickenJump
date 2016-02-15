@@ -3,32 +3,34 @@
 
 #include <cocos2d.h>
 
-#include "Background.h"
+#include <UILoadingBar.h>
+
 #include "Chicken.h"
 #include "Collectable.h"
+#include "GameOverLayer.h"
+#include "LayerBackground.h"
 #include "LayerGround.h"
 #include "LayerTwo.h"
 #include "PauseLayer.h"
 #include "ScoreLayer.h"
+#include "SpecialCollectable.h"
+#include "Stage.h"
 #include "Trampoline.h"
-
-using namespace cocos2d;
 
 typedef enum {
     init,
     started,
     paused,
     finishing,
-    finished
+    finished,
+    terminate
     
 } GameState;
 
 class GameLayer : public cocos2d::LayerColor
 {
 public:
-    // there's no 'id' in cpp, so we recommend returning the class instance pointer
-    static cocos2d::Scene* createScene();
-
+    static cocos2d::Scene* createScene(Stage const& stage);
     // Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
     virtual bool init();
     
@@ -37,73 +39,96 @@ public:
     
 
     static GameLayer* getInstance();
-    void pauseGame(cocos2d::Ref* sender);
-    void resumeClicked(cocos2d::Ref* sender);
-    void resumeGame(cocos2d::Ref* sender);
+    Stage getStage();
+    void pauseGame(cocos2d::Ref const* sender);
+    void resumeClicked(cocos2d::Ref const* sender);
+    void resumeGame(cocos2d::Ref const* sender);
     
     // contact listners
-    bool onContactBegin(cocos2d::PhysicsContact &contact);
+    bool onContactBegin(cocos2d::PhysicsContact const& contact);
     
     // touch listners
-    virtual bool onTouchBegan(Touch* touch, Event* event);
-    virtual void onTouchEnded(Touch* touch, Event* event);
-    virtual void onTouchMoved(Touch* touch, Event* event);
+    virtual bool onTouchBegan(cocos2d::Touch const* touch, cocos2d::Event const* event);
+    virtual void onTouchEnded(cocos2d::Touch const* touch, cocos2d::Event const* event);
+    virtual void onTouchMoved(cocos2d::Touch const* touch, cocos2d::Event const* event);
     
     void update(float dt);
+    
+    virtual void onEnterTransitionDidFinish();
+    
 private:
     void addBG();
     void addChicken();
     void addContactListners();
+    void addExplosionEffect();
     void addFirstLayer();
     void addGroundLayer();
+    void addLoadingWheel();
     void addPauseMenu();
+    void addProgressBar();
     void addSecondLayer();
     void addTouchListners();
     void addTutorial();
+    void cleanTrampoline();
     void drawNewTrampoline();
+    void elapsedTime(float tick);
     void endOfStage();
     void focusOnCharacter();
-    void handleCollectableConsumption(Sprite* collectable);
+    void gameOver(bool hasStageFinished);
+    void handleCollectableConsumption(cocos2d::Sprite* collectable);
+    void initScoreHUDLives();
     void jump(float trampolinePositionY);
+    void lastLifeExploded();
     void releaseTouch();
-    void removeCollectable(Sprite* collectable);
-    inline void setPhysicsWorld(cocos2d::PhysicsWorld *world) { _sceneWorld = world; }
+    void removeCollectable(cocos2d::Sprite* collectable);
+    void removeSpecialCollectable(cocos2d::Sprite* collectable);
     void spawnCloud(float dt);
     void spawnCollectable();
-    void spawnEndOfStageItem();
+    void spawnSpecialObject();
     void speedUp();
     void updateCollectables(float speed);
+    void updateInvisibilityStopwatch(float dt);
+    void updateMagnetStopwatch(float dt);
+    void updateSpecialCollectables(float speed);
     void updateScoreLabel();
     void updateStageComplesion(float speed);
     
     static GameLayer* _instance;
-    cocos2d::PhysicsWorld *_sceneWorld;
     
-    Background* _background;
-    LayerTwo* _layerTow;
-    LayerGround* _layerGround;
-    Chicken* _chicken;
+    std::shared_ptr<LayerBackground> _layerBackground;
+    std::shared_ptr<LayerGround> _layerGround;
+    std::shared_ptr<LayerTwo> _layerTwo;
     Trampoline* _trampoline;
-    std::vector<Sprite*> _collectables;
+    std::shared_ptr<Chicken> _chicken;
+    cocos2d::ui::LoadingBar* _progressBar;
+    std::vector<cocos2d::Sprite*> _collectables;
+    std::vector<cocos2d::Sprite*> _specialCollectables;
     GameState _state;
     Sequence* _sequence;
 
+    GameOverLayer* _gameOverHUD;
     PauseLayer* _pauseHUD;
     ScoreLayer* _scoreHUD;
-    Sprite* _finger;
-    Sprite* _flag;
-    Menu* _pauseMenu;
+    std::shared_ptr<Collectable> _collectable;
+    std::shared_ptr<SpecialCollectable> _specialCollectable;
+
+    cocos2d::Sprite* _finger;
+    cocos2d::Label* _loading;
+    cocos2d::Menu* _pauseMenu;
     unsigned int _score;
     
     float _stageLength;
-    float _elapsedStage;
+    float _stageRemaining;
+    float _distanceForNewCollectables;
+    float _distanceForNewSpecialObject;
 
-    Vec2 _lineStartPoint;
-    Vec2 _lineEndPoint;
+    cocos2d::Vec2 _lineStartPoint;
+    cocos2d::Vec2 _lineEndPoint;
     
-    Vec2 _origin;
-    Size _visibleSize;
-
+    cocos2d::Vec2 _origin;
+    cocos2d::Size _visibleSize;
+    
+    unsigned int _elapsedTime; // seconds
 };
 
 

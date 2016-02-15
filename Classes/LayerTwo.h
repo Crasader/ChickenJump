@@ -3,21 +3,13 @@
 
 #include <cocos2d.h>
 
-using namespace cocos2d;
+#include "ScrollingLayerBase.h"
 
-class LayerTwo {
+class LayerTwo : public ScrollingLayerBase {
+
 public:
-    LayerTwo(void);
-    void createLayerTwo(cocos2d::Layer* layer);
-    void update(float speed);
-    
-private:
-    Sprite* _layerTow;
-    std::string const _imageFile = "layertwo.png";
-    Vec2 _origin;
-    Size _visibleSize;
+    LayerTwo(Stage const& stage);
+    virtual ~LayerTwo(void);
 };
-
-
 
 #endif /* __LAYER_TWO_SPRITE__ */

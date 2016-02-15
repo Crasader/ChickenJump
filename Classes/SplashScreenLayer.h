@@ -3,8 +3,6 @@
 
 #include <cocos2d.h>
 
-using namespace cocos2d;
-
 class SplashScreenLayer : public cocos2d::Layer
 {
 public:
@@ -15,8 +13,7 @@ public:
     CREATE_FUNC(SplashScreenLayer);
     
 private:
-    void goToMainMenuLayer(float dt);
-    
+    void gotoHomeLayer(float dt);
 };
 
 #endif // __SPLASHSCREEN_LAYER_H__

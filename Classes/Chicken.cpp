@@ -1,6 +1,9 @@
 #include "Chicken.h"
 
 #include "Constants.h"
+#include "SoundManager.h"
+
+static const std::string soundDead = "dead.wav";
 
 Chicken::Chicken(void){
     _origin = Director::getInstance()->getVisibleOrigin();
@@ -17,6 +20,8 @@ void Chicken::addPhysicsBody() {
 }
 
 void Chicken::applySpeedX(float speed) {
+    if (_state == PlayerState::dying) { return; }
+
     _vector.x += speed;
     if (_vector.x <= 1) {
         _vector.x = 1; // minimum speed
@@ -36,24 +41,26 @@ void Chicken::createChicken(cocos2d::Layer *layer) {
     addPhysicsBody();
     
     // initial speed, weight and state
-    _vector.x = 1.0;
-    _vector.y = 0.0;
-    _state = PlayerState::falling;
-    _weight = 1.0;
     _scale = 1.0;
+    _weight = 1.0;
+    _vector = Vec2(1.0, 0.0);
+    setState(PlayerState::falling);
+    _hasMagnetEffect = false;
+    _isInvisible = false;
     
     // initial position
-    _chicken->setPosition(_visibleSize.width * 0.30 + _origin.x, _visibleSize.height * 0.9 + _origin.y);
-    
-    // TODO: remove this adjusting
-    // Adjusting big png
-//    auto scaleTo = ScaleTo::create(0.75f, 0.75f);
-//    _chicken->runAction(scaleTo);
+    _chicken->setPosition(_visibleSize.width * 0.30, _visibleSize.height * 0.9);
     
     // Flapping wings animation
-    setAnimation();
+    setDefaultAnimation();
     
     layer->addChild(_chicken, BackgroundLayer::layerChicken);
+}
+
+void Chicken::decreaseLife() {
+    if (_state == PlayerState::dying) { return; }
+
+    --_lives;
 }
 
 void Chicken::decreaseSpriteSize() {
@@ -87,6 +94,17 @@ float Chicken::getVectorX() {
     return _vector.x;
 }
 
+bool Chicken::hasMagnetEffect() {
+    return _hasMagnetEffect;
+}
+
+void Chicken::increaseLife() {
+    if (_state == PlayerState::dying) { return; }
+    if (_lives +1 <= CHICKEN_LIVES_MAX) {
+        ++_lives;
+    }
+}
+
 void Chicken::increaseSpriteSize() {
     if (_scale + SCALE_FACTOR <= MAX_SCALE) {
         auto scaleTo = ScaleTo::create(0.1f, _scale += SCALE_FACTOR);
@@ -95,43 +113,32 @@ void Chicken::increaseSpriteSize() {
     }
 }
 
-void Chicken::increaseVectorX() {
-    if (_state == PlayerState::dying) { return; }
-    
-    _vector.x *= ACCELERATION_DEFAULT;   // increase speed by 1.5
-    if (_vector.x >= MAX_SPEED_X) {
-        _vector.x = MAX_SPEED_X;
-    }
-}
-
 void Chicken::increaseWeight() {
     if (_weight + SCALE_FACTOR <= MAX_WEIGHT) {
         _weight += SCALE_FACTOR;
     }
-    CCLOG("+++++ %f", _weight);
 }
 
-//void Chicken::moveToFinishingPosition() {
-//    if (not _chicken) { return; }
-//    
-//    auto action = MoveTo::create(1, Point(_chicken->getPosition().x, _visibleSize.height * 0.60));
-//    _chicken->runAction(action);
-//}
+void Chicken::makeInvisible() {
+    _isInvisible = true;
+    setInvisibilityAnimation();
+}
 
-//void Chicken::runFinishingMove() {
-//    if (not _chicken) { return; }
-//    
-//    auto action = MoveTo::create(1, Point(_visibleSize.width + _chicken->getContentSize().width * 1.5, _visibleSize.height * 0.60));
-//    _chicken->runAction(action);
-//}
+void Chicken::makeVisible() {
+    _isInvisible = false;
+    setDefaultAnimation();
+}
 
 void Chicken::resetSizeAndWeight() {
     _scale = MIN_SCALE;
     _weight = MIN_WEIGHT;
-    CCLOG("+++++ RESET %f", _weight);
 }
 
-void Chicken::setAnimation() {
+void Chicken::setDefaultAnimation() {
+    if (not _chicken) { return; }
+    
+    _chicken->stopAllActions();
+    
     Animation* animation = Animation::create();
     animation->addSpriteFrameWithFile("playerfly_1.png");
     animation->addSpriteFrameWithFile("playerfly_2.png");
@@ -144,24 +151,133 @@ void Chicken::setAnimation() {
     _chicken->runAction(action);
 }
 
+void Chicken::setInvisibilityAnimation() {
+    if (not _chicken) { return; }
+    
+    _chicken->stopAllActions();
+    
+    Animation* animation = Animation::create();
+    animation->addSpriteFrameWithFile("playerfly_1_invisible.png");
+    animation->addSpriteFrameWithFile("playerfly_2_invisible.png");
+    animation->addSpriteFrameWithFile("playerfly_3_invisible.png");
+    animation->setDelayPerUnit(0.2f / 1.0f);
+    animation->setRestoreOriginalFrame(false);
+    animation->setLoops(-1);
+    
+    Action* action = Animate::create(animation);
+    _chicken->runAction(action);
+}
+
+void Chicken::setCollideToAll() {
+    if (not _chicken) { return; }
+    _chicken->getPhysicsBody()->setContactTestBitmask(CONTACTTEST_BITMASK_CHICKEN_ALL);
+}
+
+void Chicken::setCollideToNoBomb(){
+    if (not _chicken) { return; }
+    _chicken->getPhysicsBody()->setContactTestBitmask(CONTACTTEST_BITMASK_CHICKEN_NO_BOMB);
+}
+
+void Chicken::setCollideToNone() {
+    if (not _chicken) { return; }
+    _chicken->getPhysicsBody()->setContactTestBitmask(CONTACTTEST_BITMASK_CHICKEN_NON);
+}
+
+void Chicken::setLives(int numberOfLives) {
+    if (_state == PlayerState::dying) { return; }
+
+    _lives = numberOfLives;
+}
+
+void Chicken::setMagnetEffect(bool magnetEffect) {
+    _hasMagnetEffect = magnetEffect;
+}
+
+
 void Chicken::setState(PlayerState state) {
     if (not _chicken) { return; }
     
     _state = state;
-    if (state == PlayerState::jumping) {
-        _vector.y = _visibleSize.height * VELOCITY_Y_MAX;
-    }
-    else if (state == PlayerState::falling) {
-        _vector.y = -_visibleSize.height * VELOCITY_Y_DECREASE_RATE;
+    switch (_state) {
+        case start:
+            _vector = Vec2(0, 0);
+            break;
+        case newBorn: {
+            // stop falling down, stop scrolling as well.
+            _vector = Vec2(0, 0);
+            
+            auto resetChicken = CallFunc::create([this](){
+                // reset size & weight; move to a stable position; remove collide power
+                resetSizeAndWeight();
+                _chicken->setPosition(_visibleSize.width * 0.30, _visibleSize.height * 0.60);
+            });
+            
+            auto collideNone = CallFunc::create([this]() {
+                setCollideToNone();
+            });
+            
+            auto showChicken = CallFunc::create([this](){
+                _chicken->setVisible(true);
+            });
+
+            auto hideChicken = CallFunc::create([this](){
+                _chicken->setVisible(false);
+            });
+
+            auto stateFalling = CallFunc::create([this](){
+                _state = PlayerState::falling;
+            });
+            
+            auto collideNoBomb = CallFunc::create([this]() {
+                // get the collide power back
+                setCollideToNoBomb();
+            });
+
+            auto collideAll = CallFunc::create([this]() {
+                // get the collide power back
+                setCollideToAll();
+            });
+            
+            auto timeToReborn = DelayTime::create(2.0);
+            auto delay = DelayTime::create(0.2);
+
+            Sequence* blink = Sequence::create(timeToReborn, resetChicken, collideNone,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               stateFalling, collideNoBomb,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               hideChicken, delay, showChicken, delay,
+                                               collideAll, NULL);
+            _chicken->runAction(blink);
+            break;
+        }
+        case jumping:
+            _vector.y = _visibleSize.height * VELOCITY_Y_MAX;
+            break;
+        case falling:
+            _vector.y = -_visibleSize.height * VELOCITY_Y_DECREASE_RATE;
+            break;
+        case dying:
+            break;
     }
 }
 
 void Chicken::update(float speed) {
     if (not _chicken) { return; }
+    if (_state == PlayerState::dying) { return; }
     
     switch (_state) {
         case start:
-            _vector.y = 0;
+            break;
+        case newBorn:
             break;
         case jumping:
             _vector.y -= _visibleSize.height * VELOCITY_Y_DECREASE_RATE * _weight;
@@ -180,15 +296,15 @@ void Chicken::update(float speed) {
             break;
     }
 
-    // jumping
-    if (_state != PlayerState::dying) {
-        _chicken->setPositionY(_chicken->getPositionY() + _vector.y);
-    }
+    // already in jumping state. no need to check if (_state != PlayerState::dying)
+    _chicken->setPosition(Vec2(_chicken->getPositionX(), _chicken->getPositionY() + _vector.y));
     
     // Die
     if (_chicken->getPositionY() < -_chicken->getContentSize().height * 0.5 or
         _chicken->getPositionX() < -_chicken->getContentSize().width * 1.5) {
         _state = PlayerState::dying;
+        
+        SoundManager::Play(SoundManager::soundDead);
     }
 }
 

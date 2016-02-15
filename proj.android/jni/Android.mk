@@ -16,17 +16,27 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
                    ../../Classes/MainMenuLayer.cpp \
                    ../../Classes/GameLayer.cpp \
                    ../../Classes/GameOverLayer.cpp \
-                   ../../Classes/Background.cpp \
                    ../../Classes/Collectable.cpp \
                    ../../Classes/Chicken.cpp \
                    ../../Classes/Cloud.cpp \
+                   ../../Classes/LayerBackground.cpp \
                    ../../Classes/LayerGround.cpp \
                    ../../Classes/LayerTwo.cpp \
+                   ../../Classes/ScrollingLayerBase.cpp \
                    ../../Classes/Trampoline.cpp \
                    ../../Classes/PauseLayer.cpp \
-                   ../../Classes/ScoreLayer.cpp
+                   ../../Classes/ScoreLayer.cpp \
+                   ../../Classes/HomeLayer.cpp \
+                   ../../Classes/Stage.cpp \
+                   ../../Classes/StageStatus.cpp \
+                   ../../Classes/FloatingChicken.cpp \
+                   ../../Classes/SpecialCollectable.cpp \
+                   ../../Classes/SettingsMenuLayer.cpp \
+                   ../../Classes/BackButton.cpp \
+                   ../../Classes/SoundManager.cpp
 
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes \
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../cocos2d/cocos/ui
 
 # _COCOS_HEADER_ANDROID_BEGIN
 # _COCOS_HEADER_ANDROID_END

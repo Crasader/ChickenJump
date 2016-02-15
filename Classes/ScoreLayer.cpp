@@ -1,9 +1,14 @@
 #include "ScoreLayer.h"
 
+#include <UIListView.h>
+
 #include "Constants.h"
 #include "GameLayer.h"
 
 using namespace cocos2d;
+using namespace ui;
+
+static const std::string imageSandwatchMagnet = "sandwatch_magnet.png";
 
 bool ScoreLayer::init()
 {
@@ -19,21 +24,117 @@ bool ScoreLayer::init()
     this->setPosition(0, _visibleSize.height - this->getContentSize().height);
     
     // add score icon
-    auto sprite = Sprite::create(imageScore);
-    if (sprite) {
-        sprite->setPosition(Vec2(_visibleSize.width - sprite->getContentSize().width * 2.5, this->getContentSize().height * 0.5));
-        this->addChild(sprite);
-    }
+    addScoreIcon();
 
     // add score(text)
-    _scoreLabel = Label::createWithTTF("0", fontMarkerFelt, _visibleSize.height * SCORE_FONT_SIZE);
-    if (_scoreLabel) {
-        _scoreLabel->setColor(Color3B::WHITE);
-        _scoreLabel->setPosition(Vec2(_visibleSize.width - sprite->getContentSize().width, this->getContentSize().height * 0.44));
-        this->addChild(_scoreLabel);
+    addScore();
+    
+    // sandwatches
+    addMagnetStopwatch();
+    addInvisibilityStopwatch();
+    
+    // Initialize number of life sprites only in stages where life matters
+    updateLife(0);
+    if (GameLayer::getInstance()->getStage().getDifficulty() > 2) {
+        initLifeSprites(CHICKEN_LIVES_MAX);
+        updateLife(CHICKEN_LIVES);
     }
-
+    
     return true;
+}
+
+void ScoreLayer::addMagnetStopwatch() {
+    _magnetStopwatch = cocos2d::ui::LoadingBar::create();
+    if (not _magnetStopwatch) { return; }
+    
+    _magnetStopwatch->loadTexture(imageSandwatchMagnet);
+    _magnetStopwatch->setColor(Color3B::ORANGE);
+    _magnetStopwatch->setPercent(0);
+    _magnetStopwatch->setPosition(Vec2(this->getContentSize().width * 0.6, this->getContentSize().height * 0.5));
+    this->addChild(_magnetStopwatch, BackgroundLayer::layerTouch);
+}
+
+void ScoreLayer::addInvisibilityStopwatch() {
+    _invisibilityStopwatch = cocos2d::ui::LoadingBar::create();
+    if (not _invisibilityStopwatch) { return; }
+    
+    _invisibilityStopwatch->loadTexture(imageSandwatchMagnet);
+    _invisibilityStopwatch->setColor(Color3B::YELLOW);
+    _invisibilityStopwatch->setPercent(0);
+    _invisibilityStopwatch->setPosition(Vec2(this->getContentSize().width * 0.75, this->getContentSize().height * 0.5));
+    this->addChild(_invisibilityStopwatch, BackgroundLayer::layerTouch);
+}
+
+// 1:Magnet 2:Invisibility
+void ScoreLayer::startStopwatch(int type) {
+    switch (type) {
+        case 1:
+            if (not _magnetStopwatch) { return; }
+            _magnetStopwatch->setPercent(100);
+            break;
+        case 2:
+            if (not _invisibilityStopwatch) { return; }
+            _invisibilityStopwatch->setPercent(100);
+            break;
+        default:
+            break;
+    }
+}
+
+// 1:Magnet 2:Invisibility
+void ScoreLayer::tick(int type) {
+    // magnet_effect -= 5; means: 100/5 = 20 seconds
+    switch (type) {
+        case 1:
+            if (not _magnetStopwatch) { return; }
+            _magnetStopwatch->setPercent(_magnetStopwatch->getPercent() - 100/EFFECT_DURATION);
+            break;
+        case 2:
+            if (not _invisibilityStopwatch) { return; }
+            _invisibilityStopwatch->setPercent(_invisibilityStopwatch->getPercent() - 100/EFFECT_DURATION);
+            break;
+        default:
+            break;
+    }
+}
+
+void ScoreLayer::addScore() {
+    _scoreLabel = Label::createWithTTF("0", font, _visibleSize.height * SCORE_FONT_SIZE);
+    if (not _scoreLabel) { return; }
+
+    _scoreLabel->setColor(Color3B::WHITE);
+    _scoreLabel->setPosition(Vec2(_visibleSize.width - _scoreIcon->getContentSize().width, this->getContentSize().height * 0.44));
+    this->addChild(_scoreLabel);
+}
+
+void ScoreLayer::addScoreIcon(){
+    _scoreIcon = Sprite::create(imageScore);
+    if (not _scoreIcon) { return; }
+    _scoreIcon->setPosition(Vec2(_visibleSize.width - _scoreIcon->getContentSize().width * 2.5, this->getContentSize().height * 0.5));
+    this->addChild(_scoreIcon);
+}
+
+void ScoreLayer::initLifeSprites(int lives) {
+    Vec2 initialPosition = Vec2(_visibleSize.width * 0.05, this->getContentSize().height * 0.5);
+
+    for (int i = 0; i < lives; ++i) {
+        auto life = Sprite::create(imageLife);
+        if (life) {
+            life->setPosition(Vec2(initialPosition.x + i * life->getContentSize().width, initialPosition.y));
+            this->addChild(life);
+
+            _lifeSprites.push_back(life);
+        }
+    }
+}
+
+void ScoreLayer::updateLife(int lives) {
+    for (int i = 0; i < _lifeSprites.size(); ++i) {
+        _lifeSprites.at(i)->setVisible(true);
+        if (i >= lives) {
+            _lifeSprites.at(i)->setVisible(false);
+        }
+    }
 }
 
 void ScoreLayer::updateScore(int score) {

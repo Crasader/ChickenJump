@@ -2,40 +2,36 @@
 
 #include "Constants.h"
 
-LayerTwo::LayerTwo(void){
-    _origin = Director::getInstance()->getVisibleOrigin();
-    _visibleSize = Director::getInstance()->getVisibleSize();
-}
-
-void LayerTwo::createLayerTwo(cocos2d::Layer* layer) {
-    if (not layer) { return; }
-
-    _layerTow = Sprite::create(_imageFile);
-//    _layerTow->setAnchorPoint(Vec2(0,0));
-    _layerTow->setPosition(Point(_visibleSize.width/2 + _origin.x, _visibleSize.height/2 + _origin.y));
-
-    auto bg2 = Sprite::create(_imageFile);
-    bg2->setAnchorPoint(Vec2(0,0));
-    bg2->setPosition(Point(_layerTow->getContentSize().width, 0));
+LayerTwo::LayerTwo(Stage const& stage){
+    _stage = stage;
+    _imageFile = "layertwo.png";
+    _zOrder = BackgroundLayer::layerTwo;    
+ 
+    _imageFile1 = "foreground1.png";
+    _imageFile2 = "foreground2.png";
+    _imageFile3 = "foreground3.png";
+    _imageFile4 = "foreground4.png";
+    _imageFile5 = "foreground5.png";
+    _imageFile6 = "foreground6.png";
     
-    auto bg3 = Sprite::create(_imageFile);
-    bg3->setAnchorPoint(Vec2(0,0));
-    bg3->setPosition(Point(_layerTow->getContentSize().width * 2, 0));
-
-    _layerTow->addChild(bg2);
-    _layerTow->addChild(bg3);
-    
-    layer->addChild(_layerTow, BackgroundLayer::layerTwo);
-}
-
-void LayerTwo::update(float speed) {
-    if (not _layerTow) { return; }
-    
-    _layerTow->setPositionX(_layerTow->getPosition().x - LAYER_TWO_SPEED * _visibleSize.width * speed);
-    
-    float diffx;
-    if (_layerTow->getPositionX() < -_layerTow->getContentSize().width) {
-        diffx = fabs(_layerTow->getPositionX()) - _layerTow->getContentSize().width;
-        _layerTow->setPositionX(-diffx);
+    if (_stage.getName() == StageStatus::infinite) {
+        // ADD SPRITES FOR THE INFINITE STAGE
+        _scrollingImages.push_back(_imageFile1);
+        _scrollingImages.push_back(_imageFile2);
+        _scrollingImages.push_back(_imageFile3);
+        _scrollingImages.push_back(_imageFile4);
+        _scrollingImages.push_back(_imageFile5);
+        _scrollingImages.push_back(_imageFile6);
+    }
+    else {
+        _scrollingImages.push_back(_imageFile);
+        _scrollingImages.push_back(_imageFile);
+        _scrollingImages.push_back(_imageFile);
     }
 }
+
+LayerTwo::~LayerTwo(void) {
+
+}
+
+
