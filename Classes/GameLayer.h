@@ -17,8 +17,6 @@
 #include "Stage.h"
 #include "Trampoline.h"
 
-using namespace cocos2d;
-
 typedef enum {
     init,
     started,
@@ -50,9 +48,9 @@ public:
     bool onContactBegin(cocos2d::PhysicsContact const& contact);
     
     // touch listners
-    virtual bool onTouchBegan(Touch const* touch, Event const* event);
-    virtual void onTouchEnded(Touch const* touch, Event const* event);
-    virtual void onTouchMoved(Touch const* touch, Event const* event);
+    virtual bool onTouchBegan(cocos2d::Touch const* touch, cocos2d::Event const* event);
+    virtual void onTouchEnded(cocos2d::Touch const* touch, cocos2d::Event const* event);
+    virtual void onTouchMoved(cocos2d::Touch const* touch, cocos2d::Event const* event);
     
     void update(float dt);
     
@@ -76,13 +74,13 @@ private:
     void endOfStage();
     void focusOnCharacter();
     void gameOver(bool hasStageFinished);
-    void handleCollectableConsumption(Sprite* collectable);
+    void handleCollectableConsumption(cocos2d::Sprite* collectable);
     void initScoreHUDLives();
     void jump(float trampolinePositionY);
     void lastLifeExploded();
     void releaseTouch();
-    void removeCollectable(Sprite* collectable);
-    void removeSpecialCollectable(Sprite* collectable);
+    void removeCollectable(cocos2d::Sprite* collectable);
+    void removeSpecialCollectable(cocos2d::Sprite* collectable);
     void spawnCloud(float dt);
     void spawnCollectable();
     void spawnSpecialObject();
@@ -102,8 +100,8 @@ private:
     Trampoline* _trampoline;
     std::shared_ptr<Chicken> _chicken;
     cocos2d::ui::LoadingBar* _progressBar;
-    std::vector<Sprite*> _collectables;
-    std::vector<Sprite*> _specialCollectables;
+    std::vector<cocos2d::Sprite*> _collectables;
+    std::vector<cocos2d::Sprite*> _specialCollectables;
     GameState _state;
     Sequence* _sequence;
 
@@ -113,9 +111,9 @@ private:
     std::shared_ptr<Collectable> _collectable;
     std::shared_ptr<SpecialCollectable> _specialCollectable;
 
-    Sprite* _finger;
-    Label* _loading;
-    Menu* _pauseMenu;
+    cocos2d::Sprite* _finger;
+    cocos2d::Label* _loading;
+    cocos2d::Menu* _pauseMenu;
     unsigned int _score;
     
     float _stageLength;
@@ -123,12 +121,11 @@ private:
     float _distanceForNewCollectables;
     float _distanceForNewSpecialObject;
 
-    Vec2 _lineStartPoint;
-    Vec2 _lineEndPoint;
+    cocos2d::Vec2 _lineStartPoint;
+    cocos2d::Vec2 _lineEndPoint;
     
-    Vec2 _origin;
-    Size _visibleSize;
-
+    cocos2d::Vec2 _origin;
+    cocos2d::Size _visibleSize;
 };
 
 
