@@ -65,21 +65,21 @@ void GameOverLayer::addScoreBoard() {
 void GameOverLayer::addStars() {
     _star1 = Sprite::create(imageEmptyStar);
     if (_star1) {
-        _star1->setPosition(_visibleSize.width * 0.5 - _star1->getContentSize().width * 1.25, _visibleSize.height * 0.75);
+        _star1->setPosition(_visibleSize.width * 0.5 - _star1->getContentSize().width * 1.25, _visibleSize.height * 0.8);
         this->addChild(_star1, BackgroundLayer::layerChicken);
         _stars.push_back(_star1);
     }
     
     _star2 = Sprite::create(imageEmptyStar);
     if (_star2) {
-        _star2->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.8);
+        _star2->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.85);
         this->addChild(_star2, BackgroundLayer::layerChicken);
         _stars.push_back(_star2);
     }
     
     _star3 = Sprite::create(imageEmptyStar);
     if (_star3) {
-        _star3->setPosition(_visibleSize.width * 0.5 + _star1->getContentSize().width * 1.25, _visibleSize.height * 0.75);
+        _star3->setPosition(_visibleSize.width * 0.5 + _star1->getContentSize().width * 1.25, _visibleSize.height * 0.8);
         this->addChild(_star3, BackgroundLayer::layerChicken);
         _stars.push_back(_star3);
     }
@@ -89,7 +89,7 @@ void GameOverLayer::addHighscoreLabel() {
     _highScoreLabel = Label::createWithTTF("", font, _visibleSize.height * SCORE_FONT_SIZE);
     if (not _highScoreLabel) { return; }
     _highScoreLabel->setColor(Color3B::WHITE);
-    _highScoreLabel->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.55);
+    _highScoreLabel->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.6);
     this->addChild(_highScoreLabel, BackgroundLayer::layerChicken);
 }
 
@@ -97,7 +97,7 @@ void GameOverLayer::addScoreLabel() {
     _scoreLabel = Label::createWithTTF("", font, _visibleSize.height * SCORE_FONT_SIZE);
     if (not _scoreLabel) { return; }
     _scoreLabel->setColor(Color3B::WHITE);
-    _scoreLabel->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.425);
+    _scoreLabel->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.45);
     this->addChild(_scoreLabel, BackgroundLayer::layerChicken);
 }
 
