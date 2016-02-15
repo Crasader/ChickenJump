@@ -10,8 +10,6 @@
 using namespace cocos2d;
 using namespace ui;
 
-static Stage _stage;
-
 static const std::string imageBtnMainMenu = "btn_menu.png";
 static const std::string imageBtnRestart = "btn_restart.png";
 static const std::string imageEmptyStar = "star_empty.png";
@@ -295,7 +293,7 @@ void GameOverLayer::mainMenuClicked(Ref const* ref, cocos2d::ui::Widget::TouchEv
 void GameOverLayer::restartClicked(const Ref* ref, const cocos2d::ui::Widget::TouchEventType& eEventType) {
     if (eEventType != ui::Widget::TouchEventType::ENDED) { return; }
 
-    auto scene = GameLayer::createScene(GameLayer::getInstance()->getStage());
+    auto scene = GameLayer::createScene(_stage);
     if (not scene) {
         return;
     }
@@ -304,7 +302,7 @@ void GameOverLayer::restartClicked(const Ref* ref, const cocos2d::ui::Widget::To
     if (d->isPaused()) {
         d->resume();
     }
-    Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
+    d->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 
 }
 

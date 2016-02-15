@@ -5,7 +5,7 @@
 #include <UIWidget.h>
 #include <UIButton.h>
 
-class Stage;
+#include "Stage.h"
 
 class GameOverLayer : public cocos2d::LayerColor
 {
@@ -42,6 +42,8 @@ private:
     cocos2d::Sprite* _star2;
     cocos2d::Sprite* _star3;
     std::vector<cocos2d::Sprite*> _stars;
+    
+    Stage _stage;
     
     cocos2d::Vec2 _origin;
     cocos2d::Size _visibleSize;
