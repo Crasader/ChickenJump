@@ -148,6 +148,7 @@ bool GameLayer::init()
     
     this->schedule(schedule_selector(GameLayer::updateInvisibilityStopwatch), 1);
     this->schedule(schedule_selector(GameLayer::updateMagnetStopwatch), 1);
+    this->schedule(schedule_selector(GameLayer::elapsedTime), 1);
 
     // Listen for collision
     addContactListners();
@@ -315,6 +316,10 @@ void GameLayer::drawNewTrampoline() {
     _trampoline->createTrampoline(this, _lineStartPoint, _lineEndPoint);
 }
 
+void GameLayer::elapsedTime(float tick) {
+    _elapsedTime += 1;
+}
+
 void GameLayer::endOfStage() {
     _chicken->setVector(Vec2(0, 0));
 
@@ -348,7 +353,7 @@ void GameLayer::gameOver(bool hasStageFinished) {
     _state = GameState::terminate; // set gamestate as terminate to stop schedule update
     
     // Game over score and others
-    _gameOverHUD->setup(_stage, _score, hasStageFinished);
+    _gameOverHUD->setup(_stage, _score, _elapsedTime, hasStageFinished);
     _gameOverHUD->setVisible(true);
     _pauseMenu->setVisible(false);
 }
@@ -632,6 +637,8 @@ bool GameLayer::onTouchBegan(Touch const* touch, Event const* event) {
         this->removeChild(_finger);
 
         _pauseMenu->setVisible(true);
+        
+        _elapsedTime = 0; // start game timer
     }
 
     // start preparation to draw new trampoline

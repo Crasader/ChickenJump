@@ -35,7 +35,6 @@ void Collectable::populatePatterns(int difficultyLevel, int eggs, int pizzas, in
 }
 
 void Collectable::initPatterns(int difficultyLevel) {
-    CCLOG("===== Difficulty level(collectables): %d", difficultyLevel);
     switch (difficultyLevel) {
         case 1:    // eggs(100%), pizza(0), bomb(0)
             populatePatterns(difficultyLevel, totalNumberOfPatterns * 1.0, 0, 0);

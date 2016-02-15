@@ -39,7 +39,6 @@ void SpecialCollectable::populatePatterns(int difficultyLevel, int life, int flo
 }
 
 void SpecialCollectable::initPatterns(int difficultyLevel) {
-    CCLOG("===== Difficulty level(special_collectables): %d", difficultyLevel);
     switch (difficultyLevel) {
         case 1:    // no special collectables
             break;

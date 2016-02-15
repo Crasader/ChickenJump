@@ -71,6 +71,7 @@ private:
     void addTutorial();
     void cleanTrampoline();
     void drawNewTrampoline();
+    void elapsedTime(float tick);
     void endOfStage();
     void focusOnCharacter();
     void gameOver(bool hasStageFinished);
@@ -126,6 +127,8 @@ private:
     
     cocos2d::Vec2 _origin;
     cocos2d::Size _visibleSize;
+    
+    unsigned int _elapsedTime; // seconds
 };
 
 
