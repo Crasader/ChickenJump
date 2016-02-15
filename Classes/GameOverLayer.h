@@ -24,10 +24,12 @@ private:
     void addStars();
     void addTimerLogoAndLabel();
     
-    void prepare(unsigned int timeTaken);
+    void prepare(unsigned int timeTaken, bool isNewHighscore);
     void saveStatsAndUnlockNextStage(bool isStageClear);
     void mainMenuClicked(cocos2d::Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType);
     void restartClicked(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType);
+    void newHighscoreCelebration();
+    void addFirework();
     
     cocos2d::Sprite* _scoreBoard;
     cocos2d::Sprite* _timerSprite;

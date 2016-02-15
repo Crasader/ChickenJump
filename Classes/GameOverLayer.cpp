@@ -14,8 +14,9 @@ static Stage _stage;
 
 static const std::string imageBtnMainMenu = "btn_menu.png";
 static const std::string imageBtnRestart = "btn_restart.png";
-static const std::string imageScoreBoard = "scoreboard.png";
 static const std::string imageEmptyStar = "star_empty.png";
+static const std::string imageExplosion = "explosion.png";
+static const std::string imageScoreBoard = "scoreboard.png";
 static const std::string imageTimer = "timer.png";
 
 void GameOverLayer::setup(Stage const& stage, unsigned int score, unsigned int timeTaken, bool isStageClear)
@@ -23,12 +24,13 @@ void GameOverLayer::setup(Stage const& stage, unsigned int score, unsigned int t
     _stage = stage;
     
     // TODO::CALCULATE THE SCORE //
+    bool isNewHighscore = score > stage.getHighScore() ? true : false;
     _stage.setScore(score);
     
     // TODO::CALCULATE THE STAR //
     _stage.setStar(2);
     
-    prepare(timeTaken);
+    prepare(timeTaken, isNewHighscore);
     saveStatsAndUnlockNextStage(isStageClear);
 }
 
@@ -138,7 +140,7 @@ void GameOverLayer::addRestartButton() {
     this->addChild(_btnRestart, BackgroundLayer::layerChicken);
 }
 
-void GameOverLayer::prepare(unsigned int timeTaken) {
+void GameOverLayer::prepare(unsigned int timeTaken, bool isNewHighscore) {
     // HIGHSCORE
     if (_highScoreLabel) {
         std::string highScoreStr = String::createWithFormat("HighScore: %d", _stage.getHighScore())->getCString();
@@ -192,6 +194,67 @@ void GameOverLayer::prepare(unsigned int timeTaken) {
 
         this->addChild(chicken, BackgroundLayer::layerChicken);
     }
+    
+    // NEW_HIGHSCORE
+    if (isNewHighscore) {
+        newHighscoreCelebration();
+        addFirework();
+    }
+}
+
+void GameOverLayer::newHighscoreCelebration() {
+    Sprite* banner = Sprite::create("banner_highscore.png");
+    if (not banner) { return; }
+    
+    banner->setPosition(Vec2(_visibleSize.width * 0.5, _visibleSize.height + banner->getContentSize().height));
+    this->addChild(banner, BackgroundLayer::layerChicken);
+    
+    auto moveIn = MoveTo::create(1, Vec2(_visibleSize.width * 0.5, _visibleSize.height * 0.8));
+    auto moveOut = MoveTo::create(1, Vec2(_visibleSize.width + banner->getContentSize().width, _visibleSize.height * 0.8));
+
+    auto seq = Sequence::create(moveIn, DelayTime::create(2), moveOut, NULL);
+    banner->runAction(seq);
+}
+
+void GameOverLayer::addFirework() {
+    // Explosion Effect
+    int xOne = RandomHelper::random_real(_visibleSize.width * 0.3, _visibleSize.width * 0.7);
+    int yOne = RandomHelper::random_real(_visibleSize.height * 0.3, _visibleSize.height * 0.7);
+
+    ParticleExplosion* explosion1 = ParticleExplosion::createWithTotalParticles(100);
+    explosion1->setTexture(Director::getInstance()->getTextureCache()->addImage(imageExplosion));
+    explosion1->setStartColor(Color4F::YELLOW);
+    explosion1->setEndColor(Color4F::YELLOW);
+    explosion1->setScale(0.75);
+    explosion1->setSpeed(5);
+    explosion1->setPosition(Vec2(xOne, yOne));
+    this->addChild(explosion1, BackgroundLayer::layerTouch);
+    
+    int xTwo = RandomHelper::random_real(_visibleSize.width * 0.3, _visibleSize.width * 0.7);
+    int yTwo = RandomHelper::random_real(_visibleSize.height * 0.3, _visibleSize.height * 0.7);
+    
+    ParticleExplosion* explosion2 = ParticleExplosion::createWithTotalParticles(66);
+    explosion2->setTexture(Director::getInstance()->getTextureCache()->addImage(imageExplosion));
+    explosion2->setStartColor(Color4F::YELLOW);
+    explosion2->setEndColor(Color4F::YELLOW);
+    explosion2->setScale(0.75);
+    explosion2->setSpeed(5);
+    explosion2->setPosition(Vec2(xTwo, yTwo));
+    this->addChild(explosion2, BackgroundLayer::layerTouch);
+    
+    int xThree = RandomHelper::random_real(_visibleSize.width * 0.3, _visibleSize.width * 0.7);
+    int yThree = RandomHelper::random_real(_visibleSize.height * 0.3, _visibleSize.height * 0.7);
+    
+    ParticleExplosion* explosion3 = ParticleExplosion::createWithTotalParticles(66);
+    explosion3->setTexture(Director::getInstance()->getTextureCache()->addImage(imageExplosion));
+    explosion3->setStartColor(Color4F::YELLOW);
+    explosion3->setEndColor(Color4F::YELLOW);
+    explosion3->setScale(0.75);
+    explosion3->setSpeed(5);
+    explosion3->setPosition(Vec2(xThree, yThree));
+    this->addChild(explosion3, BackgroundLayer::layerTouch);
+    
+    //SoundManager::Play(SoundManager::soundExplosion);    // play bomb sound
 }
 
 void GameOverLayer::saveStatsAndUnlockNextStage(bool isStageClear) {
