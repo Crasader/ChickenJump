@@ -51,7 +51,8 @@ typedef enum
 
 // CHICKEN
 #define SPEED_CHANGE_FREQUENCY          0.01
-#define MAX_SPEED_X                     10      // = starting speed times 10
+#define MAX_SPEED_X                     12      // = starting speed times 10
+#define MIN_SPEED_X                     1
 #define ACCELERATION_DEFAULT            1.3
 #define CUSTOM_ACCELERATION             0.05    // (Bigger = Faster)
 #define MAX_WEIGHT                      2.0

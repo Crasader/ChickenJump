@@ -22,9 +22,9 @@ void Chicken::addPhysicsBody() {
 void Chicken::applySpeedX(float speed) {
     if (_state == PlayerState::dying) { return; }
 
-    _vector.x += speed;
-    if (_vector.x <= 1) {
-        _vector.x = 1; // minimum speed
+    // Bound Max & Min Speed
+    if (_vector.x + speed >= MIN_SPEED_X and _vector.x + speed <= MAX_SPEED_X) {
+        _vector.x += speed;
     }
 }
 
