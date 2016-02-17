@@ -400,6 +400,7 @@ void GameLayer::handleCollectableConsumption(Sprite* collectable) {
         }
         case 8: {    // all_type_of_bombs
             if (_chicken->isInvisible()) { break; }
+            if (_chicken->getState() == PlayerState::newBorn) { break; } // shouldn't hit two bombs in microseconds
             
             _chicken->getChicken()->setVisible(false);
 

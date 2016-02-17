@@ -226,6 +226,7 @@ void Chicken::setState(PlayerState state) {
 
             auto stateFalling = CallFunc::create([this](){
                 _state = PlayerState::falling;
+                _vector = Vec2(1, 0); // set minimal speed after reborn
             });
             
             auto collideNoBomb = CallFunc::create([this]() {
