@@ -5,7 +5,7 @@
 #include <UIWidget.h>
 #include <UIButton.h>
 
-class Stage;
+#include "Stage.h"
 
 class GameOverLayer : public cocos2d::LayerColor
 {
@@ -13,7 +13,7 @@ public:
     virtual bool init();
     CREATE_FUNC(GameOverLayer);
 
-    void setup(Stage const& stage, unsigned int score, unsigned int timeTaken, bool isStageClear);
+    void setup(Stage const& stage, int score, int totalEggs, int collectedPizzas, int totalPizzas, unsigned int timeTaken, bool isStageClear);
 
 private:
     void addHighscoreLabel();
@@ -24,7 +24,7 @@ private:
     void addStars();
     void addTimerLogoAndLabel();
     
-    void prepare(unsigned int timeTaken, bool isNewHighscore);
+    void prepare(int score, int totalEggs, int collectedPizzas, int totalPizzas, unsigned int timeTaken, bool isNewHighscore);
     void saveStatsAndUnlockNextStage(bool isStageClear);
     void mainMenuClicked(cocos2d::Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType);
     void restartClicked(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType);
@@ -42,6 +42,8 @@ private:
     cocos2d::Sprite* _star2;
     cocos2d::Sprite* _star3;
     std::vector<cocos2d::Sprite*> _stars;
+    
+    Stage _stage;
     
     cocos2d::Vec2 _origin;
     cocos2d::Size _visibleSize;

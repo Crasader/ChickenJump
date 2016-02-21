@@ -10,8 +10,6 @@
 using namespace cocos2d;
 using namespace ui;
 
-static Stage _stage;
-
 static const std::string imageBtnMainMenu = "btn_menu.png";
 static const std::string imageBtnRestart = "btn_restart.png";
 static const std::string imageEmptyStar = "star_empty.png";
@@ -19,7 +17,7 @@ static const std::string imageExplosion = "explosion.png";
 static const std::string imageScoreBoard = "scoreboard.png";
 static const std::string imageTimer = "timer.png";
 
-void GameOverLayer::setup(Stage const& stage, unsigned int score, unsigned int timeTaken, bool isStageClear)
+void GameOverLayer::setup(Stage const& stage, int score, int totalEggs, int collectedPizzas, int totalPizzas, unsigned int timeTaken, bool isStageClear)
 {
     _stage = stage;
     
@@ -30,7 +28,7 @@ void GameOverLayer::setup(Stage const& stage, unsigned int score, unsigned int t
     // TODO::CALCULATE THE STAR //
     _stage.setStar(2);
     
-    prepare(timeTaken, isNewHighscore);
+    prepare(_stage.getScore(), totalEggs, collectedPizzas, totalPizzas, timeTaken, isNewHighscore);
     saveStatsAndUnlockNextStage(isStageClear);
 }
 
@@ -140,7 +138,7 @@ void GameOverLayer::addRestartButton() {
     this->addChild(_btnRestart, BackgroundLayer::layerChicken);
 }
 
-void GameOverLayer::prepare(unsigned int timeTaken, bool isNewHighscore) {
+void GameOverLayer::prepare(int score, int totalEggs, int collectedPizzas, int totalPizzas, unsigned int timeTaken, bool isNewHighscore) {
     // HIGHSCORE
     if (_highScoreLabel) {
         std::string highScoreStr = String::createWithFormat("HighScore: %d", _stage.getHighScore())->getCString();
@@ -148,8 +146,9 @@ void GameOverLayer::prepare(unsigned int timeTaken, bool isNewHighscore) {
     }
 
     // SCORE
+    // TODO: FIX SCORE STRING
     if (_scoreLabel) {
-        std::string scoreStr = String::createWithFormat("Score: %d", _stage.getScore())->getCString();
+        std::string scoreStr = String::createWithFormat("E: %d(%d) | P: %d(%d)", score, totalEggs, collectedPizzas, totalPizzas)->getCString();
         _scoreLabel->setString(scoreStr);
     }
     
@@ -295,7 +294,7 @@ void GameOverLayer::mainMenuClicked(Ref const* ref, cocos2d::ui::Widget::TouchEv
 void GameOverLayer::restartClicked(const Ref* ref, const cocos2d::ui::Widget::TouchEventType& eEventType) {
     if (eEventType != ui::Widget::TouchEventType::ENDED) { return; }
 
-    auto scene = GameLayer::createScene(GameLayer::getInstance()->getStage());
+    auto scene = GameLayer::createScene(_stage);
     if (not scene) {
         return;
     }
@@ -304,7 +303,7 @@ void GameOverLayer::restartClicked(const Ref* ref, const cocos2d::ui::Widget::To
     if (d->isPaused()) {
         d->resume();
     }
-    Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
+    d->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 
 }
 

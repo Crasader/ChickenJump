@@ -111,11 +111,14 @@ private:
     ScoreLayer* _scoreHUD;
     std::shared_ptr<Collectable> _collectable;
     std::shared_ptr<SpecialCollectable> _specialCollectable;
+    int _totalEggs;
+    int _totalPizzas;
 
     cocos2d::Sprite* _finger;
     cocos2d::Label* _loading;
     cocos2d::Menu* _pauseMenu;
-    unsigned int _score;
+    int _score;
+    int _collectedPizzas;
     
     float _stageLength;
     float _stageRemaining;

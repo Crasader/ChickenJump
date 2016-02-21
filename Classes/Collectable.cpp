@@ -62,32 +62,39 @@ void Collectable::initPatterns(int difficultyLevel) {
     }
 }
 
-void Collectable::spawn(cocos2d::Layer* layer, std::vector<Sprite*>& collectables) {
-    if (not layer) { return; }
+Spawned Collectable::spawn(cocos2d::Layer* layer, std::vector<Sprite*>& collectables) {
+    Spawned result = std::make_pair(0,0);
+    if (not layer) { return result; }
     
     Pattern const& pattern = _patterns.at(currentPatternIndex++ % _patterns.size());
     
     int degree = 0;
     float radius = 0.0;
     
+    // set spawned.type
+    result.first = pattern.first;
+    
     switch (pattern.second) {
         case 0:
-            return;
+            return result;
         case 1:    // 7 items
             degree = 30;
             radius = 0.15;
+            result.second = 7;
             break;
         case 2:    // 5 items
             degree = 45;
             radius = 0.075;
+            result.second = 5;
             break;
         case 3:    // 3 items
             degree = 90;
             radius = 0.05;
+            result.second = 3;
             break;
             
         default:
-            return;
+            return result;
     }
     int numberOfCollectable = 180 / degree + 1; // 180 = half 360. we need only half of the parabola
     
@@ -115,6 +122,8 @@ void Collectable::spawn(cocos2d::Layer* layer, std::vector<Sprite*>& collectable
         layer->addChild(collectable, BackgroundLayer::layerGround);
         collectables.push_back(collectable);
     }
+    
+    return result;
 }
 
 
