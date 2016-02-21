@@ -105,6 +105,11 @@ bool GameLayer::init()
     // this determines when to make a bomb/life fall.
     _distanceForNewSpecialObject = _visibleSize.width * 1.5;
     
+    _score = 0;
+    _collectedPizzas = 0;
+    _totalEggs = 0;
+    _totalPizzas = 0;
+    
     // add static background for the infinite stage
     if (_stage.getName() == StageStatus::infinite) {
         addBG();
@@ -353,7 +358,7 @@ void GameLayer::gameOver(bool hasStageFinished) {
     _state = GameState::terminate; // set gamestate as terminate to stop schedule update
     
     // Game over score and others
-    _gameOverHUD->setup(_stage, _score, _elapsedTime, hasStageFinished);
+    _gameOverHUD->setup(_stage, _score, _totalEggs, _collectedPizzas, _totalPizzas, _elapsedTime, hasStageFinished);
     _gameOverHUD->setVisible(true);
     _pauseMenu->setVisible(false);
 }
@@ -363,7 +368,7 @@ void GameLayer::handleCollectableConsumption(Sprite* collectable) {
     switch (collectable->getTag()) {
         case 2: {     // scrolling egg
             // Egg collection is the basic goal of the game.
-            _score ++;
+            ++_score;
             updateScoreLabel();
 
             // play collection sound
@@ -375,6 +380,7 @@ void GameLayer::handleCollectableConsumption(Sprite* collectable) {
         }
         case 4: {    // scrolling pizza
             _chicken->increaseSpriteSize();
+            ++_collectedPizzas;
 
             {// delay + decreaseSize + delay + decreaseSize + delay + decreaseSizeToNormal
                 auto callback = CallFunc::create([this]() {
@@ -587,7 +593,15 @@ void GameLayer::spawnCollectable() {
     if (_state != GameState::started) { return; }
 
     if (not _collectable) { return; }
-    _collectable->spawn(this, _collectables);
+    Spawned spawned = _collectable->spawn(this, _collectables);
+
+    // count number of eggs, and pizzas
+    if (spawned.first == 2) {
+        _totalEggs += spawned.second;
+    }
+    if (spawned.first == 4) {
+        _totalPizzas += spawned.second;
+    }
 }
 
 void GameLayer::spawnSpecialObject() {

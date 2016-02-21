@@ -3,12 +3,15 @@
 
 #include <cocos2d.h>
 
+// <collectable_type, count>
+typedef std::pair<int, int> Spawned;
+
 class Stage;
 
 class Collectable {
 public:
     Collectable(Stage const& st);
-    void spawn(cocos2d::Layer* layer, std::vector<cocos2d::Sprite*>& collectables);
+    Spawned spawn(cocos2d::Layer* layer, std::vector<cocos2d::Sprite*>& collectables);
     
 private:
     void initPatterns(int difficultyLevle);
