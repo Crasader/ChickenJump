@@ -64,8 +64,6 @@ bool HomeLayer::init()
         this->addChild(explosion, BackgroundLayer::layerTouch);
     }
     
-    loadMenuCache();
-    
     this->scheduleUpdate();
 
     return true;
@@ -132,16 +130,6 @@ void HomeLayer::initStage() {
         ud->setBoolForKey(FIRST_TIME, false);
         ud->flush();
     }
-}
-
-void HomeLayer::loadMenuCache() {
-    Director::getInstance()->getTextureCache()->addImage("FR_clicked.png");
-    Director::getInstance()->getTextureCache()->addImage("DE_clicked.png");
-    Director::getInstance()->getTextureCache()->addImage("UK_clicked.png");
-    Director::getInstance()->getTextureCache()->addImage("IT_clicked.png");
-    Director::getInstance()->getTextureCache()->addImage("SP_clicked.png");
-    Director::getInstance()->getTextureCache()->addImage("NL_clicked.png");
-    Director::getInstance()->getTextureCache()->addImage("INFINITE_clicked.png");
 }
 
 void HomeLayer::update(float dt) {

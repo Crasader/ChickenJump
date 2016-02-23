@@ -25,7 +25,6 @@ private:
     void addPlayMenu();
     void gotoMainMenuLayer(cocos2d::Ref const* sender);
     void initStage();
-    void loadMenuCache();
     
     Sprite* _logo;
     
