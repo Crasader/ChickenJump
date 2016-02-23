@@ -16,7 +16,8 @@ using namespace cocos2d;
 const std::string imageScore = "score.png";
 const std::string imagePause = "btn_pause.png";
 const std::string imageResume = "btn_resume.png";
-const std::string imageFinger = "finger.png";
+const std::string imageFinger_1 = "finger_1.png";
+const std::string imageFinger_2 = "finger_2.png";
 const std::string imageExplosion = "explosion.png";
 const std::string imageProgressBar = "progress.png";
 const std::string imageLoadingWheel = "loading.png";
@@ -290,17 +291,21 @@ void GameLayer::addTouchListners() {
 }
 
 void GameLayer::addTutorial() {
-    _finger = Sprite::create(imageFinger);
+    _finger = Sprite::create(imageFinger_1);
     if (not _finger) { return; }
 
     _finger->setAnchorPoint(Vec2(0, 0));
     _finger->setPosition(_visibleSize.width * 0.20, _visibleSize.height * 0.20);
     this->addChild(_finger, BackgroundLayer::layerChicken);
 
+    auto click = CallFunc::create( [this](){ _finger->setTexture(imageFinger_2); });
     MoveTo* draw = MoveTo::create(2, Point(_visibleSize.width * 0.5, _finger->getPositionY()));
-    MoveTo* reset = MoveTo::create(0, Point(_visibleSize.width * 0.20, _finger->getPositionY()));
+    auto reset = CallFunc::create( [this](){
+        _finger->setPosition(Vec2(_visibleSize.width * 0.20, _finger->getPositionY()));
+        _finger->setTexture(imageFinger_1);
+    });
     auto delay = DelayTime::create(0.25f);
-    auto seq = Sequence::create(draw, delay, reset, delay, NULL);
+    auto seq = Sequence::create(delay, click, delay, draw, delay, reset, NULL);
     auto tutorial = RepeatForever::create((ActionInterval*)seq);
     _finger->runAction(tutorial);
 }
