@@ -66,11 +66,6 @@ bool HomeLayer::init()
     
     loadMenuCache();
     
-//    {   // TODO::HACK::REMOVE ONCE INVISIBILITY CHECK DONE
-//        UserDefault::getInstance()->setIntegerForKey(DIFFICULTY, 6);
-//        UserDefault::getInstance()->flush();
-//    }
-    
     this->scheduleUpdate();
 
     return true;
