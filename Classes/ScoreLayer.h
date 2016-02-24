@@ -26,12 +26,12 @@ private:
     void addMagnetStopwatch();
     void addInvisibilityStopwatch();
     
-    std::string imageScore = "score.png";
-    std::string imageLife = "life.png";
     cocos2d::Sprite* _scoreIcon;
     cocos2d::Label* _scoreLabel;
     std::vector<cocos2d::Sprite*> _lifeSprites;
+    cocos2d::Sprite* _invisibilityIcon;
     cocos2d::ui::LoadingBar* _invisibilityStopwatch;
+    cocos2d::Sprite* _magnetIcon;
     cocos2d::ui::LoadingBar* _magnetStopwatch;
     
     cocos2d::Vec2 _origin;
