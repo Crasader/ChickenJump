@@ -8,7 +8,11 @@
 using namespace cocos2d;
 using namespace ui;
 
-static const std::string imageSandwatchMagnet = "sandwatch_magnet.png";
+static const std::string imageScore = "icon_score.png";
+static const std::string imageLife = "life.png";
+static const std::string imageSandwatchMagnet = "sandwatch.png";
+static const std::string imageIconMagnet = "icon_magnet.png";
+static const std::string imageIconInvisibility = "icon_invisibility.png";
 
 bool ScoreLayer::init()
 {
@@ -44,24 +48,40 @@ bool ScoreLayer::init()
 }
 
 void ScoreLayer::addMagnetStopwatch() {
+    // Icon
+    _magnetIcon = Sprite::create(imageIconMagnet);
+    if (not _magnetIcon) { return; }
+    _magnetIcon->setPosition(Vec2(this->getContentSize().width * 0.55, this->getContentSize().height * 0.5));
+    _magnetIcon->setVisible(false);
+    this->addChild(_magnetIcon, BackgroundLayer::layerTouch);
+
+    // Sandwatch
     _magnetStopwatch = cocos2d::ui::LoadingBar::create();
     if (not _magnetStopwatch) { return; }
     
     _magnetStopwatch->loadTexture(imageSandwatchMagnet);
     _magnetStopwatch->setColor(Color3B::ORANGE);
     _magnetStopwatch->setPercent(0);
-    _magnetStopwatch->setPosition(Vec2(this->getContentSize().width * 0.6, this->getContentSize().height * 0.5));
+    _magnetStopwatch->setPosition(Vec2(this->getContentSize().width * 0.625, this->getContentSize().height * 0.5));
     this->addChild(_magnetStopwatch, BackgroundLayer::layerTouch);
 }
 
 void ScoreLayer::addInvisibilityStopwatch() {
+    // Icon
+    _invisibilityIcon = Sprite::create(imageIconInvisibility);
+    if (not _invisibilityIcon) { return; }
+    _invisibilityIcon->setPosition(Vec2(this->getContentSize().width * 0.725, this->getContentSize().height * 0.5));
+    _invisibilityIcon->setVisible(false);
+    this->addChild(_invisibilityIcon, BackgroundLayer::layerTouch);
+    
+    // Sandwatch
     _invisibilityStopwatch = cocos2d::ui::LoadingBar::create();
     if (not _invisibilityStopwatch) { return; }
     
     _invisibilityStopwatch->loadTexture(imageSandwatchMagnet);
     _invisibilityStopwatch->setColor(Color3B::YELLOW);
     _invisibilityStopwatch->setPercent(0);
-    _invisibilityStopwatch->setPosition(Vec2(this->getContentSize().width * 0.75, this->getContentSize().height * 0.5));
+    _invisibilityStopwatch->setPosition(Vec2(this->getContentSize().width * 0.8, this->getContentSize().height * 0.5));
     this->addChild(_invisibilityStopwatch, BackgroundLayer::layerTouch);
 }
 
@@ -71,10 +91,12 @@ void ScoreLayer::startStopwatch(int type) {
         case 1:
             if (not _magnetStopwatch) { return; }
             _magnetStopwatch->setPercent(100);
+            if (_magnetIcon) { _magnetIcon->setVisible(true); }
             break;
         case 2:
             if (not _invisibilityStopwatch) { return; }
             _invisibilityStopwatch->setPercent(100);
+            if (_invisibilityIcon) { _invisibilityIcon->setVisible(true); }
             break;
         default:
             break;
@@ -86,12 +108,24 @@ void ScoreLayer::tick(int type) {
     // magnet_effect -= 5; means: 100/5 = 20 seconds
     switch (type) {
         case 1:
-            if (not _magnetStopwatch) { return; }
-            _magnetStopwatch->setPercent(_magnetStopwatch->getPercent() - 100/EFFECT_DURATION);
+            if (_magnetStopwatch) {
+                _magnetStopwatch->setPercent(_magnetStopwatch->getPercent() - 100/EFFECT_DURATION);
+            }
+            
+            if (_magnetStopwatch->getPercent() <= 0 and _magnetIcon) {
+                _magnetIcon->setVisible(false);
+            }
+            
             break;
         case 2:
-            if (not _invisibilityStopwatch) { return; }
-            _invisibilityStopwatch->setPercent(_invisibilityStopwatch->getPercent() - 100/EFFECT_DURATION);
+            if (_invisibilityStopwatch) {
+                _invisibilityStopwatch->setPercent(_invisibilityStopwatch->getPercent() - 100/EFFECT_DURATION);
+            }
+            
+            if (_invisibilityStopwatch->getPercent() <= 0 and _invisibilityIcon) {
+                _invisibilityIcon->setVisible(false);
+            }
+            
             break;
         default:
             break;
