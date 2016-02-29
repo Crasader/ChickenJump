@@ -17,16 +17,45 @@ static const std::string imageExplosion = "explosion.png";
 static const std::string imageScoreBoard = "scoreboard.png";
 static const std::string imageTimer = "timer.png";
 
-void GameOverLayer::setup(Stage const& stage, int score, int totalEggs, int collectedPizzas, int totalPizzas, unsigned int timeTaken, bool isStageClear)
+void GameOverLayer::setup(Stage const& stage, int score, int totalEggs, int collectedPizzas, int totalPizzas, unsigned int timeTaken, float stageCompletionPercentage)
 {
     _stage = stage;
+    bool isStageClear = stageCompletionPercentage >= 100;
     
     // TODO::CALCULATE THE SCORE //
-    bool isNewHighscore = score > stage.getHighScore() ? true : false;
+    float eggPercent = 0;
+    if (score) {
+        eggPercent = (score * 100) / totalEggs;
+    }
+    
+    int timeSaved = 0;
+    if (MAX_TIME_LIMIT - timeTaken > 0) {
+        timeSaved = MAX_TIME_LIMIT - timeTaken;
+        
+        // consider stage completion percentage
+        timeSaved *= (stageCompletionPercentage / 100);
+    }
+    
+    // count score out of 200 (egg:100, time:100)
+    score = eggPercent * EGG_MULTIPLICATOR + timeSaved * TIME_MULTIPLICATOR;
+    
+    bool isNewHighscore = score > stage.getHighScore() and isStageClear ? true : false;
     _stage.setScore(score);
     
     // TODO::CALCULATE THE STAR //
-    _stage.setStar(2);
+    int star = 0;
+    if (timeSaved and isStageClear) {
+        if (score >= 200) {
+            star = 3;
+        }
+        else if (score >= 180) {
+            star = 2;
+        }
+        else if (score >= 160) {
+            star = 1;
+        }
+    }
+    _stage.setStar(star);
     
     prepare(_stage.getScore(), totalEggs, collectedPizzas, totalPizzas, timeTaken, isNewHighscore);
     saveStatsAndUnlockNextStage(isStageClear);
@@ -208,10 +237,10 @@ void GameOverLayer::newHighscoreCelebration() {
     banner->setPosition(Vec2(_visibleSize.width * 0.5, _visibleSize.height + banner->getContentSize().height));
     this->addChild(banner, BackgroundLayer::layerChicken);
     
-    auto moveIn = MoveTo::create(1, Vec2(_visibleSize.width * 0.5, _visibleSize.height * 0.8));
-    auto moveOut = MoveTo::create(1, Vec2(_visibleSize.width + banner->getContentSize().width, _visibleSize.height * 0.8));
+    auto moveIn = MoveTo::create(1, Vec2(_visibleSize.width * 0.5, _visibleSize.height * 0.6));
+    auto moveOut = MoveTo::create(1, Vec2(_visibleSize.width * 0.5, _visibleSize.height + banner->getContentSize().height));
 
-    auto seq = Sequence::create(moveIn, DelayTime::create(2), moveOut, NULL);
+    auto seq = Sequence::create(moveIn, DelayTime::create(3), moveOut, NULL);
     banner->runAction(seq);
 }
 

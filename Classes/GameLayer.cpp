@@ -21,6 +21,11 @@ const std::string imageFinger_2 = "finger_2.png";
 const std::string imageExplosion = "explosion.png";
 const std::string imageProgressBar = "progress.png";
 const std::string imageLoadingWheel = "loading.png";
+const std::string imageUnlockedItem_pizza = "unlockeditem_pizza.png";
+const std::string imageUnlockedItem_staticBomb = "unlockeditem_staticbomb.png";
+const std::string imageUnlockedItem_floatingBomb = "unlockeditem_floatingbomb.png";
+const std::string imageUnlockedItem_magnetEffect = "unlockeditem_magneteffect.png";
+const std::string imageUnlockedItem_invisibility = "unlockeditem_invisibility.png";
 
 const std::string magnetized = "magnetized";
 
@@ -140,6 +145,8 @@ bool GameLayer::init()
     
     // Add tutorial once resource loading is complete
     
+    // Show unlocked item
+    
     
     // Loading
     addLoadingWheel();
@@ -189,6 +196,8 @@ void GameLayer::onEnterTransitionDidFinish() {
         
         // add tutorial
         addTutorial();
+        
+        showUnlockedItem(getStage());
     }
 }
 
@@ -359,11 +368,11 @@ void GameLayer::focusOnCharacter() {
     }
 }
 
-void GameLayer::gameOver(bool hasStageFinished) {
+void GameLayer::gameOver(int stageCompletionPercentage) {
     _state = GameState::terminate; // set gamestate as terminate to stop schedule update
     
     // Game over score and others
-    _gameOverHUD->setup(_stage, _score, _totalEggs, _collectedPizzas, _totalPizzas, _elapsedTime, hasStageFinished);
+    _gameOverHUD->setup(_stage, _score, _totalEggs, _collectedPizzas, _totalPizzas, _elapsedTime, stageCompletionPercentage);
     _gameOverHUD->setVisible(true);
     _pauseMenu->setVisible(false);
 }
@@ -594,6 +603,37 @@ void GameLayer::releaseTouch() {
     _lineStartPoint = _lineEndPoint;
 }
 
+void GameLayer::showUnlockedItem(Stage const& stage) {
+    if (stage.isPlayed()) return;
+    
+    if (stage.getName() == StageStatus::england) {
+        _unlockedItem = nullptr;
+    }
+    if (stage.getName() == StageStatus::italy) {
+        _unlockedItem = Sprite::create(imageUnlockedItem_pizza);
+    }
+    if (stage.getName() == StageStatus::france) {
+        _unlockedItem = Sprite::create(imageUnlockedItem_staticBomb);
+    }
+    if (stage.getName() == StageStatus::germany) {
+        _unlockedItem = Sprite::create(imageUnlockedItem_floatingBomb);
+    }
+    if (stage.getName() == StageStatus::spain) {
+        _unlockedItem = Sprite::create(imageUnlockedItem_magnetEffect);
+    }
+    if (stage.getName() == StageStatus::netherlands) {
+        _unlockedItem = Sprite::create(imageUnlockedItem_invisibility);
+    }
+    if (stage.getName() == StageStatus::infinite) {
+        _unlockedItem = nullptr;
+    }
+
+    if (not _unlockedItem) { return; }
+    
+    _unlockedItem->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.6);
+    this->addChild(_unlockedItem, BackgroundLayer::layerChicken);
+}
+
 void GameLayer::spawnCollectable() {
     if (_state != GameState::started) { return; }
 
@@ -653,8 +693,16 @@ bool GameLayer::onTouchBegan(Touch const* touch, Event const* event) {
     // disable the tutorial
     if (_state == GameState::init) {
         _state = GameState::started;
-        _finger->stopAllActions();
-        this->removeChild(_finger);
+        
+        if (_finger) {
+            _finger->stopAllActions();
+            this->removeChild(_finger);
+        }
+        
+        // remove unlocked item
+        if (_unlockedItem) {
+            this->removeChild(_unlockedItem);
+        }
 
         _pauseMenu->setVisible(true);
         
@@ -758,14 +806,15 @@ void GameLayer::update(float dt) {
     if (_state == GameState::init or _state == GameState::paused or _state == GameState::terminate) { return; }
     if (not _chicken) { return; }
 
+    // TODO: refactor following two ifs. both calls gameOver() with same param
     if (_state == GameState::finished and _chicken->getPosition().x >= _visibleSize.width) {
         // goto game over scene with state: stage cleared
-        gameOver(true);
+        gameOver(_progressBar->getPercent());
     }
 
     if (_chicken->getState() == PlayerState::dying) {
         // goto game over scene with state: stage not cleared
-        gameOver(false);
+        gameOver(_progressBar->getPercent());
     }
     else {
         // chicken is alive and game state is ongoing

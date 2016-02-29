@@ -21,11 +21,26 @@ typedef enum
 
 } BackgroundLayer;
 
+// Score factors
+#define MAX_TIME_LIMIT                  90   // seconds
+#define MAX_SAVABLE_TIME                33   // seconds
+#define TIME_CENT_PERCENT               60   // seconds
+#define PRIORITY_EGGS                   0.6  // 60%
+#define PRIORITY_TIME                   0.4  // 40%
+#define PRIORITY_PIZZA                  0.25 // 25%
+
+#define MAX_SAVABLE_TIME                33   // seconds
+#define MAX_COLLECTABLE_EGGS            62   // percent
+#define EGG_MULTIPLICATOR               2    // times
+#define TIME_MULTIPLICATOR              1    // times
+
+
+
 // Number of lives
 #define CHICKEN_LIVES_MAX               3
 #define CHICKEN_LIVES                   3
 
-#define STAGE_LENGTH                    20
+#define STAGE_LENGTH                    35
 
 // UserDefault Strings
 #define FIRST_TIME                      "FIRST_TIME"

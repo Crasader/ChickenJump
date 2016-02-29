@@ -13,7 +13,7 @@ public:
     virtual bool init();
     CREATE_FUNC(GameOverLayer);
 
-    void setup(Stage const& stage, int score, int totalEggs, int collectedPizzas, int totalPizzas, unsigned int timeTaken, bool isStageClear);
+    void setup(Stage const& stage, int score, int totalEggs, int collectedPizzas, int totalPizzas, unsigned int timeTaken, float stageCompletionPercentage);
 
 private:
     void addHighscoreLabel();
