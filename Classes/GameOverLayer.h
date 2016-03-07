@@ -13,7 +13,7 @@ public:
     virtual bool init();
     CREATE_FUNC(GameOverLayer);
 
-    void setup(Stage const& stage, int const score, int const totalEggs, int const collectedPizzas, int const totalPizzas, unsigned int const timeTaken, float const stageCompletionPercentage);
+    void setup(Stage const& stage, int const score, int const totalEggs, int const collectedPizzas, int const totalPizzas, int const timeTaken, float const stageCompletionPercentage);
 
 private:
     void addHighscoreLabel();
@@ -23,13 +23,14 @@ private:
     void addScoreLabel();
     void addStars();
     void addTimerLogoAndLabel();
+    void addFirework();
+    void celebrateHighscore();
+    void showHighscoreBanner();
     
-    void prepare(int score, int totalEggs, int collectedPizzas, int totalPizzas, unsigned int timeTaken, bool isNewHighscore);
+    void prepare(int score, int totalEggs, int collectedPizzas, int totalPizzas, unsigned int timeTaken, bool isNewHighscore, bool isStageClear);
     void saveStatsAndUnlockNextStage(bool isStageClear);
     void mainMenuClicked(cocos2d::Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType);
     void restartClicked(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType);
-    void newHighscoreCelebration();
-    void addFirework();
     int  getStageTimeLimit(std::string const& stageName);
     int  calculateStar(std::string const& stageName, int score);
     

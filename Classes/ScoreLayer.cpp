@@ -79,7 +79,7 @@ void ScoreLayer::addInvisibilityStopwatch() {
     if (not _invisibilityStopwatch) { return; }
     
     _invisibilityStopwatch->loadTexture(imageSandwatchMagnet);
-    _invisibilityStopwatch->setColor(Color3B::YELLOW);
+    _invisibilityStopwatch->setColor(Color3B::ORANGE);
     _invisibilityStopwatch->setPercent(0);
     _invisibilityStopwatch->setPosition(Vec2(this->getContentSize().width * 0.8, this->getContentSize().height * 0.5));
     this->addChild(_invisibilityStopwatch, BackgroundLayer::layerTouch);

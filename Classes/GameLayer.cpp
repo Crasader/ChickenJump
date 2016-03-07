@@ -805,12 +805,12 @@ void GameLayer::update(float dt) {
     // TODO: refactor following two ifs. both calls gameOver() with same param
     if (_state == GameState::finished and _chicken->getPosition().x >= _visibleSize.width) {
         // goto game over scene with state: stage cleared
-        gameOver(_progressBar->getPercent());
+        gameOver(_progressBar ? _progressBar->getPercent() : 0);
     }
 
     if (_chicken->getState() == PlayerState::dying) {
         // goto game over scene with state: stage not cleared
-        gameOver(_progressBar->getPercent());
+        gameOver(_progressBar ? _progressBar->getPercent() : 0);
     }
     else {
         // chicken is alive and game state is ongoing

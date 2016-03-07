@@ -17,11 +17,11 @@ static const std::string imageExplosion = "explosion.png";
 static const std::string imageScoreBoard = "scoreboard.png";
 static const std::string imageTimer = "timer.png";
 
-void GameOverLayer::setup(Stage const& stage, int const collectedEggs, int const totalEggs, int const collectedPizzas, int const totalPizzas, unsigned int const timeTaken, float const stageCompletionPercentage)
+void GameOverLayer::setup(Stage const& stage, int const collectedEggs, int const totalEggs, int const collectedPizzas, int const totalPizzas, int const timeTaken, float const stageCompletionPercentage)
 {
     int score = 0;
     _stage = stage;
-    bool isStageClear = stageCompletionPercentage >= 100;
+    bool isStageClear = (stage.getName() != StageStatus::infinite) ? stageCompletionPercentage >= 100 : true;
     
     // EGG Percentage
     float eggPercent = 0;
@@ -51,7 +51,7 @@ void GameOverLayer::setup(Stage const& stage, int const collectedEggs, int const
     // Calculate the STAR //
     _stage.setStar(calculateStar(stage.getName(), score));
     
-    prepare(score, totalEggs, collectedPizzas, totalPizzas, timeTaken, isNewHighscore);
+    prepare(score, totalEggs, collectedPizzas, totalPizzas, timeTaken, isNewHighscore, isStageClear);
     saveStatsAndUnlockNextStage(isStageClear);
 }
 
@@ -229,7 +229,12 @@ int GameOverLayer::calculateStar(std::string const& stageName, int score) {
     return 0;
 }
 
-void GameOverLayer::prepare(int score, int totalEggs, int collectedPizzas, int totalPizzas, unsigned int timeTaken, bool isNewHighscore) {
+void GameOverLayer::celebrateHighscore() {
+    showHighscoreBanner();
+    addFirework();
+}
+
+void GameOverLayer::prepare(int score, int totalEggs, int collectedPizzas, int totalPizzas, unsigned int timeTaken, bool isNewHighscore, bool isStageClear) {
     // HIGHSCORE
     if (_highScoreLabel) {
         std::string highScoreStr = String::createWithFormat("HighScore: %d", _stage.getHighScore())->getCString();
@@ -252,7 +257,7 @@ void GameOverLayer::prepare(int score, int totalEggs, int collectedPizzas, int t
     }
     
     // STAR
-    if (_stage.getName() != StageStatus::infinite) {
+    if (_stage.getName() != StageStatus::infinite and isStageClear) {
         Vector<FiniteTimeAction*> actions;
         for (int i = 0; i < _stage.getStar() and i < _stars.size(); ++i) {
             actions.pushBack(DelayTime::create(1.0));
@@ -276,23 +281,22 @@ void GameOverLayer::prepare(int score, int totalEggs, int collectedPizzas, int t
         }
         
         // Replacement for Stars
-        Sprite* chicken = Sprite::create("playerfly_1_red.png");
-        chicken->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.8);
-        
-        auto scaleBy = ScaleBy::create(0.0, 2.0);
-        chicken->runAction(scaleBy);
+        Sprite* banner = Sprite::create((_stage.getName() == StageStatus::infinite) ? "banner_chicken.png" : "banner_you_lose.png");
+        banner->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.8);
+        this->addChild(banner, BackgroundLayer::layerChicken);
 
-        this->addChild(chicken, BackgroundLayer::layerChicken);
+        if (_stage.getName() != StageStatus::infinite) {
+            return; // no need to check highscore anymore
+        }
     }
     
     // NEW_HIGHSCORE
     if (isNewHighscore) {
-        newHighscoreCelebration();
-        addFirework();
+        celebrateHighscore();
     }
 }
 
-void GameOverLayer::newHighscoreCelebration() {
+void GameOverLayer::showHighscoreBanner() {
     Sprite* banner = Sprite::create("banner_highscore.png");
     if (not banner) { return; }
     
