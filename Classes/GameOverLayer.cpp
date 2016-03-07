@@ -17,47 +17,41 @@ static const std::string imageExplosion = "explosion.png";
 static const std::string imageScoreBoard = "scoreboard.png";
 static const std::string imageTimer = "timer.png";
 
-void GameOverLayer::setup(Stage const& stage, int score, int totalEggs, int collectedPizzas, int totalPizzas, unsigned int timeTaken, float stageCompletionPercentage)
+void GameOverLayer::setup(Stage const& stage, int const collectedEggs, int const totalEggs, int const collectedPizzas, int const totalPizzas, unsigned int const timeTaken, float const stageCompletionPercentage)
 {
+    int score = 0;
     _stage = stage;
     bool isStageClear = stageCompletionPercentage >= 100;
     
-    // TODO::CALCULATE THE SCORE //
+    // EGG Percentage
     float eggPercent = 0;
-    if (score) {
-        eggPercent = (score * 100) / totalEggs;
+    if (collectedEggs) {
+        eggPercent = (collectedEggs * 100) / totalEggs;
     }
     
+    // Calculate time bonus
     int timeSaved = 0;
-    if (MAX_TIME_LIMIT - timeTaken > 0) {
-        timeSaved = MAX_TIME_LIMIT - timeTaken;
+    int stageTimeLimit = getStageTimeLimit(stage.getName());
+    
+    if (isStageClear and stageTimeLimit - timeTaken > 0) {
         
-        // consider stage completion percentage
-        timeSaved *= (stageCompletionPercentage / 100);
+        // calculate time bonus only if the stage is cleared
+        timeSaved = stageTimeLimit - timeTaken;
+        if (timeSaved > MAX_TIME_BONUS) {
+            timeSaved = MAX_TIME_BONUS; // 15 is the max time bonus
+        }
     }
     
-    // count score out of 200 (egg:100, time:100)
-    score = eggPercent * EGG_MULTIPLICATOR + timeSaved * TIME_MULTIPLICATOR;
+    // SCORE
+    score = eggPercent + timeSaved;
     
     bool isNewHighscore = score > stage.getHighScore() and isStageClear ? true : false;
     _stage.setScore(score);
     
-    // TODO::CALCULATE THE STAR //
-    int star = 0;
-    if (timeSaved and isStageClear) {
-        if (score >= 200) {
-            star = 3;
-        }
-        else if (score >= 180) {
-            star = 2;
-        }
-        else if (score >= 160) {
-            star = 1;
-        }
-    }
-    _stage.setStar(star);
+    // Calculate the STAR //
+    _stage.setStar(calculateStar(stage.getName(), score));
     
-    prepare(_stage.getScore(), totalEggs, collectedPizzas, totalPizzas, timeTaken, isNewHighscore);
+    prepare(score, totalEggs, collectedPizzas, totalPizzas, timeTaken, isNewHighscore);
     saveStatsAndUnlockNextStage(isStageClear);
 }
 
@@ -167,6 +161,74 @@ void GameOverLayer::addRestartButton() {
     this->addChild(_btnRestart, BackgroundLayer::layerChicken);
 }
 
+int GameOverLayer::getStageTimeLimit(std::string const& stageName) {
+    if (stageName == StageStatus::england) {
+        return 95; // 1:35
+    }
+    if (stageName == StageStatus::italy) {
+        return 75; // 1:15
+    }
+    if (stageName == StageStatus::france) {
+        return 100; // 1:40
+    }
+    if (stageName == StageStatus::germany) {
+        return 95; // 1:35
+    }
+    if (stageName == StageStatus::spain) {
+        return 90; // 1:30
+    }
+    if (stageName == StageStatus::netherlands) {
+        return 95; // 1:35
+    }
+    return 0;
+}
+
+int GameOverLayer::calculateStar(std::string const& stageName, int score) {
+    int max(0), mid(0), min(0);
+    
+    if (stageName == StageStatus::england) {
+        max = 75;
+        mid = 65;
+        min = 60;
+    }
+    if (stageName == StageStatus::italy) {
+        max = 80;
+        mid = 70;
+        min = 60;
+    }
+    if (stageName == StageStatus::france) {
+        max = 75;
+        mid = 62;
+        min = 50;
+    }
+    if (stageName == StageStatus::germany) {
+        max = 65;
+        mid = 55;
+        min = 45;
+    }
+    if (stageName == StageStatus::spain) {
+        max = 90;
+        mid = 80;
+        min = 70;
+    }
+    if (stageName == StageStatus::netherlands) {
+        max = 80;
+        mid = 70;
+        min = 60;
+    }
+    
+    if (score >= max) {
+        return 3;
+    }
+    if (score >= mid) {
+        return 2;
+    }
+    if (score >= min) {
+        return 1;
+    }
+    return 0;
+}
+
 void GameOverLayer::prepare(int score, int totalEggs, int collectedPizzas, int totalPizzas, unsigned int timeTaken, bool isNewHighscore) {
     // HIGHSCORE
     if (_highScoreLabel) {
@@ -177,7 +239,7 @@ void GameOverLayer::prepare(int score, int totalEggs, int collectedPizzas, int t
     // SCORE
     // TODO: FIX SCORE STRING
     if (_scoreLabel) {
-        std::string scoreStr = String::createWithFormat("E: %d(%d) | P: %d(%d)", score, totalEggs, collectedPizzas, totalPizzas)->getCString();
+        std::string scoreStr = String::createWithFormat("Score: [%d](%d)", score, totalEggs)->getCString();
         _scoreLabel->setString(scoreStr);
     }
     
@@ -185,7 +247,7 @@ void GameOverLayer::prepare(int score, int totalEggs, int collectedPizzas, int t
     if (_timeLabel) {
         time_t seconds(timeTaken);
         struct tm* time = gmtime(&seconds);
-        std::string timeStr = String::createWithFormat("%d:%d s", time->tm_min, time->tm_sec)->getCString();
+        std::string timeStr = String::createWithFormat("%d:%02d s", time->tm_min, time->tm_sec)->getCString();
         _timeLabel->setString(timeStr);
     }
     

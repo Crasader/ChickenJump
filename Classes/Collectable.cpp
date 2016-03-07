@@ -39,16 +39,16 @@ void Collectable::initPatterns(int difficultyLevel) {
         case 1:    // eggs(100%), pizza(0), bomb(0)
             populatePatterns(difficultyLevel, totalNumberOfPatterns * 1.0, 0, 0);
             break;
-        case 2:    // eggs(60%), pizza(40%), bomb(0)
-            populatePatterns(difficultyLevel, totalNumberOfPatterns * 0.6, totalNumberOfPatterns * 0.4, 0);
+        case 2:    // eggs(75%), pizza(35%), bomb(0)
+            populatePatterns(difficultyLevel, totalNumberOfPatterns * 0.75, totalNumberOfPatterns * 0.35, 0);
             break;
-        case 3:    // eggs(50%), pizza(30%), bomb(20%)
+        case 3:    // eggs(55%), pizza(30%), bomb(15%)
+            populatePatterns(difficultyLevel, totalNumberOfPatterns * 0.55, totalNumberOfPatterns * 0.3, totalNumberOfPatterns * 0.15);
+            break;
+        case 4:    // eggs(50%), pizza(30%), bomb(20%)
             populatePatterns(difficultyLevel, totalNumberOfPatterns * 0.5, totalNumberOfPatterns * 0.3, totalNumberOfPatterns * 0.2);
             break;
-        case 4:    // eggs(45%), pizza(30%), bomb(25%)
-            populatePatterns(difficultyLevel, totalNumberOfPatterns * 0.45, totalNumberOfPatterns * 0.3, totalNumberOfPatterns * 0.25);
-            break;
-        case 5:    // eggs(40%), pizza(30%), bomb(30%)
+        case 5:    // eggs(40%), pizza(30%), bomb(30%) // magnet effect introduced
             populatePatterns(difficultyLevel, totalNumberOfPatterns * 0.4, totalNumberOfPatterns * 0.3, totalNumberOfPatterns * 0.3);
             break;
         case 6:    // eggs(35%), pizza(35%), bomb(30%) // invisibility introduced

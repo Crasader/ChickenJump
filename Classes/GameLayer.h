@@ -40,6 +40,7 @@ public:
 
     static GameLayer* getInstance();
     Stage getStage();
+    std::shared_ptr<Chicken> getChicken() { return _chicken; }
     void pauseGame(cocos2d::Ref const* sender);
     void resumeClicked(cocos2d::Ref const* sender);
     void resumeGame(cocos2d::Ref const* sender);

@@ -114,6 +114,9 @@ void ScoreLayer::tick(int type) {
             
             if (_magnetStopwatch->getPercent() <= 0 and _magnetIcon) {
                 _magnetIcon->setVisible(false);
+                
+                // reset magnet effect
+                GameLayer::getInstance()->getChicken()->setMagnetEffect(false);
             }
             
             break;
@@ -124,6 +127,9 @@ void ScoreLayer::tick(int type) {
             
             if (_invisibilityStopwatch->getPercent() <= 0 and _invisibilityIcon) {
                 _invisibilityIcon->setVisible(false);
+                
+                // make our chicken visible
+                GameLayer::getInstance()->getChicken()->makeVisible();
             }
             
             break;

@@ -105,7 +105,11 @@ bool GameLayer::init()
     _state = GameState::init;
     Trampoline::isDrawingOngoing = false;   // new trampoline drawing can begin
 
-    _stageLength = _stageRemaining = _visibleSize.width * STAGE_LENGTH;  // _visibleSize.width: 480.000
+    _stageLength = _stageRemaining = _visibleSize.width * STAGE_LENGTH;
+    if (getStage().getName() == StageStatus::netherlands) {
+        // since NL has invisibility, the length should be longer
+        _stageLength = _stageRemaining = _visibleSize.width * STAGE_LENGTH * 1.5;
+    }
     _distanceForNewCollectables = _visibleSize.width * 0.5; // moving ahead first collectable spwaning
 
     // this determines when to make a bomb/life fall.
@@ -456,11 +460,7 @@ void GameLayer::handleCollectableConsumption(Sprite* collectable) {
             SoundManager::Play(SoundManager::soundLifeup);
             _scoreHUD->startStopwatch(2);
             
-            this->stopActionByTag(2); // reset
-            auto makeVisible = CallFunc::create([this](){ _chicken->makeVisible(); });
-            auto seq = Sequence::create(DelayTime::create(EFFECT_DURATION + 1), makeVisible, NULL);
-            seq->setTag(2); // invisibility tag: 2
-            this->runAction(seq);
+            // ScoreLayer makes our chicken back to normal once the sandwatch is over
             
             break;
         }
@@ -473,11 +473,7 @@ void GameLayer::handleCollectableConsumption(Sprite* collectable) {
             SoundManager::Play(SoundManager::soundLifeup);
             _scoreHUD->startStopwatch(1);
             
-            this->stopActionByTag(1); // reset
-            auto disableEffect = CallFunc::create([this](){ _chicken->setMagnetEffect(false); });
-            auto seq = Sequence::create(DelayTime::create(EFFECT_DURATION + 1), disableEffect, NULL);
-            seq->setTag(1); // magnet_effect tag: 1
-            this->runAction(seq);
+            // ScoreLayer resets magnet effect once the sandwatch is over
             
             break;
         }
