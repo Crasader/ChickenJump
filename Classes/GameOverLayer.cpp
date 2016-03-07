@@ -43,7 +43,7 @@ void GameOverLayer::setup(Stage const& stage, int const collectedEggs, int const
     }
     
     // SCORE
-    score = eggPercent + timeSaved;
+    score = (stage.getName() == StageStatus::infinite) ? collectedEggs : eggPercent + timeSaved;
     
     bool isNewHighscore = score > stage.getHighScore() and isStageClear ? true : false;
     _stage.setScore(score);
