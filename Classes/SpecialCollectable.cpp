@@ -61,8 +61,8 @@ void SpecialCollectable::initPatterns(int difficultyLevel) {
         case 6:   // life(40%) + floating bomb(30%) + invisibility(20%) + magnet effect(0)
             populatePatterns(difficultyLevel, totalNumberOfCollectables * 0.4, totalNumberOfCollectables * 0.3, totalNumberOfCollectables * 0.2, 0, totalNumberOfCollectables * 0.1);
             break;
-        case 7:    // Infinite Stage (life + floating bomb + invisibility + magnet effect (25% each))
-            populatePatterns(difficultyLevel, totalNumberOfCollectables * 0.25, totalNumberOfCollectables * 0.25, totalNumberOfCollectables * 0.2, totalNumberOfCollectables * 0.2, totalNumberOfCollectables * 0.1);
+        case 7:    // Infinite Stage (life + floating bomb + invisibility + magnet effect (20% each))
+            populatePatterns(difficultyLevel, totalNumberOfCollectables * 0.25, totalNumberOfCollectables * 0.15, totalNumberOfCollectables * 0.2, totalNumberOfCollectables * 0.2, totalNumberOfCollectables * 0.2);
             break;
         default:
             break;
