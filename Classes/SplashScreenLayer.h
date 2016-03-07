@@ -14,6 +14,7 @@ public:
     
 private:
     void gotoHomeLayer(float dt);
+    void loadResources();
 };
 
 #endif // __SPLASHSCREEN_LAYER_H__
