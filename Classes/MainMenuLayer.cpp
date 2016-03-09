@@ -190,10 +190,9 @@ void MainMenuLayer::addStages() {
 }
 
 
-static Size smallResource  = Size(640, 480); // "small"
+static Size smallResource  = Size(512, 384); // "small"
 static Size mediumResource = Size(1024, 768); // "mid"
 static Size largeResource  = Size(2048, 1536); // "big"
-static Size designResolution = Size(480, 320);
 
 void MainMenuLayer::menuSelectSgate(cocos2d::Ref const* sender, Stage const& stage) {
     selectLevel(stage.getName());
