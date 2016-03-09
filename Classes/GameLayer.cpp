@@ -20,7 +20,6 @@ const std::string imageFinger_1 = "finger_1.png";
 const std::string imageFinger_2 = "finger_2.png";
 const std::string imageExplosion = "explosion.png";
 const std::string imageProgressBar = "progress.png";
-const std::string imageLoadingWheel = "loading.png";
 const std::string imageUnlockedItem_pizza = "unlockeditem_pizza.png";
 const std::string imageUnlockedItem_staticBomb = "unlockeditem_staticbomb.png";
 const std::string imageUnlockedItem_floatingBomb = "unlockeditem_floatingbomb.png";
