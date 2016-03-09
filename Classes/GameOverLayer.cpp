@@ -49,10 +49,22 @@ void GameOverLayer::setup(Stage const& stage, int const collectedEggs, int const
     _stage.setScore(score);
     
     // Calculate the STAR //
-    _stage.setStar(calculateStar(stage.getName(), score));
+    int star = calculateStar(stage.getName(), score);
+    _stage.setStar(star);
     
     prepare(score, totalEggs, collectedPizzas, totalPizzas, timeTaken, isNewHighscore, isStageClear);
-    saveStatsAndUnlockNextStage(isStageClear);
+    
+    // Save and Unlock next stage
+    try {
+        StageStatus::saveStage(_stage);
+        if (star) {
+            StageStatus::unlockNextStage(_stage);
+        }
+    }
+    catch(...) {
+        CCLOG("Coulnd't store stage info from GameOver");
+    }
+
 }
 
 bool GameOverLayer::init()
@@ -349,28 +361,6 @@ void GameOverLayer::addFirework() {
     this->addChild(explosion3, BackgroundLayer::layerTouch);
     
     //SoundManager::Play(SoundManager::soundExplosion);    // play bomb sound
-}
-
-void GameOverLayer::saveStatsAndUnlockNextStage(bool isStageClear) {
-    try {
-        Stage ss(_stage.getName(),
-                 _stage.getImageFile(),
-                 _stage.getClickedImageFile(),
-                 _stage.getLockedImageFile(),
-                 _stage.getDifficulty(),
-                 _stage.getScore(),
-                 _stage.getHighScore(),
-                 _stage.getStar(),
-                 _stage.isUnlocked(),
-                 _stage.isPlayed());
-        
-        StageStatus::saveStage(ss);
-
-        if (isStageClear) { StageStatus::unlockNextStage(ss); }
-    }
-    catch(...) {
-        CCLOG("Coulnd't store stage info from GameOver");
-    }
 }
 
 void GameOverLayer::mainMenuClicked(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType) {
