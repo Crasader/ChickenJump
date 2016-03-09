@@ -21,11 +21,14 @@ typedef enum
 
 } BackgroundLayer;
 
+// Score factors
+#define MAX_TIME_BONUS                  15   // points
+
 // Number of lives
 #define CHICKEN_LIVES_MAX               3
 #define CHICKEN_LIVES                   3
 
-#define STAGE_LENGTH                    20
+#define STAGE_LENGTH                    35
 
 // UserDefault Strings
 #define FIRST_TIME                      "FIRST_TIME"
@@ -73,6 +76,7 @@ typedef enum
 #define FLYING_Y_DECREASE_RATE          0.00015  // 0.0001 // ScreenHeight x .0001 | .0003 = 0.027 | .081 (Bigger = More)
 
 // COLLISION BITMASKS // 1:chicken; 2:egg 4:pizza 8:bomb(static & floating) 16:life 32:invisibility 64:trampoline 128:magnet effect
+#define CATEGORY_BITMASK_NOTHING        0x0000   // (0)   0000 0000
 #define CATEGORY_BITMASK_CHICKEN        0x0001   // (1)   0000 0001
 #define CATEGORY_BITMASK_COLLECT_EGG    0x0002   // (2)   0000 0010
 #define CATEGORY_BITMASK_COLLECT_PIZZA  0x0004   // (4)   0000 0100

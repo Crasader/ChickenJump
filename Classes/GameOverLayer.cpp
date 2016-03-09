@@ -17,19 +17,54 @@ static const std::string imageExplosion = "explosion.png";
 static const std::string imageScoreBoard = "scoreboard.png";
 static const std::string imageTimer = "timer.png";
 
-void GameOverLayer::setup(Stage const& stage, int score, int totalEggs, int collectedPizzas, int totalPizzas, unsigned int timeTaken, bool isStageClear)
+void GameOverLayer::setup(Stage const& stage, int const collectedEggs, int const totalEggs, int const collectedPizzas, int const totalPizzas, int const timeTaken, float const stageCompletionPercentage)
 {
+    int score = 0;
     _stage = stage;
+    bool isStageClear = (stage.getName() != StageStatus::infinite) ? stageCompletionPercentage >= 100 : true;
     
-    // TODO::CALCULATE THE SCORE //
-    bool isNewHighscore = score > stage.getHighScore() ? true : false;
+    // EGG Percentage
+    float eggPercent = 0;
+    if (collectedEggs) {
+        eggPercent = (collectedEggs * 100) / totalEggs;
+    }
+    
+    // Calculate time bonus
+    int timeSaved = 0;
+    int stageTimeLimit = getStageTimeLimit(stage.getName());
+    
+    if (isStageClear and stageTimeLimit - timeTaken > 0) {
+        
+        // calculate time bonus only if the stage is cleared
+        timeSaved = stageTimeLimit - timeTaken;
+        if (timeSaved > MAX_TIME_BONUS) {
+            timeSaved = MAX_TIME_BONUS; // 15 is the max time bonus
+        }
+    }
+    
+    // SCORE
+    score = (stage.getName() == StageStatus::infinite) ? collectedEggs : eggPercent + timeSaved;
+    
+    bool isNewHighscore = score > stage.getHighScore() and isStageClear ? true : false;
     _stage.setScore(score);
     
-    // TODO::CALCULATE THE STAR //
-    _stage.setStar(2);
+    // Calculate the STAR //
+    int star = calculateStar(stage.getName(), score);
+    _stage.setStar(star);
     
-    prepare(_stage.getScore(), totalEggs, collectedPizzas, totalPizzas, timeTaken, isNewHighscore);
-    saveStatsAndUnlockNextStage(isStageClear);
+    prepare(score, totalEggs, collectedPizzas, totalPizzas, timeTaken, isNewHighscore, isStageClear);
+    
+    // Save and Unlock next stage
+    try {
+        StageStatus::saveStage(_stage);
+        if (star) {
+            StageStatus::unlockNextStage(_stage);
+        }
+    }
+    catch(...) {
+        CCLOG("Coulnd't store stage info from GameOver");
+    }
+
 }
 
 bool GameOverLayer::init()
@@ -138,7 +173,80 @@ void GameOverLayer::addRestartButton() {
     this->addChild(_btnRestart, BackgroundLayer::layerChicken);
 }
 
-void GameOverLayer::prepare(int score, int totalEggs, int collectedPizzas, int totalPizzas, unsigned int timeTaken, bool isNewHighscore) {
+int GameOverLayer::getStageTimeLimit(std::string const& stageName) {
+    if (stageName == StageStatus::england) {
+        return 95; // 1:35
+    }
+    if (stageName == StageStatus::italy) {
+        return 75; // 1:15
+    }
+    if (stageName == StageStatus::france) {
+        return 100; // 1:40
+    }
+    if (stageName == StageStatus::germany) {
+        return 95; // 1:35
+    }
+    if (stageName == StageStatus::spain) {
+        return 90; // 1:30
+    }
+    if (stageName == StageStatus::netherlands) {
+        return 95; // 1:35
+    }
+    return 0;
+}
+
+int GameOverLayer::calculateStar(std::string const& stageName, int score) {
+    int max(0), mid(0), min(0);
+    
+    if (stageName == StageStatus::england) {
+        max = 75;
+        mid = 65;
+        min = 60;
+    }
+    if (stageName == StageStatus::italy) {
+        max = 80;
+        mid = 70;
+        min = 60;
+    }
+    if (stageName == StageStatus::france) {
+        max = 75;
+        mid = 62;
+        min = 50;
+    }
+    if (stageName == StageStatus::germany) {
+        max = 65;
+        mid = 55;
+        min = 45;
+    }
+    if (stageName == StageStatus::spain) {
+        max = 90;
+        mid = 80;
+        min = 70;
+    }
+    if (stageName == StageStatus::netherlands) {
+        max = 80;
+        mid = 70;
+        min = 60;
+    }
+    
+    if (score >= max) {
+        return 3;
+    }
+    if (score >= mid) {
+        return 2;
+    }
+    if (score >= min) {
+        return 1;
+    }
+    return 0;
+}
+
+void GameOverLayer::celebrateHighscore() {
+    showHighscoreBanner();
+    addFirework();
+}
+
+void GameOverLayer::prepare(int score, int totalEggs, int collectedPizzas, int totalPizzas, unsigned int timeTaken, bool isNewHighscore, bool isStageClear) {
     // HIGHSCORE
     if (_highScoreLabel) {
         std::string highScoreStr = String::createWithFormat("HighScore: %d", _stage.getHighScore())->getCString();
@@ -148,7 +256,7 @@ void GameOverLayer::prepare(int score, int totalEggs, int collectedPizzas, int t
     // SCORE
     // TODO: FIX SCORE STRING
     if (_scoreLabel) {
-        std::string scoreStr = String::createWithFormat("E: %d(%d) | P: %d(%d)", score, totalEggs, collectedPizzas, totalPizzas)->getCString();
+        std::string scoreStr = String::createWithFormat("Score: [%d](%d)", score, totalEggs)->getCString();
         _scoreLabel->setString(scoreStr);
     }
     
@@ -156,12 +264,12 @@ void GameOverLayer::prepare(int score, int totalEggs, int collectedPizzas, int t
     if (_timeLabel) {
         time_t seconds(timeTaken);
         struct tm* time = gmtime(&seconds);
-        std::string timeStr = String::createWithFormat("%d:%d s", time->tm_min, time->tm_sec)->getCString();
+        std::string timeStr = String::createWithFormat("%d:%02d s", time->tm_min, time->tm_sec)->getCString();
         _timeLabel->setString(timeStr);
     }
     
     // STAR
-    if (_stage.getName() != StageStatus::infinite) {
+    if (_stage.getName() != StageStatus::infinite and isStageClear) {
         Vector<FiniteTimeAction*> actions;
         for (int i = 0; i < _stage.getStar() and i < _stars.size(); ++i) {
             actions.pushBack(DelayTime::create(1.0));
@@ -185,33 +293,32 @@ void GameOverLayer::prepare(int score, int totalEggs, int collectedPizzas, int t
         }
         
         // Replacement for Stars
-        Sprite* chicken = Sprite::create("playerfly_1_red.png");
-        chicken->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.8);
-        
-        auto scaleBy = ScaleBy::create(0.0, 2.0);
-        chicken->runAction(scaleBy);
+        Sprite* banner = Sprite::create((_stage.getName() == StageStatus::infinite) ? "banner_chicken.png" : "banner_you_lose.png");
+        banner->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.8);
+        this->addChild(banner, BackgroundLayer::layerChicken);
 
-        this->addChild(chicken, BackgroundLayer::layerChicken);
+        if (_stage.getName() != StageStatus::infinite) {
+            return; // no need to check highscore anymore
+        }
     }
     
     // NEW_HIGHSCORE
     if (isNewHighscore) {
-        newHighscoreCelebration();
-        addFirework();
+        celebrateHighscore();
     }
 }
 
-void GameOverLayer::newHighscoreCelebration() {
+void GameOverLayer::showHighscoreBanner() {
     Sprite* banner = Sprite::create("banner_highscore.png");
     if (not banner) { return; }
     
     banner->setPosition(Vec2(_visibleSize.width * 0.5, _visibleSize.height + banner->getContentSize().height));
     this->addChild(banner, BackgroundLayer::layerChicken);
     
-    auto moveIn = MoveTo::create(1, Vec2(_visibleSize.width * 0.5, _visibleSize.height * 0.8));
-    auto moveOut = MoveTo::create(1, Vec2(_visibleSize.width + banner->getContentSize().width, _visibleSize.height * 0.8));
+    auto moveIn = MoveTo::create(1, Vec2(_visibleSize.width * 0.5, _visibleSize.height * 0.6));
+    auto moveOut = MoveTo::create(1, Vec2(_visibleSize.width * 0.5, _visibleSize.height + banner->getContentSize().height));
 
-    auto seq = Sequence::create(moveIn, DelayTime::create(2), moveOut, NULL);
+    auto seq = Sequence::create(moveIn, DelayTime::create(3), moveOut, NULL);
     banner->runAction(seq);
 }
 
@@ -254,28 +361,6 @@ void GameOverLayer::addFirework() {
     this->addChild(explosion3, BackgroundLayer::layerTouch);
     
     //SoundManager::Play(SoundManager::soundExplosion);    // play bomb sound
-}
-
-void GameOverLayer::saveStatsAndUnlockNextStage(bool isStageClear) {
-    try {
-        Stage ss(_stage.getName(),
-                 _stage.getImageFile(),
-                 _stage.getClickedImageFile(),
-                 _stage.getLockedImageFile(),
-                 _stage.getDifficulty(),
-                 _stage.getScore(),
-                 _stage.getHighScore(),
-                 _stage.getStar(),
-                 _stage.isUnlocked(),
-                 _stage.isPlayed());
-        
-        StageStatus::saveStage(ss);
-
-        if (isStageClear) { StageStatus::unlockNextStage(ss); }
-    }
-    catch(...) {
-        CCLOG("Coulnd't store stage info from GameOver");
-    }
 }
 
 void GameOverLayer::mainMenuClicked(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType) {

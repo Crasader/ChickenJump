@@ -100,8 +100,7 @@ void HomeLayer::addGround() {
 void HomeLayer::addLogo() {
     _logo = Sprite::create(imageLogo);
     if (not _logo) { return; }
-    _logo->setColor(Color3B(255, 208, 66));
-    _logo->setPosition(Point(_visibleSize.width * 0.5, _visibleSize.height * 0.85));
+    _logo->setPosition(Point(_visibleSize.width * 0.5, _visibleSize.height * 0.8));
     this->addChild(_logo, BackgroundLayer::layerTouch);
 }
 

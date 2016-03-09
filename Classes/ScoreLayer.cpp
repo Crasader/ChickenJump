@@ -79,7 +79,7 @@ void ScoreLayer::addInvisibilityStopwatch() {
     if (not _invisibilityStopwatch) { return; }
     
     _invisibilityStopwatch->loadTexture(imageSandwatchMagnet);
-    _invisibilityStopwatch->setColor(Color3B::YELLOW);
+    _invisibilityStopwatch->setColor(Color3B::ORANGE);
     _invisibilityStopwatch->setPercent(0);
     _invisibilityStopwatch->setPosition(Vec2(this->getContentSize().width * 0.8, this->getContentSize().height * 0.5));
     this->addChild(_invisibilityStopwatch, BackgroundLayer::layerTouch);
@@ -114,6 +114,9 @@ void ScoreLayer::tick(int type) {
             
             if (_magnetStopwatch->getPercent() <= 0 and _magnetIcon) {
                 _magnetIcon->setVisible(false);
+                
+                // reset magnet effect
+                GameLayer::getInstance()->getChicken()->setMagnetEffect(false);
             }
             
             break;
@@ -124,6 +127,9 @@ void ScoreLayer::tick(int type) {
             
             if (_invisibilityStopwatch->getPercent() <= 0 and _invisibilityIcon) {
                 _invisibilityIcon->setVisible(false);
+                
+                // make our chicken visible
+                GameLayer::getInstance()->getChicken()->makeVisible();
             }
             
             break;
