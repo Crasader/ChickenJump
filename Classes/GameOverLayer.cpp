@@ -57,7 +57,7 @@ void GameOverLayer::setup(Stage const& stage, int const collectedEggs, int const
     // Save and Unlock next stage
     try {
         StageStatus::saveStage(_stage);
-        if (star) {
+        if (star and isStageClear) {
             StageStatus::unlockNextStage(_stage);
         }
     }
