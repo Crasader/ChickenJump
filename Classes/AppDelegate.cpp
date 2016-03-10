@@ -32,7 +32,7 @@ static int register_all_packages()
 static Size smallResource  = Size(512, 384); // "sd"    // previously: 480, 320 // 640, 480
 static Size mediumResource = Size(1024, 768); // "hd"
 static Size largeResource  = Size(2048, 1536); // "hd2"
-static Size designResolution = Size(1024, 768);
+static Size designResolution = Size(512, 384);
 
 bool AppDelegate::applicationDidFinishLaunching() {
     // initialize director

@@ -28,7 +28,7 @@ typedef enum
 #define CHICKEN_LIVES_MAX               3
 #define CHICKEN_LIVES                   3
 
-#define STAGE_LENGTH                    35
+#define STAGE_LENGTH                    70 // 35 // increased to 70 since designResolution decreased from 1024 to 512
 
 // UserDefault Strings
 #define FIRST_TIME                      "FIRST_TIME"

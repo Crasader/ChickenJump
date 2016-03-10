@@ -140,7 +140,7 @@ void GameOverLayer::addTimerLogoAndLabel() {
     // Timer Sprite
     _timerSprite = Sprite::create(imageTimer);
     if (_timerSprite) {
-        _timerSprite->setPosition(Vec2(_visibleSize.width * 0.45, _visibleSize.height * 0.31));
+        _timerSprite->setPosition(Vec2(_visibleSize.width * 0.42, _visibleSize.height * 0.31));
         this->addChild(_timerSprite, BackgroundLayer::layerBackground);
     }
     
@@ -148,7 +148,7 @@ void GameOverLayer::addTimerLogoAndLabel() {
     _timeLabel = Label::createWithTTF("", font, _visibleSize.height * SCORE_FONT_SIZE);
     if (_timeLabel) {
         _timeLabel->setColor(Color3B::WHITE);
-        _timeLabel->setPosition(_visibleSize.width * 0.55, _visibleSize.height * 0.3);
+        _timeLabel->setPosition(_visibleSize.width * 0.56, _visibleSize.height * 0.3);
         this->addChild(_timeLabel, BackgroundLayer::layerChicken);
     }
 }
@@ -157,7 +157,7 @@ void GameOverLayer::addMainMenu() {
     _btnMainMenu = Button::create(imageBtnMainMenu, imageBtnMainMenu);
     if (not _btnMainMenu) { return; }
     _btnMainMenu->addTouchEventListener(CC_CALLBACK_2(GameOverLayer::mainMenuClicked, this));
-    _btnMainMenu->setPosition(Point(_visibleSize.width * 0.5 - _btnMainMenu->getContentSize().width * 0.70,
+    _btnMainMenu->setPosition(Point(_visibleSize.width * 0.5 + _btnMainMenu->getContentSize().width * 0.70,
                                     _visibleSize.height * 0.15));
     _btnMainMenu->setTouchEnabled(false); // Will be active after Star's appearance
     this->addChild(_btnMainMenu, BackgroundLayer::layerChicken);
@@ -167,7 +167,7 @@ void GameOverLayer::addRestartButton() {
     _btnRestart = Button::create(imageBtnRestart, imageBtnRestart);
     if (not _btnRestart) { return; }
     _btnRestart->addTouchEventListener(CC_CALLBACK_2(GameOverLayer::restartClicked, this));
-    _btnRestart->setPosition(Vec2(_visibleSize.width * 0.5 + _btnRestart->getContentSize().width * 0.70,
+    _btnRestart->setPosition(Vec2(_visibleSize.width * 0.5 - _btnRestart->getContentSize().width * 0.70,
                                   _visibleSize.height * 0.15));
     _btnRestart->setTouchEnabled(false); // Will be active after Star's appearance
     this->addChild(_btnRestart, BackgroundLayer::layerChicken);
@@ -302,8 +302,8 @@ void GameOverLayer::prepare(int score, int totalEggs, int collectedPizzas, int t
         }
     }
     
-    // NEW_HIGHSCORE
-    if (isNewHighscore) {
+    // NEW HIGHSCORE
+    if (isNewHighscore and (_stage.getStar() or _stage.getName() == StageStatus::infinite)) {
         celebrateHighscore();
     }
 }
