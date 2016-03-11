@@ -23,7 +23,7 @@ public:
     void applySpeedX(float speed);
     void createChicken(cocos2d::Layer* layer);
     void decreaseLife();
-    void decreaseSpriteSize();
+    void decreaseSize();
     void decreaseVectorX();
     Sprite* getChicken() { return _chicken; }
     int getLives() { return _lives; }
@@ -34,7 +34,7 @@ public:
     bool hasMagnetEffect();
     bool isInvisible() { return _isInvisible; }
     void increaseLife();
-    void increaseSpriteSize();
+    void increaseSize();
     void makeInvisible();
     void makeVisible();
     void resetSizeAndWeight();
@@ -60,7 +60,8 @@ private:
     bool _hasMagnetEffect;
     bool _isInvisible;
     unsigned int _lives;
-    cocos2d::ScaleTo* _scaleTo;
+    cocos2d::ScaleTo* _scaleUp;
+    cocos2d::ScaleTo* _scaleDown;
     
     void decreaseWeight();
     void increaseWeight();

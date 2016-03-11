@@ -396,21 +396,22 @@ void GameLayer::handleCollectableConsumption(Sprite* collectable) {
             break;
         }
         case 4: {    // scrolling pizza
-            _chicken->increaseSpriteSize();
+            _chicken->increaseSize();
             ++_collectedPizzas;
 
-            {// delay + decreaseSize + delay + decreaseSize + delay + decreaseSizeToNormal
-                auto resetSize = CallFunc::create([this]() {
-                    _chicken->resetSizeAndWeight();
-                } );
-
-                auto delay = DelayTime::create(3.0f);
+            {// delay(3s) + {decreaseSize + delay(0.5s)}
+                auto decreaseSize = CallFunc::create([this]() {
+                    _chicken->decreaseSize();
+                });
+                
+                auto delay = DelayTime::create(0.5);
 
                 if (_sequence) { _chicken->getChicken()->stopAction(_sequence); }
-                _sequence = Sequence::create(delay,
-                                             resetSize,
-                                             ScaleTo::create(2.0f, 1.0f),
-                                             NULL);
+                _sequence = Sequence::create(DelayTime::create(3.0f),
+                                             decreaseSize, delay,
+                                             decreaseSize, delay,
+                                             decreaseSize, delay,
+                                             decreaseSize, NULL);
                 _chicken->getChicken()->runAction(_sequence);
             }
 

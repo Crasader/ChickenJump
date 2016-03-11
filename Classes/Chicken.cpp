@@ -10,7 +10,8 @@ Chicken::Chicken(void){
     _visibleSize = Director::getInstance()->getVisibleSize();
     
     _chicken = nullptr;
-    _scaleTo = nullptr;
+    _scaleUp = nullptr;
+    _scaleDown = nullptr;
 }
 
 void Chicken::addPhysicsBody() {
@@ -66,10 +67,12 @@ void Chicken::decreaseLife() {
     --_lives;
 }
 
-void Chicken::decreaseSpriteSize() {
-    if (_scale - SCALE_FACTOR <= MIN_SCALE) {
-        auto scaleTo = ScaleTo::create(0.1f, _scale -= SCALE_FACTOR);
-        _chicken->runAction(scaleTo);
+void Chicken::decreaseSize() {
+    if (_scale - SCALE_FACTOR >= MIN_SCALE) {
+        if (_scaleDown) { _chicken->stopAction(_scaleDown); }
+        
+        _scaleDown = ScaleTo::create(0.1f, _scale -= SCALE_FACTOR);
+        _chicken->runAction(_scaleDown);
         decreaseWeight();
     }
 }
@@ -108,12 +111,12 @@ void Chicken::increaseLife() {
     }
 }
 
-void Chicken::increaseSpriteSize() {
+void Chicken::increaseSize() {
     if (_scale + SCALE_FACTOR <= MAX_SCALE) {
-        if (_scaleTo) { _chicken->stopAction(_scaleTo); }
+        if (_scaleUp) { _chicken->stopAction(_scaleUp); }
         
-        _scaleTo = ScaleTo::create(0.1f, _scale += SCALE_FACTOR);
-        _chicken->runAction(_scaleTo);
+        _scaleUp = ScaleTo::create(0.1f, _scale += SCALE_FACTOR);
+        _chicken->runAction(_scaleUp);
         increaseWeight();
     }
 }
