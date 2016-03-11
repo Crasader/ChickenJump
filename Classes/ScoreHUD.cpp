@@ -1,4 +1,4 @@
-#include "ScoreLayer.h"
+#include "ScoreHUD.h"
 
 #include <UIListView.h>
 
@@ -14,7 +14,7 @@ static const std::string imageSandwatchMagnet = "sandwatch.png";
 static const std::string imageIconMagnet = "icon_magnet.png";
 static const std::string imageIconInvisibility = "icon_invisibility.png";
 
-bool ScoreLayer::init()
+bool ScoreHUD::init()
 {
     if ( !LayerColor::initWithColor(Color4B(0, 0, 0, 0)) ) {
         return false;
@@ -47,7 +47,7 @@ bool ScoreLayer::init()
     return true;
 }
 
-void ScoreLayer::addMagnetStopwatch() {
+void ScoreHUD::addMagnetStopwatch() {
     // Icon
     _magnetIcon = Sprite::create(imageIconMagnet);
     if (not _magnetIcon) { return; }
@@ -66,7 +66,7 @@ void ScoreLayer::addMagnetStopwatch() {
     this->addChild(_magnetStopwatch, BackgroundLayer::layerTouch);
 }
 
-void ScoreLayer::addInvisibilityStopwatch() {
+void ScoreHUD::addInvisibilityStopwatch() {
     // Icon
     _invisibilityIcon = Sprite::create(imageIconInvisibility);
     if (not _invisibilityIcon) { return; }
@@ -86,7 +86,7 @@ void ScoreLayer::addInvisibilityStopwatch() {
 }
 
 // 1:Magnet 2:Invisibility
-void ScoreLayer::startStopwatch(int type) {
+void ScoreHUD::startStopwatch(int type) {
     switch (type) {
         case 1:
             if (not _magnetStopwatch) { return; }
@@ -104,7 +104,7 @@ void ScoreLayer::startStopwatch(int type) {
 }
 
 // 1:Magnet 2:Invisibility
-void ScoreLayer::tick(int type) {
+void ScoreHUD::tick(int type) {
     // magnet_effect -= 5; means: 100/5 = 20 seconds
     switch (type) {
         case 1:
@@ -138,7 +138,7 @@ void ScoreLayer::tick(int type) {
     }
 }
 
-void ScoreLayer::addScore() {
+void ScoreHUD::addScore() {
     _scoreLabel = Label::createWithTTF("0", font, _visibleSize.height * SCORE_FONT_SIZE);
     if (not _scoreLabel) { return; }
 
@@ -147,14 +147,14 @@ void ScoreLayer::addScore() {
     this->addChild(_scoreLabel);
 }
 
-void ScoreLayer::addScoreIcon(){
+void ScoreHUD::addScoreIcon(){
     _scoreIcon = Sprite::create(imageScore);
     if (not _scoreIcon) { return; }
     _scoreIcon->setPosition(Vec2(_visibleSize.width - _scoreIcon->getContentSize().width * 2.5, this->getContentSize().height * 0.5));
     this->addChild(_scoreIcon);
 }
 
-void ScoreLayer::initLifeSprites(int lives) {
+void ScoreHUD::initLifeSprites(int lives) {
     Vec2 initialPosition = Vec2(_visibleSize.width * 0.05, this->getContentSize().height * 0.5);
 
     for (int i = 0; i < lives; ++i) {
@@ -168,7 +168,7 @@ void ScoreLayer::initLifeSprites(int lives) {
     }
 }
 
-void ScoreLayer::updateLife(int lives) {
+void ScoreHUD::updateLife(int lives) {
     for (int i = 0; i < _lifeSprites.size(); ++i) {
         _lifeSprites.at(i)->setVisible(true);
         if (i >= lives) {
@@ -177,7 +177,7 @@ void ScoreLayer::updateLife(int lives) {
     }
 }
 
-void ScoreLayer::updateScore(int score) {
+void ScoreHUD::updateScore(int score) {
     if (_scoreLabel) {
         std::string scoreStr = String::createWithFormat("%d", score)->getCString();
         _scoreLabel->setString(scoreStr);

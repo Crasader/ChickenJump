@@ -1,4 +1,4 @@
-#include "PauseLayer.h"
+#include "PauseHUD.h"
 
 #include <UIListView.h>
 
@@ -18,7 +18,7 @@ static const std::string imageBtnSoundOff = "btn_soundoff_big.png";
 static const std::string imageBtnMusicOn = "btn_musicon_big.png";
 static const std::string imageBtnMusicOff = "btn_musicoff_big.png";
 
-bool PauseLayer::init()
+bool PauseHUD::init()
 {
     if ( !LayerColor::initWithColor(Color4B(0, 0, 0, 128)) ) {
         return false;
@@ -36,7 +36,7 @@ bool PauseLayer::init()
     return true;
 }
 
-void PauseLayer::createMenus() {
+void PauseHUD::createMenus() {
     ListView* lv = ListView::create();
     
     addResumeButton();
@@ -63,7 +63,7 @@ void PauseLayer::createMenus() {
     this->addChild(lv);
 }
 
-void PauseLayer::createAdLayout() {
+void PauseHUD::createAdLayout() {
     _ad = Layout::create();
     _ad->setContentSize(Size(_visibleSize.width * 0.75, _visibleSize.height * 0.75));
     _ad->setPosition(Vec2((_visibleSize.width - _ad->getContentSize().width) * 0.5,
@@ -75,27 +75,27 @@ void PauseLayer::createAdLayout() {
     this->addChild(_ad);
 }
 
-void PauseLayer::addResumeButton() {
+void PauseHUD::addResumeButton() {
     _btnResume = Button::create(imageBtnResume, imageBtnResume);
     if (not _btnResume) { return; }
     
     _btnResume->addTouchEventListener(CC_CALLBACK_1(GameLayer::resumeClicked, GameLayer::getInstance()));
 }
 
-void PauseLayer::addRestartButton() {
+void PauseHUD::addRestartButton() {
     _btnRestart = Button::create(imageBtnRestart, imageBtnRestart);
     if (not _btnRestart) { return; }
 
-    _btnRestart->addTouchEventListener(CC_CALLBACK_2(PauseLayer::restartClicked, this));
+    _btnRestart->addTouchEventListener(CC_CALLBACK_2(PauseHUD::restartClicked, this));
 }
 
-void PauseLayer::addMainMenuButton() {
+void PauseHUD::addMainMenuButton() {
     _btnMainMenu = Button::create(imageBtnMainMenu, imageBtnMainMenu);
     if (not _btnMainMenu) { return; }
-    _btnMainMenu->addTouchEventListener(CC_CALLBACK_2(PauseLayer::mainMenuClicked, this));
+    _btnMainMenu->addTouchEventListener(CC_CALLBACK_2(PauseHUD::mainMenuClicked, this));
 }
 
-void PauseLayer::addSoundButton() {
+void PauseHUD::addSoundButton() {
     if (SoundManager::IsSoundActive()) {
         _btnSoundToggle = Button::create(imageBtnSoundOn, imageBtnSoundOn);
     }
@@ -103,10 +103,10 @@ void PauseLayer::addSoundButton() {
         _btnSoundToggle = Button::create(imageBtnSoundOff, imageBtnSoundOff);
     }
     if (not _btnSoundToggle) { return; }
-    _btnSoundToggle->addTouchEventListener(CC_CALLBACK_2(PauseLayer::toggleSound, this));
+    _btnSoundToggle->addTouchEventListener(CC_CALLBACK_2(PauseHUD::toggleSound, this));
 }
 
-void PauseLayer::addMusicButton() {
+void PauseHUD::addMusicButton() {
     if (SoundManager::IsMusicActive()) {
         _btnMusicToggle = Button::create(imageBtnMusicOn, imageBtnMusicOn);
     }
@@ -114,11 +114,11 @@ void PauseLayer::addMusicButton() {
         _btnMusicToggle = Button::create(imageBtnMusicOff, imageBtnMusicOff);
     }
     if (not _btnMusicToggle) { return; }
-    _btnMusicToggle->addTouchEventListener(CC_CALLBACK_2(PauseLayer::toggleMusic, this));
+    _btnMusicToggle->addTouchEventListener(CC_CALLBACK_2(PauseHUD::toggleMusic, this));
 }
 
 // Click Events
-void PauseLayer::mainMenuClicked(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType) {
+void PauseHUD::mainMenuClicked(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType) {
     if (eEventType != ui::Widget::TouchEventType::ENDED) { return; }
     
     BackButton<MainMenuLayer>* mainMenu = new BackButton<MainMenuLayer>();
@@ -126,7 +126,7 @@ void PauseLayer::mainMenuClicked(Ref const* ref, cocos2d::ui::Widget::TouchEvent
     mainMenu->goBack(this);
 }
 
-void PauseLayer::restartClicked(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType) {
+void PauseHUD::restartClicked(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType) {
     if (eEventType != ui::Widget::TouchEventType::ENDED) { return; }
     
     auto scene = GameLayer::createScene(GameLayer::getInstance()->getStage());
@@ -141,7 +141,7 @@ void PauseLayer::restartClicked(Ref const* ref, cocos2d::ui::Widget::TouchEventT
     d->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }
 
-void PauseLayer::toggleSound(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType) {
+void PauseHUD::toggleSound(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType) {
     if (eEventType != ui::Widget::TouchEventType::ENDED) { return; }
     
     SoundManager::ToggleSound();
@@ -153,7 +153,7 @@ void PauseLayer::toggleSound(Ref const* ref, cocos2d::ui::Widget::TouchEventType
     }
 }
 
-void PauseLayer::toggleMusic(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType) {
+void PauseHUD::toggleMusic(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType) {
     if (eEventType != ui::Widget::TouchEventType::ENDED) { return; }
     
     SoundManager::ToggleMusic();

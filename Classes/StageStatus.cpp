@@ -16,7 +16,7 @@ const std::string StageStatus::infinite = "INFINITE";
 void StageStatus::createFreshStages() {
     // name, imagefile, clicked_image, locked_image, difficulty, score, highScore, star, isunlocked, isPlayed
     saveStage(Stage(england, "UK.png", "UK_clicked.png", "UK_locked.png",     1, 0, 0, 0, true, false));
-    saveStage(Stage(italy, "IT.png", "IT_clicked.png", "IT_locked.png",       2, 0, 0, 0, false, false));
+    saveStage(Stage(italy, "IT.png", "IT_clicked.png", "IT_locked.png",       2, 0, 0, 0, true, false));
     saveStage(Stage(france, "FR.png", "FR_clicked.png", "FR_locked.png",      3, 0, 0, 0, false, false));
     saveStage(Stage(germany, "DE.png", "DE_clicked.png", "DE_locked.png",     4, 0, 0, 0, false, false));
     saveStage(Stage(spain, "SP.png", "SP_clicked.png", "SP_locked.png",       5, 0, 0, 0, false, false));

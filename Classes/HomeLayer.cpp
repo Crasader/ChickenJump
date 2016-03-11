@@ -24,6 +24,10 @@ Scene* HomeLayer::createScene()
         scene->addChild(settingsHUD);
         layer->_settingsHUD = settingsHUD;
     }
+    
+    {   // Credit HUD
+        
+    }
 
     return scene;
 }

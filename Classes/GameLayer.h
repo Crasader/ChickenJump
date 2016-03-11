@@ -7,12 +7,12 @@
 
 #include "Chicken.h"
 #include "Collectable.h"
-#include "GameOverLayer.h"
+#include "GameOverHUD.h"
 #include "LayerBackground.h"
 #include "LayerGround.h"
 #include "LayerTwo.h"
-#include "PauseLayer.h"
-#include "ScoreLayer.h"
+#include "PauseHUD.h"
+#include "ScoreHUD.h"
 #include "SpecialCollectable.h"
 #include "Stage.h"
 #include "Trampoline.h"
@@ -108,9 +108,9 @@ private:
     GameState _state;
     Sequence* _sequence;
 
-    GameOverLayer* _gameOverHUD;
-    PauseLayer* _pauseHUD;
-    ScoreLayer* _scoreHUD;
+    GameOverHUD* _gameOverHUD;
+    PauseHUD* _pauseHUD;
+    ScoreHUD* _scoreHUD;
     std::shared_ptr<Collectable> _collectable;
     std::shared_ptr<SpecialCollectable> _specialCollectable;
     int _totalEggs;

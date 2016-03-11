@@ -1,16 +1,16 @@
-#ifndef __SCORELAYER_H__
-#define __SCORELAYER_H__
+#ifndef __SCORE_HUD_H__
+#define __SCORE_HUD_H__
 
 #include "cocos2d.h"
 
 #include <UILoadingBar.h>
 #include <UIListView.h>
 
-class ScoreLayer : public cocos2d::LayerColor
+class ScoreHUD : public cocos2d::LayerColor
 {
 public:
     virtual bool init();
-    CREATE_FUNC(ScoreLayer);
+    CREATE_FUNC(ScoreHUD);
     
     void initLifeSprites(int lives);
     void startStopwatch(int type);
@@ -39,4 +39,4 @@ private:
 };
 
 
-#endif // __SCORELAYER_H__
+#endif // __SCORE_HUD_H__

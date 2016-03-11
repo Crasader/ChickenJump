@@ -1,4 +1,4 @@
-#include "GameOverLayer.h"
+#include "GameOverHUD.h"
 
 #include "Constants.h"
 #include "GameLayer.h"
@@ -17,7 +17,7 @@ static const std::string imageExplosion = "explosion.png";
 static const std::string imageScoreBoard = "scoreboard.png";
 static const std::string imageTimer = "timer.png";
 
-void GameOverLayer::setup(Stage const& stage, int const collectedEggs, int const totalEggs, int const collectedPizzas, int const totalPizzas, int const timeTaken, float const stageCompletionPercentage)
+void GameOverHUD::setup(Stage const& stage, int const collectedEggs, int const totalEggs, int const collectedPizzas, int const totalPizzas, int const timeTaken, float const stageCompletionPercentage)
 {
     int score = 0;
     _stage = stage;
@@ -67,7 +67,7 @@ void GameOverLayer::setup(Stage const& stage, int const collectedEggs, int const
 
 }
 
-bool GameOverLayer::init()
+bool GameOverHUD::init()
 {
     if ( !LayerColor::initWithColor(Color4B(0, 0, 0, 0)) ) {
         return false;
@@ -90,14 +90,14 @@ bool GameOverLayer::init()
     return true;
 }
 
-void GameOverLayer::addScoreBoard() {
+void GameOverHUD::addScoreBoard() {
     _scoreBoard = Sprite::create(imageScoreBoard);
     if (not _scoreBoard) { return; }
     _scoreBoard->setPosition(Vec2(_visibleSize.width * 0.5, _visibleSize.height * 0.5));
     this->addChild(_scoreBoard, BackgroundLayer::layerBackground);
 }
 
-void GameOverLayer::addStars() {
+void GameOverHUD::addStars() {
     _star1 = Sprite::create(imageEmptyStar);
     if (_star1) {
         _star1->setPosition(_visibleSize.width * 0.5 - _star1->getContentSize().width * 1.25, _visibleSize.height * 0.8);
@@ -120,7 +120,7 @@ void GameOverLayer::addStars() {
     }
 }
 
-void GameOverLayer::addHighscoreLabel() {
+void GameOverHUD::addHighscoreLabel() {
     _highScoreLabel = Label::createWithTTF("", font, _visibleSize.height * SCORE_FONT_SIZE);
     if (not _highScoreLabel) { return; }
     _highScoreLabel->setColor(Color3B::WHITE);
@@ -128,7 +128,7 @@ void GameOverLayer::addHighscoreLabel() {
     this->addChild(_highScoreLabel, BackgroundLayer::layerChicken);
 }
 
-void GameOverLayer::addScoreLabel() {
+void GameOverHUD::addScoreLabel() {
     _scoreLabel = Label::createWithTTF("", font, _visibleSize.height * SCORE_FONT_SIZE);
     if (not _scoreLabel) { return; }
     _scoreLabel->setColor(Color3B::WHITE);
@@ -136,7 +136,7 @@ void GameOverLayer::addScoreLabel() {
     this->addChild(_scoreLabel, BackgroundLayer::layerChicken);
 }
 
-void GameOverLayer::addTimerLogoAndLabel() {
+void GameOverHUD::addTimerLogoAndLabel() {
     // Timer Sprite
     _timerSprite = Sprite::create(imageTimer);
     if (_timerSprite) {
@@ -153,27 +153,27 @@ void GameOverLayer::addTimerLogoAndLabel() {
     }
 }
 
-void GameOverLayer::addMainMenu() {
+void GameOverHUD::addMainMenu() {
     _btnMainMenu = Button::create(imageBtnMainMenu, imageBtnMainMenu);
     if (not _btnMainMenu) { return; }
-    _btnMainMenu->addTouchEventListener(CC_CALLBACK_2(GameOverLayer::mainMenuClicked, this));
+    _btnMainMenu->addTouchEventListener(CC_CALLBACK_2(GameOverHUD::mainMenuClicked, this));
     _btnMainMenu->setPosition(Point(_visibleSize.width * 0.5 + _btnMainMenu->getContentSize().width * 0.70,
                                     _visibleSize.height * 0.15));
     _btnMainMenu->setTouchEnabled(false); // Will be active after Star's appearance
     this->addChild(_btnMainMenu, BackgroundLayer::layerChicken);
 }
 
-void GameOverLayer::addRestartButton() {
+void GameOverHUD::addRestartButton() {
     _btnRestart = Button::create(imageBtnRestart, imageBtnRestart);
     if (not _btnRestart) { return; }
-    _btnRestart->addTouchEventListener(CC_CALLBACK_2(GameOverLayer::restartClicked, this));
+    _btnRestart->addTouchEventListener(CC_CALLBACK_2(GameOverHUD::restartClicked, this));
     _btnRestart->setPosition(Vec2(_visibleSize.width * 0.5 - _btnRestart->getContentSize().width * 0.70,
                                   _visibleSize.height * 0.15));
     _btnRestart->setTouchEnabled(false); // Will be active after Star's appearance
     this->addChild(_btnRestart, BackgroundLayer::layerChicken);
 }
 
-int GameOverLayer::getStageTimeLimit(std::string const& stageName) {
+int GameOverHUD::getStageTimeLimit(std::string const& stageName) {
     if (stageName == StageStatus::england) {
         return 95; // 1:35
     }
@@ -195,7 +195,7 @@ int GameOverLayer::getStageTimeLimit(std::string const& stageName) {
     return 0;
 }
 
-int GameOverLayer::calculateStar(std::string const& stageName, int score) {
+int GameOverHUD::calculateStar(std::string const& stageName, int score) {
     int max(0), mid(0), min(0);
     
     if (stageName == StageStatus::england) {
@@ -241,12 +241,12 @@ int GameOverLayer::calculateStar(std::string const& stageName, int score) {
     return 0;
 }
 
-void GameOverLayer::celebrateHighscore() {
+void GameOverHUD::celebrateHighscore() {
     showHighscoreBanner();
     addFirework();
 }
 
-void GameOverLayer::prepare(int score, int totalEggs, int collectedPizzas, int totalPizzas, unsigned int timeTaken, bool isNewHighscore, bool isStageClear) {
+void GameOverHUD::prepare(int score, int totalEggs, int collectedPizzas, int totalPizzas, unsigned int timeTaken, bool isNewHighscore, bool isStageClear) {
     // HIGHSCORE
     if (_highScoreLabel) {
         std::string highScoreStr = String::createWithFormat("HighScore: %d", _stage.getHighScore())->getCString();
@@ -308,7 +308,7 @@ void GameOverLayer::prepare(int score, int totalEggs, int collectedPizzas, int t
     }
 }
 
-void GameOverLayer::showHighscoreBanner() {
+void GameOverHUD::showHighscoreBanner() {
     Sprite* banner = Sprite::create("banner_highscore.png");
     if (not banner) { return; }
     
@@ -322,7 +322,7 @@ void GameOverLayer::showHighscoreBanner() {
     banner->runAction(seq);
 }
 
-void GameOverLayer::addFirework() {
+void GameOverHUD::addFirework() {
     // Explosion Effect
     int xOne = RandomHelper::random_real(_visibleSize.width * 0.3, _visibleSize.width * 0.7);
     int yOne = RandomHelper::random_real(_visibleSize.height * 0.3, _visibleSize.height * 0.7);
@@ -363,7 +363,7 @@ void GameOverLayer::addFirework() {
     //SoundManager::Play(SoundManager::soundExplosion);    // play bomb sound
 }
 
-void GameOverLayer::mainMenuClicked(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType) {
+void GameOverHUD::mainMenuClicked(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType) {
     if (eEventType != ui::Widget::TouchEventType::ENDED) { return; }
 
     auto d = Director::getInstance();
@@ -376,7 +376,7 @@ void GameOverLayer::mainMenuClicked(Ref const* ref, cocos2d::ui::Widget::TouchEv
     mainMenu->goBack(this);
 }
 
-void GameOverLayer::restartClicked(const Ref* ref, const cocos2d::ui::Widget::TouchEventType& eEventType) {
+void GameOverHUD::restartClicked(const Ref* ref, const cocos2d::ui::Widget::TouchEventType& eEventType) {
     if (eEventType != ui::Widget::TouchEventType::ENDED) { return; }
 
     auto scene = GameLayer::createScene(_stage);

@@ -6,7 +6,6 @@
 #include "Cloud.h"
 #include "Constants.h"
 #include "Collectable.h"
-#include "ScoreLayer.h"
 #include "Stage.h"
 #include "SoundManager.h"
 #include "SpecialCollectable.h"
@@ -50,25 +49,25 @@ Scene* GameLayer::createScene(Stage const& stage)
 
     // add Score HUD
     {
-        ScoreLayer* scoreLayer = ScoreLayer::create();
-        scene->addChild(scoreLayer);
-        layer->_scoreHUD = scoreLayer;
+        ScoreHUD* scoreHUD = ScoreHUD::create();
+        scene->addChild(scoreHUD);
+        layer->_scoreHUD = scoreHUD;
     }
 
     // add the Pause HUD Layer
     {
-        PauseLayer* pauseLayer = PauseLayer::create();
-        scene->addChild(pauseLayer);
-        pauseLayer->setVisible(false);
-        layer->_pauseHUD = pauseLayer;
+        PauseHUD* pauseHUD = PauseHUD::create();
+        scene->addChild(pauseHUD);
+        pauseHUD->setVisible(false);
+        layer->_pauseHUD = pauseHUD;
     }
 
     // add GameOver HUD Layer
     {
-        GameOverLayer* gameOverLayer = GameOverLayer::create();
-        scene->addChild(gameOverLayer);
-        gameOverLayer->setVisible(false);
-        layer->_gameOverHUD = gameOverLayer;
+        GameOverHUD* gameOverHUD = GameOverHUD::create();
+        scene->addChild(gameOverHUD);
+        gameOverHUD->setVisible(false);
+        layer->_gameOverHUD = gameOverHUD;
     }
 
     // return the scene

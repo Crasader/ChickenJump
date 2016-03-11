@@ -15,7 +15,7 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
                    ../../Classes/SplashScreenLayer.cpp \
                    ../../Classes/MainMenuLayer.cpp \
                    ../../Classes/GameLayer.cpp \
-                   ../../Classes/GameOverLayer.cpp \
+                   ../../Classes/GameOverHUD.cpp \
                    ../../Classes/Collectable.cpp \
                    ../../Classes/Chicken.cpp \
                    ../../Classes/Cloud.cpp \
@@ -24,8 +24,8 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
                    ../../Classes/LayerTwo.cpp \
                    ../../Classes/ScrollingLayerBase.cpp \
                    ../../Classes/Trampoline.cpp \
-                   ../../Classes/PauseLayer.cpp \
-                   ../../Classes/ScoreLayer.cpp \
+                   ../../Classes/PauseHUD.cpp \
+                   ../../Classes/ScoreHUD.cpp \
                    ../../Classes/HomeLayer.cpp \
                    ../../Classes/Stage.cpp \
                    ../../Classes/StageStatus.cpp \

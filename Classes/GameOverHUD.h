@@ -1,5 +1,5 @@
-#ifndef __GAMEOVER_LAYER_H__
-#define __GAMEOVER_LAYER_H__
+#ifndef __GAMEOVER_HUD_H__
+#define __GAMEOVER_HUD_H__
 
 #include <cocos2d.h>
 #include <UIWidget.h>
@@ -7,11 +7,11 @@
 
 #include "Stage.h"
 
-class GameOverLayer : public cocos2d::LayerColor
+class GameOverHUD : public cocos2d::LayerColor
 {
 public:
     virtual bool init();
-    CREATE_FUNC(GameOverLayer);
+    CREATE_FUNC(GameOverHUD);
 
     void setup(Stage const& stage, int const score, int const totalEggs, int const collectedPizzas, int const totalPizzas, int const timeTaken, float const stageCompletionPercentage);
 
@@ -51,4 +51,4 @@ private:
     cocos2d::Size _visibleSize;
 };
 
-#endif // __GAMEOVER_LAYER_H__
+#endif // __GAMEOVER_HUD_H__

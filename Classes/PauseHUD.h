@@ -1,15 +1,15 @@
-#ifndef __PAUSELAYER_H__
-#define __PAUSELAYER_H__
+#ifndef __PAUSE_HUD_H__
+#define __PAUSE_HUD_H__
 
 #include "cocos2d.h"
 #include <UILayout.h>
 #include <UIButton.h>
 
-class PauseLayer : public cocos2d::LayerColor
+class PauseHUD : public cocos2d::LayerColor
 {
 public:
     virtual bool init();
-    CREATE_FUNC(PauseLayer);
+    CREATE_FUNC(PauseHUD);
     
 private:
     void createMenus();
@@ -38,4 +38,4 @@ private:
 };
 
 
-#endif // __PAUSELAYER_H__
+#endif // __PAUSE_HUD_H__
