@@ -60,6 +60,7 @@ private:
     bool _hasMagnetEffect;
     bool _isInvisible;
     unsigned int _lives;
+    cocos2d::ScaleTo* _scaleTo;
     
     void decreaseWeight();
     void increaseWeight();

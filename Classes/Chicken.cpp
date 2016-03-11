@@ -8,6 +8,9 @@ static const std::string soundDead = "dead.wav";
 Chicken::Chicken(void){
     _origin = Director::getInstance()->getVisibleOrigin();
     _visibleSize = Director::getInstance()->getVisibleSize();
+    
+    _chicken = nullptr;
+    _scaleTo = nullptr;
 }
 
 void Chicken::addPhysicsBody() {
@@ -107,8 +110,10 @@ void Chicken::increaseLife() {
 
 void Chicken::increaseSpriteSize() {
     if (_scale + SCALE_FACTOR <= MAX_SCALE) {
-        auto scaleTo = ScaleTo::create(0.1f, _scale += SCALE_FACTOR);
-        _chicken->runAction(scaleTo);
+        if (_scaleTo) { _chicken->stopAction(_scaleTo); }
+        
+        _scaleTo = ScaleTo::create(0.1f, _scale += SCALE_FACTOR);
+        _chicken->runAction(_scaleTo);
         increaseWeight();
     }
 }

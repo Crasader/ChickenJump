@@ -400,16 +400,16 @@ void GameLayer::handleCollectableConsumption(Sprite* collectable) {
             ++_collectedPizzas;
 
             {// delay + decreaseSize + delay + decreaseSize + delay + decreaseSizeToNormal
-                auto callback = CallFunc::create([this]() {
+                auto resetSize = CallFunc::create([this]() {
                     _chicken->resetSizeAndWeight();
                 } );
 
                 auto delay = DelayTime::create(3.0f);
 
-                _chicken->getChicken()->stopAction(_sequence);
+                if (_sequence) { _chicken->getChicken()->stopAction(_sequence); }
                 _sequence = Sequence::create(delay,
+                                             resetSize,
                                              ScaleTo::create(2.0f, 1.0f),
-                                             callback,
                                              NULL);
                 _chicken->getChicken()->runAction(_sequence);
             }
