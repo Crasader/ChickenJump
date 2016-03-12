@@ -31,9 +31,10 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
                    ../../Classes/StageStatus.cpp \
                    ../../Classes/FloatingChicken.cpp \
                    ../../Classes/SpecialCollectable.cpp \
-                   ../../Classes/SettingsMenuLayer.cpp \
+                   ../../Classes/SettingsMenuHUD.cpp \
                    ../../Classes/BackButton.cpp \
-                   ../../Classes/SoundManager.cpp
+                   ../../Classes/SoundManager.cpp \
+                   ../../Classes/CreditLayer.cpp
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes \
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../cocos2d/cocos/ui

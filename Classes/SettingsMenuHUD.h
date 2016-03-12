@@ -1,15 +1,15 @@
-#ifndef __SETTINGSMENU_LAYER_H__
-#define __SETTINGSMENU_LAYER_H__
+#ifndef __SETTINGS_MENU_HUD_H__
+#define __SETTINGS_MENU_HUD_H__
 
 #include "cocos2d.h"
 
 #include <UIWidget.h>
 
-class SettingsMenuLayer : public cocos2d::LayerColor
+class SettingsMenuHUD : public cocos2d::LayerColor
 {
 public:
     virtual bool init();
-    CREATE_FUNC(SettingsMenuLayer);
+    CREATE_FUNC(SettingsMenuHUD);
     
 private:
     void createMenues();
@@ -26,4 +26,4 @@ private:
 };
 
 
-#endif // __SETTINGSMENU_LAYER_H__
+#endif // __SETTINGS_MENU_HUD_H__

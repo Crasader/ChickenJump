@@ -60,7 +60,7 @@
 		D44C6210132DFF4E0009C878 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D44C620F132DFF4E0009C878 /* AudioToolbox.framework */; };
 		D51B37851BB2095D005A5976 /* ScoreHUD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D51B37831BB2095D005A5976 /* ScoreHUD.cpp */; };
 		D51B37861BB2095D005A5976 /* ScoreHUD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D51B37831BB2095D005A5976 /* ScoreHUD.cpp */; };
-		D51C96081C93693D00081741 /* CreditHUD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D51C96071C93693D00081741 /* CreditHUD.cpp */; };
+		D51C96081C93693D00081741 /* CreditLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D51C96071C93693D00081741 /* CreditLayer.cpp */; };
 		D5253ABB1B088B0500AFC291 /* blank.png in Resources */ = {isa = PBXBuildFile; fileRef = D5253ABA1B088B0500AFC291 /* blank.png */; };
 		D5253ABC1B088B0500AFC291 /* blank.png in Resources */ = {isa = PBXBuildFile; fileRef = D5253ABA1B088B0500AFC291 /* blank.png */; };
 		D528C11C1C7D155B00BDCB41 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D528C11B1C7D155B00BDCB41 /* Images.xcassets */; };
@@ -99,8 +99,8 @@
 		D5548C301C147E2900C1C86C /* dead.wav in Resources */ = {isa = PBXBuildFile; fileRef = D5548C2E1C147E2900C1C86C /* dead.wav */; };
 		D5548C321C1481FA00C1C86C /* pickup_coin.wav in Resources */ = {isa = PBXBuildFile; fileRef = D5548C311C1481FA00C1C86C /* pickup_coin.wav */; };
 		D5548C331C1481FA00C1C86C /* pickup_coin.wav in Resources */ = {isa = PBXBuildFile; fileRef = D5548C311C1481FA00C1C86C /* pickup_coin.wav */; };
-		D5548C361C17765D00C1C86C /* SettingsMenuLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5548C341C17765D00C1C86C /* SettingsMenuLayer.cpp */; };
-		D5548C371C17765D00C1C86C /* SettingsMenuLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5548C341C17765D00C1C86C /* SettingsMenuLayer.cpp */; };
+		D5548C361C17765D00C1C86C /* SettingsMenuHUD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5548C341C17765D00C1C86C /* SettingsMenuHUD.cpp */; };
+		D5548C371C17765D00C1C86C /* SettingsMenuHUD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5548C341C17765D00C1C86C /* SettingsMenuHUD.cpp */; };
 		D5548C3A1C1B7CF600C1C86C /* BackButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5548C381C1B7CF600C1C86C /* BackButton.cpp */; };
 		D5548C3B1C1B7CF600C1C86C /* BackButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5548C381C1B7CF600C1C86C /* BackButton.cpp */; };
 		D575334B1C583A7500E4C350 /* win.wav in Resources */ = {isa = PBXBuildFile; fileRef = D575334A1C583A7500E4C350 /* win.wav */; };
@@ -210,8 +210,8 @@
 		D44C620F132DFF4E0009C878 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		D51B37831BB2095D005A5976 /* ScoreHUD.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScoreHUD.cpp; sourceTree = "<group>"; };
 		D51B37841BB2095D005A5976 /* ScoreHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreHUD.h; sourceTree = "<group>"; };
-		D51C96061C93693D00081741 /* CreditHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreditHUD.h; sourceTree = "<group>"; };
-		D51C96071C93693D00081741 /* CreditHUD.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CreditHUD.cpp; sourceTree = "<group>"; };
+		D51C96061C93693D00081741 /* CreditLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreditLayer.h; sourceTree = "<group>"; };
+		D51C96071C93693D00081741 /* CreditLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CreditLayer.cpp; sourceTree = "<group>"; };
 		D5253ABA1B088B0500AFC291 /* blank.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blank.png; sourceTree = "<group>"; };
 		D528C11B1C7D155B00BDCB41 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "ChickenJump iOS/Images.xcassets"; sourceTree = SOURCE_ROOT; };
 		D52BDA021B864CBE0049A538 /* SplashScreenLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SplashScreenLayer.cpp; sourceTree = "<group>"; };
@@ -244,8 +244,8 @@
 		D5548C2B1C147BD900C1C86C /* lifeup.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = lifeup.wav; sourceTree = "<group>"; };
 		D5548C2E1C147E2900C1C86C /* dead.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = dead.wav; sourceTree = "<group>"; };
 		D5548C311C1481FA00C1C86C /* pickup_coin.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = pickup_coin.wav; sourceTree = "<group>"; };
-		D5548C341C17765D00C1C86C /* SettingsMenuLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SettingsMenuLayer.cpp; sourceTree = "<group>"; };
-		D5548C351C17765D00C1C86C /* SettingsMenuLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsMenuLayer.h; sourceTree = "<group>"; };
+		D5548C341C17765D00C1C86C /* SettingsMenuHUD.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SettingsMenuHUD.cpp; sourceTree = "<group>"; };
+		D5548C351C17765D00C1C86C /* SettingsMenuHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsMenuHUD.h; sourceTree = "<group>"; };
 		D5548C381C1B7CF600C1C86C /* BackButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BackButton.cpp; sourceTree = "<group>"; };
 		D5548C391C1B7CF600C1C86C /* BackButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackButton.h; sourceTree = "<group>"; };
 		D575334A1C583A7500E4C350 /* win.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = win.wav; sourceTree = "<group>"; };
@@ -471,8 +471,8 @@
 		D5BDF2E51B850DD6002A11C2 /* Scene */ = {
 			isa = PBXGroup;
 			children = (
-				D51C96061C93693D00081741 /* CreditHUD.h */,
-				D51C96071C93693D00081741 /* CreditHUD.cpp */,
+				D51C96061C93693D00081741 /* CreditLayer.h */,
+				D51C96071C93693D00081741 /* CreditLayer.cpp */,
 				D52BDA071B864E8E0049A538 /* GameLayer.h */,
 				D52BDA061B864E8E0049A538 /* GameLayer.cpp */,
 				D52BDA0B1B8651CC0049A538 /* GameOverHUD.h */,
@@ -483,8 +483,8 @@
 				D5BDF2E81B8647EF002A11C2 /* MainMenuLayer.cpp */,
 				D52C3BBC1BAF550E001F0205 /* PauseHUD.h */,
 				D52C3BBB1BAF550E001F0205 /* PauseHUD.cpp */,
-				D5548C351C17765D00C1C86C /* SettingsMenuLayer.h */,
-				D5548C341C17765D00C1C86C /* SettingsMenuLayer.cpp */,
+				D5548C351C17765D00C1C86C /* SettingsMenuHUD.h */,
+				D5548C341C17765D00C1C86C /* SettingsMenuHUD.cpp */,
 				D51B37841BB2095D005A5976 /* ScoreHUD.h */,
 				D51B37831BB2095D005A5976 /* ScoreHUD.cpp */,
 				D52BDA031B864CBE0049A538 /* SplashScreenLayer.h */,
@@ -682,7 +682,7 @@
 			files = (
 				D5F0786D1C2EB67D00ACB5A1 /* ScrollingLayerBase.cpp in Sources */,
 				46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */,
-				D5548C361C17765D00C1C86C /* SettingsMenuLayer.cpp in Sources */,
+				D5548C361C17765D00C1C86C /* SettingsMenuHUD.cpp in Sources */,
 				D5548C3A1C1B7CF600C1C86C /* BackButton.cpp in Sources */,
 				D59103D71B8BC1A5005E5CD9 /* Cloud.cpp in Sources */,
 				D536C9E91C02E81A0046C82B /* Stage.cpp in Sources */,
@@ -690,7 +690,7 @@
 				D52BDA0C1B8651CC0049A538 /* GameOverHUD.cpp in Sources */,
 				D59103D41B8BA5D5005E5CD9 /* Chicken.cpp in Sources */,
 				D52BDA471B8A94000049A538 /* Collectable.cpp in Sources */,
-				D51C96081C93693D00081741 /* CreditHUD.cpp in Sources */,
+				D51C96081C93693D00081741 /* CreditLayer.cpp in Sources */,
 				D575D0F51B94DD0D0082D427 /* Trampoline.cpp in Sources */,
 				D52BDA041B864CBE0049A538 /* SplashScreenLayer.cpp in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
@@ -721,7 +721,7 @@
 				D5BDFD191B8FCAC70031AE1B /* LayerGround.cpp in Sources */,
 				D5F0786E1C2EB67D00ACB5A1 /* ScrollingLayerBase.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
-				D5548C371C17765D00C1C86C /* SettingsMenuLayer.cpp in Sources */,
+				D5548C371C17765D00C1C86C /* SettingsMenuHUD.cpp in Sources */,
 				D536C9EE1C03BF660046C82B /* StageStatus.cpp in Sources */,
 				D536C9E61C024E970046C82B /* HomeLayer.cpp in Sources */,
 				D52BDA091B864E8E0049A538 /* GameLayer.cpp in Sources */,

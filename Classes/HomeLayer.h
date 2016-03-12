@@ -3,8 +3,9 @@
 
 #include "cocos2d.h"
 
+#include "CreditLayer.h"
 #include "FloatingChicken.h"
-#include "SettingsMenuLayer.h"
+#include "SettingsMenuHUD.h"
 
 using namespace cocos2d;
 
@@ -19,10 +20,12 @@ public:
     
 private:
     void addBackground();
+    void addCreditMenu();
     void addFlyingChickens();
     void addGround();
     void addLogo();
     void addPlayMenu();
+    void creditButtonClicked(cocos2d::Ref const* sender);
     void gotoMainMenuLayer(cocos2d::Ref const* sender);
     void initStage();
     
@@ -32,7 +35,7 @@ private:
     FloatingChicken* _flyingChicken2;
     FloatingChicken* _flyingChicken4;
     
-    SettingsMenuLayer* _settingsHUD;
+    SettingsMenuHUD* _settingsHUD;
     
     Vec2 _origin;
     Size _visibleSize;

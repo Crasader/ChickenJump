@@ -12,6 +12,9 @@ const std::string imageBtnPlay = "btn_play.png";
 const std::string imageBtnPlayClicked = "btn_playclicked.png";
 const std::string imageLogo = "logo.png";
 const std::string imageSnowflake = "snowflake.png";
+const std::string imageBtnCredit = "btn_credit.png";
+const std::string imageBtnCreditClicked = "btn_creditclicked.png";
+
 
 Scene* HomeLayer::createScene()
 {
@@ -20,13 +23,9 @@ Scene* HomeLayer::createScene()
     scene->addChild(layer);
 
     {   // Settings HUD
-        SettingsMenuLayer* settingsHUD = SettingsMenuLayer::create();
+        SettingsMenuHUD* settingsHUD = SettingsMenuHUD::create();
         scene->addChild(settingsHUD);
         layer->_settingsHUD = settingsHUD;
-    }
-    
-    {   // Credit HUD
-        
     }
 
     return scene;
@@ -54,6 +53,9 @@ bool HomeLayer::init()
     // Retry Menu Item
     addPlayMenu();
     
+    // Credit Menu
+    addCreditMenu();
+    
     // Create StageStatus if its first time
     initStage();
     
@@ -76,8 +78,18 @@ bool HomeLayer::init()
 void HomeLayer::addBackground() {
     auto background = Sprite::create(imageHomeBackground);
     if (not background) { retain(); }
-    background->setPosition(Point(_visibleSize.width / 2, _visibleSize.height / 2));
+    background->setPosition(Point(_visibleSize.width * 0.5, _visibleSize.height * 0.5));
     this->addChild(background, BackgroundLayer::layerBackground);
+}
+
+void HomeLayer::addCreditMenu() {
+    auto creditButton = MenuItemImage::create(imageBtnCredit, imageBtnCreditClicked,
+                                              CC_CALLBACK_1(HomeLayer::creditButtonClicked, this));
+    if (not creditButton) { return; }
+    creditButton->setPosition(Point(_visibleSize.width * 0.96, _visibleSize.height * 0.12));
+    auto menu = Menu::create(creditButton, NULL);
+    menu->setPosition(Point::ZERO);
+    this->addChild(menu, BackgroundLayer::layerTouch);
 }
 
 void HomeLayer::addFlyingChickens() {
@@ -112,10 +124,16 @@ void HomeLayer::addPlayMenu() {
     auto playItem = MenuItemImage::create(imageBtnPlay, imageBtnPlayClicked,
                                           CC_CALLBACK_1(HomeLayer::gotoMainMenuLayer, this));
     if (not playItem) { return; }
-    playItem->setPosition(Point(_visibleSize.width / 2, _visibleSize.height * 0.4));
+    playItem->setPosition(Point(_visibleSize.width * 0.5, _visibleSize.height * 0.4));
     auto menu = Menu::create(playItem, NULL);
     menu->setPosition(Point::ZERO);
     this->addChild(menu, BackgroundLayer::layerTouch);
+}
+
+void HomeLayer::creditButtonClicked(cocos2d::Ref const* sender)
+{
+    auto scene = CreditLayer::createScene();
+    Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }
 
 void HomeLayer::gotoMainMenuLayer(cocos2d::Ref const* sender)

@@ -1,4 +1,4 @@
-#include "SettingsMenuLayer.h"
+#include "SettingsMenuHUD.h"
 
 #include <UIListView.h>
 #include <UIButton.h>
@@ -23,7 +23,7 @@ static Button* _btnSettings;
 static Button* _btnSoundToggle;
 static Button* _btnMusicToggle;
 
-bool SettingsMenuLayer::init()
+bool SettingsMenuHUD::init()
 {
     if ( !LayerColor::initWithColor(Color4B(0, 0, 0, 0)) ) {
         return false;
@@ -42,13 +42,13 @@ bool SettingsMenuLayer::init()
     return true;
 }
 
-void SettingsMenuLayer::createMenues() {
+void SettingsMenuHUD::createMenues() {
     ListView* lv = ListView::create();
     
     _btnSettings = Button::create(imageBtnSettings, imageBtnSettingsClicked);
     if (not _btnSettings) { return; }
     
-    _btnSettings->addTouchEventListener(CC_CALLBACK_2(SettingsMenuLayer::settingsClicked, this));
+    _btnSettings->addTouchEventListener(CC_CALLBACK_2(SettingsMenuHUD::settingsClicked, this));
     
     addSoundButton();
     addMusicButton();
@@ -62,14 +62,12 @@ void SettingsMenuLayer::createMenues() {
     lv->setSize(Size(_btnSettings->getContentSize().width,
                      _btnSettings->getContentSize().height * 3));
     
-    // lv->setBackGroundColorType(ui::Layout::BackGroundColorType::SOLID);
-    // lv->setBackGroundColor(Color3B::GREEN);
     lv->setNormalizedPosition(normalizedPosition);
     lv->setBounceEnabled(false);
     this->addChild(lv);
 }
 
-void SettingsMenuLayer::addSoundButton() {
+void SettingsMenuHUD::addSoundButton() {
     if (SoundManager::IsSoundActive()) {
         _btnSoundToggle = Button::create(imageBtnSoundOn, imageBtnSoundOn);
     }
@@ -77,11 +75,11 @@ void SettingsMenuLayer::addSoundButton() {
         _btnSoundToggle = Button::create(imageBtnSoundOff, imageBtnSoundOff);
     }
     if (not _btnSoundToggle) { return; }
-    _btnSoundToggle->addTouchEventListener(CC_CALLBACK_2(SettingsMenuLayer::toggleSound, this));
+    _btnSoundToggle->addTouchEventListener(CC_CALLBACK_2(SettingsMenuHUD::toggleSound, this));
     _btnSoundToggle->setVisible(false);  // make it invisible at the beginning
 }
 
-void SettingsMenuLayer::addMusicButton() {
+void SettingsMenuHUD::addMusicButton() {
     if (SoundManager::IsMusicActive()) {
         _btnMusicToggle = Button::create(imageBtnMusicOn, imageBtnMusicOn);
     }
@@ -89,11 +87,11 @@ void SettingsMenuLayer::addMusicButton() {
         _btnMusicToggle = Button::create(imageBtnMusicOff, imageBtnMusicOff);
     }
     if (not _btnMusicToggle) { return; }
-    _btnMusicToggle->addTouchEventListener(CC_CALLBACK_2(SettingsMenuLayer::toggleMusic, this));
+    _btnMusicToggle->addTouchEventListener(CC_CALLBACK_2(SettingsMenuHUD::toggleMusic, this));
     _btnMusicToggle->setVisible(false);  // make it invisible at the beginning
 }
 
-void SettingsMenuLayer::settingsClicked(const Ref* ref, const ui::Widget::TouchEventType& eEventType) {
+void SettingsMenuHUD::settingsClicked(const Ref* ref, const ui::Widget::TouchEventType& eEventType) {
     if (eEventType != ui::Widget::TouchEventType::ENDED) { return; }
 
     if (_btnSoundToggle) { _btnSoundToggle->setVisible(_isCollapsed); }
@@ -101,7 +99,7 @@ void SettingsMenuLayer::settingsClicked(const Ref* ref, const ui::Widget::TouchE
     _isCollapsed = not _isCollapsed;
 }
 
-void SettingsMenuLayer::toggleSound(const Ref* ref, const cocos2d::ui::Widget::TouchEventType& eEventType) {
+void SettingsMenuHUD::toggleSound(const Ref* ref, const cocos2d::ui::Widget::TouchEventType& eEventType) {
     if (eEventType != ui::Widget::TouchEventType::ENDED) { return; }
 
     SoundManager::ToggleSound();
@@ -113,7 +111,7 @@ void SettingsMenuLayer::toggleSound(const Ref* ref, const cocos2d::ui::Widget::T
     }
 }
 
-void SettingsMenuLayer::toggleMusic(const Ref* ref, const cocos2d::ui::Widget::TouchEventType& eEventType) {
+void SettingsMenuHUD::toggleMusic(const Ref* ref, const cocos2d::ui::Widget::TouchEventType& eEventType) {
     if (eEventType != ui::Widget::TouchEventType::ENDED) { return; }
 
     SoundManager::ToggleMusic();
