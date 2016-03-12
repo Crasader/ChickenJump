@@ -1,4 +1,6 @@
 #include "AppDelegate.h"
+
+#include "SimpleAudioEngine.h"
 #include "SplashScreenLayer.h"
 
 using namespace cocos2d;
@@ -32,7 +34,7 @@ static int register_all_packages()
 static Size smallResource  = Size(512, 384); // "sd"    // previously: 480, 320 // 640, 480
 static Size mediumResource = Size(1024, 768); // "hd"
 static Size largeResource  = Size(2048, 1536); // "hd2"
-static Size designResolution = Size(512, 384);
+static Size designResolution = Size(1024, 768);
 
 bool AppDelegate::applicationDidFinishLaunching() {
     // initialize director
@@ -90,7 +92,7 @@ void AppDelegate::applicationDidEnterBackground() {
     Director::getInstance()->stopAnimation();
     
     // if you use SimpleAudioEngine, it must be pause
-    // SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
+    CocosDenshion::SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
 }
 
 // this function will be called when the app is active again
@@ -98,5 +100,5 @@ void AppDelegate::applicationWillEnterForeground() {
     Director::getInstance()->startAnimation();
     
     // if you use SimpleAudioEngine, it must resume here
-    // SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
+    CocosDenshion::SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
 }

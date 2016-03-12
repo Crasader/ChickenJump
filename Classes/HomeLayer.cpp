@@ -86,7 +86,7 @@ void HomeLayer::addCreditMenu() {
     auto creditButton = MenuItemImage::create(imageBtnCredit, imageBtnCreditClicked,
                                               CC_CALLBACK_1(HomeLayer::creditButtonClicked, this));
     if (not creditButton) { return; }
-    creditButton->setPosition(Point(_visibleSize.width * 0.96, _visibleSize.height * 0.12));
+    creditButton->setPosition(Point(_visibleSize.width * 0.96, _visibleSize.height * 0.15));
     auto menu = Menu::create(creditButton, NULL);
     menu->setPosition(Point::ZERO);
     this->addChild(menu, BackgroundLayer::layerTouch);
