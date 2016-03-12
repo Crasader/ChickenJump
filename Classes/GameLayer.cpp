@@ -227,11 +227,11 @@ void GameLayer::addContactListners() {
 
 void GameLayer::addExplosionEffect() {
     // Explosion Effect
-    ParticleExplosion* explosion = ParticleExplosion::createWithTotalParticles(66);
+    ParticleExplosion* explosion = ParticleExplosion::createWithTotalParticles(50);
     explosion->setTexture(Director::getInstance()->getTextureCache()->addImage(imageExplosion));
     explosion->setStartColor(Color4F::YELLOW);
     explosion->setEndColor(Color4F::YELLOW);
-    explosion->setScale(0.75);
+    explosion->setScale(0.5);
     explosion->setSpeed(5);
     explosion->setPosition(_chicken->getPosition());
     this->addChild(explosion, BackgroundLayer::layerTouch);
