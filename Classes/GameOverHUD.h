@@ -16,7 +16,7 @@ public:
     void setup(Stage const& stage, int const score, int const totalEggs, int const collectedPizzas, int const totalPizzas, int const timeTaken, float const stageCompletionPercentage);
 
 private:
-    void addHighscoreLabel();
+    void addResultSummaryLabel();
     void addMainMenu();
     void addRestartButton();
     void addScoreBoard();
@@ -27,7 +27,7 @@ private:
     void celebrateHighscore();
     void showHighscoreBanner();
     
-    void prepare(int score, int totalEggs, int collectedPizzas, int totalPizzas, unsigned int timeTaken, bool isNewHighscore, bool isStageClear);
+    void prepare(int score, int totalEggs, int timeTaken, int star, bool isNewHighscore, bool isStageClear);
     void mainMenuClicked(cocos2d::Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType);
     void restartClicked(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType);
     int  getStageTimeLimit(std::string const& stageName);
@@ -35,7 +35,7 @@ private:
     
     cocos2d::Sprite* _scoreBoard;
     cocos2d::Sprite* _timerSprite;
-    cocos2d::Label* _highScoreLabel;
+    cocos2d::Label* _resultSummaryLabel;
     cocos2d::Label* _scoreLabel;
     cocos2d::Label* _timeLabel;
     cocos2d::ui::Button* _btnMainMenu;

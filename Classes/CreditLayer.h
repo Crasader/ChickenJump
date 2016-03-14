@@ -14,9 +14,7 @@ public:
     
 private:
     void addBackground();
-    void addBackButton();
     void addGround();
-    void backButtonClicked(cocos2d::Ref const* sender);
     
     CreditHUD* _creditHUD;
     
@@ -35,6 +33,9 @@ public:
     CREATE_FUNC(CreditHUD);
     
 private:
+    void addBackButton();
+    void backButtonClicked(cocos2d::Ref const* sender);
+
     cocos2d::Vec2 _origin;
     cocos2d::Size _visibleSize;
 };

@@ -60,6 +60,15 @@ bool MainMenuLayer::init()
     // Page Scroll Buttons, changes image on click
     addPageNavigationButtons();
     
+    {   // DELETE ME
+        auto res = Label::createWithTTF(FileUtils::getInstance()->getSearchPaths().at(0), font, _visibleSize.height * CREDIT_FONT_SIZE_BIG);
+        if (res) {
+            res->setColor(Color3B::ORANGE);
+            res->setPosition(Vec2(_visibleSize.width * 0.5, _visibleSize.height * 0.1));
+            this->addChild(res, BackgroundLayer::layerChicken);
+        }            
+    }
+    
     return true;
 }
 

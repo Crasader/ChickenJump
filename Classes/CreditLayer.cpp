@@ -46,9 +46,6 @@ bool CreditLayer::init()
     // Ground
     addGround();
     
-    // Back Button
-    addBackButton();
-    
     
     return true;
 }
@@ -67,22 +64,6 @@ void CreditLayer::addGround() {
     this->addChild(ground, BackgroundLayer::layerTouch);
 }
 
-void CreditLayer::addBackButton() {
-    auto backItem = MenuItemImage::create(imageBtnBack, imageBtnBackClicked,
-                                          CC_CALLBACK_1(CreditLayer::backButtonClicked, this));
-    if (not backItem) { return; }
-    backItem->setPosition(Point(_visibleSize.width * 0.04, _visibleSize.height * 0.12));
-    auto menu = Menu::create(backItem, NULL);
-    menu->setPosition(Point::ZERO);
-    this->addChild(menu, BackgroundLayer::layerTouch);
-}
-
-void CreditLayer::backButtonClicked(cocos2d::Ref const* sender)
-{
-    auto scene = HomeLayer::createScene();
-    Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
-}
-
 
 
 //
@@ -97,8 +78,11 @@ bool CreditHUD::init()
     _origin = Director::getInstance()->getVisibleOrigin();
     _visibleSize = Director::getInstance()->getVisibleSize();
     
-    this->setContentSize(Size(_visibleSize.width * 0.6, _visibleSize.height));
-    this->setPosition(Vec2(_visibleSize.width * 0.2, 0));
+    this->setContentSize(Size(_visibleSize.width, _visibleSize.height));
+    this->setPosition(Vec2(0, 0));
+    
+    // Back Button
+    addBackButton();
     
     {
         std::string sixeyes       = "SixEyes Presents";
@@ -108,7 +92,6 @@ bool CreditHUD::init()
         std::string developer_two = "Farid Belhadi";
         
         auto label1 = Text::create(sixeyes, font, _visibleSize.height * CREDIT_FONT_SIZE_SMALL);
-//        auto label2 = Text::create(presents, font, _visibleSize.height * SCORE_FONT_SIZE);
         auto label3 = Text::create(chickenjump, font, _visibleSize.height * CREDIT_FONT_SIZE_BIG);
         auto label4 = Text::create(developedby, font, _visibleSize.height * CREDIT_FONT_SIZE_SMALL);
         auto label5 = Text::create(developer_two, font, _visibleSize.height * CREDIT_FONT_SIZE_MID);
@@ -118,7 +101,6 @@ bool CreditHUD::init()
 
         if (not label1 or not label3 or not label4 or not label5 or not label6) { return false; }
         label1->setColor(Color3B::WHITE);
-//        label2->setColor(Color3B::WHITE);
         label3->setColor(Color3B::ORANGE);
         label4->setColor(Color3B::WHITE);
         label5->setColor(Color3B::GRAY);
@@ -126,7 +108,6 @@ bool CreditHUD::init()
         
         ListView* lv = ListView::create();
         lv->pushBackCustomItem(label1);
-//        lv->pushBackCustomItem(label2);
         lv->pushBackCustomItem(label3);
         lv->pushBackCustomItem(gap);
         
@@ -138,9 +119,8 @@ bool CreditHUD::init()
         lv->setItemsMargin(10);
         lv->setSize(Size(label3->getContentSize().width,
                          label3->getContentSize().height * 6 + 50));
-        lv->setBackGroundColorOpacity(100);
         
-        lv->setPosition(Vec2(_visibleSize.width * 0.3 - lv->getContentSize().width * 0.5, _visibleSize.height * 0));
+        lv->setPosition(Vec2(_visibleSize.width * 0.5 - lv->getContentSize().width * 0.5, _visibleSize.height * 0));
         lv->setBounceEnabled(false);
         
         this->addChild(lv, BackgroundLayer::layerChicken);
@@ -148,6 +128,22 @@ bool CreditHUD::init()
     
     
     return true;
+}
+
+void CreditHUD::addBackButton() {
+    auto backItem = MenuItemImage::create(imageBtnBack, imageBtnBackClicked,
+                                          CC_CALLBACK_1(CreditHUD::backButtonClicked, this));
+    if (not backItem) { return; }
+    backItem->setPosition(Point(_visibleSize.width * 0.04, _visibleSize.height * 0.15));
+    auto menu = Menu::create(backItem, NULL);
+    menu->setPosition(Point::ZERO);
+    this->addChild(menu, BackgroundLayer::layerTouch);
+}
+
+void CreditHUD::backButtonClicked(cocos2d::Ref const* sender)
+{
+    auto scene = HomeLayer::createScene();
+    Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }
 
 

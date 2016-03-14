@@ -19,7 +19,6 @@ static const std::string imageTimer = "timer.png";
 
 void GameOverHUD::setup(Stage const& stage, int const collectedEggs, int const totalEggs, int const collectedPizzas, int const totalPizzas, int const timeTaken, float const stageCompletionPercentage)
 {
-    int score = 0;
     _stage = stage;
     bool isStageClear = (stage.getName() != StageStatus::infinite) ? stageCompletionPercentage >= 100 : true;
     
@@ -42,29 +41,37 @@ void GameOverHUD::setup(Stage const& stage, int const collectedEggs, int const t
         }
     }
     
-    // SCORE
-    score = (stage.getName() == StageStatus::infinite) ? collectedEggs : eggPercent + timeSaved;
-    
-    bool isNewHighscore = score > stage.getHighScore() and isStageClear ? true : false;
-    _stage.setScore(score);
-    
     // Calculate the STAR //
-    int star = calculateStar(stage.getName(), score);
-    _stage.setStar(star);
+    int score = 0;
+    int star = 0;
+    bool isNewHighscore = false;
+
+    {
+        // SCORE and STAR calculation
+        score = (stage.getName() == StageStatus::infinite) ? collectedEggs : (eggPercent + timeSaved);
+        
+        isNewHighscore = (score > stage.getHighScore()) and isStageClear ? true : false;
+        _stage.setScore(score);
+        
+        star = calculateStar(stage.getName(), score);
+        if (star > stage.getStar()) {
+            _stage.setStar(star);
+        }
+    }
+
     
-    prepare(score, totalEggs, collectedPizzas, totalPizzas, timeTaken, isNewHighscore, isStageClear);
+    prepare(score, totalEggs, timeTaken, star, isNewHighscore, isStageClear);
     
     // Save and Unlock next stage
     try {
         StageStatus::saveStage(_stage);
-        if (star and isStageClear) {
+        if (star) {
             StageStatus::unlockNextStage(_stage);
         }
     }
     catch(...) {
         CCLOG("Coulnd't store stage info from GameOver");
     }
-
 }
 
 bool GameOverHUD::init()
@@ -80,12 +87,12 @@ bool GameOverHUD::init()
     this->setPosition(0, 0);
     
     addScoreBoard();
-    addHighscoreLabel();
+    addResultSummaryLabel();
+    addStars();
     addScoreLabel();
+    addTimerLogoAndLabel();
     addMainMenu();
     addRestartButton();
-    addStars();
-    addTimerLogoAndLabel();
     
     return true;
 }
@@ -97,42 +104,43 @@ void GameOverHUD::addScoreBoard() {
     this->addChild(_scoreBoard, BackgroundLayer::layerBackground);
 }
 
+void GameOverHUD::addResultSummaryLabel() {
+    _resultSummaryLabel = Label::createWithTTF("", font, _visibleSize.height * SCORE_FONT_SIZE);
+    if (not _resultSummaryLabel) { return; }
+    _resultSummaryLabel->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.9);
+    this->addChild(_resultSummaryLabel, BackgroundLayer::layerChicken);
+}
+
 void GameOverHUD::addStars() {
+    float baseHeightForStars = 0.675;
+
     _star1 = Sprite::create(imageEmptyStar);
     if (_star1) {
-        _star1->setPosition(_visibleSize.width * 0.5 - _star1->getContentSize().width * 1.25, _visibleSize.height * 0.8);
+        _star1->setPosition(_visibleSize.width * 0.5 - _star1->getContentSize().width * 1.25, _visibleSize.height * baseHeightForStars);
         this->addChild(_star1, BackgroundLayer::layerChicken);
         _stars.push_back(_star1);
     }
     
     _star2 = Sprite::create(imageEmptyStar);
     if (_star2) {
-        _star2->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.85);
+        _star2->setPosition(_visibleSize.width * 0.5, _visibleSize.height * (baseHeightForStars + 0.05));
         this->addChild(_star2, BackgroundLayer::layerChicken);
         _stars.push_back(_star2);
     }
     
     _star3 = Sprite::create(imageEmptyStar);
     if (_star3) {
-        _star3->setPosition(_visibleSize.width * 0.5 + _star1->getContentSize().width * 1.25, _visibleSize.height * 0.8);
+        _star3->setPosition(_visibleSize.width * 0.5 + _star1->getContentSize().width * 1.25, _visibleSize.height * baseHeightForStars);
         this->addChild(_star3, BackgroundLayer::layerChicken);
         _stars.push_back(_star3);
     }
 }
 
-void GameOverHUD::addHighscoreLabel() {
-    _highScoreLabel = Label::createWithTTF("", font, _visibleSize.height * SCORE_FONT_SIZE);
-    if (not _highScoreLabel) { return; }
-    _highScoreLabel->setColor(Color3B::WHITE);
-    _highScoreLabel->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.6);
-    this->addChild(_highScoreLabel, BackgroundLayer::layerChicken);
-}
-
 void GameOverHUD::addScoreLabel() {
-    _scoreLabel = Label::createWithTTF("", font, _visibleSize.height * SCORE_FONT_SIZE);
+    _scoreLabel = Label::createWithTTF("Score: -", font, _visibleSize.height * SCORE_FONT_SIZE);
     if (not _scoreLabel) { return; }
     _scoreLabel->setColor(Color3B::WHITE);
-    _scoreLabel->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.45);
+    _scoreLabel->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.5);
     this->addChild(_scoreLabel, BackgroundLayer::layerChicken);
 }
 
@@ -140,15 +148,15 @@ void GameOverHUD::addTimerLogoAndLabel() {
     // Timer Sprite
     _timerSprite = Sprite::create(imageTimer);
     if (_timerSprite) {
-        _timerSprite->setPosition(Vec2(_visibleSize.width * 0.42, _visibleSize.height * 0.31));
+        _timerSprite->setPosition(Vec2(_visibleSize.width * 0.42, _visibleSize.height * 0.36));
         this->addChild(_timerSprite, BackgroundLayer::layerBackground);
     }
     
     // Timer Label
-    _timeLabel = Label::createWithTTF("", font, _visibleSize.height * SCORE_FONT_SIZE);
+    _timeLabel = Label::createWithTTF("-:-", font, _visibleSize.height * SCORE_FONT_SIZE);
     if (_timeLabel) {
         _timeLabel->setColor(Color3B::WHITE);
-        _timeLabel->setPosition(_visibleSize.width * 0.56, _visibleSize.height * 0.3);
+        _timeLabel->setPosition(_visibleSize.width * 0.56, _visibleSize.height * 0.35);
         this->addChild(_timeLabel, BackgroundLayer::layerChicken);
     }
 }
@@ -157,7 +165,7 @@ void GameOverHUD::addMainMenu() {
     _btnMainMenu = Button::create(imageBtnMainMenu, imageBtnMainMenu);
     if (not _btnMainMenu) { return; }
     _btnMainMenu->addTouchEventListener(CC_CALLBACK_2(GameOverHUD::mainMenuClicked, this));
-    _btnMainMenu->setPosition(Point(_visibleSize.width * 0.5 + _btnMainMenu->getContentSize().width * 0.70,
+    _btnMainMenu->setPosition(Point(_visibleSize.width * 0.5 + _btnMainMenu->getContentSize().width * 0.8,
                                     _visibleSize.height * 0.15));
     _btnMainMenu->setTouchEnabled(false); // Will be active after Star's appearance
     this->addChild(_btnMainMenu, BackgroundLayer::layerChicken);
@@ -167,7 +175,7 @@ void GameOverHUD::addRestartButton() {
     _btnRestart = Button::create(imageBtnRestart, imageBtnRestart);
     if (not _btnRestart) { return; }
     _btnRestart->addTouchEventListener(CC_CALLBACK_2(GameOverHUD::restartClicked, this));
-    _btnRestart->setPosition(Vec2(_visibleSize.width * 0.5 - _btnRestart->getContentSize().width * 0.70,
+    _btnRestart->setPosition(Vec2(_visibleSize.width * 0.5 - _btnRestart->getContentSize().width * 0.8,
                                   _visibleSize.height * 0.15));
     _btnRestart->setTouchEnabled(false); // Will be active after Star's appearance
     this->addChild(_btnRestart, BackgroundLayer::layerChicken);
@@ -246,18 +254,15 @@ void GameOverHUD::celebrateHighscore() {
     addFirework();
 }
 
-void GameOverHUD::prepare(int score, int totalEggs, int collectedPizzas, int totalPizzas, unsigned int timeTaken, bool isNewHighscore, bool isStageClear) {
-    // HIGHSCORE
-    if (_highScoreLabel) {
-        std::string highScoreStr = String::createWithFormat("HighScore: %d", _stage.getHighScore())->getCString();
-        _highScoreLabel->setString(highScoreStr);
-    }
-
+void GameOverHUD::prepare(int score, int totalEggs, int timeTaken, int star, bool isNewHighscore, bool isStageClear) {
     // SCORE
     // TODO: FIX SCORE STRING
     if (_scoreLabel) {
         std::string scoreStr = String::createWithFormat("Score: [%d](%d)", score, totalEggs)->getCString();
         _scoreLabel->setString(scoreStr);
+        if (isNewHighscore) {
+            _scoreBoard->setColor(Color3B::ORANGE);
+        }
     }
     
     // TIME
@@ -269,41 +274,56 @@ void GameOverHUD::prepare(int score, int totalEggs, int collectedPizzas, int tot
     }
     
     // STAR
-    if (_stage.getName() != StageStatus::infinite and isStageClear) {
-        Vector<FiniteTimeAction*> actions;
-        for (int i = 0; i < _stage.getStar() and i < _stars.size(); ++i) {
-            actions.pushBack(DelayTime::create(1.0));
-            actions.pushBack(CallFunc::create([&, i](){ _stars.at(i)->setTexture("star.png"); /* TODO:: SOUND EFFECT */ }));
+    if (_stage.getName() != StageStatus::infinite) {
+
+        if (isStageClear) {
+            Vector<FiniteTimeAction*> actions;
+            for (int i = 0; i < _stage.getStar() and i < _stars.size(); ++i) {
+                actions.pushBack(DelayTime::create(1.0));
+                actions.pushBack(CallFunc::create([&, i](){ _stars.at(i)->setTexture("star.png"); /* TODO:: SOUND EFFECT */ }));
+            }
+
+            actions.pushBack(CallFunc::create([=](){
+                if(_btnMainMenu) _btnMainMenu->setTouchEnabled(true);
+                if(_btnRestart) _btnRestart->setTouchEnabled(true);
+            }));
+            
+            auto seq = Sequence::create(actions);
+            this->runAction(seq);
         }
-        actions.pushBack(CallFunc::create([=](){
+        else {
             if(_btnMainMenu) _btnMainMenu->setTouchEnabled(true);
-            if(_btnRestart) _btnRestart->setTouchEnabled(true);
-        }));
+            if(_btnRestart) _btnRestart->setTouchEnabled(true);            
+        }
         
-        auto seq = Sequence::create(actions);
-        this->runAction(seq);
+        // Summary
+        if (_resultSummaryLabel) {
+            _resultSummaryLabel->setString(isStageClear ? "Stage Clear" : "Failed");
+            _resultSummaryLabel->setColor(isStageClear ? Color3B::ORANGE : Color3B::RED);
+        }
     }
     else {
-        if(_btnMainMenu) _btnMainMenu->setTouchEnabled(true);
-        if(_btnRestart) _btnRestart->setTouchEnabled(true);
-
-        // Empty stars are gone ;)
+        // Hide empty stars
         for (auto s: _stars) {
             s->setVisible(false);
         }
         
-        // Replacement for Stars
-        Sprite* banner = Sprite::create((_stage.getName() == StageStatus::infinite) ? "banner_chicken.png" : "banner_you_lose.png");
-        banner->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.8);
+        // Replace Stars with banner
+        Sprite* banner = Sprite::create("banner_chicken.png");
+        banner->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.75);
         this->addChild(banner, BackgroundLayer::layerChicken);
-
-        if (_stage.getName() != StageStatus::infinite) {
-            return; // no need to check highscore anymore
-        }
+        
+        
+        if(_btnMainMenu) _btnMainMenu->setTouchEnabled(true);
+        if(_btnRestart) _btnRestart->setTouchEnabled(true);
+        
+        // No need to write Summary for infinite stage
+        if (_resultSummaryLabel) { _resultSummaryLabel->setString(""); }
     }
     
     // NEW HIGHSCORE
-    if (isNewHighscore and (_stage.getStar() or _stage.getName() == StageStatus::infinite)) {
+    // TODO: Add New Highscore label instead of fireworks or banner
+    if (isNewHighscore) {
         celebrateHighscore();
     }
 }
