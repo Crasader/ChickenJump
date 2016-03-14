@@ -16,7 +16,7 @@ SpecialCollectable::SpecialCollectable(Stage const& stage){
     random_shuffle(_specialCollectableTypes.begin(), _specialCollectableTypes.end());
 }
 
-void SpecialCollectable::populatePatterns(int difficultyLevel, int life, int floatingBomb, int invisibility, int magnetEffect) {
+void SpecialCollectable::populatePatterns(int difficultyLevel, int life, int floatingBomb, int invisibility, int magnetEffect, int gaps) {
     // Floating Bomb: 8
     for (int i = 0; i < floatingBomb; ++i) {
         _specialCollectableTypes.push_back(CATEGORY_BITMASK_COLLECT_BOMB);
@@ -36,6 +36,11 @@ void SpecialCollectable::populatePatterns(int difficultyLevel, int life, int flo
     for (int i = 0; i < magnetEffect; ++i) {
         _specialCollectableTypes.push_back(CATEGORY_BITMASK_MAGNET);
     }
+    
+    // gaps: give some gap (blank floating item)
+    for (int i = 0; i < gaps; ++i) {
+        _specialCollectableTypes.push_back(CATEGORY_BITMASK_NOTHING);
+    }
 }
 
 void SpecialCollectable::initPatterns(int difficultyLevel) {
@@ -45,19 +50,19 @@ void SpecialCollectable::initPatterns(int difficultyLevel) {
         case 2:    // no special collectables
             break;
         case 3:    // introducint "life"
-            populatePatterns(difficultyLevel, totalNumberOfCollectables * 1.0, 0, 0, 0);
+            populatePatterns(difficultyLevel, totalNumberOfCollectables * 0.5, 0, 0, 0, totalNumberOfCollectables * 0.5);
             break;
-        case 4:    // life + floating bomb (50% each)
-            populatePatterns(difficultyLevel, totalNumberOfCollectables * 0.5, totalNumberOfCollectables * 0.5, 0, 0);
+        case 4:    // life(65) + floating bomb(35%)
+            populatePatterns(difficultyLevel, totalNumberOfCollectables * 0.4, totalNumberOfCollectables * 0.3, 0, 0, totalNumberOfCollectables * 0.3);
             break;
-        case 5:    // life(33%) + floating bomb(33%) + invisibility(0) + magnet effect(33%)
-            populatePatterns(difficultyLevel, totalNumberOfCollectables * 0.33, totalNumberOfCollectables * 0.33, 0, totalNumberOfCollectables * 0.33);            
+        case 5:    // life(45%) + floating bomb(25%) + invisibility(0) + magnet effect(30%)
+            populatePatterns(difficultyLevel, totalNumberOfCollectables * 0.4, totalNumberOfCollectables * 0.2, 0, totalNumberOfCollectables * 0.3, totalNumberOfCollectables * 0.1);
             break;
-        case 6:   // life(33%) + floating bomb(33%) + invisibility(33%) + magnet effect(0)
-            populatePatterns(difficultyLevel, totalNumberOfCollectables * 0.33, totalNumberOfCollectables * 0.33, totalNumberOfCollectables * 0.33, 0);
+        case 6:   // life(40%) + floating bomb(30%) + invisibility(20%) + magnet effect(0)
+            populatePatterns(difficultyLevel, totalNumberOfCollectables * 0.4, totalNumberOfCollectables * 0.3, totalNumberOfCollectables * 0.2, 0, totalNumberOfCollectables * 0.1);
             break;
-        case 7:    // Infinite Stage (life + floating bomb + invisibility + magnet effect (25% each))
-            populatePatterns(difficultyLevel, totalNumberOfCollectables * 0.25, totalNumberOfCollectables * 0.25, totalNumberOfCollectables * 0.25, totalNumberOfCollectables * 0.25);
+        case 7:    // Infinite Stage (life + floating bomb + invisibility + magnet effect (20% each))
+            populatePatterns(difficultyLevel, totalNumberOfCollectables * 0.25, totalNumberOfCollectables * 0.15, totalNumberOfCollectables * 0.2, totalNumberOfCollectables * 0.2, totalNumberOfCollectables * 0.2);
             break;
         default:
             break;
@@ -69,6 +74,10 @@ void SpecialCollectable::spawn(cocos2d::Layer* layer, std::vector<Sprite*>& spec
     if (_specialCollectableTypes.empty()) { return; }
     
     int type = _specialCollectableTypes.at(currentCollectableIndex++ % _specialCollectableTypes.size());
+    if (type == 0) {
+        // give some gap (blank floating item)
+        return;
+    }
 
     Sprite* bonusCollectable = Sprite::create(String::createWithFormat("specialcollectable%i.png", type)->getCString());
     if (not bonusCollectable) { return; }

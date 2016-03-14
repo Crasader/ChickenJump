@@ -7,12 +7,12 @@
 
 #include "Chicken.h"
 #include "Collectable.h"
-#include "GameOverLayer.h"
+#include "GameOverHUD.h"
 #include "LayerBackground.h"
 #include "LayerGround.h"
 #include "LayerTwo.h"
-#include "PauseLayer.h"
-#include "ScoreLayer.h"
+#include "PauseHUD.h"
+#include "ScoreHUD.h"
 #include "SpecialCollectable.h"
 #include "Stage.h"
 #include "Trampoline.h"
@@ -40,6 +40,7 @@ public:
 
     static GameLayer* getInstance();
     Stage getStage();
+    std::shared_ptr<Chicken> getChicken() { return _chicken; }
     void pauseGame(cocos2d::Ref const* sender);
     void resumeClicked(cocos2d::Ref const* sender);
     void resumeGame(cocos2d::Ref const* sender);
@@ -74,7 +75,7 @@ private:
     void elapsedTime(float tick);
     void endOfStage();
     void focusOnCharacter();
-    void gameOver(bool hasStageFinished);
+    void gameOver(int stageCompletionPercentage);
     void handleCollectableConsumption(cocos2d::Sprite* collectable);
     void initScoreHUDLives();
     void jump(float trampolinePositionY);
@@ -82,6 +83,7 @@ private:
     void releaseTouch();
     void removeCollectable(cocos2d::Sprite* collectable);
     void removeSpecialCollectable(cocos2d::Sprite* collectable);
+    void showUnlockedItem(Stage const& stage);
     void spawnCloud(float dt);
     void spawnCollectable();
     void spawnSpecialObject();
@@ -106,15 +108,16 @@ private:
     GameState _state;
     Sequence* _sequence;
 
-    GameOverLayer* _gameOverHUD;
-    PauseLayer* _pauseHUD;
-    ScoreLayer* _scoreHUD;
+    GameOverHUD* _gameOverHUD;
+    PauseHUD* _pauseHUD;
+    ScoreHUD* _scoreHUD;
     std::shared_ptr<Collectable> _collectable;
     std::shared_ptr<SpecialCollectable> _specialCollectable;
     int _totalEggs;
     int _totalPizzas;
 
     cocos2d::Sprite* _finger;
+    cocos2d::Sprite* _unlockedItem;
     cocos2d::Label* _loading;
     cocos2d::Menu* _pauseMenu;
     int _score;

@@ -6,7 +6,6 @@
 #include "Cloud.h"
 #include "Constants.h"
 #include "Collectable.h"
-#include "ScoreLayer.h"
 #include "Stage.h"
 #include "SoundManager.h"
 #include "SpecialCollectable.h"
@@ -20,7 +19,11 @@ const std::string imageFinger_1 = "finger_1.png";
 const std::string imageFinger_2 = "finger_2.png";
 const std::string imageExplosion = "explosion.png";
 const std::string imageProgressBar = "progress.png";
-const std::string imageLoadingWheel = "loading.png";
+const std::string imageUnlockedItem_pizza = "unlockeditem_pizza.png";
+const std::string imageUnlockedItem_staticBomb = "unlockeditem_staticbomb.png";
+const std::string imageUnlockedItem_floatingBomb = "unlockeditem_floatingbomb.png";
+const std::string imageUnlockedItem_magnetEffect = "unlockeditem_magneteffect.png";
+const std::string imageUnlockedItem_invisibility = "unlockeditem_invisibility.png";
 
 const std::string magnetized = "magnetized";
 
@@ -46,25 +49,25 @@ Scene* GameLayer::createScene(Stage const& stage)
 
     // add Score HUD
     {
-        ScoreLayer* scoreLayer = ScoreLayer::create();
-        scene->addChild(scoreLayer);
-        layer->_scoreHUD = scoreLayer;
+        ScoreHUD* scoreHUD = ScoreHUD::create();
+        scene->addChild(scoreHUD);
+        layer->_scoreHUD = scoreHUD;
     }
 
     // add the Pause HUD Layer
     {
-        PauseLayer* pauseLayer = PauseLayer::create();
-        scene->addChild(pauseLayer);
-        pauseLayer->setVisible(false);
-        layer->_pauseHUD = pauseLayer;
+        PauseHUD* pauseHUD = PauseHUD::create();
+        scene->addChild(pauseHUD);
+        pauseHUD->setVisible(false);
+        layer->_pauseHUD = pauseHUD;
     }
 
     // add GameOver HUD Layer
     {
-        GameOverLayer* gameOverLayer = GameOverLayer::create();
-        scene->addChild(gameOverLayer);
-        gameOverLayer->setVisible(false);
-        layer->_gameOverHUD = gameOverLayer;
+        GameOverHUD* gameOverHUD = GameOverHUD::create();
+        scene->addChild(gameOverHUD);
+        gameOverHUD->setVisible(false);
+        layer->_gameOverHUD = gameOverHUD;
     }
 
     // return the scene
@@ -100,7 +103,11 @@ bool GameLayer::init()
     _state = GameState::init;
     Trampoline::isDrawingOngoing = false;   // new trampoline drawing can begin
 
-    _stageLength = _stageRemaining = _visibleSize.width * STAGE_LENGTH;  // _visibleSize.width: 480.000
+    _stageLength = _stageRemaining = _visibleSize.width * STAGE_LENGTH;
+    if (getStage().getName() == StageStatus::netherlands) {
+        // since NL has invisibility, the length should be longer
+        _stageLength = _stageRemaining = _visibleSize.width * STAGE_LENGTH * 1.5;
+    }
     _distanceForNewCollectables = _visibleSize.width * 0.5; // moving ahead first collectable spwaning
 
     // this determines when to make a bomb/life fall.
@@ -139,6 +146,8 @@ bool GameLayer::init()
     }
     
     // Add tutorial once resource loading is complete
+    
+    // Show unlocked item
     
     
     // Loading
@@ -189,6 +198,8 @@ void GameLayer::onEnterTransitionDidFinish() {
         
         // add tutorial
         addTutorial();
+        
+        showUnlockedItem(getStage());
     }
 }
 
@@ -216,11 +227,11 @@ void GameLayer::addContactListners() {
 
 void GameLayer::addExplosionEffect() {
     // Explosion Effect
-    ParticleExplosion* explosion = ParticleExplosion::createWithTotalParticles(66);
+    ParticleExplosion* explosion = ParticleExplosion::createWithTotalParticles(50);
     explosion->setTexture(Director::getInstance()->getTextureCache()->addImage(imageExplosion));
     explosion->setStartColor(Color4F::YELLOW);
     explosion->setEndColor(Color4F::YELLOW);
-    explosion->setScale(0.75);
+    explosion->setScale(0.5);
     explosion->setSpeed(5);
     explosion->setPosition(_chicken->getPosition());
     this->addChild(explosion, BackgroundLayer::layerTouch);
@@ -245,7 +256,7 @@ void GameLayer::addGroundLayer() {
 }
 
 void GameLayer::addLoadingWheel() {
-    _loading = Label::createWithTTF("Loading...", font, _visibleSize.height * SCORE_FONT_SIZE);
+    _loading = Label::createWithTTF("Loading...", font, _visibleSize.height * SCORE_FONT_SIZE_BIG);
     
     if (not _loading) { return; }
 
@@ -304,7 +315,7 @@ void GameLayer::addTutorial() {
         _finger->setPosition(Vec2(_visibleSize.width * 0.20, _finger->getPositionY()));
         _finger->setTexture(imageFinger_1);
     });
-    auto delay = DelayTime::create(0.25f);
+    auto delay = DelayTime::create(0.3);
     auto seq = Sequence::create(delay, click, delay, draw, delay, reset, NULL);
     auto tutorial = RepeatForever::create((ActionInterval*)seq);
     _finger->runAction(tutorial);
@@ -359,11 +370,11 @@ void GameLayer::focusOnCharacter() {
     }
 }
 
-void GameLayer::gameOver(bool hasStageFinished) {
+void GameLayer::gameOver(int stageCompletionPercentage) {
     _state = GameState::terminate; // set gamestate as terminate to stop schedule update
     
     // Game over score and others
-    _gameOverHUD->setup(_stage, _score, _totalEggs, _collectedPizzas, _totalPizzas, _elapsedTime, hasStageFinished);
+    _gameOverHUD->setup(_stage, _score, _totalEggs, _collectedPizzas, _totalPizzas, _elapsedTime, stageCompletionPercentage);
     _gameOverHUD->setVisible(true);
     _pauseMenu->setVisible(false);
 }
@@ -384,21 +395,22 @@ void GameLayer::handleCollectableConsumption(Sprite* collectable) {
             break;
         }
         case 4: {    // scrolling pizza
-            _chicken->increaseSpriteSize();
+            _chicken->increaseSize();
             ++_collectedPizzas;
 
-            {// delay + decreaseSize + delay + decreaseSize + delay + decreaseSizeToNormal
-                auto callback = CallFunc::create([this]() {
-                    _chicken->resetSizeAndWeight();
-                } );
+            {// delay(3s) + {decreaseSize + delay(0.5s)}
+                auto decreaseSize = CallFunc::create([this]() {
+                    _chicken->decreaseSize();
+                });
+                
+                auto delay = DelayTime::create(0.5);
 
-                auto delay = DelayTime::create(3.0f);
-
-                _chicken->getChicken()->stopAction(_sequence);
-                _sequence = Sequence::create(delay,
-                                             ScaleTo::create(2.0f, 1.0f),
-                                             callback,
-                                             NULL);
+                if (_sequence) { _chicken->getChicken()->stopAction(_sequence); }
+                _sequence = Sequence::create(DelayTime::create(3.0f),
+                                             decreaseSize, delay,
+                                             decreaseSize, delay,
+                                             decreaseSize, delay,
+                                             decreaseSize, NULL);
                 _chicken->getChicken()->runAction(_sequence);
             }
 
@@ -447,11 +459,7 @@ void GameLayer::handleCollectableConsumption(Sprite* collectable) {
             SoundManager::Play(SoundManager::soundLifeup);
             _scoreHUD->startStopwatch(2);
             
-            this->stopActionByTag(2); // reset
-            auto makeVisible = CallFunc::create([this](){ _chicken->makeVisible(); });
-            auto seq = Sequence::create(DelayTime::create(EFFECT_DURATION + 1), makeVisible, NULL);
-            seq->setTag(2); // invisibility tag: 2
-            this->runAction(seq);
+            // ScoreLayer makes our chicken back to normal once the sandwatch is over
             
             break;
         }
@@ -464,11 +472,7 @@ void GameLayer::handleCollectableConsumption(Sprite* collectable) {
             SoundManager::Play(SoundManager::soundLifeup);
             _scoreHUD->startStopwatch(1);
             
-            this->stopActionByTag(1); // reset
-            auto disableEffect = CallFunc::create([this](){ _chicken->setMagnetEffect(false); });
-            auto seq = Sequence::create(DelayTime::create(EFFECT_DURATION + 1), disableEffect, NULL);
-            seq->setTag(1); // magnet_effect tag: 1
-            this->runAction(seq);
+            // ScoreLayer resets magnet effect once the sandwatch is over
             
             break;
         }
@@ -594,6 +598,37 @@ void GameLayer::releaseTouch() {
     _lineStartPoint = _lineEndPoint;
 }
 
+void GameLayer::showUnlockedItem(Stage const& stage) {
+    if (stage.isPlayed()) return;
+    
+    if (stage.getName() == StageStatus::england) {
+        _unlockedItem = nullptr;
+    }
+    if (stage.getName() == StageStatus::italy) {
+        _unlockedItem = Sprite::create(imageUnlockedItem_pizza);
+    }
+    if (stage.getName() == StageStatus::france) {
+        _unlockedItem = Sprite::create(imageUnlockedItem_staticBomb);
+    }
+    if (stage.getName() == StageStatus::germany) {
+        _unlockedItem = Sprite::create(imageUnlockedItem_floatingBomb);
+    }
+    if (stage.getName() == StageStatus::spain) {
+        _unlockedItem = Sprite::create(imageUnlockedItem_magnetEffect);
+    }
+    if (stage.getName() == StageStatus::netherlands) {
+        _unlockedItem = Sprite::create(imageUnlockedItem_invisibility);
+    }
+    if (stage.getName() == StageStatus::infinite) {
+        _unlockedItem = nullptr;
+    }
+
+    if (not _unlockedItem) { return; }
+    
+    _unlockedItem->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.6);
+    this->addChild(_unlockedItem, BackgroundLayer::layerChicken);
+}
+
 void GameLayer::spawnCollectable() {
     if (_state != GameState::started) { return; }
 
@@ -653,8 +688,16 @@ bool GameLayer::onTouchBegan(Touch const* touch, Event const* event) {
     // disable the tutorial
     if (_state == GameState::init) {
         _state = GameState::started;
-        _finger->stopAllActions();
-        this->removeChild(_finger);
+        
+        if (_finger) {
+            _finger->stopAllActions();
+            this->removeChild(_finger);
+        }
+        
+        // remove unlocked item
+        if (_unlockedItem) {
+            this->removeChild(_unlockedItem);
+        }
 
         _pauseMenu->setVisible(true);
         
@@ -758,14 +801,15 @@ void GameLayer::update(float dt) {
     if (_state == GameState::init or _state == GameState::paused or _state == GameState::terminate) { return; }
     if (not _chicken) { return; }
 
+    // TODO: refactor following two ifs. both calls gameOver() with same param
     if (_state == GameState::finished and _chicken->getPosition().x >= _visibleSize.width) {
         // goto game over scene with state: stage cleared
-        gameOver(true);
+        gameOver(_progressBar ? _progressBar->getPercent() : 0);
     }
 
     if (_chicken->getState() == PlayerState::dying) {
         // goto game over scene with state: stage not cleared
-        gameOver(false);
+        gameOver(_progressBar ? _progressBar->getPercent() : 0);
     }
     else {
         // chicken is alive and game state is ongoing

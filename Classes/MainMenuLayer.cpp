@@ -77,7 +77,7 @@ void MainMenuLayer::addBackground() {
 }
 
 void MainMenuLayer::addHeaderLabel()     {
-    Label* selectLavel = Label::createWithTTF("Select Stage", font, _visibleSize.height * SCORE_FONT_SIZE);
+    Label* selectLavel = Label::createWithTTF("Select Stage", font, _visibleSize.height * SCORE_FONT_SIZE_BIG);
     if (selectLavel) {
         selectLavel->setColor(Color3B::WHITE);
         selectLavel->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.9);
@@ -190,10 +190,9 @@ void MainMenuLayer::addStages() {
 }
 
 
-static Size smallResource  = Size(480, 320); // "small"
+static Size smallResource  = Size(512, 384); // "small"
 static Size mediumResource = Size(1024, 768); // "mid"
 static Size largeResource  = Size(2048, 1536); // "big"
-static Size designResolution = Size(480, 320);
 
 void MainMenuLayer::menuSelectSgate(cocos2d::Ref const* sender, Stage const& stage) {
     selectLevel(stage.getName());
@@ -216,6 +215,7 @@ void MainMenuLayer::selectLevel(std::string const& stage) {
         searchPaths.push_back("resource_sd");
         searchPaths.push_back("resource_sd/" + stage);
     }
+    CCLOG("===== Path: %s (MainMenuLayer)", searchPaths.at(0).c_str());
     FileUtils::getInstance()->setSearchPaths(searchPaths);
 }
 

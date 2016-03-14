@@ -1,4 +1,6 @@
 #include "AppDelegate.h"
+
+#include "SimpleAudioEngine.h"
 #include "SplashScreenLayer.h"
 
 using namespace cocos2d;
@@ -29,7 +31,7 @@ static int register_all_packages()
     return 0; //flag for packages manager
 }
 
-static Size smallResource  = Size(640, 480); // "sd"    // previously: 480, 320
+static Size smallResource  = Size(512, 384); // "sd"    // previously: 480, 320 // 640, 480
 static Size mediumResource = Size(1024, 768); // "hd"
 static Size largeResource  = Size(2048, 1536); // "hd2"
 static Size designResolution = Size(1024, 768);
@@ -45,7 +47,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     }
     
     // turn on display FPS
-//    director->setDisplayStats(true);
+    // director->setDisplayStats(true);
     
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0 / 60);
@@ -69,7 +71,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
             searchPaths.push_back("resource_sd");
             director->setContentScaleFactor(smallResource.width / designResolution.width);
         }
-        CCLOG("Path: %s", searchPaths.at(0).c_str());
+        CCLOG("===== Path: %s (AppDelegate)", searchPaths.at(0).c_str());
         auto fileUtils = FileUtils::getInstance();
         fileUtils->setSearchPaths(searchPaths);
     }
@@ -90,7 +92,7 @@ void AppDelegate::applicationDidEnterBackground() {
     Director::getInstance()->stopAnimation();
     
     // if you use SimpleAudioEngine, it must be pause
-    // SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
+    CocosDenshion::SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
 }
 
 // this function will be called when the app is active again
@@ -98,5 +100,5 @@ void AppDelegate::applicationWillEnterForeground() {
     Director::getInstance()->startAnimation();
     
     // if you use SimpleAudioEngine, it must resume here
-    // SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
+    CocosDenshion::SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
 }

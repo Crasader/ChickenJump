@@ -8,6 +8,10 @@ static const std::string soundDead = "dead.wav";
 Chicken::Chicken(void){
     _origin = Director::getInstance()->getVisibleOrigin();
     _visibleSize = Director::getInstance()->getVisibleSize();
+    
+    _chicken = nullptr;
+    _scaleUp = nullptr;
+    _scaleDown = nullptr;
 }
 
 void Chicken::addPhysicsBody() {
@@ -61,12 +65,16 @@ void Chicken::decreaseLife() {
     if (_state == PlayerState::dying) { return; }
 
     --_lives;
+    resetSizeAndWeight();
 }
 
-void Chicken::decreaseSpriteSize() {
-    if (_scale - SCALE_FACTOR <= MIN_SCALE) {
-        auto scaleTo = ScaleTo::create(0.1f, _scale -= SCALE_FACTOR);
-        _chicken->runAction(scaleTo);
+void Chicken::decreaseSize() {
+    if (_scale - SCALE_FACTOR >= MIN_SCALE) {
+        
+        if (_scaleDown) { _chicken->stopAction(_scaleDown); }
+        
+        _scaleDown = ScaleTo::create(0.1f, _scale -= SCALE_FACTOR);
+        _chicken->runAction(_scaleDown);
         decreaseWeight();
     }
 }
@@ -79,7 +87,7 @@ void Chicken::decreaseVectorX() {
 }
 
 void Chicken::decreaseWeight() {
-    if (_weight - SCALE_FACTOR <= MIN_WEIGHT) {
+    if (_weight - SCALE_FACTOR >= MIN_WEIGHT) {
         _weight -= SCALE_FACTOR;
     }
 }
@@ -105,10 +113,12 @@ void Chicken::increaseLife() {
     }
 }
 
-void Chicken::increaseSpriteSize() {
+void Chicken::increaseSize() {
     if (_scale + SCALE_FACTOR <= MAX_SCALE) {
-        auto scaleTo = ScaleTo::create(0.1f, _scale += SCALE_FACTOR);
-        _chicken->runAction(scaleTo);
+        if (_scaleUp) { _chicken->stopAction(_scaleUp); }
+        
+        _scaleUp = ScaleTo::create(0.1f, _scale += SCALE_FACTOR);
+        _chicken->runAction(_scaleUp);
         increaseWeight();
     }
 }
@@ -132,6 +142,12 @@ void Chicken::makeVisible() {
 void Chicken::resetSizeAndWeight() {
     _scale = MIN_SCALE;
     _weight = MIN_WEIGHT;
+    
+    if (_scaleUp) { _chicken->stopAction(_scaleUp); }
+    if (_scaleDown) { _chicken->stopAction(_scaleDown); }
+    
+    _scaleDown = ScaleTo::create(0.1f, _scale);
+    _chicken->runAction(_scaleDown);
 }
 
 void Chicken::setDefaultAnimation() {
