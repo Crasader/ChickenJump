@@ -85,6 +85,7 @@ bool CreditHUD::init()
     addBackButton();
     
     {
+        // Credits
         std::string sixeyes       = "SixEyes Presents";
         std::string chickenjump   = "Chicken Jump";
         std::string developedby   = "- Developed by -";
@@ -124,6 +125,30 @@ bool CreditHUD::init()
         lv->setBounceEnabled(false);
         
         this->addChild(lv, BackgroundLayer::layerChicken);
+    }
+    
+    {
+        // Chicken Sprites
+        Sprite* redChicken = Sprite::create("playerfly_1_red.png");
+        if (redChicken) {
+            redChicken->setPosition(Vec2(_visibleSize.width * 0.3, _visibleSize.height * 0.7));
+            
+            auto rotateTo = RotateTo::create(0.0f, -35.0f);
+            redChicken->runAction(rotateTo);
+
+            this->addChild(redChicken, BackgroundLayer::layerTouch);
+        }
+        
+        Sprite* yellowChicken = Sprite::create("playerfly_1_fliped.png");
+        if (yellowChicken) {
+            yellowChicken->setPosition(Vec2(_visibleSize.width * 0.7, _visibleSize.height * 0.5));
+            
+            auto rotateTo = RotateTo::create(0.0f, 5.0f);
+            yellowChicken->runAction(rotateTo);
+            
+            this->addChild(yellowChicken, BackgroundLayer::layerTouch);
+        }
+
     }
     
     

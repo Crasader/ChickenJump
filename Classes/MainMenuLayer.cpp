@@ -60,15 +60,6 @@ bool MainMenuLayer::init()
     // Page Scroll Buttons, changes image on click
     addPageNavigationButtons();
     
-    {   // DELETE ME
-        auto res = Label::createWithTTF(FileUtils::getInstance()->getSearchPaths().at(0), font, _visibleSize.height * CREDIT_FONT_SIZE_BIG);
-        if (res) {
-            res->setColor(Color3B::ORANGE);
-            res->setPosition(Vec2(_visibleSize.width * 0.5, _visibleSize.height * 0.1));
-            this->addChild(res, BackgroundLayer::layerChicken);
-        }            
-    }
-    
     return true;
 }
 
@@ -86,7 +77,7 @@ void MainMenuLayer::addBackground() {
 }
 
 void MainMenuLayer::addHeaderLabel()     {
-    Label* selectLavel = Label::createWithTTF("Select Stage", font, _visibleSize.height * SCORE_FONT_SIZE);
+    Label* selectLavel = Label::createWithTTF("Select Stage", font, _visibleSize.height * SCORE_FONT_SIZE_BIG);
     if (selectLavel) {
         selectLavel->setColor(Color3B::WHITE);
         selectLavel->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.9);

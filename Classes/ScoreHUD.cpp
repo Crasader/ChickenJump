@@ -139,7 +139,7 @@ void ScoreHUD::tick(int type) {
 }
 
 void ScoreHUD::addScore() {
-    _scoreLabel = Label::createWithTTF("0", font, _visibleSize.height * SCORE_FONT_SIZE);
+    _scoreLabel = Label::createWithTTF("0", font, _visibleSize.height * SCORE_FONT_SIZE_BIG);
     if (not _scoreLabel) { return; }
 
     _scoreLabel->setColor(Color3B::WHITE);

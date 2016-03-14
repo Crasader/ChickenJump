@@ -7,7 +7,6 @@
 
 // FONT
 #define font                            "Marker Felt.ttf"
-//#define font                            "ALBAS.TTF"
 
 // LAYER
 typedef enum
@@ -64,10 +63,6 @@ typedef enum
 #define MIN_SCALE                       1.0
 #define SCALE_FACTOR                    0.25
 
-//#define INITIAL_SPEED                   8
-//#define FORCE_GRAVITY                   1.5
-//#define TERMINAL_VELOCITY               70
-
 // CHICKEN JUMP
 #define VELOCITY_Y_MAX                  0.0130   // 0.008  // ScreenHeight x .008 | .031 = 2.16 | 3.51 (Bigger = Higher)
 #define VELOCITY_Y_DECREASE_RATE        0.0003   // 0.0001 // ScreenHeight x .0001 | .0003 = 0.027 | .081 (Bigger = More)
@@ -96,7 +91,11 @@ typedef enum
 #define COLLECTABLE_SPEED               LAYER_TWO_SPEED
 #define COLLECTABLE_FALLING_SPEED       0.003
 // SCORE LABEL
-#define SCORE_FONT_SIZE                 0.085
+#define SCORE_FONT_SIZE_BIG             0.085
+#define SCORE_FONT_SIZE_MID             0.075
+#define SCORE_FONT_SIZE_SMALL           0.065
+#define SCORE_FONT_SIZE_EXTRA_SMALL     0.045
+
 #define CREDIT_FONT_SIZE_SMALL          0.06
 #define CREDIT_FONT_SIZE_MID            0.085
 #define CREDIT_FONT_SIZE_BIG            0.1

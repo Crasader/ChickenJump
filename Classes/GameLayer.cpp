@@ -256,7 +256,7 @@ void GameLayer::addGroundLayer() {
 }
 
 void GameLayer::addLoadingWheel() {
-    _loading = Label::createWithTTF("Loading...", font, _visibleSize.height * SCORE_FONT_SIZE);
+    _loading = Label::createWithTTF("Loading...", font, _visibleSize.height * SCORE_FONT_SIZE_BIG);
     
     if (not _loading) { return; }
 
@@ -315,7 +315,7 @@ void GameLayer::addTutorial() {
         _finger->setPosition(Vec2(_visibleSize.width * 0.20, _finger->getPositionY()));
         _finger->setTexture(imageFinger_1);
     });
-    auto delay = DelayTime::create(0.25f);
+    auto delay = DelayTime::create(0.3);
     auto seq = Sequence::create(delay, click, delay, draw, delay, reset, NULL);
     auto tutorial = RepeatForever::create((ActionInterval*)seq);
     _finger->runAction(tutorial);
