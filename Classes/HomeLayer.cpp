@@ -4,6 +4,8 @@
 #include "SimpleAudioEngine.h"
 #include "StageStatus.h"
 
+#include "SonarFrameworks.h"
+
 using namespace cocos2d;
 
 const std::string imageHomeBackground = "home_bg.png";
@@ -71,6 +73,11 @@ bool HomeLayer::init()
     }
     
     this->scheduleUpdate();
+    
+    {
+        // Sonar Framework - Show Ad
+        SonarCocosHelper::AdMob::showBannerAd( SonarCocosHelper::AdBannerPosition::eBottom );
+    }
 
     return true;
 }
