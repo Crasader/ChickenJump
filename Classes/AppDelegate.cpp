@@ -3,6 +3,8 @@
 #include "SimpleAudioEngine.h"
 #include "SplashScreenLayer.h"
 
+#include "SonarFrameworks.h"
+
 using namespace cocos2d;
 
 AppDelegate::AppDelegate() {
@@ -74,6 +76,11 @@ bool AppDelegate::applicationDidFinishLaunching() {
         CCLOG("===== Path: %s (AppDelegate)", searchPaths.at(0).c_str());
         auto fileUtils = FileUtils::getInstance();
         fileUtils->setSearchPaths(searchPaths);
+    }
+    
+    {
+        // Sonar Framework - Init
+        SonarCocosHelper::IOS::Setup();
     }
     
     register_all_packages();
