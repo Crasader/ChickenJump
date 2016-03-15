@@ -17,6 +17,7 @@ static const std::string imageEmptyStar = "star_empty.png";
 static const std::string imageExplosion = "snowflake.png";
 static const std::string imageScoreBoard = "scoreboard.png";
 static const std::string imageTimer = "timer.png";
+static const std::string imageScore = "icon_score.png";
 
 void GameOverHUD::setup(Stage const& stage, int const collectedEggs, int const totalEggs, int const collectedPizzas, int const totalPizzas, int const timeTaken, float const stageCompletionPercentage)
 {
@@ -69,7 +70,7 @@ void GameOverHUD::setup(Stage const& stage, int const collectedEggs, int const t
         if (star) {
             StageStatus::unlockNextStage(_stage);
             
-            if (_btnMainMenu) {
+            if (_btnMainMenu and stage.getName() != StageStatus::infinite) {
                 _btnMainMenu->loadTextureNormal(imageBtnNextStage);
                 _btnMainMenu->loadTexturePressed(imageBtnNextStage);
             }
@@ -95,7 +96,7 @@ bool GameOverHUD::init()
     addScoreBoard();
     addResultSummaryLabel();
     addStars();
-    addEggsLabel();
+    addEggsLogoAndLabel();
     addTimerLogoAndLabel();
     addScoreLabel();
     addHighscoreLabel();
@@ -114,7 +115,7 @@ void GameOverHUD::addScoreBoard() {
 }
 
 void GameOverHUD::addResultSummaryLabel() {
-    _resultSummaryLabel = Label::createWithTTF("", font, _visibleSize.height * SCORE_FONT_SIZE_SMALL);
+    _resultSummaryLabel = Label::createWithTTF("Failed !", font, _visibleSize.height * SCORE_FONT_SIZE_SMALL);
     if (not _resultSummaryLabel) { return; }
     _resultSummaryLabel->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.9);
     this->addChild(_resultSummaryLabel, BackgroundLayer::layerChicken);
@@ -145,11 +146,20 @@ void GameOverHUD::addStars() {
     }
 }
 
-void GameOverHUD::addEggsLabel() {
+void GameOverHUD::addEggsLogoAndLabel() {
+    // Egg Sprite
+    _scoreSprite = Sprite::create(imageScore);
+    if (_scoreSprite) {
+        _scoreSprite->setPosition(Vec2(_visibleSize.width * 0.465, _visibleSize.height * 0.51));
+        this->addChild(_scoreSprite, BackgroundLayer::layerBackground);
+    }
+    
+    // Egg Label
     _eggsLabel = Label::createWithTTF("", font, _visibleSize.height * SCORE_FONT_SIZE_SMALL);
-    if (not _eggsLabel) { return; }
-    _eggsLabel->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.5);
-    this->addChild(_eggsLabel, BackgroundLayer::layerChicken);
+    if (_eggsLabel) {
+        _eggsLabel->setPosition(_visibleSize.width * 0.525, _visibleSize.height * 0.5);
+        this->addChild(_eggsLabel, BackgroundLayer::layerChicken);
+    }
 }
 
 void GameOverHUD::addTimerLogoAndLabel() {
@@ -163,7 +173,6 @@ void GameOverHUD::addTimerLogoAndLabel() {
     // Timer Label
     _timeLabel = Label::createWithTTF("", font, _visibleSize.height * SCORE_FONT_SIZE_SMALL);
     if (_timeLabel) {
-        _timeLabel->setColor(Color3B::WHITE);
         _timeLabel->setPosition(_visibleSize.width * 0.54, _visibleSize.height * 0.4);
         this->addChild(_timeLabel, BackgroundLayer::layerChicken);
     }
@@ -287,12 +296,8 @@ int GameOverHUD::calculateStar(std::string const& stageName, int score) {
 
 void GameOverHUD::prepare(int score, int collectedEggs, int totalEggs, int timeTaken, int star, bool isNewHighscore, bool isStageClear) {
     if (not isStageClear) {
-        // Failed
-        if (_resultSummaryLabel) {
-            _resultSummaryLabel->setString("Failed !");
-            _resultSummaryLabel->setColor(Color3B::WHITE);
-        }
         
+        if (_scoreSprite)    { _scoreSprite->setVisible(false); }
         if (_eggsLabel)      { _eggsLabel->setVisible(false); }
         if (_timeLabel)      { _timeLabel->setVisible(false); }
         if (_timerSprite)    { _timerSprite->setVisible(false); }
@@ -309,8 +314,9 @@ void GameOverHUD::prepare(int score, int collectedEggs, int totalEggs, int timeT
     
     // EGGS
     if (_eggsLabel) {
-        std::string str = String::createWithFormat("Eggs: %d/%d", collectedEggs, totalEggs)->getCString();
-        _eggsLabel->setString(str);
+        std::string eggByTotal = String::createWithFormat("%d/%d", collectedEggs, totalEggs)->getCString();
+        std::string eggs = String::createWithFormat("%d", collectedEggs)->getCString();
+        _eggsLabel->setString((_stage.getName() == StageStatus::infinite) ? eggs : eggByTotal);
     }
     
     // TIME
@@ -333,7 +339,8 @@ void GameOverHUD::prepare(int score, int collectedEggs, int totalEggs, int timeT
         if (isNewHighscore) {
             _highscoreLabel->setColor(Color3B::ORANGE);
             str = String::createWithFormat("New Highscore: %d", _stage.getHighScore())->getCString();
-            addFirework();
+
+            if (star) { addFirework(); }
         }
 
         _highscoreLabel->setString(str);
@@ -342,8 +349,8 @@ void GameOverHUD::prepare(int score, int collectedEggs, int totalEggs, int timeT
     // STAR
     if (_stage.getName() != StageStatus::infinite) {
 
-        // Summary
-        if (_resultSummaryLabel) {
+        // Summary ( Stage Clear !!! )
+        if (_resultSummaryLabel and star) {
             _resultSummaryLabel->setString("Stage Clear");
             _resultSummaryLabel->setColor(Color3B::ORANGE);
         }

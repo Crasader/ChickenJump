@@ -16,7 +16,7 @@ public:
     void setup(Stage const& stage, int const score, int const totalEggs, int const collectedPizzas, int const totalPizzas, int const timeTaken, float const stageCompletionPercentage);
 
 private:
-    void addEggsLabel();
+    void addEggsLogoAndLabel();
     void addFirework();
     void addHighscoreLabel();
     void addMainMenu();
@@ -37,6 +37,7 @@ private:
     
     cocos2d::Sprite* _scoreBoard;
     cocos2d::Sprite* _timerSprite;
+    cocos2d::Sprite* _scoreSprite;
     
     cocos2d::Label* _resultSummaryLabel;
     cocos2d::Label* _eggsLabel;
