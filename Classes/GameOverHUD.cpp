@@ -150,14 +150,14 @@ void GameOverHUD::addEggsLogoAndLabel() {
     // Egg Sprite
     _scoreSprite = Sprite::create(imageScore);
     if (_scoreSprite) {
-        _scoreSprite->setPosition(Vec2(_visibleSize.width * 0.465, _visibleSize.height * 0.51));
+        _scoreSprite->setPosition(Vec2(_visibleSize.width * 0.45, _visibleSize.height * 0.51));
         this->addChild(_scoreSprite, BackgroundLayer::layerBackground);
     }
     
     // Egg Label
     _eggsLabel = Label::createWithTTF("", font, _visibleSize.height * SCORE_FONT_SIZE_SMALL);
     if (_eggsLabel) {
-        _eggsLabel->setPosition(_visibleSize.width * 0.525, _visibleSize.height * 0.5);
+        _eggsLabel->setPosition(_visibleSize.width * 0.54, _visibleSize.height * 0.5);
         this->addChild(_eggsLabel, BackgroundLayer::layerChicken);
     }
 }
