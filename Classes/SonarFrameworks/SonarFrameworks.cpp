@@ -286,17 +286,16 @@ void Mopub::showFullscreenAd( )
 //
 // AdMob
 //
-void AdMob::showBannerAd()
+void AdMob::showBannerAd()      // Show CenterBannerAd (typically 300x250)
 {
 #if(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-//    return JniHelpers::jniCommonVoidCall(
-//               "ShowBannerAd",
-//               CLASS_NAME,
-//               AdBannerPosition::eTop);
+    return JniHelpers::jniCommonVoidCall(
+               "ShowBannerAd",
+               CLASS_NAME);
 #elif(CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
         #if SCH_IS_AD_MOB_ENABLED == true
     
-    IOSCPPHelper::showAdMobBanner();    // Show CenterBannerAd (typically 300x250)
+    IOSCPPHelper::showAdMobBanner();
 #endif
 	#endif
 }
@@ -316,16 +315,16 @@ void AdMob::showBannerAd(int position)
 	#endif
 }
 
-void AdMob::hideBannerAd()
+void AdMob::hideBannerAd()      // Hide CenterBannerAd (typically 300x250)
 {
 #if(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-//    return JniHelpers::jniCommonVoidCall(
-//               "HideBannerAd",
-//               CLASS_NAME);
+    return JniHelpers::jniCommonVoidCall(
+               "HideBannerAd",
+               CLASS_NAME);
 #elif(CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
         #if SCH_IS_AD_MOB_ENABLED == true
 
-    IOSCPPHelper::hideAdMobBanner(); // Hide CenterBannerAd (typically 300x250)
+    IOSCPPHelper::hideAdMobBanner();
 #endif
 	#endif
 }

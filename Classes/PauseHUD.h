@@ -13,7 +13,7 @@ public:
     
 private:
     void createMenus();
-    void createAdLayout();
+    
     void addResumeButton();
     void addRestartButton();
     void addMainMenuButton();
@@ -31,7 +31,6 @@ private:
     cocos2d::ui::Button* _btnMainMenu;
     cocos2d::ui::Button* _btnSoundToggle;
     cocos2d::ui::Button* _btnMusicToggle;
-    cocos2d::ui::Layout* _ad;
     
     cocos2d::Vec2 _origin;
     cocos2d::Size _visibleSize;

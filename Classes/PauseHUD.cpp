@@ -33,7 +33,6 @@ bool PauseHUD::init()
     this->setPosition(0, 0);
     
     createMenus();
-    createAdLayout();
 
     return true;
 }
@@ -63,18 +62,6 @@ void PauseHUD::createMenus() {
                          (_visibleSize.height - lv->getContentSize().height) * 0.5));
     lv->setBounceEnabled(false);
     this->addChild(lv);
-}
-
-void PauseHUD::createAdLayout() {
-    _ad = Layout::create();
-    _ad->setContentSize(Size(_visibleSize.width * 0.75, _visibleSize.height * 0.75));
-    _ad->setPosition(Vec2((_visibleSize.width - _ad->getContentSize().width) * 0.5,
-                        (_visibleSize.height - _ad->getContentSize().height) * 0.5));
-    _ad->setBackGroundColorType(cocos2d::ui::Layout::BackGroundColorType::SOLID);
-    _ad->setBackGroundColor(Color3B::GRAY);
-    _ad->setBackGroundColorOpacity(128);
-
-    this->addChild(_ad);
 }
 
 void PauseHUD::addResumeButton() {
