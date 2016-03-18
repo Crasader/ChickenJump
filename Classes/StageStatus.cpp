@@ -13,6 +13,9 @@ const std::string StageStatus::italy = "IT";
 const std::string StageStatus::netherlands = "NL";
 const std::string StageStatus::infinite = "INFINITE";
 
+// Extra attribute to maintain fullscreen ad counter
+unsigned int StageStatus::_fullscreenAdCounter = 1;
+
 void StageStatus::createFreshStages() {
     // name, imagefile, clicked_image, locked_image, difficulty, score, highScore, star, isunlocked, isPlayed
     saveStage(Stage(england, "UK.png", "UK_clicked.png", "UK_locked.png",     1, 0, 0, 0, true, false));
@@ -85,6 +88,12 @@ void StageStatus::unlockNextStage(Stage const& currentStage) {
             unlockStage(stages.at(i + 1));
         }
     }
+}
+
+
+// Extra attribute to maintain fullscreen ad counter
+int StageStatus::incrementFullscreenAdCounter() {
+    return ++_fullscreenAdCounter % 5;  // FULLSCREEN AD FREQUENCY = 5
 }
 
 

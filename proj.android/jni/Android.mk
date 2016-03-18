@@ -34,9 +34,13 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
                    ../../Classes/SettingsMenuHUD.cpp \
                    ../../Classes/BackButton.cpp \
                    ../../Classes/SoundManager.cpp \
-                   ../../Classes/CreditLayer.cpp
+                   ../../Classes/CreditLayer.cpp \
+                   ../../Classes/SonarFrameworks/SonarFrameworks.cpp \
+                   ../../Classes/JNIHelper/JNIHelpers.cpp
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes \
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes/SonarFrameworks \
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes/JNIHelper \
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../cocos2d/cocos/ui
 
 # _COCOS_HEADER_ANDROID_BEGIN

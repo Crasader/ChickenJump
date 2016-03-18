@@ -124,6 +124,8 @@
 		D5A686A31C98C892000E0E3C /* IOSHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D5A6869C1C98C892000E0E3C /* IOSHelper.m */; };
 		D5A686A41C98C892000E0E3C /* IOSResults.mm in Sources */ = {isa = PBXBuildFile; fileRef = D5A6869E1C98C892000E0E3C /* IOSResults.mm */; };
 		D5A686A51C98C892000E0E3C /* SonarFrameworks.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5A686A01C98C892000E0E3C /* SonarFrameworks.cpp */; };
+		D5A9CEA21C9C513D00C025C4 /* menu.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D5A9CEA01C9C513D00C025C4 /* menu.mp3 */; };
+		D5A9CEA31C9C513D00C025C4 /* gameplay.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D5A9CEA11C9C513D00C025C4 /* gameplay.mp3 */; };
 		D5BDF2E91B8647EF002A11C2 /* MainMenuLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5BDF2E81B8647EF002A11C2 /* MainMenuLayer.cpp */; };
 		D5BDF2EA1B8647EF002A11C2 /* MainMenuLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5BDF2E81B8647EF002A11C2 /* MainMenuLayer.cpp */; };
 		D5BDFD141B8FB5000031AE1B /* LayerTwo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5BDFD121B8FB5000031AE1B /* LayerTwo.cpp */; };
@@ -288,6 +290,8 @@
 		D5A6869F1C98C892000E0E3C /* SCHDefinitions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDefinitions.h; path = SonarFrameworks/SCHDefinitions.h; sourceTree = "<group>"; };
 		D5A686A01C98C892000E0E3C /* SonarFrameworks.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SonarFrameworks.cpp; path = SonarFrameworks/SonarFrameworks.cpp; sourceTree = "<group>"; };
 		D5A686A11C98C892000E0E3C /* SonarFrameworks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SonarFrameworks.h; path = SonarFrameworks/SonarFrameworks.h; sourceTree = "<group>"; };
+		D5A9CEA01C9C513D00C025C4 /* menu.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = menu.mp3; sourceTree = "<group>"; };
+		D5A9CEA11C9C513D00C025C4 /* gameplay.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gameplay.mp3; sourceTree = "<group>"; };
 		D5BDF2E71B8647EF002A11C2 /* MainMenuLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuLayer.h; sourceTree = "<group>"; };
 		D5BDF2E81B8647EF002A11C2 /* MainMenuLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MainMenuLayer.cpp; sourceTree = "<group>"; };
 		D5BDFD121B8FB5000031AE1B /* LayerTwo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LayerTwo.cpp; sourceTree = "<group>"; };
@@ -435,6 +439,8 @@
 			isa = PBXGroup;
 			children = (
 				D528C11B1C7D155B00BDCB41 /* Images.xcassets */,
+				D5A9CEA01C9C513D00C025C4 /* menu.mp3 */,
+				D5A9CEA11C9C513D00C025C4 /* gameplay.mp3 */,
 				D5548C1C1C13003900C1C86C /* explosion.wav */,
 				D5548C2E1C147E2900C1C86C /* dead.wav */,
 				D57CF0321B996DD600987F3E /* jump.wav */,
@@ -710,6 +716,7 @@
 				50EF62A317ECD613001EB2F8 /* Icon-50.png in Resources */,
 				5087E78017EB970100C73F5D /* Icon-114.png in Resources */,
 				50EF62A217ECD613001EB2F8 /* Icon-29.png in Resources */,
+				D5A9CEA31C9C513D00C025C4 /* gameplay.mp3 in Resources */,
 				50EF629617ECD46A001EB2F8 /* Icon-40.png in Resources */,
 				D5548C321C1481FA00C1C86C /* pickup_coin.wav in Resources */,
 				5087E78217EB970100C73F5D /* Icon-144.png in Resources */,
@@ -717,6 +724,7 @@
 				D5548C1D1C13003900C1C86C /* explosion.wav in Resources */,
 				D5548C2F1C147E2900C1C86C /* dead.wav in Resources */,
 				50EF629817ECD46A001EB2F8 /* Icon-80.png in Resources */,
+				D5A9CEA21C9C513D00C025C4 /* menu.mp3 in Resources */,
 				5087E78417EB970100C73F5D /* Icon-57.png in Resources */,
 				5087E77E17EB970100C73F5D /* Default.png in Resources */,
 				521A8E6419F0C34300D177D7 /* Default-667h@2x.png in Resources */,

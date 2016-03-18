@@ -46,3 +46,6 @@ cocos2d/cocos/platform/android/java/gen
 ChickenJump.xccheckout
 .project
 .cproject
+
+bin/
+

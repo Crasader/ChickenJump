@@ -10,6 +10,8 @@
 #include "SoundManager.h"
 #include "SpecialCollectable.h"
 
+#include "SonarFrameworks.h"
+
 using namespace cocos2d;
 
 const std::string imageScore = "score.png";
@@ -117,6 +119,9 @@ bool GameLayer::init()
     _collectedPizzas = 0;
     _totalEggs = 0;
     _totalPizzas = 0;
+    
+    // Background Music
+    SoundManager::PlayBackgroundMusic(SoundManager::gameplayMusic);
     
     // add static background for the infinite stage
     if (_stage.getName() == StageStatus::infinite) {
@@ -373,6 +378,13 @@ void GameLayer::focusOnCharacter() {
 void GameLayer::gameOver(int stageCompletionPercentage) {
     _state = GameState::terminate; // set gamestate as terminate to stop schedule update
     
+    {
+        // Sonar Framework - Show Ad
+        if (not StageStatus::incrementFullscreenAdCounter()) {
+            SonarCocosHelper::AdMob::showFullscreenAd();
+        }
+    }
+    
     // Game over score and others
     _gameOverHUD->setup(_stage, _score, _totalEggs, _collectedPizzas, _totalPizzas, _elapsedTime, stageCompletionPercentage);
     _gameOverHUD->setVisible(true);
@@ -513,6 +525,12 @@ void GameLayer::lastLifeExploded() {
 
 void GameLayer::pauseGame(cocos2d::Ref const* sender) {
     if (_state != GameState::started) { return; }
+    
+    {
+        // Sonar Framework - Show CenterBannerAd (typically 300x250)
+        SonarCocosHelper::AdMob::showBannerAd();
+    }
+
 
     Director::getInstance()->pause();
     _state = GameState::paused;
@@ -527,6 +545,11 @@ void GameLayer::resumeClicked(cocos2d::Ref const* sender) {
     // then a callback to set GameState and others.
 
     if (_state != GameState::paused) { return; }
+    
+    {
+        // Sonar Framework - Hide CenterBannerAd (typically 300x250)
+        SonarCocosHelper::AdMob::hideBannerAd();
+    }
 
     _pauseHUD->setVisible(false);
     Director::getInstance()->resume();

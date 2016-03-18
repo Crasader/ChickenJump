@@ -7,6 +7,8 @@
 #include "MainMenuLayer.h"
 #include "SoundManager.h"
 
+#include "SonarFrameworks.h"
+
 using namespace cocos2d;
 using namespace cocos2d::ui;
 
@@ -31,7 +33,6 @@ bool PauseHUD::init()
     this->setPosition(0, 0);
     
     createMenus();
-    createAdLayout();
 
     return true;
 }
@@ -61,18 +62,6 @@ void PauseHUD::createMenus() {
                          (_visibleSize.height - lv->getContentSize().height) * 0.5));
     lv->setBounceEnabled(false);
     this->addChild(lv);
-}
-
-void PauseHUD::createAdLayout() {
-    _ad = Layout::create();
-    _ad->setContentSize(Size(_visibleSize.width * 0.75, _visibleSize.height * 0.75));
-    _ad->setPosition(Vec2((_visibleSize.width - _ad->getContentSize().width) * 0.5,
-                        (_visibleSize.height - _ad->getContentSize().height) * 0.5));
-    _ad->setBackGroundColorType(cocos2d::ui::Layout::BackGroundColorType::SOLID);
-    _ad->setBackGroundColor(Color3B::GRAY);
-    _ad->setBackGroundColorOpacity(128);
-
-    this->addChild(_ad);
 }
 
 void PauseHUD::addResumeButton() {
@@ -121,6 +110,11 @@ void PauseHUD::addMusicButton() {
 void PauseHUD::mainMenuClicked(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType) {
     if (eEventType != ui::Widget::TouchEventType::ENDED) { return; }
     
+    {
+        // Sonar Framework - Hide CenterBannerAd (typically 300x250)
+        SonarCocosHelper::AdMob::hideBannerAd();
+    }
+
     BackButton<MainMenuLayer>* mainMenu = new BackButton<MainMenuLayer>();
     if (not mainMenu) { return; }
     mainMenu->goBack(this);
@@ -129,6 +123,11 @@ void PauseHUD::mainMenuClicked(Ref const* ref, cocos2d::ui::Widget::TouchEventTy
 void PauseHUD::restartClicked(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType) {
     if (eEventType != ui::Widget::TouchEventType::ENDED) { return; }
     
+    {
+        // Sonar Framework - Hide CenterBannerAd (typically 300x250)
+        SonarCocosHelper::AdMob::hideBannerAd();
+    }
+
     auto scene = GameLayer::createScene(GameLayer::getInstance()->getStage());
     if (not scene) {
         return;
@@ -156,7 +155,7 @@ void PauseHUD::toggleSound(Ref const* ref, cocos2d::ui::Widget::TouchEventType c
 void PauseHUD::toggleMusic(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType) {
     if (eEventType != ui::Widget::TouchEventType::ENDED) { return; }
     
-    SoundManager::ToggleMusic();
+    SoundManager::ToggleMusic(SoundManager::gameplayMusic);
     if (SoundManager::IsMusicActive()) {
         _btnMusicToggle->loadTextures(imageBtnMusicOn, imageBtnMusicOn);
     }

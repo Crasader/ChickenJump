@@ -63,6 +63,9 @@ public:
 #endif
     
 #if SCH_IS_AD_MOB_ENABLED == true
+    static void showAdMobBanner();
+    static void hideAdMobBanner();
+
     static void showAdMobBanner( int position );
     static void hideAdMobBanner( int position );
     
