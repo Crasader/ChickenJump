@@ -125,6 +125,18 @@ void IOSCPPHelper::gameCenterResetPlayerAchievements( )
 #endif
 
 #if SCH_IS_AD_MOB_ENABLED == true
+// Show CenterBannerAd (typically 300x250)
+void IOSCPPHelper::showAdMobBanner()
+{
+    [[IOSHelper instance] showAdMobBanner];
+}
+
+// Hide CenterBannerAd (typically 300x250)
+void IOSCPPHelper::hideAdMobBanner()
+{
+    [[IOSHelper instance] hideAdMobBanner];
+}
+
 void IOSCPPHelper::showAdMobBanner( int position )
 {
     [[IOSHelper instance] showAdMobBanner:position];

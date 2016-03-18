@@ -145,6 +145,7 @@ SCHEmptyProtocol
 #if SCH_IS_AD_MOB_ENABLED == true
     isAdMobFullscreenLoaded = false;
     isAdMobTopBannerDisplayed = false;
+    isAdMobCenterBannerDisplayed = false;
     isAdMobBottomBannerDisplayed = false;
     
     [self requestAdMobFullscreenAd];
@@ -537,6 +538,26 @@ SCHEmptyProtocol
     return request;
 }
 
+-( void )showAdMobBanner
+{
+    GADAdSize adSize = kGADAdSizeMediumRectangle;
+    GADRequest *request = [self createRequest];
+    if ( !isAdMobCenterBannerDisplayed )
+    {
+        adMobCenterBanner = [[GADBannerView alloc] initWithAdSize:adSize];
+        adMobCenterBanner.adUnitID = SCH_AD_MOB_CENTER_BANNER_AD_UNIT_ID;
+        adMobCenterBanner.rootViewController = localViewController;
+        [adMobCenterBanner loadRequest:request];
+        [localViewController.view addSubview:adMobCenterBanner];
+        adMobCenterBanner.translatesAutoresizingMaskIntoConstraints = NO;
+        [view addConstraint:[NSLayoutConstraint constraintWithItem:adMobCenterBanner attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeCenterX multiplier:1. constant:0]];
+        
+        [view addConstraint:[NSLayoutConstraint constraintWithItem:adMobCenterBanner attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeCenterY multiplier:1. constant:0]];
+        
+        isAdMobCenterBannerDisplayed = true;
+    }
+}
+
 -( void )showAdMobBanner:( int ) position
 {
     GADAdSize adSize = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? kGADAdSizeFullBanner : kGADAdSizeBanner;
@@ -593,6 +614,12 @@ SCHEmptyProtocol
         isAdMobTopBannerDisplayed = true;
         isAdMobBottomBannerDisplayed = true;
     }
+}
+
+-( void )hideAdMobBanner
+{
+    [adMobCenterBanner removeFromSuperview];
+    isAdMobCenterBannerDisplayed = false;
 }
 
 -( void )hideAdMobBanner:( int ) position

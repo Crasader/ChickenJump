@@ -146,9 +146,11 @@ SCHEmptyProtocol
     GADInterstitial *adMobInterstitial;
     GADBannerView *adMobBottomBanner;
     GADBannerView *adMobTopBanner;
+    GADBannerView *adMobCenterBanner;
     BOOL isAdMobFullscreenLoaded;
     BOOL isAdMobBottomBannerDisplayed;
     BOOL isAdMobTopBannerDisplayed;
+    BOOL isAdMobCenterBannerDisplayed;
 #endif
     
 #if SCH_IS_MOPUB_ENABLED == true
@@ -210,6 +212,8 @@ SCHEmptyProtocol
 -( void )requestAdMobFullscreenAd;
 -( void )showAdMobBanner:( int ) position;
 -( void )hideAdMobBanner:( int ) position;
+-( void )showAdMobBanner;
+-( void )hideAdMobBanner;
 -( void )showAdMobFullscreenAd;
 #endif
 
