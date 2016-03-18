@@ -62,9 +62,11 @@ bool MainMenuLayer::init()
     // Page Scroll Buttons, changes image on click
     addPageNavigationButtons();
     
-    // Sonar Framework - Show Ad
-    SonarCocosHelper::AdMob::hideBannerAd();
-    SonarCocosHelper::AdMob::showBannerAd(SonarCocosHelper::AdBannerPosition::eBottom);
+    {
+        // Sonar Framework - Show Ad
+        SonarCocosHelper::AdMob::hideBannerAd(SonarCocosHelper::AdBannerPosition::eBottom);
+        SonarCocosHelper::AdMob::showBannerAd(SonarCocosHelper::AdBannerPosition::eBottom);
+    }
     
     return true;
 }
@@ -201,8 +203,10 @@ static Size mediumResource = Size(1024, 768); // "mid"
 static Size largeResource  = Size(2048, 1536); // "big"
 
 void MainMenuLayer::menuSelectSgate(cocos2d::Ref const* sender, Stage const& stage) {
-    // Sonar Framework - Hide Ad
-    SonarCocosHelper::AdMob::hideBannerAd();
+    {
+        // Sonar Framework - Hide Ad
+        SonarCocosHelper::AdMob::hideBannerAd(SonarCocosHelper::AdBannerPosition::eBottom);
+    }
     
     selectLevel(stage.getName());
     gotoGamePlayLayer(this, stage);

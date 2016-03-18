@@ -377,7 +377,7 @@ void GameLayer::gameOver(int stageCompletionPercentage) {
     
     {
         // Sonar Framework - Show Ad
-        if (not StageStatus::increaseFullscreenAdCounter()) {
+        if (not StageStatus::incrementFullscreenAdCounter()) {
             SonarCocosHelper::AdMob::showFullscreenAd();
         }
     }
@@ -524,10 +524,8 @@ void GameLayer::pauseGame(cocos2d::Ref const* sender) {
     if (_state != GameState::started) { return; }
     
     {
-        // Sonar Framework - Show Ad
-        if (not StageStatus::increaseFullscreenAdCounter()) {
-            SonarCocosHelper::AdMob::showFullscreenAd();
-        }
+        // Sonar Framework - Show CenterBannerAd (typically 300x250)
+        SonarCocosHelper::AdMob::showBannerAd();
     }
 
 
@@ -544,6 +542,11 @@ void GameLayer::resumeClicked(cocos2d::Ref const* sender) {
     // then a callback to set GameState and others.
 
     if (_state != GameState::paused) { return; }
+    
+    {
+        // Sonar Framework - Hide CenterBannerAd (typically 300x250)
+        SonarCocosHelper::AdMob::hideBannerAd();
+    }
 
     _pauseHUD->setVisible(false);
     Director::getInstance()->resume();

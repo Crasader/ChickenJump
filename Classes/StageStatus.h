@@ -16,7 +16,7 @@ public:
     static void unlockStage(Stage& name);
     static void unlockNextStage(Stage const& currentStage);
     
-    static int  increaseFullscreenAdCounter();
+    static int  incrementFullscreenAdCounter();
     
     static const std::string france;
     static const std::string germany;

@@ -7,6 +7,8 @@
 #include "MainMenuLayer.h"
 #include "SoundManager.h"
 
+#include "SonarFrameworks.h"
+
 using namespace cocos2d;
 using namespace cocos2d::ui;
 
@@ -121,6 +123,11 @@ void PauseHUD::addMusicButton() {
 void PauseHUD::mainMenuClicked(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType) {
     if (eEventType != ui::Widget::TouchEventType::ENDED) { return; }
     
+    {
+        // Sonar Framework - Hide CenterBannerAd (typically 300x250)
+        SonarCocosHelper::AdMob::hideBannerAd();
+    }
+
     BackButton<MainMenuLayer>* mainMenu = new BackButton<MainMenuLayer>();
     if (not mainMenu) { return; }
     mainMenu->goBack(this);
@@ -129,6 +136,11 @@ void PauseHUD::mainMenuClicked(Ref const* ref, cocos2d::ui::Widget::TouchEventTy
 void PauseHUD::restartClicked(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType) {
     if (eEventType != ui::Widget::TouchEventType::ENDED) { return; }
     
+    {
+        // Sonar Framework - Hide CenterBannerAd (typically 300x250)
+        SonarCocosHelper::AdMob::hideBannerAd();
+    }
+
     auto scene = GameLayer::createScene(GameLayer::getInstance()->getStage());
     if (not scene) {
         return;

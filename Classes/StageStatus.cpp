@@ -92,7 +92,7 @@ void StageStatus::unlockNextStage(Stage const& currentStage) {
 
 
 // Extra attribute to maintain fullscreen ad counter
-int StageStatus::increaseFullscreenAdCounter() {
+int StageStatus::incrementFullscreenAdCounter() {
     return ++_fullscreenAdCounter % 5;  // FULLSCREEN AD FREQUENCY = 5
 }
 
