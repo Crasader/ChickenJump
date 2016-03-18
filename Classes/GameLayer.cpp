@@ -120,6 +120,9 @@ bool GameLayer::init()
     _totalEggs = 0;
     _totalPizzas = 0;
     
+    // Background Music
+    SoundManager::PlayBackgroundMusic(SoundManager::gameplayMusic);
+    
     // add static background for the infinite stage
     if (_stage.getName() == StageStatus::infinite) {
         addBG();

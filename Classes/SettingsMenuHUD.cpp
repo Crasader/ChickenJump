@@ -114,7 +114,7 @@ void SettingsMenuHUD::toggleSound(const Ref* ref, const cocos2d::ui::Widget::Tou
 void SettingsMenuHUD::toggleMusic(const Ref* ref, const cocos2d::ui::Widget::TouchEventType& eEventType) {
     if (eEventType != ui::Widget::TouchEventType::ENDED) { return; }
 
-    SoundManager::ToggleMusic();
+    SoundManager::ToggleMusic(SoundManager::menuMusic);
     if (SoundManager::IsMusicActive()) {
         _btnMusicToggle->loadTextures(imageBtnMusicOn, imageBtnMusicOn);
     }

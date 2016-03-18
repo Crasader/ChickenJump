@@ -14,6 +14,11 @@ std::string SoundManager::soundExplosion = "explosion.wav";
 std::string SoundManager::soundDead = "dead.wav";
 std::string SoundManager::soundWin = "win.wav";
 
+std::string SoundManager::menuMusic = "menu.mp3";
+std::string SoundManager::gameplayMusic = "gameplay.mp3";
+
+std::string SoundManager::_currentMusic = "";
+
 SoundManager::SoundManager() {
     // Cache
     auto audioEngine = CocosDenshion::SimpleAudioEngine::getInstance();
@@ -24,6 +29,10 @@ SoundManager::SoundManager() {
     audioEngine->preloadEffect(soundLifeup.c_str());
     audioEngine->preloadEffect(soundDead.c_str());
     audioEngine->preloadEffect(soundStart.c_str());
+    
+    audioEngine->preloadEffect(menuMusic.c_str());
+    audioEngine->preloadEffect(gameplayMusic.c_str());
+
     audioEngine->setEffectsVolume(0.5f);
 }
 
@@ -41,7 +50,19 @@ void SoundManager::Play(std::string  const& sound) {
     }
 }
 
-void SoundManager::ToggleMusic() {
+void SoundManager::PlayBackgroundMusic(const std::string &music) {
+    if (music == _currentMusic) { return; } // already running this music
+    
+    if (UserDefault::getInstance()->getFloatForKey(MUSIC, 1.0)) {
+        auto audioEngine = CocosDenshion::SimpleAudioEngine::getInstance();
+        audioEngine->stopBackgroundMusic();
+        audioEngine->playBackgroundMusic(music.c_str(), true);
+
+        _currentMusic = music;
+    }
+}
+
+void SoundManager::ToggleMusic(std::string const& music) {
     UserDefault* ud = UserDefault::getInstance();
     float currentStatus = ud->getFloatForKey(MUSIC, 1.0);
     
@@ -49,6 +70,12 @@ void SoundManager::ToggleMusic() {
 
     ud->setFloatForKey(MUSIC, not currentStatus);
     ud->flush();
+    
+    if (currentStatus) {
+        _currentMusic = "";
+    }
+    
+    PlayBackgroundMusic(music);
 }
 
 void SoundManager::ToggleSound() {

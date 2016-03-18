@@ -155,7 +155,7 @@ void PauseHUD::toggleSound(Ref const* ref, cocos2d::ui::Widget::TouchEventType c
 void PauseHUD::toggleMusic(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType) {
     if (eEventType != ui::Widget::TouchEventType::ENDED) { return; }
     
-    SoundManager::ToggleMusic();
+    SoundManager::ToggleMusic(SoundManager::gameplayMusic);
     if (SoundManager::IsMusicActive()) {
         _btnMusicToggle->loadTextures(imageBtnMusicOn, imageBtnMusicOn);
     }

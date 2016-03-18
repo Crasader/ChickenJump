@@ -1,7 +1,7 @@
 #include "HomeLayer.h"
 #include "Constants.h"
 #include "MainMenuLayer.h"
-#include "SimpleAudioEngine.h"
+#include "SoundManager.h"
 #include "StageStatus.h"
 
 #include "SonarFrameworks.h"
@@ -42,6 +42,9 @@ bool HomeLayer::init()
     
     _origin = Director::getInstance()->getVisibleOrigin();
     _visibleSize = Director::getInstance()->getVisibleSize();
+    
+    // Background Music
+    SoundManager::PlayBackgroundMusic(SoundManager::menuMusic);
     
     // Background
     addBackground();

@@ -10,7 +10,8 @@ public:
     static float IsSoundActive();
     static float IsMusicActive();
     static void Play(std::string const& sound);
-    static void ToggleMusic();
+    static void PlayBackgroundMusic(std::string const& music);
+    static void ToggleMusic(std::string const& music);
     static void ToggleSound();
 
     static std::string soundStart;
@@ -21,6 +22,12 @@ public:
     static std::string soundExplosion;
     static std::string soundDead;
     static std::string soundWin;
+    
+    static std::string menuMusic;
+    static std::string gameplayMusic;
+    
+private:
+    static std::string _currentMusic; // currently running background music
 };
 
 #endif // __SOUNDMANAGER__

@@ -4,6 +4,7 @@
 #include "GameLayer.h"
 #include "Stage.h"
 #include "StageStatus.h"
+#include "SoundManager.h"
 
 #include <UILayout.h>
 #include <UIListView.h>
@@ -47,6 +48,9 @@ bool MainMenuLayer::init()
     
     _origin = Director::getInstance()->getVisibleOrigin();
     _visibleSize = Director::getInstance()->getVisibleSize();
+    
+    // Background Music
+    SoundManager::PlayBackgroundMusic(SoundManager::menuMusic);
     
     // Add background
     addBackground();
