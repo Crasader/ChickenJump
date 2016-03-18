@@ -222,10 +222,25 @@ void GameOverHUD::addChickenBannerInsteadOfStars(Vec2 const& position) {
     }
     
     // Replace Stars with banner
-    Sprite* banner = Sprite::create("banner_chicken.png");
-    banner->setPosition(position.x, position.y);
-    this->addChild(banner, BackgroundLayer::layerChicken);
+    Sprite* banner_chicken = Sprite::create("banner_chicken.png");
+    if (banner_chicken) {
+        banner_chicken->setPosition(position.x, position.y);
+        this->addChild(banner_chicken, BackgroundLayer::layerChicken);
+        
+        if (_stage.getName() != StageStatus::infinite) {
+            return; // Show only one chicken in the middle for failures
+        }
 
+        // Continiues for infinite stage, Make room for another chicken.
+        banner_chicken->setPosition(position.x - banner_chicken->getContentSize().width * 0.6, position.y);
+    }
+    
+    // Fliped Chicken
+    Sprite* banner_fliped_chicken = Sprite::create("banner_chicken_fliped.png");
+    if (banner_fliped_chicken) {
+        banner_fliped_chicken->setPosition(position.x + banner_chicken->getContentSize().width * 0.6, position.y);
+        this->addChild(banner_fliped_chicken, BackgroundLayer::layerChicken);
+    }
 }
 
 int GameOverHUD::getStageTimeLimit(std::string const& stageName) {
