@@ -24,19 +24,24 @@ public class AdMobAds extends Framework
 	
 	private String banner_id_top = "";
 	private String banner_id_bottom = "";
+	private String banner_id_center = "";
 	private String interstitial_id = "";
 	private String test_device_id = "";
 	
 	private static AdView top_banner_adView;
 	private static AdView bottom_banner_adView;
+	private static AdView center_banner_adView;
 	private static boolean top_banner_adView_request_sended = false;
 	private static boolean bottom_banner_adView_request_sended = false;
+	private static boolean center_banner_adView_request_sended = false;
 	private static AdRequest top_banner_adView_request;
 	private static AdRequest bottom_banner_adView_request;
+	private static AdRequest center_banner_adView_request;
 	private InterstitialAd interstitial;
 
 	FrameLayout.LayoutParams top_adParams;
 	FrameLayout.LayoutParams bottom_adParams;
+	FrameLayout.LayoutParams center_adParam;
 	
 	private final int BOTTOM = 0;
 	private final int TOP = 1;
@@ -60,6 +65,7 @@ public class AdMobAds extends Framework
 		test_device_id = activity.getResources().getString(activity.getResources().getIdentifier("admob_test_device_id","string",activity.getPackageName()));
 		banner_id_top = activity.getResources().getString(activity.getResources().getIdentifier("admob_banner_top_id","string",activity.getPackageName()));
 		banner_id_bottom = activity.getResources().getString(activity.getResources().getIdentifier("admob_banner_bottom_id","string",activity.getPackageName()));
+		banner_id_center = activity.getResources().getString(activity.getResources().getIdentifier("admob_banner_center_id","string",activity.getPackageName()));
 		interstitial_id = activity.getResources().getString(activity.getResources().getIdentifier("admob_interstitial_id","string",activity.getPackageName()));
 	}
 	
@@ -83,7 +89,7 @@ public class AdMobAds extends Framework
 		top_banner_adView.setBackgroundColor(Color.BLACK);
 		top_banner_adView.setBackgroundColor(0);
 		
-		activity.addContentView(top_banner_adView,top_adParams);
+		activity.addContentView(top_banner_adView, top_adParams);
 		
 		//Create Bottom Banner
 		bottom_banner_adView = new AdView(activity);
@@ -102,6 +108,25 @@ public class AdMobAds extends Framework
 		bottom_banner_adView.setBackgroundColor(0);
 		
 		activity.addContentView(bottom_banner_adView, bottom_adParams);
+		
+		//Create center banner
+		center_banner_adView = new AdView(activity);
+		center_banner_adView.setAdSize(AdSize.MEDIUM_RECTANGLE);
+		center_banner_adView.setAdUnitId(banner_id_center);
+
+		center_banner_adView_request = new AdRequest.Builder()
+		.addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+		.addTestDevice("HASH_DEVICE_ID")
+		.addTestDevice(test_device_id)
+		.build();
+		
+		center_adParam = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT, android.view.Gravity.CENTER_VERTICAL|android.view.Gravity.CENTER_HORIZONTAL);
+
+		center_banner_adView.setBackgroundColor(Color.BLACK);
+		center_banner_adView.setBackgroundColor(0);
+		
+		activity.addContentView(center_banner_adView, center_adParam);		
+
 
 		// Create the interstitial.
 	    interstitial = new InterstitialAd(activity);
@@ -152,6 +177,11 @@ public class AdMobAds extends Framework
 		{
 			bottom_banner_adView.pause();
 		}
+		
+		if (center_banner_adView != null) 
+		{
+			center_banner_adView.pause();
+		}
 	}
 	
 	@Override
@@ -172,6 +202,11 @@ public class AdMobAds extends Framework
 		{
 			bottom_banner_adView.resume();
 		}
+		
+		if (center_banner_adView != null) 
+		{
+			center_banner_adView.resume();
+		}
 	}
 	
 	@Override
@@ -179,12 +214,13 @@ public class AdMobAds extends Framework
 	{
 		top_banner_adView.destroy();
 		bottom_banner_adView.destroy();
+		center_banner_adView.destroy();
 	}
 	
 	@Override
 	public void ShowBannerAd()
 	{
-		if (top_banner_adView != null) 
+		if (center_banner_adView != null) 
 		{
 		 activity.runOnUiThread(new Runnable()
 	     {
@@ -192,14 +228,14 @@ public class AdMobAds extends Framework
 		     @Override
 		     public void run()
 		     {
-		     		if (!top_banner_adView_request_sended) {
-			     		top_banner_adView.loadAd(top_banner_adView_request);
-			     		top_banner_adView_request_sended = true;
+		     		if (!center_banner_adView_request_sended ) {
+		     			center_banner_adView.loadAd(center_banner_adView_request);
+		     			center_banner_adView_request_sended  = true;
 		     		}
-		    	 	if (!top_banner_adView.isEnabled())
-		    	 		top_banner_adView.setEnabled(true);
-		    	 	if (top_banner_adView.getVisibility() == 4 )
-		    	 		top_banner_adView.setVisibility(View.VISIBLE); 
+		    	 	if (!center_banner_adView.isEnabled())
+		    	 		center_banner_adView.setEnabled(true);
+		    	 	if (center_banner_adView.getVisibility() == 4 )
+		    	 		center_banner_adView.setVisibility(View.VISIBLE);
 		     }
 	     });
 		}
@@ -308,15 +344,12 @@ public class AdMobAds extends Framework
 			}
 		}
 		
-		
-
-	  
 	}
 
 	@Override
 	public void HideBannerAd()
 	{
-		if (top_banner_adView != null) 
+		if (center_banner_adView != null) 
 		{
 		 activity.runOnUiThread(new Runnable()
 	     {
@@ -324,29 +357,14 @@ public class AdMobAds extends Framework
 		     @Override
 		     public void run()
 		     {
-		    	 	if (top_banner_adView.isEnabled())
-		    	 		top_banner_adView.setEnabled(false);
-		    	 	if (top_banner_adView.getVisibility() != View.INVISIBLE )
-		    	 		top_banner_adView.setVisibility(View.INVISIBLE);
+		    	 	if (center_banner_adView.isEnabled())
+		    	 		center_banner_adView.setEnabled(false);
+		    	 	if (center_banner_adView.getVisibility() != View.INVISIBLE )
+		    	 		center_banner_adView.setVisibility(View.INVISIBLE);
 		     }
 	     });
 		}
 		
-		if (bottom_banner_adView != null) 
-		{
-		 activity.runOnUiThread(new Runnable()
-	     {
-
-		     @Override
-		     public void run()
-		     {
-		    	 	if (bottom_banner_adView.isEnabled())
-		    	 		bottom_banner_adView.setEnabled(false);
-		    	 	if (bottom_banner_adView.getVisibility() != View.INVISIBLE )
-		    	 		bottom_banner_adView.setVisibility(View.INVISIBLE);
-		     }
-	     });
-		}
 	}
 	
 	@Override
