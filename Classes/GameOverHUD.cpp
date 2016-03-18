@@ -417,12 +417,6 @@ void GameOverHUD::mainMenuClicked(Ref const* ref, cocos2d::ui::Widget::TouchEven
 void GameOverHUD::restartClicked(const Ref* ref, const cocos2d::ui::Widget::TouchEventType& eEventType) {
     if (eEventType != ui::Widget::TouchEventType::ENDED) { return; }
 
-    {
-        // TODO: Show Ad every 3 or 5 times the player is dead
-        // Sonar Framework - Show Ad
-        SonarCocosHelper::AdMob::showFullscreenAd();
-    }
-
     auto scene = GameLayer::createScene(_stage);
     if (not scene) {
         return;

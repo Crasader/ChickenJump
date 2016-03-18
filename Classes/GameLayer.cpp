@@ -10,6 +10,8 @@
 #include "SoundManager.h"
 #include "SpecialCollectable.h"
 
+#include "SonarFrameworks.h"
+
 using namespace cocos2d;
 
 const std::string imageScore = "score.png";
@@ -373,6 +375,13 @@ void GameLayer::focusOnCharacter() {
 void GameLayer::gameOver(int stageCompletionPercentage) {
     _state = GameState::terminate; // set gamestate as terminate to stop schedule update
     
+    {
+        // Sonar Framework - Show Ad
+        if (not StageStatus::increaseFullscreenAdCounter()) {
+            SonarCocosHelper::AdMob::showFullscreenAd();
+        }
+    }
+    
     // Game over score and others
     _gameOverHUD->setup(_stage, _score, _totalEggs, _collectedPizzas, _totalPizzas, _elapsedTime, stageCompletionPercentage);
     _gameOverHUD->setVisible(true);
@@ -513,6 +522,14 @@ void GameLayer::lastLifeExploded() {
 
 void GameLayer::pauseGame(cocos2d::Ref const* sender) {
     if (_state != GameState::started) { return; }
+    
+    {
+        // Sonar Framework - Show Ad
+        if (not StageStatus::increaseFullscreenAdCounter()) {
+            SonarCocosHelper::AdMob::showFullscreenAd();
+        }
+    }
+
 
     Director::getInstance()->pause();
     _state = GameState::paused;
