@@ -331,8 +331,8 @@ void GameOverHUD::prepare(int score, int collectedEggs, int totalEggs, int timeT
     
     // EGGS
     if (_eggsLabel) {
-        std::string eggByTotal = String::createWithFormat("%d/%d", collectedEggs, totalEggs)->getCString();
-        std::string eggs = String::createWithFormat("%d", collectedEggs)->getCString();
+        std::string eggByTotal = StringUtils::format("%d/%d", collectedEggs, totalEggs);
+        std::string eggs = StringUtils::format("%d", collectedEggs);
         _eggsLabel->setString((_stage.getName() == StageStatus::infinite) ? eggs : eggByTotal);
     }
     
@@ -340,22 +340,22 @@ void GameOverHUD::prepare(int score, int collectedEggs, int totalEggs, int timeT
     if (_timeLabel) {
         time_t seconds(timeTaken);
         struct tm* time = gmtime(&seconds);
-        std::string timeStr = String::createWithFormat("%d:%02d s", time->tm_min, time->tm_sec)->getCString();
+        std::string timeStr = StringUtils::format("%d:%02d s", time->tm_min, time->tm_sec);
         _timeLabel->setString(timeStr);
     }
     
     // SCORE
     if (_scoreLabel) {
-        std::string str = String::createWithFormat("Score: %d", score)->getCString();
+        std::string str = StringUtils::format("Score: %d", score);
         _scoreLabel->setString(str);
     }
     
     // HIGHSCORE
     if (_highscoreLabel) {
-        std::string str = String::createWithFormat("Highscore: %d", _stage.getHighScore())->getCString();
+        std::string str = StringUtils::format("Highscore: %d", _stage.getHighScore());
         if (isNewHighscore) {
             _highscoreLabel->setColor(Color3B::ORANGE);
-            str = String::createWithFormat("New Highscore: %d", _stage.getHighScore())->getCString();
+            str = StringUtils::format("New Highscore: %d", _stage.getHighScore());
 
             if (star) { addFirework(); }
         }
