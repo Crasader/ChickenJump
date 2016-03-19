@@ -179,7 +179,7 @@ void ScoreHUD::updateLife(int lives) {
 
 void ScoreHUD::updateScore(int score) {
     if (_scoreLabel) {
-        std::string scoreStr = String::createWithFormat("%d", score)->getCString();
+        std::string scoreStr = StringUtils::format("%d", score);
         _scoreLabel->setString(scoreStr);
     }
 }
