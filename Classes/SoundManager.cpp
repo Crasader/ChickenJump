@@ -13,6 +13,7 @@ std::string SoundManager::soundLifeup = "lifeup.wav";
 std::string SoundManager::soundExplosion = "explosion.wav";
 std::string SoundManager::soundDead = "dead.wav";
 std::string SoundManager::soundWin = "win.wav";
+std::string SoundManager::soundStageClear = "stageclear.wav";
 
 std::string SoundManager::menuMusic = "menu.mp3";
 std::string SoundManager::gameplayMusic = "gameplay.mp3";
@@ -60,6 +61,11 @@ void SoundManager::PlayBackgroundMusic(const std::string &music) {
 
         _currentMusic = music;
     }
+}
+
+void SoundManager::StopBackgroundMusic() {
+    CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+    _currentMusic = "";
 }
 
 void SoundManager::ToggleMusic(std::string const& music) {
