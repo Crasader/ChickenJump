@@ -93,7 +93,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
     cocos2d::Scene* scene = nullptr;
     if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS) {
         // hold the splash screen
-        sleep(DISPLAY_TIME_SPLASH_SCREEN);
+        std::chrono::seconds duration(DISPLAY_TIME_SPLASH_SCREEN);
+        std::this_thread::sleep_for(duration);
         
         scene = HomeLayer::createScene();
     }
