@@ -79,7 +79,8 @@ bool HomeLayer::init()
     
     {
         // Sonar Framework - Show Ad
-        SonarCocosHelper::AdMob::showBannerAd( SonarCocosHelper::AdBannerPosition::eBottom );
+        SonarCocosHelper::AdMob::hideBannerAd(SonarCocosHelper::AdBannerPosition::eBottom);
+        SonarCocosHelper::AdMob::showBannerAd(SonarCocosHelper::AdBannerPosition::eBottom);
     }
 
     return true;

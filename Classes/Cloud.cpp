@@ -18,7 +18,7 @@ void Cloud::spawn(cocos2d::Layer* layer) {
 
     int cloudType = RandomHelper::random_int(1, 2);
     
-    _cloud = Sprite::create(String::createWithFormat("cloud%i.png", cloudType)->getCString());
+    _cloud = Sprite::create(StringUtils::format("cloud%i.png", cloudType));
     if (not _cloud) { return; }
     
     int maxDelayWidth = 2;

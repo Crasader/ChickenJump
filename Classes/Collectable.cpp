@@ -103,7 +103,7 @@ Spawned Collectable::spawn(cocos2d::Layer* layer, std::vector<Sprite*>& collecta
     float positionX = _visibleSize.width;
     float positionY;
     for (int i = 0; i < numberOfCollectable; ++i) {
-        Sprite* collectable = Sprite::create(String::createWithFormat("collectable%i.png", pattern.first)->getCString());
+        Sprite* collectable = Sprite::create(StringUtils::format("collectable%i.png", pattern.first));
         if (not collectable) { continue; }
         
         collectable->setTag(pattern.first); // used as CollectableType:: 2:egg 4:pizza 8:bomb
