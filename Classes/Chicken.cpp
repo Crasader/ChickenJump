@@ -306,10 +306,10 @@ void Chicken::update(float speed) {
             _vector.y -= _visibleSize.height * VELOCITY_Y_DECREASE_RATE * _weight;
             break;
         case dying:
-            CCLOG("Player DEAD. PLEASE RESET");
+            // CCLOG("Player DEAD. PLEASE RESET");
             break;
         default:
-            CCLOG("Program Should Not Hit This Point");
+            // CCLOG("Program Should Not Hit This Point");
             break;
     }
 

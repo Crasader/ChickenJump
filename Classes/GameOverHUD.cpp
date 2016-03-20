@@ -79,7 +79,7 @@ void GameOverHUD::setup(Stage const& stage, int const collectedEggs, int const t
         }
     }
     catch(...) {
-        CCLOG("Coulnd't store stage info from GameOver");
+        // CCLOG("Coulnd't store stage info from GameOver");
     }
 }
 

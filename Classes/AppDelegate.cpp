@@ -73,7 +73,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
             searchPaths.push_back("resource_sd");
             director->setContentScaleFactor(smallResource.width / designResolution.width);
         }
-        CCLOG("===== Path: %s (AppDelegate)", searchPaths.at(0).c_str());
+        // CCLOG("===== Path: %s (AppDelegate)", searchPaths.at(0).c_str());
         auto fileUtils = FileUtils::getInstance();
         fileUtils->setSearchPaths(searchPaths);
     }

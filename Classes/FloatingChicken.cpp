@@ -106,7 +106,7 @@ void FloatingChicken::update(float dt) {
             _vector.y -= _visibleSize.height * FLYING_Y_DECREASE_RATE * _parabolaHeight;
             break;
         default:
-            CCLOG("Program Should Not Hit This Point");
+            // CCLOG("Program Should Not Hit This Point");
             break;
     }
 

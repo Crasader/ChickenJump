@@ -232,7 +232,7 @@ void MainMenuLayer::selectLevel(std::string const& stage) {
         searchPaths.push_back("resource_sd");
         searchPaths.push_back("resource_sd/" + stage);
     }
-    CCLOG("===== Path: %s (MainMenuLayer)", searchPaths.at(0).c_str());
+    // CCLOG("===== Path: %s (MainMenuLayer)", searchPaths.at(0).c_str());
     FileUtils::getInstance()->setSearchPaths(searchPaths);
 }
 
