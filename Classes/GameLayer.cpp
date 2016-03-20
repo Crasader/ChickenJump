@@ -29,7 +29,7 @@ const std::string imageUnlockedItem_invisibility = "unlockeditem_invisibility.pn
 
 const std::string magnetized = "magnetized";
 
-GameLayer* GameLayer::_instance = 0;
+GameLayer* GameLayer::_instance = nullptr;
 static Stage _stage;  // To pass which stage we are playing now.
 
 Scene* GameLayer::createScene(Stage const& stage)
@@ -47,11 +47,14 @@ Scene* GameLayer::createScene(Stage const& stage)
 
     // Singletone Instance
     _instance = layer;
+    
     scene->addChild(layer);
 
     // add Score HUD
     {
         ScoreHUD* scoreHUD = ScoreHUD::create();
+        if (not scoreHUD) {return nullptr; }
+        
         scene->addChild(scoreHUD);
         layer->_scoreHUD = scoreHUD;
     }
@@ -59,6 +62,8 @@ Scene* GameLayer::createScene(Stage const& stage)
     // add the Pause HUD Layer
     {
         PauseHUD* pauseHUD = PauseHUD::create();
+        if (not pauseHUD) { return nullptr; }
+        
         scene->addChild(pauseHUD);
         pauseHUD->setVisible(false);
         layer->_pauseHUD = pauseHUD;
@@ -67,6 +72,8 @@ Scene* GameLayer::createScene(Stage const& stage)
     // add GameOver HUD Layer
     {
         GameOverHUD* gameOverHUD = GameOverHUD::create();
+        if (not gameOverHUD) { return nullptr; }
+        
         scene->addChild(gameOverHUD);
         gameOverHUD->setVisible(false);
         layer->_gameOverHUD = gameOverHUD;
@@ -77,9 +84,6 @@ Scene* GameLayer::createScene(Stage const& stage)
 }
 
 GameLayer* GameLayer::getInstance() {
-    if (not _instance) {
-        _instance = GameLayer::create();
-    }
     return _instance;
 }
 
@@ -98,7 +102,7 @@ bool GameLayer::init()
     // 2. Origin & window size
     _origin = Director::getInstance()->getVisibleOrigin();
     _visibleSize = Director::getInstance()->getVisibleSize();
-     CCLOG("===== GameLayer _visibleSize width-height (%dx%d)", (int)_visibleSize.width, (int)_visibleSize.height);
+    // CCLOG("===== GameLayer _visibleSize width-height (%dx%d)", (int)_visibleSize.width, (int)_visibleSize.height);
     // CCLOG("GameLayer _origin (x, y) (%f, %f)", _origin.x, _origin.y);
 
 

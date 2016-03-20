@@ -1,5 +1,7 @@
 #include "AppDelegate.h"
 
+#include "Constants.h"
+#include "HomeLayer.h"
 #include "SimpleAudioEngine.h"
 #include "SplashScreenLayer.h"
 
@@ -85,8 +87,21 @@ bool AppDelegate::applicationDidFinishLaunching() {
     
     register_all_packages();
     
-    // create a scene. it's an autorelease object
-    auto scene = SplashScreenLayer::createScene();
+
+    // create a scene based on platform. it's an autorelease object
+    // on ios, it shows splash screen by default, so we can proceed to home
+    cocos2d::Scene* scene = nullptr;
+    if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS) {
+        // hold the splash screen
+        sleep(DISPLAY_TIME_SPLASH_SCREEN);
+        
+        scene = HomeLayer::createScene();
+    }
+    else if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID) {
+        scene = SplashScreenLayer::createScene();
+    }
+    
+    if (not scene) { return false; }
     
     // run
     director->runWithScene(scene);

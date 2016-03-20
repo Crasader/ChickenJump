@@ -25,6 +25,9 @@ bool PauseHUD::init()
     if ( !LayerColor::initWithColor(Color4B(0, 0, 0, 128)) ) {
         return false;
     }
+    
+    // No need to proceed if GameLayer is not present
+    if (not GameLayer::getInstance()) { return false; }
 
     _origin = Director::getInstance()->getVisibleOrigin();
     _visibleSize = Director::getInstance()->getVisibleSize();
