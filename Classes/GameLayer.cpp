@@ -376,14 +376,14 @@ void GameLayer::focusOnCharacter() {
 }
 
 void GameLayer::gameOver(int stageCompletionPercentage) {
-    _state = GameState::terminate; // set gamestate as terminate to stop schedule update
-    
     {
         // Sonar Framework - Show Ad
         if (not StageStatus::incrementFullscreenAdCounter()) {
             SonarCocosHelper::AdMob::showFullscreenAd();
         }
     }
+    
+    _state = GameState::terminate; // set gamestate as terminate to stop schedule update
     
     // Game over score and others
     _gameOverHUD->setup(_stage, _score, _totalEggs, _collectedPizzas, _totalPizzas, _elapsedTime, stageCompletionPercentage);

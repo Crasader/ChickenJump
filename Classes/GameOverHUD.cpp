@@ -50,7 +50,7 @@ void GameOverHUD::setup(Stage const& stage, int const collectedEggs, int const t
     int star = 0;
     bool isNewHighscore = false;
 
-    {
+    if (isStageClear) {
         // SCORE and STAR calculation
         score = (stage.getName() == StageStatus::infinite) ? collectedEggs : (eggPercent + timeSaved);
         

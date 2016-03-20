@@ -50,19 +50,19 @@ void SpecialCollectable::initPatterns(int difficultyLevel) {
         case 2:    // no special collectables
             break;
         case 3:    // introducint "life"
-            populatePatterns(difficultyLevel, totalNumberOfCollectables * 0.5, 0, 0, 0, totalNumberOfCollectables * 0.5);
+            populatePatterns(difficultyLevel, totalNumberOfCollectables * 0.3, 0, 0, 0, totalNumberOfCollectables * 0.8);
             break;
         case 4:    // life(65) + floating bomb(35%)
-            populatePatterns(difficultyLevel, totalNumberOfCollectables * 0.4, totalNumberOfCollectables * 0.3, 0, 0, totalNumberOfCollectables * 0.3);
+            populatePatterns(difficultyLevel, totalNumberOfCollectables * 0.3, totalNumberOfCollectables * 0.3, 0, 0, totalNumberOfCollectables * 0.4);
             break;
         case 5:    // life(45%) + floating bomb(25%) + invisibility(0) + magnet effect(30%)
-            populatePatterns(difficultyLevel, totalNumberOfCollectables * 0.4, totalNumberOfCollectables * 0.2, 0, totalNumberOfCollectables * 0.3, totalNumberOfCollectables * 0.1);
+            populatePatterns(difficultyLevel, totalNumberOfCollectables * 0.3, totalNumberOfCollectables * 0.2, 0, totalNumberOfCollectables * 0.3, totalNumberOfCollectables * 0.2);
             break;
         case 6:   // life(40%) + floating bomb(30%) + invisibility(20%) + magnet effect(0)
-            populatePatterns(difficultyLevel, totalNumberOfCollectables * 0.4, totalNumberOfCollectables * 0.3, totalNumberOfCollectables * 0.2, 0, totalNumberOfCollectables * 0.1);
+            populatePatterns(difficultyLevel, totalNumberOfCollectables * 0.3, totalNumberOfCollectables * 0.3, totalNumberOfCollectables * 0.2, 0, totalNumberOfCollectables * 0.2);
             break;
         case 7:    // Infinite Stage (life + floating bomb + invisibility + magnet effect (20% each))
-            populatePatterns(difficultyLevel, totalNumberOfCollectables * 0.25, totalNumberOfCollectables * 0.15, totalNumberOfCollectables * 0.2, totalNumberOfCollectables * 0.2, totalNumberOfCollectables * 0.2);
+            populatePatterns(difficultyLevel, totalNumberOfCollectables * 0.15, totalNumberOfCollectables * 0.2, totalNumberOfCollectables * 0.1, totalNumberOfCollectables * 0.15, totalNumberOfCollectables * 0.4);
             break;
         default:
             break;

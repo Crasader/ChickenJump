@@ -91,13 +91,19 @@ bool CreditHUD::init()
         std::string developedby   = "- Developed by -";
         std::string developer_one = "Asish Biswas";
         std::string developer_two = "Farid Belhadi";
+        std::string music         = "Music: incompetech.com";
+        std::string thanks        = "Special Thanks: Anne Cecile";
+        std::string gap           = " ";
         
-        auto label1 = Text::create(sixeyes, font, _visibleSize.height * CREDIT_FONT_SIZE_SMALL);
-        auto label3 = Text::create(chickenjump, font, _visibleSize.height * CREDIT_FONT_SIZE_BIG);
-        auto label4 = Text::create(developedby, font, _visibleSize.height * CREDIT_FONT_SIZE_SMALL);
-        auto label5 = Text::create(developer_two, font, _visibleSize.height * CREDIT_FONT_SIZE_MID);
-        auto label6 = Text::create(developer_one, font, _visibleSize.height * CREDIT_FONT_SIZE_MID);
-        auto gap = Text::create(" ", font, _visibleSize.height * CREDIT_FONT_SIZE_SMALL);
+        auto label1  = Text::create(sixeyes, font, _visibleSize.height * CREDIT_FONT_SIZE_SMALL);
+        auto label3  = Text::create(chickenjump, font, _visibleSize.height * CREDIT_FONT_SIZE_BIG);
+        auto label4  = Text::create(developedby, font, _visibleSize.height * CREDIT_FONT_SIZE_SMALL);
+        auto label5  = Text::create(developer_two, font, _visibleSize.height * CREDIT_FONT_SIZE_MID);
+        auto label6  = Text::create(developer_one, font, _visibleSize.height * CREDIT_FONT_SIZE_MID);
+        auto gap_one = Text::create(gap, font, _visibleSize.height * CREDIT_FONT_SIZE_SMALL);
+        auto label7  = Text::create(music, font, _visibleSize.height * CREDIT_FONT_SIZE_SMALL);
+        auto label8  = Text::create(thanks, font, _visibleSize.height * CREDIT_FONT_SIZE_SMALL);
+        auto gap_two = Text::create(gap, font, _visibleSize.height * CREDIT_FONT_SIZE_SMALL);
         
 
         if (not label1 or not label3 or not label4 or not label5 or not label6) { return false; }
@@ -110,16 +116,19 @@ bool CreditHUD::init()
         ListView* lv = ListView::create();
         lv->pushBackCustomItem(label1);
         lv->pushBackCustomItem(label3);
-        lv->pushBackCustomItem(gap);
+        lv->pushBackCustomItem(gap_one);
         
         lv->pushBackCustomItem(label4);
         lv->pushBackCustomItem(label5);
         lv->pushBackCustomItem(label6);
+        lv->pushBackCustomItem(label7);
+        lv->pushBackCustomItem(label8);
+        lv->pushBackCustomItem(gap_two);
         
         lv->setGravity(ui::ListView::Gravity::CENTER_HORIZONTAL);
         lv->setItemsMargin(10);
-        lv->setSize(Size(label3->getContentSize().width,
-                         label3->getContentSize().height * 6 + 50));
+        lv->setSize(Size(label8->getContentSize().width,
+                         label3->getContentSize().height * 8 + 60));
         
         lv->setPosition(Vec2(_visibleSize.width * 0.5 - lv->getContentSize().width * 0.5, _visibleSize.height * 0));
         lv->setBounceEnabled(false);
