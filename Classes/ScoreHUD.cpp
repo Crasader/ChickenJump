@@ -109,7 +109,7 @@ void ScoreHUD::tick(int type) {
     switch (type) {
         case 1:
             if (_magnetStopwatch) {
-                _magnetStopwatch->setPercent(_magnetStopwatch->getPercent() - 100/EFFECT_DURATION);
+                _magnetStopwatch->setPercent(_magnetStopwatch->getPercent() - 100/MAGNET_EFFECT_DURATION);
             }
             
             if (_magnetStopwatch->getPercent() <= 0 and _magnetIcon) {
@@ -122,7 +122,7 @@ void ScoreHUD::tick(int type) {
             break;
         case 2:
             if (_invisibilityStopwatch) {
-                _invisibilityStopwatch->setPercent(_invisibilityStopwatch->getPercent() - 100/EFFECT_DURATION);
+                _invisibilityStopwatch->setPercent(_invisibilityStopwatch->getPercent() - 100/INVISIBILITY_EFFECT_DURATION);
             }
             
             if (_invisibilityStopwatch->getPercent() <= 0 and _invisibilityIcon) {
