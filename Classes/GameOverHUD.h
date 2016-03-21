@@ -29,8 +29,6 @@ private:
     
     void addChickenBannerInsteadOfStars(cocos2d::Vec2 const& position);
     
-    void delayAndUnlockButtons(int star);
-    
     void prepare(int score, int collectedEggs, int totalEggs, int timeTaken, int star, bool isNewHighscore, bool isStageClear);
     void mainMenuClicked(cocos2d::Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType);
     void restartClicked(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType);
