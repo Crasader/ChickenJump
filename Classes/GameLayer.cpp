@@ -181,7 +181,7 @@ bool GameLayer::init()
     addTouchListners();
     
     
-    {
+    if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID) {
         SonarCocosHelper::AdMob::preLoadFullscreenAd();
     }
 
@@ -388,7 +388,12 @@ void GameLayer::gameOver(int stageCompletionPercentage) {
     {
         // Sonar Framework - Show Ad
         if (not StageStatus::incrementFullscreenAdCounter()) {
-            SonarCocosHelper::AdMob::showPreLoadedFullscreenAd();
+            if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID) {
+                SonarCocosHelper::AdMob::showPreLoadedFullscreenAd();
+            }
+            else if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS) {
+                SonarCocosHelper::AdMob::showFullscreenAd();
+            }
         }
     }
     

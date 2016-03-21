@@ -139,10 +139,7 @@ public class AdMobAds extends Framework
 	        	  if(! preLoadCalled)
 	        	  {
 	        		  LoadFullscreenAd();
-	        	  }
-	        	  
-	        	  preLoadCalled = false;
-	        	  
+	        	  }	        	  
 	          }
 	    });
 	    
@@ -463,9 +460,7 @@ public class AdMobAds extends Framework
 	
 	@Override
 	public void ShowFullscreenAd()
-	{   
-		
-	    
+	{
 	    if(interstitial != null) 
 		{
 			activity.runOnUiThread(new Runnable()
@@ -499,14 +494,18 @@ public class AdMobAds extends Framework
 			     public void run()
 			     {
 			    	// Create ad request.
-			 	    AdRequest adRequest = new AdRequest.Builder()
-			 	    .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-			 		.addTestDevice("HASH_DEVICE_ID")
-			 		.addTestDevice(test_device_id).build();
-
-			 	    // Begin loading your interstitial.
-			 	    interstitial.loadAd(adRequest);
-			 	    preLoadCalled = true;
+			    	 if (! preLoadCalled) {
+				 	    AdRequest adRequest = new AdRequest.Builder()
+				 	    .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+				 		.addTestDevice("HASH_DEVICE_ID")
+				 		.addTestDevice(test_device_id).build();
+	
+				 	    // Begin loading your interstitial.
+				 	    interstitial.loadAd(adRequest);
+				 	    
+				 	    // set the flag so that we don't send pre-load request again
+				 	    preLoadCalled = true;
+			    	 }
 			     }
 		     });
 		}
@@ -523,8 +522,12 @@ public class AdMobAds extends Framework
 			     @Override
 			     public void run()
 			     {
-			    	 if(interstitial.isLoaded())
-			    		 interstitial.show();
+			    	 if(interstitial.isLoaded()) {
+			    		 interstitial.show();			 	    
+
+			    		 // refresh flag to be able to pre-load again
+			    		 preLoadCalled = false;
+			    	 }
 			     }
 			});
 		}
