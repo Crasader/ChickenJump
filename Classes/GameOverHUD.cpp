@@ -300,15 +300,15 @@ int GameOverHUD::calculateStar(std::string const& stageName, int score) {
     }
     
     if (score >= max) {
-        return 3;
+        return THREE_STAR;
     }
     if (score >= mid) {
-        return 2;
+        return TWO_STAR;
     }
     if (score >= min) {
-        return 1;
+        return ONE_STAR;
     }
-    return 0;
+    return NO_STAR;
 }
 
 void GameOverHUD::prepare(int score, int collectedEggs, int totalEggs, int timeTaken, int star, bool isNewHighscore, bool isStageClear) {
@@ -323,8 +323,7 @@ void GameOverHUD::prepare(int score, int collectedEggs, int totalEggs, int timeT
 
         addChickenBannerInsteadOfStars(Vec2(_visibleSize.width * 0.5, _visibleSize.height * 0.6));
         
-        if(_btnMainMenu) _btnMainMenu->setTouchEnabled(true);
-        if(_btnRestart) _btnRestart->setTouchEnabled(true);
+        delayAndUnlockButtons(NO_STAR);
         
         return;
     }
@@ -378,6 +377,9 @@ void GameOverHUD::prepare(int score, int collectedEggs, int totalEggs, int timeT
             actions.pushBack(DelayTime::create(1.0));
             actions.pushBack(CallFunc::create([&, i](){ _stars.at(i)->setTexture("star.png"); /* TODO:: SOUND EFFECT */ }));
         }
+        
+        auto cover = DelayTime::create(STAR_MAX - star); // covers the total amount of delay as 3 sec
+        actions.pushBack(cover);
 
         actions.pushBack(CallFunc::create([=](){
             if(_btnMainMenu) _btnMainMenu->setTouchEnabled(true);
@@ -391,13 +393,28 @@ void GameOverHUD::prepare(int score, int collectedEggs, int totalEggs, int timeT
         // Hide empty stars
         addChickenBannerInsteadOfStars(Vec2(_visibleSize.width * 0.5, _visibleSize.height * 0.75));
         
-        if(_btnMainMenu) _btnMainMenu->setTouchEnabled(true);
-        if(_btnRestart) _btnRestart->setTouchEnabled(true);
-        
         // No need to write Summary for infinite stage
         if (_resultSummaryLabel) { _resultSummaryLabel->setString(""); }
+        
+        delayAndUnlockButtons(NO_STAR); // we get no star in infinite stage
     }
 
+}
+
+void GameOverHUD::delayAndUnlockButtons(int star) {
+    // Delay instead of Star Animation
+    Vector<FiniteTimeAction*> actions;
+    
+    auto cover = DelayTime::create(STAR_MAX - star); // covers the total amount of delay as 3 sec
+    actions.pushBack(cover);
+    
+    actions.pushBack(CallFunc::create([=](){
+        if(_btnMainMenu) _btnMainMenu->setTouchEnabled(true);
+        if(_btnRestart) _btnRestart->setTouchEnabled(true);
+    }));
+    
+    auto seq = Sequence::create(actions);
+    this->runAction(seq);
 }
 
 void GameOverHUD::addFirework() {

@@ -27,6 +27,12 @@ typedef enum
 #define CHICKEN_LIVES_MAX               3
 #define CHICKEN_LIVES                   3
 
+#define STAR_MAX                        3
+#define ONE_STAR                        1
+#define TWO_STAR                        2
+#define THREE_STAR                      3
+#define NO_STAR                         0
+
 #define STAGE_LENGTH                    40 // 35 // increased to 70 since designResolution decreased from 1024 to 512
 
 // UserDefault Strings
