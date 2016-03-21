@@ -31,6 +31,7 @@ const std::string magnetized = "magnetized";
 
 GameLayer* GameLayer::_instance = nullptr;
 static Stage _stage;  // To pass which stage we are playing now.
+static bool  hasFullscreenAdRequested = false;
 
 Scene* GameLayer::createScene(Stage const& stage)
 {
@@ -180,9 +181,10 @@ bool GameLayer::init()
     // Listen for touches
     addTouchListners();
     
-    
-    if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID) {
+    // Preload fullscreen ad for Android
+    if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID and not hasFullscreenAdRequested) {
         SonarCocosHelper::AdMob::preLoadFullscreenAd();
+        hasFullscreenAdRequested = true;
     }
 
     // Activate main update loop
@@ -390,6 +392,9 @@ void GameLayer::gameOver(int stageCompletionPercentage) {
         if (not StageStatus::incrementFullscreenAdCounter()) {
             if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID) {
                 SonarCocosHelper::AdMob::showPreLoadedFullscreenAd();
+                
+                // refresh flag
+                hasFullscreenAdRequested = false;
             }
             else if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS) {
                 SonarCocosHelper::AdMob::showFullscreenAd();
