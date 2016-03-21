@@ -179,6 +179,11 @@ bool GameLayer::init()
     
     // Listen for touches
     addTouchListners();
+    
+    
+    {
+        SonarCocosHelper::AdMob::preLoadFullscreenAd();
+    }
 
     // Activate main update loop
     this->scheduleUpdate();
@@ -383,7 +388,7 @@ void GameLayer::gameOver(int stageCompletionPercentage) {
     {
         // Sonar Framework - Show Ad
         if (not StageStatus::incrementFullscreenAdCounter()) {
-            SonarCocosHelper::AdMob::showFullscreenAd();
+            SonarCocosHelper::AdMob::showPreLoadedFullscreenAd();
         }
     }
     

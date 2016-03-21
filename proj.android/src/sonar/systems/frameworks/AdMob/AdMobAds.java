@@ -136,11 +136,7 @@ public class AdMobAds extends Framework
 	    {
 	          public void onAdLoaded()
 	          {
-	        	  if(preLoadCalled)
-	        	  {
-	        		  FullscreenAdPreloaded(true);
-	        	  }
-	        	  else
+	        	  if(! preLoadCalled)
 	        	  {
 	        		  LoadFullscreenAd();
 	        	  }
@@ -455,7 +451,6 @@ public class AdMobAds extends Framework
 		{
 			activity.runOnUiThread(new Runnable()
 		     {
-	
 			     @Override
 			     public void run()
 			     {
@@ -475,7 +470,7 @@ public class AdMobAds extends Framework
 		{
 			activity.runOnUiThread(new Runnable()
 		    {
-	
+
 			     @Override
 			     public void run()
 			     {
@@ -499,7 +494,7 @@ public class AdMobAds extends Framework
 		{
 			activity.runOnUiThread(new Runnable()
 		    {
-	
+
 			     @Override
 			     public void run()
 			     {
@@ -520,19 +515,21 @@ public class AdMobAds extends Framework
 	@Override
 	public void ShowPreLoadedFullscreenAd()
 	{
-		if(interstitial != null) 
+		if(interstitial != null)
 		{
 			activity.runOnUiThread(new Runnable()
-		     {
-	
+			{
+			
 			     @Override
 			     public void run()
 			     {
 			    	 if(interstitial.isLoaded())
 			    		 interstitial.show();
 			     }
-		     });
+			});
 		}
+		
+		PreLoadFullscreenAd();
 	}
 
 }

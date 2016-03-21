@@ -68,7 +68,6 @@ bool MainMenuLayer::init()
     
     {
         // Sonar Framework - Show Ad
-        SonarCocosHelper::AdMob::hideBannerAd(SonarCocosHelper::AdBannerPosition::eBottom);
         SonarCocosHelper::AdMob::showBannerAd(SonarCocosHelper::AdBannerPosition::eBottom);
     }
     
