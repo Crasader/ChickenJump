@@ -92,7 +92,7 @@ bool CreditHUD::init()
         std::string developer_one = "Asish Biswas";
         std::string developer_two = "Farid Belhadi";
         std::string music         = "Music: incompetech.com";
-        std::string thanks        = "Special Thanks: Anne Cecile";
+        std::string thanks        = "Special Thanks: Anne Cecile Roucou";
         std::string gap           = " ";
         
         auto label1  = Text::create(sixeyes, font, _visibleSize.height * CREDIT_FONT_SIZE_SMALL);
