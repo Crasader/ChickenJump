@@ -48,4 +48,5 @@ ChickenJump.xccheckout
 .cproject
 
 bin/
-
+cocos2d/build/
+proj.ios_mac/build/
