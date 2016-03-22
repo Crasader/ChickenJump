@@ -110,11 +110,23 @@ bool GameLayer::init()
     _state = GameState::init;
     Trampoline::isDrawingOngoing = false;   // new trampoline drawing can begin
 
-    _stageLength = _stageRemaining = _visibleSize.width * STAGE_LENGTH;
-    if (getStage().getName() == StageStatus::netherlands) {
-        // since NL has invisibility, the length should be longer
-        _stageLength = _stageRemaining = _visibleSize.width * STAGE_LENGTH * 1.5;
+    {
+        // Set stage length for special stages
+        _stageLength = _stageRemaining = _visibleSize.width * STAGE_LENGTH;
+        if (getStage().getName() == StageStatus::england) {
+            // tutorial stage 1
+            _stageLength = _stageRemaining = _visibleSize.width * STAGE_LENGTH * 0.5;
+        }
+        if (getStage().getName() == StageStatus::italy) {
+            // tutorial stage 2
+            _stageLength = _stageRemaining = _visibleSize.width * STAGE_LENGTH * 0.75;
+        }
+        if (getStage().getName() == StageStatus::netherlands) {
+            // since NL has invisibility, the length should be longer
+            _stageLength = _stageRemaining = _visibleSize.width * STAGE_LENGTH * 1.5;
+        }
     }
+    
     _distanceForNewCollectables = _visibleSize.width * 0.5; // moving ahead first collectable spwaning
 
     // this determines when to make a bomb/life fall.

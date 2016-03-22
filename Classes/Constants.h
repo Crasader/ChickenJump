@@ -21,7 +21,8 @@ typedef enum
 } BackgroundLayer;
 
 // Score factors
-#define MAX_TIME_BONUS                  15   // points
+#define MAX_TIME_BONUS                  10   // points
+#define TIME_BONUS_BOUNDARY             100 // seconds
 
 // Number of lives
 #define CHICKEN_LIVES_MAX               3
@@ -33,7 +34,7 @@ typedef enum
 #define THREE_STAR                      3
 #define NO_STAR                         0
 
-#define STAGE_LENGTH                    40 // 35 // increased to 70 since designResolution decreased from 1024 to 512
+#define STAGE_LENGTH                    35 // increased to 70 since designResolution decreased from 1024 to 512
 
 // UserDefault Strings
 #define FIRST_TIME                      "FIRST_TIME"

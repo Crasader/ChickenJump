@@ -245,22 +245,22 @@ void GameOverHUD::addChickenBannerInsteadOfStars(Vec2 const& position) {
 
 int GameOverHUD::getStageTimeLimit(std::string const& stageName) {
     if (stageName == StageStatus::england) {
-        return 95; // 1:35
+        return TIME_BONUS_BOUNDARY * 0.50;  // 0:50
     }
     if (stageName == StageStatus::italy) {
-        return 75; // 1:15
+        return TIME_BONUS_BOUNDARY * 0.75;  // 1:15
     }
     if (stageName == StageStatus::france) {
-        return 100; // 1:40
+        return TIME_BONUS_BOUNDARY;         // 1:40
     }
     if (stageName == StageStatus::germany) {
-        return 95; // 1:35
+        return TIME_BONUS_BOUNDARY;         // 1:40
     }
     if (stageName == StageStatus::spain) {
-        return 90; // 1:30
+        return TIME_BONUS_BOUNDARY;         // 1:40
     }
     if (stageName == StageStatus::netherlands) {
-        return 95; // 1:35
+        return TIME_BONUS_BOUNDARY;         // 1:40
     }
     return 0;
 }
