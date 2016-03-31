@@ -21,6 +21,7 @@ private:
     void addHighscoreLabel();
     void addMainMenu();
     void addRestartButton();
+    void addFacebookShareButton();
     void addResultSummaryLabel();
     void addScoreBoard();
     void addScoreLabel();
@@ -32,6 +33,7 @@ private:
     void prepare(int score, int collectedEggs, int totalEggs, int timeTaken, int star, bool isNewHighscore, bool isStageClear);
     void mainMenuClicked(cocos2d::Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType);
     void restartClicked(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType);
+    void fbshareClicked(Ref const* ref, cocos2d::ui::Widget::TouchEventType const& eEventType);
     int  getStageTimeLimit(std::string const& stageName);
     int  calculateStar(std::string const& stageName, int score);
     
@@ -47,6 +49,7 @@ private:
     
     cocos2d::ui::Button* _btnMainMenu;
     cocos2d::ui::Button* _btnRestart;
+    cocos2d::ui::Button* _btnFBShare;
     cocos2d::Sprite* _star1;
     cocos2d::Sprite* _star2;
     cocos2d::Sprite* _star3;

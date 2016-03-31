@@ -20,6 +20,10 @@ static const std::string imageExplosion = "snowflake.png";
 static const std::string imageScoreBoard = "scoreboard.png";
 static const std::string imageTimer = "timer.png";
 static const std::string imageScore = "icon_score.png";
+static const std::string imageBannarChicken = "banner_chicken.png";
+static const std::string imageBannarChickenFliped = "banner_chicken_fliped.png";
+static const std::string imageBtnFBShare = "btn_facebook_share.png";
+
 
 void GameOverHUD::setup(Stage const& stage, int const collectedEggs, int const totalEggs, int const collectedPizzas, int const totalPizzas, int const timeTaken, float const stageCompletionPercentage)
 {
@@ -105,6 +109,7 @@ bool GameOverHUD::init()
 
     addMainMenu();
     addRestartButton();
+    addFacebookShareButton();
     
     return true;
 }
@@ -200,7 +205,7 @@ void GameOverHUD::addMainMenu() {
     _btnMainMenu = Button::create(imageBtnMainMenu, imageBtnMainMenu);
     if (not _btnMainMenu) { return; }
     _btnMainMenu->addTouchEventListener(CC_CALLBACK_2(GameOverHUD::mainMenuClicked, this));
-    _btnMainMenu->setPosition(Point(_visibleSize.width * 0.5 + _btnMainMenu->getContentSize().width * 0.8,
+    _btnMainMenu->setPosition(Point(_visibleSize.width * 0.5 + _btnMainMenu->getContentSize().width * 1.5,
                                     _visibleSize.height * 0.12));
     _btnMainMenu->setTouchEnabled(false); // Will be active after Star's appearance
     this->addChild(_btnMainMenu, BackgroundLayer::layerChicken);
@@ -210,10 +215,20 @@ void GameOverHUD::addRestartButton() {
     _btnRestart = Button::create(imageBtnRestart, imageBtnRestart);
     if (not _btnRestart) { return; }
     _btnRestart->addTouchEventListener(CC_CALLBACK_2(GameOverHUD::restartClicked, this));
-    _btnRestart->setPosition(Vec2(_visibleSize.width * 0.5 - _btnRestart->getContentSize().width * 0.8,
+    _btnRestart->setPosition(Vec2(_visibleSize.width * 0.5 - _btnRestart->getContentSize().width * 1.5,
                                   _visibleSize.height * 0.12));
     _btnRestart->setTouchEnabled(false); // Will be active after Star's appearance
     this->addChild(_btnRestart, BackgroundLayer::layerChicken);
+}
+
+void GameOverHUD::addFacebookShareButton() {
+	_btnFBShare = Button::create(imageBtnFBShare, imageBtnFBShare);
+    if (not _btnFBShare) { return; }
+    _btnFBShare->addTouchEventListener(CC_CALLBACK_2(GameOverHUD::fbshareClicked, this));
+    _btnFBShare->setPosition(Vec2(_visibleSize.width * 0.5, _visibleSize.height * 0.12));
+    _btnFBShare->setVisible(false);
+    _btnFBShare->setTouchEnabled(false); // Will be active after Star's appearance
+    this->addChild(_btnFBShare, BackgroundLayer::layerChicken);
 }
 
 void GameOverHUD::addChickenBannerInsteadOfStars(Vec2 const& position) {
@@ -222,7 +237,7 @@ void GameOverHUD::addChickenBannerInsteadOfStars(Vec2 const& position) {
     }
     
     // Replace Stars with banner
-    Sprite* banner_chicken = Sprite::create("banner_chicken.png");
+    Sprite* banner_chicken = Sprite::create(imageBannarChicken);
     if (banner_chicken) {
         banner_chicken->setPosition(position.x, position.y);
         this->addChild(banner_chicken, BackgroundLayer::layerChicken);
@@ -236,7 +251,7 @@ void GameOverHUD::addChickenBannerInsteadOfStars(Vec2 const& position) {
     }
     
     // Fliped Chicken
-    Sprite* banner_fliped_chicken = Sprite::create("banner_chicken_fliped.png");
+    Sprite* banner_fliped_chicken = Sprite::create(imageBannarChickenFliped);
     if (banner_fliped_chicken) {
         banner_fliped_chicken->setPosition(position.x + banner_chicken->getContentSize().width * 0.6, position.y);
         this->addChild(banner_fliped_chicken, BackgroundLayer::layerChicken);
@@ -326,6 +341,10 @@ void GameOverHUD::prepare(int score, int collectedEggs, int totalEggs, int timeT
         // Unlock buttons
         if(_btnMainMenu) _btnMainMenu->setTouchEnabled(true);
         if(_btnRestart) _btnRestart->setTouchEnabled(true);
+        if(_btnFBShare) {
+            _btnFBShare->setVisible(false);
+            _btnFBShare->setTouchEnabled(false);
+        }
         
         return;
     }
@@ -373,6 +392,11 @@ void GameOverHUD::prepare(int score, int collectedEggs, int totalEggs, int timeT
             _resultSummaryLabel->setColor(Color3B::ORANGE);
         }
         
+        // Visible Facebook share button; will be enabled after star animation
+        if(_btnFBShare and star) {
+            _btnFBShare->setVisible(true);
+        }
+        
         // Star Animation
         Vector<FiniteTimeAction*> actions;
         for (int i = 0; i < star and i < _stars.size(); ++i) {
@@ -383,6 +407,10 @@ void GameOverHUD::prepare(int score, int collectedEggs, int totalEggs, int timeT
         actions.pushBack(CallFunc::create([=](){
             if(_btnMainMenu) _btnMainMenu->setTouchEnabled(true);
             if(_btnRestart) _btnRestart->setTouchEnabled(true);
+            if(_btnFBShare and star) {
+                _btnFBShare->setVisible(true);
+                _btnFBShare->setTouchEnabled(true);
+            }
         }));
         
         auto seq = Sequence::create(actions);
@@ -398,6 +426,10 @@ void GameOverHUD::prepare(int score, int collectedEggs, int totalEggs, int timeT
         // Unlock buttons
         if(_btnMainMenu) _btnMainMenu->setTouchEnabled(true);
         if(_btnRestart) _btnRestart->setTouchEnabled(true);
+        if(_btnFBShare) {
+            _btnFBShare->setVisible(true);
+            _btnFBShare->setTouchEnabled(true);
+        }
     }
 
 }
@@ -444,10 +476,16 @@ void GameOverHUD::restartClicked(const Ref* ref, const cocos2d::ui::Widget::Touc
         d->resume();
     }
     d->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
-
 }
 
+void GameOverHUD::fbshareClicked(const Ref* ref, const cocos2d::ui::Widget::TouchEventType& eEventType) {
+    if (eEventType != ui::Widget::TouchEventType::ENDED) { return; }
 
+    std::string const title = "Chicken Jump";
+    std::string const msg = StringUtils::format("I've just scored %d in %s of Chicken Jump", _stage.getScore(), StageStatus::getStageFullname(_stage.getName()).c_str());
+    std::string const url = "www.facebook.com/chickenjumpgame";
+	SonarCocosHelper::Facebook::Share(title.c_str(), url.c_str(), msg.c_str(), "", "");
+}
 
 
 
