@@ -49,4 +49,10 @@ ChickenJump.xccheckout
 
 bin/
 cocos2d/build/
+proj.android/bin
+proj.android/gen
 proj.ios_mac/build/
+facebook-android-sdk-3.8.0/facebook/bin
+facebook-android-sdk-3.8.0/facebook/gen
+
+
