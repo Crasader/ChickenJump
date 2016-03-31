@@ -8,12 +8,12 @@ public class SonarFrameworkSettings
 
     public static final boolean USE_GOOGLE_ANALYTICS          = false; // Requires google play services library
 
-    public static final boolean USE_ADMOB                     = true; // Requires Google play services library
+    public static final boolean USE_ADMOB                     = true;  // Requires Google play services library
 
     public static final boolean USE_REVMOB                    = false; // Requires revmob jar file and Google play
                                                                        // services library
 
-    public static final boolean USE_FACEBOOK                  = false; // Requires facebook sdk library and android
+    public static final boolean USE_FACEBOOK                  = true;  // Requires facebook sdk library and android
                                                                        // support and bolt jar file (in the facebook sdk
                                                                        // libs folder)
 

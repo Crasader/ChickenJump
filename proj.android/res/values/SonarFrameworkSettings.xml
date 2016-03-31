@@ -17,7 +17,7 @@
 	<!-- Google Play Services End -->
     
     <!-- Facebook -->
-		<string name="facebook_app_id">0000000000000000</string> <!-- SET TO YOUR FACEBOOK APP ID -->
+		<string name="facebook_app_id">1737094009845286</string> <!-- SET TO YOUR FACEBOOK APP ID -->
 	<!-- Facebook End -->
 	
 	<!-- AdMob -->

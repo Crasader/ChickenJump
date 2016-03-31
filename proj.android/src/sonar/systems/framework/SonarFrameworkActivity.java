@@ -19,7 +19,7 @@ public class SonarFrameworkActivity extends Cocos2dxActivity
 	}
 	
 	@Override
-	protected void onCreate(Bundle b) 
+	protected void onCreate(Bundle b)
 	{
 		super.onCreate(b);
 		try {
