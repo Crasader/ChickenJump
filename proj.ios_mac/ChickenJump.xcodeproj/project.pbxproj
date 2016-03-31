@@ -82,6 +82,7 @@
 		D53DBEC91BA89FC4001A812F /* resource_hd in Resources */ = {isa = PBXBuildFile; fileRef = D53DBEC61BA89FC4001A812F /* resource_hd */; };
 		D53DBECA1BA89FC4001A812F /* resource_hd2 in Resources */ = {isa = PBXBuildFile; fileRef = D53DBEC71BA89FC4001A812F /* resource_hd2 */; };
 		D53DBECB1BA89FC4001A812F /* resource_sd in Resources */ = {isa = PBXBuildFile; fileRef = D53DBEC81BA89FC4001A812F /* resource_sd */; };
+		D541412B1CA6110400E5ADD8 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D541412A1CA6110400E5ADD8 /* Social.framework */; };
 		D5548C1A1C0CEAA000C1C86C /* FloatingChicken.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5548C181C0CEAA000C1C86C /* FloatingChicken.cpp */; };
 		D5548C1B1C0CEAA000C1C86C /* FloatingChicken.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5548C181C0CEAA000C1C86C /* FloatingChicken.cpp */; };
 		D5548C1D1C13003900C1C86C /* explosion.wav in Resources */ = {isa = PBXBuildFile; fileRef = D5548C1C1C13003900C1C86C /* explosion.wav */; };
@@ -249,6 +250,7 @@
 		D53DBEC61BA89FC4001A812F /* resource_hd */ = {isa = PBXFileReference; lastKnownFileType = folder; path = resource_hd; sourceTree = "<group>"; };
 		D53DBEC71BA89FC4001A812F /* resource_hd2 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = resource_hd2; sourceTree = "<group>"; };
 		D53DBEC81BA89FC4001A812F /* resource_sd */ = {isa = PBXFileReference; lastKnownFileType = folder; path = resource_sd; sourceTree = "<group>"; };
+		D541412A1CA6110400E5ADD8 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.2.sdk/System/Library/Frameworks/Social.framework; sourceTree = DEVELOPER_DIR; };
 		D5548C181C0CEAA000C1C86C /* FloatingChicken.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FloatingChicken.cpp; sourceTree = "<group>"; };
 		D5548C191C0CEAA000C1C86C /* FloatingChicken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FloatingChicken.h; sourceTree = "<group>"; };
 		D5548C1C1C13003900C1C86C /* explosion.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = explosion.wav; sourceTree = "<group>"; };
@@ -316,6 +318,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D541412B1CA6110400E5ADD8 /* Social.framework in Frameworks */,
 				D5A686881C98C4B2000E0E3C /* SystemConfiguration.framework in Frameworks */,
 				D5A686861C98C4AA000E0E3C /* StoreKit.framework in Frameworks */,
 				D5A686841C98C4A3000E0E3C /* MessageUI.framework in Frameworks */,
@@ -413,6 +416,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D541412A1CA6110400E5ADD8 /* Social.framework */,
 				D5A686871C98C4B2000E0E3C /* SystemConfiguration.framework */,
 				D5A686851C98C4AA000E0E3C /* StoreKit.framework */,
 				D5A686831C98C4A3000E0E3C /* MessageUI.framework */,
@@ -538,9 +542,9 @@
 		D5A686891C98C7BC000E0E3C /* SonarFrameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D5A686981C98C892000E0E3C /* IOSCPPHelper.mm */,
 				D5A686991C98C892000E0E3C /* SCHSettings.h */,
 				D5A6869A1C98C892000E0E3C /* IOSCPPHelper.h */,
+				D5A686981C98C892000E0E3C /* IOSCPPHelper.mm */,
 				D5A6869B1C98C892000E0E3C /* IOSHelper.h */,
 				D5A6869C1C98C892000E0E3C /* IOSHelper.m */,
 				D5A6869D1C98C892000E0E3C /* IOSResults.h */,
