@@ -191,7 +191,7 @@ SCHEmptyProtocol
 #endif
 
 #if SCH_IS_SOCIAL_ENABLED == true
--( void )shareViaFacebook:( NSString * ) message: ( NSString * ) imagePath;
+-( void )shareViaFacebook:( NSString * ) message: ( NSURL * ) ulr: ( NSString * ) imagePath;
 -( void )shareViaTwitter:( NSString * ) message: ( NSString * ) imagePath;
 -( void )shareWithString:( NSString *) message: ( NSString * ) imagePath;
 #endif

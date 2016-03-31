@@ -75,9 +75,9 @@ void IOSCPPHelper::showChartboostVideoAd( )
 #endif
 
 #if SCH_IS_SOCIAL_ENABLED == true
-void IOSCPPHelper::shareViaFacebook( __String message, __String thumbnailPath )
+void IOSCPPHelper::shareViaFacebook( __String message, __String url, __String thumbnailPath )
 {
-    [[IOSHelper instance] shareViaFacebook:[NSString stringWithCString:message.getCString( ) encoding:NSUTF8StringEncoding]: [NSString stringWithCString:thumbnailPath.getCString( ) encoding:NSUTF8StringEncoding]];
+    [[IOSHelper instance] shareViaFacebook:[NSString stringWithCString:message.getCString( ) encoding:NSUTF8StringEncoding]: [NSURL URLWithString:[NSString stringWithCString:url.getCString( ) encoding:NSUTF8StringEncoding]]: [NSString stringWithCString:thumbnailPath.getCString( ) encoding:NSUTF8StringEncoding]];
 }
 
 void IOSCPPHelper::shareViaTwitter( __String message, __String thumbnailPath )

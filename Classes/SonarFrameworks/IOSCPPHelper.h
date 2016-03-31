@@ -30,7 +30,7 @@ public:
     static void Setup( );
 
 #if SCH_IS_SOCIAL_ENABLED == true
-    static void shareViaFacebook( __String message, __String thumbnailPath );
+    static void shareViaFacebook( __String message, __String url, __String thumbnailPath );
     static void shareViaTwitter( __String message, __String thumbnailPath );
     static void shareWithString( __String message, __String thumbnailPath );
 #endif

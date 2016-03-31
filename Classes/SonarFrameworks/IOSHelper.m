@@ -356,11 +356,12 @@ SCHEmptyProtocol
 
 #if SCH_IS_SOCIAL_ENABLED == true
 // share to facebook (requires the message to be sent and the image path, both of which can be empty strings)
--( void )shareViaFacebook: ( NSString * ) message: ( NSString * ) imagePath
+-( void )shareViaFacebook: ( NSString * ) message: ( NSURL * ) url: ( NSString * ) imagePath
 {
     SLComposeViewController *slVC = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
     [slVC addImage:[UIImage imageNamed:imagePath]];
     [slVC setInitialText:message];
+    [slVC addURL:url];
     slVC.completionHandler = ^( SLComposeViewControllerResult result )
     {
         [localViewController dismissViewControllerAnimated:YES completion:NULL];
