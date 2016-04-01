@@ -205,8 +205,7 @@ void GameOverHUD::addMainMenu() {
     _btnMainMenu = Button::create(imageBtnMainMenu, imageBtnMainMenu);
     if (not _btnMainMenu) { return; }
     _btnMainMenu->addTouchEventListener(CC_CALLBACK_2(GameOverHUD::mainMenuClicked, this));
-    _btnMainMenu->setPosition(Point(_visibleSize.width * 0.5 + _btnMainMenu->getContentSize().width * 1.5,
-                                    _visibleSize.height * 0.12));
+    _btnMainMenu->setPosition(Point(_visibleSize.width * 0.5, _visibleSize.height * 0.12));
     _btnMainMenu->setTouchEnabled(false); // Will be active after Star's appearance
     this->addChild(_btnMainMenu, BackgroundLayer::layerChicken);
 }
@@ -225,7 +224,8 @@ void GameOverHUD::addFacebookShareButton() {
 	_btnFBShare = Button::create(imageBtnFBShare, imageBtnFBShare);
     if (not _btnFBShare) { return; }
     _btnFBShare->addTouchEventListener(CC_CALLBACK_2(GameOverHUD::fbshareClicked, this));
-    _btnFBShare->setPosition(Vec2(_visibleSize.width * 0.5, _visibleSize.height * 0.12));
+    _btnFBShare->setPosition(Vec2(_visibleSize.width * 0.5 + _btnMainMenu->getContentSize().width * 1.5,
+                                  _visibleSize.height * 0.12));
     _btnFBShare->setVisible(false);
     _btnFBShare->setTouchEnabled(false); // Will be active after Star's appearance
     this->addChild(_btnFBShare, BackgroundLayer::layerChicken);
