@@ -1,6 +1,7 @@
 #include "AppDelegate.h"
 
 #include "Constants.h"
+#include "GameLayer.h"
 #include "HomeLayer.h"
 #include "SimpleAudioEngine.h"
 #include "SplashScreenLayer.h"
@@ -112,7 +113,13 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
 // This function will be called when the app is inactive. When comes a phone call,it's be invoked too
 void AppDelegate::applicationDidEnterBackground() {
-    Director::getInstance()->stopAnimation();
+    auto instance = GameLayer::getInstance();
+    if (instance) {
+        instance->pauseGame(nullptr);
+    }
+    else {
+        Director::getInstance()->stopAnimation();
+    }
     
     // if you use SimpleAudioEngine, it must be pause
     CocosDenshion::SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
