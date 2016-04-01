@@ -137,61 +137,63 @@ public class Facebook extends Framework
 																						setDescription(description).
 																						setLink(link).build();
 			uiHelper.trackPendingDialogCall(shareDialog.present());
-		} 
-		else
-		{
-			// Fallback. For example, publish the post using the Feed Dialog
-			Bundle params = new Bundle();
-		    params.putString("name", name);
-		   // params.putString("caption",caption);
-		    params.putString("description", description);
-		    params.putString("link", link);
-		    //params.putString("picture", imagePath);
-
-		    Session session = Session.getActiveSession();
-		    WebDialog feedDialog = (new WebDialog.FeedDialogBuilder(activity,
-		            					session,
-		            					params))
-		            					.setOnCompleteListener(new OnCompleteListener() 
-		            					{
-
-								            @Override
-								            public void onComplete(Bundle values, FacebookException error) 
-								            {
-								                if (error == null) 
-								                {
-								                    // When the story is posted, echo the success
-								                    // and the post Id.
-								                    final String postId = values.getString("post_id");
-								                    if (postId != null) 
-								                    {
-								                        Toast.makeText(activity,
-								                            "Posted story, id: "+postId,
-								                            Toast.LENGTH_SHORT).show();
-								                    } 
-								                    else 
-								                    {
-								                        // User clicked the Cancel button
-								                        Toast.makeText(activity.getApplicationContext(), "Publish cancelled", Toast.LENGTH_SHORT).show();
-								                    }
-								                } 
-								                else if (error instanceof FacebookOperationCanceledException) 
-								                {
-								                    // User clicked the "x" button
-								                    Toast.makeText(activity.getApplicationContext(), "Publish cancelled", Toast.LENGTH_SHORT).show();
-								                } 
-								                else 
-								                {
-								                    // Generic, ex: network error
-								                    Toast.makeText(activity.getApplicationContext(), "Error posting story", Toast.LENGTH_SHORT).show();
-								                }
-								            }
-
-	
-
-		            						}).build();
-		    feedDialog.show();
 		}
+//		else
+//		{
+//			Toast.makeText(activity.getApplicationContext(), "Facebook App not installed", Toast.LENGTH_SHORT).show();
+			
+//			// Fallback. For example, publish the post using the Feed Dialog
+//			Bundle params = new Bundle();
+//		    params.putString("name", name);
+//		   // params.putString("caption",caption);
+//		    params.putString("description", description);
+//		    params.putString("link", link);
+//		    //params.putString("picture", imagePath);
+//
+//		    Session session = Session.getActiveSession();
+//		    WebDialog feedDialog = (new WebDialog.FeedDialogBuilder(activity,
+//		            					session,
+//		            					params))
+//		            					.setOnCompleteListener(new OnCompleteListener() 
+//		            					{
+//
+//								            @Override
+//								            public void onComplete(Bundle values, FacebookException error) 
+//								            {
+//								                if (error == null) 
+//								                {
+//								                    // When the story is posted, echo the success
+//								                    // and the post Id.
+//								                    final String postId = values.getString("post_id");
+//								                    if (postId != null) 
+//								                    {
+//								                        Toast.makeText(activity,
+//								                            "Posted story, id: "+postId,
+//								                            Toast.LENGTH_SHORT).show();
+//								                    } 
+//								                    else 
+//								                    {
+//								                        // User clicked the Cancel button
+//								                        Toast.makeText(activity.getApplicationContext(), "Publish cancelled", Toast.LENGTH_SHORT).show();
+//								                    }
+//								                } 
+//								                else if (error instanceof FacebookOperationCanceledException) 
+//								                {
+//								                    // User clicked the "x" button
+//								                    Toast.makeText(activity.getApplicationContext(), "Publish cancelled", Toast.LENGTH_SHORT).show();
+//								                } 
+//								                else 
+//								                {
+//								                    // Generic, ex: network error
+//								                    Toast.makeText(activity.getApplicationContext(), "Error posting story", Toast.LENGTH_SHORT).show();
+//								                }
+//								            }
+//
+//	
+//
+//		            						}).build();
+//		    feedDialog.show();
+//		}
 	}
 	
 	private class SessionStatusCallback implements Session.StatusCallback 
