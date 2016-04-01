@@ -12,6 +12,8 @@
 using namespace cocos2d;
 using namespace ui;
 
+static const std::string failedString = "Failed !";
+
 static const std::string imageBtnMainMenu = "btn_menu.png";
 static const std::string imageBtnNextStage = "btn_nextstage.png";
 static const std::string imageBtnRestart = "btn_restart.png";
@@ -122,7 +124,7 @@ void GameOverHUD::addScoreBoard() {
 }
 
 void GameOverHUD::addResultSummaryLabel() {
-    _resultSummaryLabel = Label::createWithTTF("Failed !", font, _visibleSize.height * SCORE_FONT_SIZE_SMALL);
+    _resultSummaryLabel = Label::createWithTTF(failedString, font, _visibleSize.height * SCORE_FONT_SIZE_SMALL);
     if (not _resultSummaryLabel) { return; }
     _resultSummaryLabel->setPosition(_visibleSize.width * 0.5, _visibleSize.height * 0.9);
     this->addChild(_resultSummaryLabel, BackgroundLayer::layerChicken);
@@ -342,8 +344,8 @@ void GameOverHUD::prepare(int score, int collectedEggs, int totalEggs, int timeT
         if(_btnMainMenu) _btnMainMenu->setTouchEnabled(true);
         if(_btnRestart) _btnRestart->setTouchEnabled(true);
         if(_btnFBShare) {
-            _btnFBShare->setVisible(false);
-            _btnFBShare->setTouchEnabled(false);
+            _btnFBShare->setVisible(true);
+            _btnFBShare->setTouchEnabled(true);
         }
         
         return;
@@ -483,8 +485,14 @@ void GameOverHUD::fbshareClicked(const Ref* ref, const cocos2d::ui::Widget::Touc
 
     std::string const title = "Chicken Jump";
     std::string const msg = StringUtils::format("I've just scored %d in %s of Chicken Jump", _stage.getScore(), StageStatus::getStageFullname(_stage.getName()).c_str());
+    std::string const failedmsg = StringUtils::format("I've just failed in %s :(", StageStatus::getStageFullname(_stage.getName()).c_str());
     std::string const url = "www.facebook.com/chickenjumpgame";
-	SonarCocosHelper::Facebook::Share(title.c_str(), url.c_str(), msg.c_str(), "", "");
+    
+    SonarCocosHelper::Facebook::Share(title.c_str(),
+                                      url.c_str(),
+                                      _resultSummaryLabel->getString() == failedString ? failedmsg.c_str() : msg.c_str(),
+                                      "",
+                                      "");
 }
 
 
