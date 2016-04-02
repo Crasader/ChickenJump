@@ -112,14 +112,14 @@ public class Facebook extends Framework
         {
         	if(!session.isOpened() && !session.isClosed())
         	{
-            session.openForRead(new Session.OpenRequest(activity)
-                .setPermissions(Arrays.asList("public_profile"))
-                .setCallback(statusCallback));
+	            session.openForRead(new Session.OpenRequest(activity)
+	                .setPermissions(Arrays.asList("public_profile"))
+	                .setCallback(statusCallback));
         	}
-        	 else 
-             {
-                 Session.openActiveSession(activity, true, statusCallback);
-             }
+        	else 
+            {
+                Session.openActiveSession(activity, true, statusCallback);
+            }
         }
         else 
         {
