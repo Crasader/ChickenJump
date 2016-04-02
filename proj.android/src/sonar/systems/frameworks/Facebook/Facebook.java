@@ -14,7 +14,10 @@ import com.facebook.widget.WebDialog.OnCompleteListener;
 
 import sonar.systems.frameworks.BaseClass.Framework;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -130,6 +133,13 @@ public class Facebook extends Framework
 	@Override
 	public void Share(String name, String link, String description, String caption, String imagePath)
 	{
+		ConnectivityManager cm = (ConnectivityManager) activity.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo info = cm.getActiveNetworkInfo();
+		if (info == null) {
+			// if no Internet; just do nothing;
+			return;
+		}
+		
 		if (FacebookDialog.canPresentShareDialog(activity.getApplicationContext(), FacebookDialog.ShareDialogFeature.SHARE_DIALOG))
 		{
 				// Publish the post using the Share Dialog
