@@ -16,6 +16,8 @@ public:
     virtual bool init();
     CREATE_FUNC(HomeLayer);
 
+    void onKeyReleased(cocos2d::EventKeyboard::KeyCode keycode, cocos2d::Event* event);
+
     void update(float dt);
     
 private:

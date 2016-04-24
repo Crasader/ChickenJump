@@ -2,6 +2,7 @@
 
 #include "Constants.h"
 #include "GameLayer.h"
+#include "HomeLayer.h"
 #include "Stage.h"
 #include "StageStatus.h"
 #include "SoundManager.h"
@@ -21,8 +22,6 @@ static Button* btnPageScrollRight;
 static Button* btnPageScrollLeft;
 static bool pageScrolled = false;
 
-static PageView* pageView;
-
 static std::string imageBtnArrowLeft = "btn_arrowleft.png";
 static std::string imageBtnArrowRight = "btn_arrowright.png";
 static std::string imageMenuBackground = "menu_bg.png";
@@ -39,6 +38,20 @@ Scene* MainMenuLayer::createScene()
     return scene;
 }
 
+void MainMenuLayer::onKeyReleased(cocos2d::EventKeyboard::KeyCode keycode, cocos2d::Event* event) {
+	// Enable back button for android
+	if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID and keycode == EventKeyboard::KeyCode::KEY_BACK) {
+		if (_pageView->getCurPageIndex() == 0) {
+			auto scene = HomeLayer::createScene();
+			if (not scene) { return; }
+			Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
+		}
+		else if (_pageView->getCurPageIndex() == 1) {
+			pageScrollClicked(this, ui::Widget::TouchEventType::ENDED);
+		}
+	}
+}
+
 // on "init" you need to initialize your instance
 bool MainMenuLayer::init()
 {
@@ -49,6 +62,11 @@ bool MainMenuLayer::init()
     _origin = Director::getInstance()->getVisibleOrigin();
     _visibleSize = Director::getInstance()->getVisibleSize();
     
+    // Enable back button for android
+    if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID) {
+    	this->setKeypadEnabled(true);
+	}
+
     // Background Music
     SoundManager::PlayBackgroundMusic(SoundManager::menuMusic);
     
@@ -188,16 +206,18 @@ void MainMenuLayer::addStages() {
     page2->setBackGroundImage(imageComingSoon);
     page2->setTouchEnabled(false);
     
-    pageView = PageView::create();
-    pageView->setContentSize(Size(_visibleSize.width, _visibleSize.height));
-    pageView->setAnchorPoint(Vec2(0.5f, 0.5f));
-    pageView->setPosition(Vec2(_visibleSize.width * 0.5, _visibleSize.height * 0.5));
-    pageView->setTouchEnabled(false);
+    _pageView = PageView::create();
+    if (_pageView) {
+		_pageView->setContentSize(Size(_visibleSize.width, _visibleSize.height));
+		_pageView->setAnchorPoint(Vec2(0.5f, 0.5f));
+		_pageView->setPosition(Vec2(_visibleSize.width * 0.5, _visibleSize.height * 0.5));
+		_pageView->setTouchEnabled(false);
+
+		_pageView->insertPage(page1, 0);
+		_pageView->insertPage(page2, 1);
+    }
     
-    pageView->insertPage(page1, 0);
-    pageView->insertPage(page2, 1);
-    
-    this->addChild(pageView);
+    this->addChild(_pageView);
 }
 
 
@@ -245,7 +265,9 @@ void MainMenuLayer::pageScrollClicked(Ref const* ref, cocos2d::ui::Widget::Touch
     if (eEventType != ui::Widget::TouchEventType::ENDED) { return; }
 
     pageScrolled = not pageScrolled;
-    pageView->scrollToPage(pageScrolled); // we have only two pages: 0 and 1 ;)
+    if (_pageView) {
+    	_pageView->scrollToPage(pageScrolled); // we have only two pages: 0 and 1 ;)
+    }
     
     btnPageScrollRight->setVisible(not pageScrolled);
     btnPageScrollLeft->setVisible(pageScrolled);

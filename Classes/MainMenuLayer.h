@@ -18,6 +18,8 @@ public:
     
     CREATE_FUNC(MainMenuLayer);
 
+    void onKeyReleased(cocos2d::EventKeyboard::KeyCode keycode, cocos2d::Event* event);
+
 private:
     void addBackground();
     void addBackButton();
@@ -32,6 +34,8 @@ private:
     
     bool _countryFrance;
     BackButton<HomeLayer>* _backButton;
+
+    cocos2d::ui::PageView* _pageView;
     
     Vec2 _origin;
     Size _visibleSize;

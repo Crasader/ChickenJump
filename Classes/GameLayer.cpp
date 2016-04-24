@@ -6,6 +6,7 @@
 #include "Cloud.h"
 #include "Constants.h"
 #include "Collectable.h"
+#include "MainMenuLayer.h"
 #include "Stage.h"
 #include "SoundManager.h"
 #include "SpecialCollectable.h"
@@ -83,6 +84,23 @@ Scene* GameLayer::createScene(Stage const& stage)
     return scene;
 }
 
+void GameLayer::onKeyReleased(cocos2d::EventKeyboard::KeyCode keycode, cocos2d::Event* event) {
+	// Enable back button for android
+	if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID and keycode == EventKeyboard::KeyCode::KEY_BACK) {
+		if (_state == GameState::started) {
+			pauseGame(nullptr);
+		}
+		else if (_state == GameState::paused) {
+			resumeClicked(nullptr);
+		}
+		else if (_state == GameState::terminate) {
+			auto scene = MainMenuLayer::createScene();
+			if (not scene) { return; }
+			Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
+		}
+	}
+}
+
 GameLayer* GameLayer::getInstance() {
     return _instance;
 }
@@ -104,6 +122,11 @@ bool GameLayer::init()
     _visibleSize = Director::getInstance()->getVisibleSize();
     // CCLOG("===== GameLayer _visibleSize width-height (%dx%d)", (int)_visibleSize.width, (int)_visibleSize.height);
     // CCLOG("GameLayer _origin (x, y) (%f, %f)", _origin.x, _origin.y);
+
+    // Enable back button for android
+    if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID) {
+    	this->setKeypadEnabled(true);
+	}
 
 
     _state = GameState::init;
@@ -570,7 +593,7 @@ void GameLayer::pauseGame(cocos2d::Ref const* sender) {
 
 void GameLayer::resumeClicked(cocos2d::Ref const* sender) {
     // don't change the GameState.
-    // set resume in Director and show a FadeOut action of "Ready..?" label
+    // set resume in Director and show a FadeOut action of "3..2..1.." label
     // then a callback to set GameState and others.
 
     if (_state != GameState::paused) { return; }
@@ -598,6 +621,18 @@ void GameLayer::resumeClicked(cocos2d::Ref const* sender) {
         resumeLabel->setString("1");
     });
     
+    auto backbuttonFalse = CallFunc::create([this] () {
+    	if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID) {
+			this->setKeypadEnabled(false);
+		}
+    });
+
+    auto backbuttonTrue = CallFunc::create([this] () {
+		if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID) {
+			this->setKeypadEnabled(true);
+		}
+	});
+
     auto delay = DelayTime::create(1.0f);
 
     if (resumeLabel) {
@@ -607,18 +642,23 @@ void GameLayer::resumeClicked(cocos2d::Ref const* sender) {
                                  _visibleSize.height * 0.75 - resumeLabel->getContentSize().height * 0.5);
         this->addChild(resumeLabel, BackgroundLayer::layerChicken);
 
-        resumeLabel->runAction(Sequence::create(delay,
+        resumeLabel->runAction(Sequence::create(backbuttonFalse,
+        										delay,
                                                 two,
                                                 delay,
                                                 one,
                                                 delay,
                                                 resume,
+												backbuttonTrue,
                                                 NULL));
     }
 
 }
 
 void GameLayer::resumeGame(cocos2d::Ref const* sender) {
+	// DO NOT CALL THIS DIRECTLY
+	// CALL "resumeClicked()"
+
     if (_state != GameState::paused) { return; }
 
     _state = GameState::started;

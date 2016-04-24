@@ -33,6 +33,13 @@ Scene* HomeLayer::createScene()
     return scene;
 }
 
+void HomeLayer::onKeyReleased(cocos2d::EventKeyboard::KeyCode keycode, cocos2d::Event* event) {
+	// Enable back button for android
+	if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID and keycode == EventKeyboard::KeyCode::KEY_BACK) {
+		Director::getInstance()->end();
+	}
+}
+
 bool HomeLayer::init()
 {
     if ( !Layer::init() )
@@ -43,6 +50,11 @@ bool HomeLayer::init()
     _origin = Director::getInstance()->getVisibleOrigin();
     _visibleSize = Director::getInstance()->getVisibleSize();
     
+    // Enable back button for android
+    if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID) {
+    	this->setKeypadEnabled(true);
+	}
+
     // Background Music
     SoundManager::PlayBackgroundMusic(SoundManager::menuMusic);
     

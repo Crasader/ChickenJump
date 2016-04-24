@@ -12,6 +12,8 @@ public:
     virtual bool init();
     CREATE_FUNC(CreditLayer);
     
+    void onKeyReleased(cocos2d::EventKeyboard::KeyCode keycode, cocos2d::Event* event);
+
 private:
     void addBackground();
     void addGround();

@@ -30,6 +30,15 @@ Scene* CreditLayer::createScene()
     return scene;
 }
 
+void CreditLayer::onKeyReleased(cocos2d::EventKeyboard::KeyCode keycode, cocos2d::Event* event) {
+	// Enable back button for android
+	if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID and keycode == EventKeyboard::KeyCode::KEY_BACK) {
+		auto scene = HomeLayer::createScene();
+		if (not scene) { return; }
+		Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
+	}
+}
+
 
 bool CreditLayer::init()
 {
@@ -39,6 +48,11 @@ bool CreditLayer::init()
 
     _origin = Director::getInstance()->getVisibleOrigin();
     _visibleSize = Director::getInstance()->getVisibleSize();
+
+    // Enable back button for android
+    if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID) {
+    	this->setKeypadEnabled(true);
+	}
 
     // Background
     addBackground();

@@ -484,7 +484,7 @@ void GameOverHUD::fbshareClicked(const Ref* ref, const cocos2d::ui::Widget::Touc
     if (eEventType != ui::Widget::TouchEventType::ENDED) { return; }
 
     std::string const title = "Chicken Jump";
-    std::string const msg = StringUtils::format("I've just scored %d in %s of Chicken Jump", _stage.getScore(), StageStatus::getStageFullname(_stage.getName()).c_str());
+    std::string const msg = StringUtils::format("I've just scored %d in %s", _stage.getScore(), StageStatus::getStageFullname(_stage.getName()).c_str());
     std::string const failedmsg = StringUtils::format("I've just failed in %s :(", StageStatus::getStageFullname(_stage.getName()).c_str());
     std::string const url = "www.facebook.com/chickenjumpgame";
     

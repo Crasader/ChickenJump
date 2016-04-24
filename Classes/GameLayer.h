@@ -45,10 +45,13 @@ public:
     void resumeClicked(cocos2d::Ref const* sender);
     void resumeGame(cocos2d::Ref const* sender);
     
-    // contact listners
+    // contact listeners
     bool onContactBegin(cocos2d::PhysicsContact const& contact);
     
-    // touch listners
+    // back button listener
+    void onKeyReleased(cocos2d::EventKeyboard::KeyCode keycode, cocos2d::Event* event);
+
+    // touch listeners
     virtual bool onTouchBegan(cocos2d::Touch const* touch, cocos2d::Event const* event);
     virtual void onTouchEnded(cocos2d::Touch const* touch, cocos2d::Event const* event);
     virtual void onTouchMoved(cocos2d::Touch const* touch, cocos2d::Event const* event);
